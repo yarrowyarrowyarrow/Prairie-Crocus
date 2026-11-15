@@ -2440,6 +2440,55 @@
   "note": "A stout purple or purple-spotted stem to 1.5 m with whorls of 4 or 5 toothed lance leaves, topped by a broad, flat to domed head 10 to 20 cm across of fuzzy pink-purple. The model's whorled leaves up a tall stem are the right kind, the best whorled body so far; in August it shows no flower at all, and the leaves are thin blades.",
   "read_in": "V3.48"
  },
+ "Festuca hallii": {
+  "refs": {
+   "habit": [
+    "488173104"
+   ],
+   "flower": [
+    "518636304",
+    "526685060",
+    "233887754"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_size",
+   "seed_head",
+   "leaf_colour",
+   "photos"
+  ],
+  "note": "A large dense tussock of stiff, rough, grey-green rolled leaves 20 to 30 cm long, with stems to 60 cm carrying narrow panicles of purplish spikelets. The model is the dark column of wide straps with tan blocks. Only four photographs and none of a whole tussock, so the body cannot be judged from the sheet.",
+  "read_in": "V3.48"
+ },
+ "Festuca saximontana": {
+  "refs": {
+   "habit": [
+    "14391814",
+    "85894090"
+   ],
+   "leaf": [
+    "14391814"
+   ],
+   "flower": [
+    "496400788",
+    "498483476",
+    "14391815"
+   ],
+   "fruit": [
+    "85502363"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_size",
+   "seed_head",
+   "leaf_colour",
+   "photos"
+  ],
+  "note": "A small dense cushion of hair-fine, blue-grey leaves 5 to 10 cm tall, with many thin stems to 30 cm carrying narrow panicles 3 to 8 cm long, purplish then straw. The model's tuft with heads above it is right in kind; its leaves are wide flat straps and its heads are fat tan blocks. Six photographs.",
+  "read_in": "V3.48"
+ },
  "Fragaria vesca": {
   "refs": {
    "habit": [
@@ -3085,6 +3134,70 @@
    "flower_size"
   ],
   "note": "Slender stiff stems, few and rough lance leaves mostly on the lower half, the upper stem nearly bare, each ending in a sunflower 6 to 8 cm with yellow rays round a dark red-brown disc. The model is a dense column of huge overlapping leaves, like a tobacco plant, with small dark heads buried in it.",
+  "read_in": "V3.48"
+ },
+ "Hesperostipa comata": {
+  "refs": {
+   "habit": [
+    "303958301",
+    "38290143",
+    "478232248"
+   ],
+   "leaf": [
+    "303958301",
+    "615518694"
+   ],
+   "flower": [
+    "125841982",
+    "205959218"
+   ],
+   "fruit": [
+    "13500775",
+    "361807979",
+    "439255864",
+    "529107830"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour",
+   "dense"
+  ],
+  "note": "A dense bunch of fine, rolled, grey-green leaves, with stems whose seeds each trail a thread-thin awn 10 to 15 cm long, straight then curling and tangling, so the heads shimmer silver in wind. The model's bristly head is a flat fan of rays on a stick, like a dandelion clock, beside a spray of wide dark straps.",
+  "read_in": "V3.48"
+ },
+ "Hesperostipa spartea": {
+  "refs": {
+   "habit": [
+    "745411870",
+    "44484660",
+    "409513838"
+   ],
+   "leaf": [
+    "134499379",
+    "552104569"
+   ],
+   "flower": [
+    "405562602",
+    "297283170"
+   ],
+   "fruit": [
+    "2944483",
+    "686244740",
+    "546732263",
+    "532638509"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A tall bunchgrass with long narrow leaves and nodding stems whose few large seeds each carry a stout awn 12 to 20 cm long, twisted below and bent twice, hanging like quills. The model draws the same flat dandelion-clock fans as Needle and Thread.",
   "read_in": "V3.48"
  },
  "Heterotheca villosa": {
@@ -4007,6 +4120,33 @@
    "flower_count"
   ],
   "note": "A leafy clump of square stems with opposite, toothed, lance to oval grey-green leaves; each stem ends in one round shaggy head 4 to 6 cm of pale lilac tubes; dark round seed heads stand all winter. The best body so far: leafy, upright, opposite. The heads are small clusters of pink and maroon balls rather than one lilac mop, and the leaves are thin as grass.",
+  "read_in": "V3.48"
+ },
+ "Muhlenbergia cuspidata": {
+  "refs": {
+   "habit": [
+    "566937097",
+    "230580747",
+    "230762557"
+   ],
+   "leaf": [
+    "230762557",
+    "382744742"
+   ],
+   "fruit": [
+    "251772091",
+    "255840827",
+    "636338292"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour",
+   "photos"
+  ],
+  "note": "A dense tuft of wiry, thread-fine leaves from a knotty base, with very slender spike-like panicles a few millimetres wide; the whole clump turns orange-tan in autumn. The model's seed heads are tan blocks as wide as a hand, many times too thick, over wide dark straps. Seven photographs.",
   "read_in": "V3.48"
  },
  "Myriophyllum sibiricum": {
@@ -5612,6 +5752,35 @@
    "no_flower"
   ],
   "note": "A dense clump of slender stems thick with narrow lance leaves 5 to 10 cm long, green above and silvery beneath; catkins in April and May. The model is a grey skeleton with slivers for leaves: it reads as a dead bush. In April it has no catkins.",
+  "read_in": "V3.48"
+ },
+ "Schizachne purpurascens": {
+  "refs": {
+   "habit": [
+    "280218783",
+    "723328316"
+   ],
+   "leaf": [
+    "280218783"
+   ],
+   "flower": [
+    "521762075",
+    "515490609",
+    "534181659"
+   ],
+   "fruit": [
+    "162301547",
+    "488172537",
+    "623452433"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense"
+  ],
+  "note": "A loose tuft of narrow leaves with slender stems ending in a sparse, drooping panicle of a few large purplish spikelets 2 cm long with spreading awns, hanging from hair-fine branches. The seed head is recorded nodding; the model shows faint pale flecks standing upright in a column of wide straps.",
   "read_in": "V3.48"
  },
  "Schoenoplectus acutus": {
