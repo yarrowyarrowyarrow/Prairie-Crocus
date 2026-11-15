@@ -1589,6 +1589,190 @@
   "note": "Leafy stems with clasping lance leaves, branching at the top into purple daisies 3 to 4 cm across with many narrow rays, a sticky purplish cup beneath. The model is a few thin stems with grass-like leaves and a handful of tan specks: no purple anywhere.",
   "read_in": "V3.48"
  },
+ "Carex atherodes": {
+  "refs": {
+   "habit": [
+    "513831559",
+    "176597164",
+    "690992514"
+   ],
+   "leaf": [
+    "559700487",
+    "513831559"
+   ],
+   "flower": [
+    "516454746",
+    "530845769",
+    "297110817"
+   ],
+   "fruit": [
+    "529038638",
+    "42831601",
+    "750053292"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour",
+   "dense"
+  ],
+  "note": "A tall wetland sedge in stands, with wide, soft, bright green leaves, hairy on the sheaths, and stems with slim male spikes above and several thick green-yellow cylinders 4 to 10 cm long below, bristly with long two-pronged beaks. The model shows a few pale flecks among a dark column of straps.",
+  "read_in": "V3.48"
+ },
+ "Carex aurea": {
+  "refs": {
+   "habit": [
+    "532236768",
+    "83354386",
+    "341378049"
+   ],
+   "leaf": [
+    "532236768",
+    "721622279"
+   ],
+   "flower": [
+    "407227364",
+    "697244060"
+   ],
+   "fruit": [
+    "541030554",
+    "220887117",
+    "83354386",
+    "721622279"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "flower_colour",
+   "leaf_size",
+   "leaf_colour"
+  ],
+  "note": "A small, loose, pale green sedge a hand high whose fruits are round, fleshy beads, first white, then bright golden-orange, loosely strung along short spikes. The model's ovals on stalks are near the right size and place, the closest of the sedges; they are cream where the plant is orange, its whole name.",
+  "read_in": "V3.48"
+ },
+ "Carex bebbii": {
+  "refs": {
+   "habit": [
+    "732740108",
+    "318043064"
+   ],
+   "leaf": [
+    "437716668",
+    "732740108"
+   ],
+   "flower": [
+    "143728418",
+    "541793324",
+    "531626746"
+   ],
+   "fruit": [
+    "404303584",
+    "221352958",
+    "292455331"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour"
+  ],
+  "note": "A dense tuft of narrow leaves with many slender stems, each ending in one tight, egg-shaped head 1.5 to 3 cm long made of 5 to 10 crowded, bristly little balls, green-gold then rusty brown. The model's small ovals on stalks at leaf height are fair in kind; they are pale cream, spaced apart, and the leaves are wide straps.",
+  "read_in": "V3.48"
+ },
+ "Carex praticola": {
+  "refs": {
+   "habit": [
+    "4351654"
+   ],
+   "flower": [
+    "398339232",
+    "528092655",
+    "298322700"
+   ],
+   "fruit": [
+    "395600816",
+    "407954064"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour",
+   "photos"
+  ],
+  "note": "A tufted sedge with slender stems that arch at the top, the head a loose, nodding string of 3 to 7 pale, silvery-green to straw oval spikelets, each narrowed at the base. The model's ovals stand upright on sticks beside wide dark straps. Six photographs, none of the whole plant.",
+  "read_in": "V3.48"
+ },
+ "Carex pseudocyperus": {
+  "refs": {
+   "habit": [
+    "453703631",
+    "581075859",
+    "552714761"
+   ],
+   "leaf": [
+    "581075859",
+    "453703631"
+   ],
+   "flower": [
+    "389216398",
+    "8133891",
+    "453703631"
+   ],
+   "fruit": [
+    "152555324",
+    "718315266",
+    "146374496",
+    "741949820"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_colour",
+   "leaf_size"
+  ],
+  "note": "Bright yellow-green, wide leaves and stems from which three to five thick, bristly, bottle-brush cylinders 3 to 6 cm long hang on thin stalks, green then brown. The hanging brushes are how it is known. The model has small cream ovals standing upright on sticks over dark straps.",
+  "read_in": "V3.48"
+ },
+ "Carex rostrata": {
+  "refs": {
+   "habit": [
+    "605928338",
+    "456674782",
+    "529416522"
+   ],
+   "leaf": [
+    "605928338",
+    "298516492"
+   ],
+   "flower": [
+    "454661039",
+    "211691847",
+    "284857299"
+   ],
+   "fruit": [
+    "147415697",
+    "172121597",
+    "289531973",
+    "42349408"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_colour",
+   "leaf_size",
+   "leaf_shape"
+  ],
+  "note": "Narrow, blue-grey, channelled leaves and stems carrying two to four dense upright cylinders 3 to 8 cm long, yellow-green then straw, of round inflated sacs with sharp beaks. The model's small cream ovals on stalks are the right position, a fraction of the size, over dark green straps where the plant is blue-grey.",
+  "read_in": "V3.48"
+ },
  "Carex utriculata": {
   "refs": {
    "habit": [
@@ -2271,6 +2455,39 @@
    "fruit"
   ],
   "note": "Upright stems with brown scurfy twigs, silver leaves on both sides, small yellow flowers tucked in the leaf axils in June, silvery mealy berries that stay into winter. The model has the silver. It is a sparse V of brown trunks, and since no flower shape is recorded it never flowers; its berries do not show.",
+  "read_in": "V3.48"
+ },
+ "Eleocharis palustris": {
+  "refs": {
+   "habit": [
+    "47507807",
+    "697624941",
+    "44878197"
+   ],
+   "leaf": [
+    "697624941",
+    "545885838"
+   ],
+   "flower": [
+    "499246042",
+    "44878197",
+    "205409175"
+   ],
+   "fruit": [
+    "169132999",
+    "307065274",
+    "294775430"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "habit",
+   "leaf_shape",
+   "seed_head",
+   "flower_colour",
+   "data"
+  ],
+  "note": "Stands of thin, round, leafless, bright green stems like knitting needles, each tipped with one small pointed brown spikelet 1 to 2 cm long, cream when in flower. It is recorded with a red flower colour. The model is a tussock of wide flat straps with large bright red blocks on stalks: wrong body, wrong head, wrong colour.",
   "read_in": "V3.48"
  },
  "Elymus canadensis": {
