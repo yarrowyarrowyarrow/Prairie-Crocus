@@ -1,4 +1,36 @@
 {
+ "Achillea alpina": {
+  "refs": {
+   "habit": [
+    "153650482",
+    "166377083",
+    "415607150"
+   ],
+   "leaf": [
+    "131819780",
+    "139664015",
+    "210805493"
+   ],
+   "flower": [
+    "93565998",
+    "166377089",
+    "694337230"
+   ],
+   "fruit": [
+    "194049595"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stem_leaves",
+   "leaf_shape",
+   "sparse",
+   "flower_place",
+   "data"
+  ],
+  "note": "Leafy stems crowded with narrow, undivided, saw-toothed leaves 4 to 8 cm, like a comb, topped by a domed cluster of small white daisies with cream centres, each 0.8 to 1 cm with 6 to 12 short rays. It is recorded with the common yarrow's twice-cut leaf. The model is bare wires and ground ladders under a hovering white plate.",
+  "read_in": "V3.48"
+ },
  "Achillea borealis": {
   "refs": {
    "habit": [
@@ -157,6 +189,69 @@
   "note": "A tall hairy stem with large leaves of 5 to 9 big, coarsely toothed leaflets and tiny ones between them, ending in a long slim wand of small bright yellow five-petalled flowers; nodding burs with hooked bristles. The model is two nearly bare stems with tiny ladder leaves and short strings of pale dots.",
   "read_in": "V3.48"
  },
+ "Allium cernuum": {
+  "refs": {
+   "habit": [
+    "195708634",
+    "529548266",
+    "417937058"
+   ],
+   "leaf": [
+    "195708634",
+    "469015024"
+   ],
+   "flower": [
+    "120632",
+    "538049810",
+    "417940699",
+    "548949879"
+   ],
+   "fruit": [
+    "89503262",
+    "45727133"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "flower_arch",
+   "flower_colour",
+   "flower_place",
+   "dense"
+  ],
+  "note": "A small tuft of soft, narrow, grass-like leaves, and bare stalks that crook over at the top like a shepherd's hook, each hanging an open umbel of 8 to 30 pale pink to white bells. The model's tuft with a pink cluster on a stalk is the right kind. The head points up, not down, and half of it renders maroon.",
+  "read_in": "V3.48"
+ },
+ "Allium schoenoprasum": {
+  "refs": {
+   "habit": [
+    "318351436",
+    "47508290",
+    "55973340"
+   ],
+   "leaf": [
+    "55973340",
+    "33660158"
+   ],
+   "flower": [
+    "22873997",
+    "428929570",
+    "424086040",
+    "81375807"
+   ],
+   "fruit": [
+    "320813662"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "flower_arch",
+   "flower_colour",
+   "leaf_shape",
+   "flower_place"
+  ],
+  "note": "A dense tuft of round, hollow, blue-green tubes, with stalks each topped by one tight pompom 2 to 4 cm across of pink-mauve, papery, pointed flowers. The model's tuft with pink on stalks is the right kind. Its head is a loose spray of pink and maroon chips, not a ball, and the leaves are flat blades.",
+  "read_in": "V3.48"
+ },
  "Alnus alnobetula": {
   "refs": {
    "habit": [
@@ -302,6 +397,37 @@
   "note": "White-woolly stems with narrow leaves, green above and white beneath, topped by a flat cluster of many pearly white papery globes 1 cm across, each with a small yellow centre; they dry in place and stay. The model has the grey leaf, drawn as a tower of long blades. Its flowers are a thin line of yellow specks drifting off above the plant: no white at all.",
   "read_in": "V3.48"
  },
+ "Anemonastrum canadense": {
+  "refs": {
+   "habit": [
+    "651863520",
+    "677825671",
+    "409722310"
+   ],
+   "leaf": [
+    "509262183",
+    "426058643",
+    "416823327"
+   ],
+   "flower": [
+    "162600164",
+    "615312558",
+    "391005575"
+   ],
+   "fruit": [
+    "45660363"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "proportion",
+   "habit",
+   "leaf_shape",
+   "flower_place"
+  ],
+  "note": "Colonies knee high: long-stalked leaves cut into 3 to 5 sharply toothed parts, a ruff of stalkless leaves under each flower stalk, and white flowers 2.5 to 4 cm with a yellow centre held well above the leaves. Recorded 60 cm tall; the model is a flat mat a hand high with small white flowers lying on it.",
+  "read_in": "V3.48"
+ },
  "Anemone cylindrica": {
   "refs": {
    "habit": [
@@ -401,6 +527,36 @@
   "note": "A tall plant with large, deeply three-parted, toothed leaves, a whorl of them halfway up the stem, and long bare stalks each with one white to greenish flower 2 to 3 cm; then an egg-shaped thimble that turns to cotton. The model's stems with white flowers on top are closest of the anemones; the leaves are dark round plates and there are no thimbles.",
   "read_in": "V3.48"
  },
+ "Antennaria pulcherrima": {
+  "refs": {
+   "habit": [
+    "145307610",
+    "292537091",
+    "409613919"
+   ],
+   "leaf": [
+    "409613919",
+    "292537091"
+   ],
+   "flower": [
+    "553511792",
+    "145307624",
+    "221828610",
+    "417857307"
+   ]
+  },
+  "score": 0,
+  "faults": [
+   "habit",
+   "stem_leaves",
+   "sparse",
+   "flower_place",
+   "leaf_colour",
+   "leaf_size"
+  ],
+  "note": "The tall pussytoes: upright, white-woolly stems to 40 cm from a tuft of long, narrow, grey, erect basal leaves, with leaves up the stem, topped by a tight cluster of woolly heads in brown-tipped bracts. The model is a scatter of dark seed-sized flecks on the ground and two hair-thin wires, with dots hanging far above them. There is no plant.",
+  "read_in": "V3.48"
+ },
  "Apocynum androsaemifolium": {
   "refs": {
    "habit": [
@@ -464,6 +620,72 @@
    "flower_place"
   ],
   "note": "A mound of blue-green leaves, each divided twice into rounded, lobed leaflets like a meadow-rue, and slender stems with a few nodding flowers 2 cm: blue-purple sepals round cream-white petals with short hooked spurs. The model is six bare wires from a few tiny ladder leaves, with upright blue tubes off the stalk tips: no cream, no nodding.",
+  "read_in": "V3.48"
+ },
+ "Aralia nudicaulis": {
+  "refs": {
+   "habit": [
+    "173029851",
+    "677169040",
+    "697513975"
+   ],
+   "leaf": [
+    "415940536",
+    "151109116",
+    "197429284"
+   ],
+   "flower": [
+    "79372359",
+    "391887753",
+    "624415726"
+   ],
+   "fruit": [
+    "539890885",
+    "112488"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "habit",
+   "leaf_shape",
+   "no_flower",
+   "fruit",
+   "leaf_size"
+  ],
+  "note": "One leaf on a tall bare stalk, held flat like an umbrella: three branches, each with 3 to 5 broad, toothed, oval leaflets 8 to 12 cm; bronze when new, yellow in autumn. Beneath it, on its own short stalk from the ground, two to seven round balls of green-white flowers, then purple-black berries. The model is an upright stem of ladder leaves, with no flower or fruit recorded.",
+  "read_in": "V3.48"
+ },
+ "Arctostaphylos uva-ursi": {
+  "refs": {
+   "habit": [
+    "580638553",
+    "328607484",
+    "602611372"
+   ],
+   "leaf": [
+    "218597635",
+    "328083175",
+    "328607484"
+   ],
+   "flower": [
+    "395123757",
+    "199225832",
+    "389310281"
+   ],
+   "fruit": [
+    "249649192",
+    "302025925",
+    "721621048"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_size",
+   "leaf_colour",
+   "stems",
+   "flower_colour"
+  ],
+  "note": "A trailing evergreen mat of long woody stems closely set with small, leathery, spoon-shaped leaves 1 to 2.5 cm, dark glossy green, bronze-red in winter; small pink-tipped white urns in clusters at the shoot tips; bright red berries. The model is a flat star of pale angular plates, each several times the size of a leaf, with white specks.",
   "read_in": "V3.48"
  },
  "Arnica chamissonis": {
@@ -587,6 +809,37 @@
    "sparse"
   ],
   "note": "A low silver-white mat of soft, finely cut, feathery leaves, with many upright leafy stems carrying nodding yellow button heads along their upper half: a soft silvery plume. The model is flat olive-grey round plates and a few bare wires. Nothing silver, nothing feathery.",
+  "read_in": "V3.48"
+ },
+ "Artemisia ludoviciana": {
+  "refs": {
+   "habit": [
+    "143385205",
+    "429456040",
+    "48229986"
+   ],
+   "leaf": [
+    "43279130",
+    "203334313",
+    "505744069"
+   ],
+   "flower": [
+    "148655565",
+    "226407568",
+    "22718221"
+   ],
+   "fruit": [
+    "50486278",
+    "51364414"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "no_flower",
+   "leaf_size",
+   "dense"
+  ],
+  "note": "Patches of upright stems, silver-white all over, with lance leaves 3 to 8 cm, some lobed, ending in a narrow leafy spike of small nodding grey-yellow buttons. The model has the silver and the upright leafy stems, which is most of it. The leaves are long stiff blades, and with no flower recorded the stems end in a leaf.",
   "read_in": "V3.48"
  },
  "Asclepias ovalifolia": {
@@ -767,6 +1020,39 @@
   "note": "White peeling bark, an oval open crown of many fine branches and drooping twigs. The model is a white pole with four upright leaders and a thin scatter of leaves on each; leafless in April it has almost no branches at all. The bark is right, the crown is not a crown.",
   "read_in": "V3.48"
  },
+ "Blitum capitatum": {
+  "refs": {
+   "habit": [
+    "555222113",
+    "534168869",
+    "303653158"
+   ],
+   "leaf": [
+    "150464360",
+    "552269857",
+    "706475213"
+   ],
+   "flower": [
+    "403914917",
+    "531622429"
+   ],
+   "fruit": [
+    "248639030",
+    "99685917",
+    "408192845",
+    "711141226"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "no_flower",
+   "fruit",
+   "leaf_shape",
+   "dense"
+  ],
+  "note": "A leafy, branching stem with triangular to arrowhead-shaped, coarsely toothed leaves, and round, bright red, strawberry-like clusters 1 to 1.5 cm across strung along the upper stem, which is the whole of what it is known by. The model is a stack of plain oval plates with no red anywhere: no flower or fruit shape is recorded.",
+  "read_in": "V3.48"
+ },
  "Calla palustris": {
   "refs": {
    "habit": [
@@ -828,6 +1114,36 @@
    "flower_colour"
   ],
   "note": "A mound of glossy round to kidney-shaped leaves held up on thick hollow stalks, with shining deep yellow flowers 3 to 4 cm just above them, many at once. The model reads as a marsh marigold from above. Its leaves lie flat on the ground and are near black, and the flowers are pale straw with dark brown backs.",
+  "read_in": "V3.48"
+ },
+ "Campanula rotundifolia": {
+  "refs": {
+   "habit": [
+    "123671599",
+    "310806218",
+    "298296442"
+   ],
+   "leaf": [
+    "291136704",
+    "511682554",
+    "358313449"
+   ],
+   "flower": [
+    "741814252",
+    "55207029",
+    "123671599",
+    "22710688"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "habit",
+   "leaf_shape",
+   "flower_shape",
+   "flower_count",
+   "dense"
+  ],
+  "note": "Thin wiry stems with a few thread-narrow leaves, each carrying one to a few nodding violet-blue bells 2 cm long; the round leaves it is named for are small and at the base. The model is a dense tuft of broad grass blades under a cloud of thirty flat blue stars, half of them navy: a different plant.",
   "read_in": "V3.48"
  },
  "Canadanthus modestus": {
@@ -1271,6 +1587,36 @@
   "note": "Tall leafy stems, lance leaves 8 to 15 cm, topped by a broad flat-topped cluster 10 to 30 cm across of many small white daisies with 7 to 14 rays and yellow centres. The model's leafy stems are right in kind; in August, mid-flowering, it shows no flowers at all.",
   "read_in": "V3.48"
  },
+ "Drosera rotundifolia": {
+  "refs": {
+   "habit": [
+    "69210256",
+    "302963057",
+    "398836147"
+   ],
+   "leaf": [
+    "47640268",
+    "306390505",
+    "357375957"
+   ],
+   "flower": [
+    "467434937",
+    "302954634"
+   ],
+   "fruit": [
+    "96350791"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "habit",
+   "leaf_colour",
+   "sparse",
+   "no_flower"
+  ],
+  "note": "A rosette 3 to 8 cm across of round leaves on flat stalks, red and fringed with sticky glistening hairs, flat on the moss; one thin stalk with a few small white flowers down one side. The model is a few hair-thin lines: no rosette, no red. A plant this small may be beyond what a yard view can show, but a red rosette is drawable.",
+  "read_in": "V3.48"
+ },
  "Drymocallis arguta": {
   "refs": {
    "habit": [
@@ -1340,6 +1686,28 @@
    "fruit"
   ],
   "note": "Upright stems with brown scurfy twigs, silver leaves on both sides, small yellow flowers tucked in the leaf axils in June, silvery mealy berries that stay into winter. The model has the silver. It is a sparse V of brown trunks, and since no flower shape is recorded it never flowers; its berries do not show.",
+  "read_in": "V3.48"
+ },
+ "Equisetum arvense": {
+  "refs": {
+   "habit": [
+    "136372994",
+    "22274097"
+   ],
+   "leaf": [
+    "406292900",
+    "22274097"
+   ],
+   "fruit": [
+    "508963856",
+    "382035008"
+   ]
+  },
+  "score": 7,
+  "faults": [
+   "sparse"
+  ],
+  "note": "Bright green jointed stems with whorls of slender green branches at every joint, the branches angled upward and often branching again, so the plant is a soft bottle-brush; in spring, separate pale brown stems with a cone. The model reads as a horsetail at once. The real plant's branches are longer, finer and more crowded, and its stems thinner.",
   "read_in": "V3.48"
  },
  "Erigeron glabellus": {
@@ -2240,6 +2608,39 @@
   "note": "An unbranched stem with narrow leaves that shrink upward, carrying a few to a dozen round shaggy button heads 2 to 3 cm across, vivid purple-magenta, well spaced, the top one largest and first to open; dark red-purple bracts. The model's leafy stem is right in kind; its heads are pale pink dots a few millimetres across. Recorded 1.4 cm and pink.",
   "read_in": "V3.48"
  },
+ "Lilium philadelphicum": {
+  "refs": {
+   "habit": [
+    "199215187",
+    "558522976",
+    "185275506"
+   ],
+   "leaf": [
+    "199215187",
+    "396435894"
+   ],
+   "flower": [
+    "704147067",
+    "401186060",
+    "473527795",
+    "185275506"
+   ],
+   "fruit": [
+    "445510543",
+    "649303568"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "habit",
+   "leaf_place",
+   "flower_place",
+   "flower_colour",
+   "flower_centre"
+  ],
+  "note": "One straight stem with narrow leaves scattered up it and a whorl of them just under the flower; one to three upright, open cups 6 to 8 cm across, six orange-red tepals narrowed to stalks at the base, yellow and purple-spotted inside. The model is a grass tussock with orange and brown stars floating over it. The flower's size and count are right; it is on the wrong body and too orange, with no spotted throat.",
+  "read_in": "V3.48"
+ },
  "Linum lewisii": {
   "refs": {
    "habit": [
@@ -2373,6 +2774,42 @@
    "fruit"
   ],
   "note": "One arching, zigzag stem with 6 to 12 broad, pointed, pleated leaves in two flat rows, like a ladder, ending in a creamy plume 5 to 12 cm; then a bunch of red speckled berries at the stem tip. The model is a spiral pagoda of plates round a straight pole, the flowers a few specks to one side, the berries scattered in the air.",
+  "read_in": "V3.48"
+ },
+ "Maianthemum stellatum": {
+  "refs": {
+   "habit": [
+    "2365854",
+    "661487489",
+    "685571596"
+   ],
+   "leaf": [
+    "151108426",
+    "2365853",
+    "199214654"
+   ],
+   "flower": [
+    "199214642",
+    "506568323",
+    "387266796",
+    "210596720"
+   ],
+   "fruit": [
+    "104953718",
+    "389446687",
+    "2365853"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "dense",
+   "leaf_place",
+   "leaf_shape",
+   "no_flower",
+   "fruit",
+   "stems"
+  ],
+  "note": "One arching, unbranched stem with narrow lance leaves in two flat rows, folded along the midrib and clasping the stem, ending in a short raceme of 5 to 10 white six-pointed stars; berries green with dark stripes, then dark red, at the stem tip. The model is a spiral pagoda of broad plates with no flower (none is recorded) and red dots through the stack.",
   "read_in": "V3.48"
  },
  "Mentha canadensis": {
@@ -2719,6 +3156,38 @@
   "note": "In water, glossy oblong leaves floating flat and pink clubs standing above them; on land, a leafy stem with broad lance leaves. Either way the flower is a dense, solid, bright pink egg or cylinder 2 to 4 cm tall, one at each stem tip. The model is a star of stiff blades with thin strings of dots too small to see.",
   "read_in": "V3.48"
  },
+ "Petasites frigidus": {
+  "refs": {
+   "habit": [
+    "288733131",
+    "248042517",
+    "132626435"
+   ],
+   "leaf": [
+    "679363910",
+    "202508949",
+    "85751067",
+    "133911262"
+   ],
+   "flower": [
+    "386697308",
+    "201787494",
+    "248042517"
+   ],
+   "fruit": [
+    "202083392"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "no_flower",
+   "leaf_colour",
+   "leaf_place",
+   "data"
+  ],
+  "note": "In April and May a thick, scaly stalk comes up before the leaves, topped with a bunch of white to pinkish heads. The leaves follow: large, cut into 5 to 7 toothed lobes like a hand, green above and white-woolly beneath, held up on long stalks. The model in April is a near-black lobed rosette flat on the ground with a few wires, and no flower, since none is recorded.",
+  "read_in": "V3.48"
+ },
  "Physostegia ledinghamii": {
   "refs": {
    "habit": [
@@ -2829,6 +3298,33 @@
    "leaf_colour"
   ],
   "note": "Open irregular crown of long limbs carrying yellow-green needle tufts, curved cones held along the branches. The model is a pole with small dark whorls, a bottle brush: too narrow, too little foliage, and darker than the yellow-green in every photograph.",
+  "read_in": "V3.48"
+ },
+ "Polygala senega": {
+  "refs": {
+   "habit": [
+    "41886948",
+    "520115478",
+    "209158331"
+   ],
+   "leaf": [
+    "406355231",
+    "392092500"
+   ],
+   "flower": [
+    "131495592",
+    "286064540",
+    "520111982",
+    "467395577"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "no_flower",
+   "leaf_size",
+   "dense"
+  ],
+  "note": "A clump of several unbranched stems with small lance leaves, each stem ending in a dense, tapering, white spike 2 to 4 cm long, like a small white cone. The model's clump of leafy stems is the right kind; no flower is recorded, so the white spikes that are the plant in June are missing, and the leaves are long blades.",
   "read_in": "V3.48"
  },
  "Populus balsamifera": {
@@ -2967,6 +3463,39 @@
    "leaf_colour"
   ],
   "note": "A small rosette of smooth, upright, light green spoon leaves and one or a few bare stalks, each with a spray of nodding magenta darts: petals swept straight back, a yellow and white ring, a dark point. The model's rosette, stalk and cluster are the right kind. The flowers are flat pale pink stars beside the stalk, and the rosette is near black.",
+  "read_in": "V3.48"
+ },
+ "Prosartes trachycarpa": {
+  "refs": {
+   "habit": [
+    "416346016",
+    "99299982",
+    "290405187"
+   ],
+   "leaf": [
+    "202048526",
+    "601495830",
+    "580375098"
+   ],
+   "flower": [
+    "291460013",
+    "291460252",
+    "513827801",
+    "112678280"
+   ],
+   "fruit": [
+    "421704829",
+    "307889150"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "no_flower",
+   "fruit",
+   "stems",
+   "leaf_place"
+  ],
+  "note": "A forking, branching stem with broad, pointed, parallel-veined oval leaves held flat in two rows; one or two creamy bells hang from each branch tip under the leaves; then round, rough-skinned berries, orange to red. The model's broad oval leaves on upright stems read well. No flower is recorded for it, so it never flowers or fruits, and the stems do not fork.",
   "read_in": "V3.48"
  },
  "Prunus pensylvanica": {
@@ -3803,6 +4332,37 @@
   "note": "A rounded leafy shrub; opposite oval leaves, dark green above, silvery with rust-brown dots beneath; brown scurfy twigs; red berries clustered tight at the nodes along the stems. The model is bare forked sticks with a few grey leaves, and its berries are red specks scattered through the air around it.",
   "read_in": "V3.48"
  },
+ "Sisyrinchium montanum": {
+  "refs": {
+   "habit": [
+    "305540358",
+    "680066405",
+    "293517390"
+   ],
+   "leaf": [
+    "595871917",
+    "569894024"
+   ],
+   "flower": [
+    "105390",
+    "682541369",
+    "43574557",
+    "77069114"
+   ],
+   "fruit": [
+    "595871917",
+    "569894024"
+   ]
+  },
+  "score": 6,
+  "faults": [
+   "flower_colour",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A small stiff tuft of flat, narrow, pale green iris-like blades, each flat stem carrying one or two blue-violet stars 1.5 to 2 cm with six pointed tepals and a yellow eye, held at the top beside a pointed bract; round seed capsules. The model reads as the plant: a tuft of blades with blue flowers at the top. It is too dense and dark, and half the flowers render navy.",
+  "read_in": "V3.48"
+ },
  "Solidago altissima": {
   "refs": {
    "habit": [
@@ -4035,6 +4595,35 @@
    "flower_size"
   ],
   "note": "Slender upright wands, closely set with small toothed lance leaves, each ending in a dense white steeple of tiny flowers 5 to 15 cm tall; the brown seed heads stand through winter. It is recorded as a flat-topped cluster; it is a cone (a panicle). The model is thick canes with long stiff blades and specks floating above.",
+  "read_in": "V3.48"
+ },
+ "Spiranthes romanzoffiana": {
+  "refs": {
+   "habit": [
+    "312015599",
+    "717431165",
+    "553511371"
+   ],
+   "leaf": [
+    "553511371",
+    "45548406"
+   ],
+   "flower": [
+    "141338340",
+    "146606775",
+    "410754713",
+    "151292456"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "flower_arch",
+   "flower_place",
+   "dense",
+   "leaf_size",
+   "flower_size"
+  ],
+  "note": "A few narrow leaves at the base and one stem ending in a dense, thick, cream-white spike 5 to 10 cm tall, the hooded flowers packed in three spiralling rows. The model is a tall dense tuft of grass blades with small grey dots scattered loosely in the air above it.",
   "read_in": "V3.48"
  },
  "Stachys pilosa": {
@@ -4388,6 +4977,103 @@
   "note": "A stout, bristly, purple-red stem to 1.8 m with clasping lance leaves, branching above into many blue-violet daisies 2.5 to 4 cm with 30 to 60 rays. The model is one thin green stem with a scatter of pale specks: no purple stem, no blue flowers.",
   "read_in": "V3.48"
  },
+ "Thalictrum dasycarpum": {
+  "refs": {
+   "habit": [
+    "512521267",
+    "295805632",
+    "24581378"
+   ],
+   "leaf": [
+    "505495529",
+    "497223416",
+    "449172131"
+   ],
+   "flower": [
+    "8731384",
+    "404145716",
+    "295805632"
+   ],
+   "fruit": [
+    "85648125",
+    "427825136"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "sparse",
+   "stem_leaves",
+   "leaf_shape",
+   "leaf_size",
+   "no_flower",
+   "stems"
+  ],
+  "note": "A big bushy plant to 1.8 m with purplish stems, leafy from bottom to top with blue-green leaves divided three or four times into small three-lobed leaflets, under large airy plumes of cream-white tassels. The model is a bundle of bare wires 1.8 m tall with a few tiny ladder leaves on the ground and dust at the top.",
+  "read_in": "V3.48"
+ },
+ "Thalictrum occidentale": {
+  "refs": {
+   "habit": [
+    "78150035",
+    "20694603",
+    "143424423"
+   ],
+   "leaf": [
+    "211638728",
+    "399677241",
+    "116959220"
+   ],
+   "flower": [
+    "284067991",
+    "530809177",
+    "86204425"
+   ],
+   "fruit": [
+    "254622192"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "sparse",
+   "stem_leaves",
+   "leaf_shape",
+   "leaf_size",
+   "no_flower"
+  ],
+  "note": "A leafy woodland plant with thin, delicate leaves divided into many round three-lobed leaflets, and open panicles of nodding flowers: tassels of purple-brown stamens or small star-shaped seed clusters. The model is the same bundle of bare wires as the other meadow-rues.",
+  "read_in": "V3.48"
+ },
+ "Thalictrum venulosum": {
+  "refs": {
+   "habit": [
+    "393529164",
+    "47584467"
+   ],
+   "leaf": [
+    "547158660",
+    "208340487",
+    "86176896"
+   ],
+   "flower": [
+    "42795318",
+    "41886503",
+    "201700853"
+   ],
+   "fruit": [
+    "47584467"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "sparse",
+   "stem_leaves",
+   "leaf_shape",
+   "leaf_size",
+   "no_flower"
+  ],
+  "note": "A knee-high leafy plant: blue-green leaves divided into many rounded, three-lobed leaflets with raised veins beneath, and loose panicles of small drooping tassels, greenish to purplish. The model is six bare wires from a few tiny ladders on the ground, with dust in the air.",
+  "read_in": "V3.48"
+ },
  "Thermopsis rhombifolia": {
   "refs": {
    "habit": [
@@ -4420,6 +5106,38 @@
    "leaf_colour"
   ],
   "note": "Low patches, a hand or two high: three-part leaves of broad grey-green leaflets with big leafy stipules; a short dense raceme of bright yellow pea flowers 2 cm at the top of each stem; curled, sickle-shaped pods. The model draws long ladder leaves of a dozen leaflets where the plant has three, and its flowers are loose yellow and orange chips.",
+  "read_in": "V3.48"
+ },
+ "Urtica gracilis": {
+  "refs": {
+   "habit": [
+    "727465487",
+    "188390113",
+    "308590723"
+   ],
+   "leaf": [
+    "520933155",
+    "9307981",
+    "136152034"
+   ],
+   "flower": [
+    "48639932",
+    "42761085",
+    "136152034"
+   ],
+   "fruit": [
+    "176337997",
+    "42761085"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_size",
+   "sparse",
+   "no_flower",
+   "leaf_shape"
+  ],
+  "note": "Tall, unbranched, square stems in dense patches, with opposite, coarsely toothed, pointed leaves 7 to 15 cm, deeply veined, and drooping green-yellow strings of tiny flowers from the upper leaf joints. The model's tall stems with opposite leaves are right in kind; the leaves are small smooth ovals a third the size, and the hanging strings are missing.",
   "read_in": "V3.48"
  },
  "Vaccinium myrtilloides": {
@@ -4456,6 +5174,36 @@
    "fruit"
   ],
   "note": "A low twiggy bush, knee high; small soft elliptic leaves 2 to 4 cm, velvety, red in autumn; clusters of small pink-white bells in May; blue berries with a pale bloom in clusters. The model has the height and blue berries, some floating outside it. The leaves are large flat plates (the same body as Western Snowberry); no flower shows in May.",
+  "read_in": "V3.48"
+ },
+ "Veronica americana": {
+  "refs": {
+   "habit": [
+    "358445740",
+    "291098335",
+    "547022452"
+   ],
+   "leaf": [
+    "191821562",
+    "547022452",
+    "430566323"
+   ],
+   "flower": [
+    "8234588",
+    "294756543",
+    "8234591",
+    "145973615"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "habit",
+   "sparse",
+   "stem_leaves",
+   "no_flower",
+   "leaf_size"
+  ],
+  "note": "Fleshy stems sprawling through shallow water and rooting as they go, with pairs of glossy, toothed, lance-oval leaves 2 to 5 cm, and loose racemes from the leaf joints of small violet-blue flowers with four lobes and a white eye. The model is a ring of specks on the ground and three bare wires half a metre tall, the same body as Northern Bedstraw; no flower shape is recorded.",
   "read_in": "V3.48"
  },
  "Viburnum edule": {
