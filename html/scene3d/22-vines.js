@@ -428,5 +428,6 @@ function buildVines(list, all, month, year, terrain) {
 
 window.buildVines = buildVines;
 window.noteVineHost = noteVineHost;
+window.vineHostOf = (p) => VINE_HOSTS.get(p);   // 15b-anchors.js: where a crown is
 window.vinesReset = vinesReset;
 window.vineAnchorsFor = vineAnchorsFor;

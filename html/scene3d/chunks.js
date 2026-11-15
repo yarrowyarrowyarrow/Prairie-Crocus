@@ -32,6 +32,8 @@ window.SCENE3D_CHUNKS = [
   'scene3d/13-stylised.js',
   'scene3d/14-layers.js',
   'scene3d/15-florets.js',
+  // V3.48: flowers and fruit on the stems and crowns that were drawn.
+  'scene3d/15b-anchors.js',
   // V2.43: click-to-plant in the reference sandboxes, and the QWebChannel
   // the viewer never had. Last on purpose — its pointer handlers must
   // register after 10-inspect.js's so both see the same click.

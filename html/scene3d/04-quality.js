@@ -455,7 +455,7 @@ function ensurePlantMats() {
     // lifted normals (V1.92) — lush tufts rather than thin spindly stalks.
     blade:   plantMaterial({ roughness: 0.72, wind: 0.11, vertexColors: true,
                doubleSide: true, detail: 'leaf.matte', detailScale: 16.0,
-               detailAmount: 0.26 }),
+               detailAmount: 0.26, translucency: LEAF_TRANSLUCENCY.blade }),
     simple:  plantMaterial({ roughness: 0.9, wind: 0.06 }),
     ground:  plantMaterial({ roughness: 0.95, wind: 0.02, vertexColors: true }),
     // Slightly lighter than pre-V2.12 — ACES tone mapping deepens darks.
@@ -651,6 +651,7 @@ function buildHerbLayer(list, month, year, terrain) {
         const rotY = rotY0 + (k ? pl.dx : 0);
         const gy = terrainHeightAt(x, wy, terrain);
         setInst2(mesh, idx, x, gy, -wy, c * m, h * m, c * m, rotY, col);
+        if (!k && window.noteBloomBody) noteBloomBody(p, arch, x, gy, -wy, c * m, h * m, rotY);
         names[idx] = p.common_name || '';
         ids[idx] = p.plant_id;
         idx++;
@@ -744,6 +745,7 @@ function buildPlants(group, plants, month, year, terrain) {
   const scenePlants = plants || [];
   plants = scenePlants.filter(standing);     // 01-core.js: nor `gone` (V3.43)
   if (window.vinesReset) vinesReset();
+  if (window.bloomBodiesReset) bloomBodiesReset();
 
   const byKind = { tree: [], shrub: [], vine: [], groundcover: [], grass: [],
                    aquatic: [], herb: [], horsetail: [], pond: [], succulent: [] };

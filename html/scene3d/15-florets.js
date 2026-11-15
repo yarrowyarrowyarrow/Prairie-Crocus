@@ -292,7 +292,7 @@ const _REACH_OF_HEIGHT = 0.45;
 // florets at 9 cm), and the cluster grew upward from 70-92% of the plant, so 64
 // of them topped out more than a quarter above the plant's own height.
 function _inflorescence(p, arch, drawn, h) {
-  const dia = Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
+  const dia = woodyBloomGain(p) * Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
   // A head and a solitary flower are drawn at their TRUE diameter, and that is
   // the point: a black-eyed Susan is 7 cm across and should read as 7 cm across
   // from four metres away. The billboard sized every bloom off the plant's
@@ -368,9 +368,8 @@ function buildFlorets(plants, month, terrain) {
       const grown = Math.max(0.25, Math.min(1, p.scale_factor == null
                                               ? 1 : p.scale_factor));
       const heads = qn(Math.max(1, Math.round(grown * (
-        p.flowering_stems > 0 ? p.flowering_stems
-        : p.plant_type === 'tree' ? 10
-        : p.plant_type === 'shrub' ? 9
+        p.plant_type === 'tree' || p.plant_type === 'shrub' ? woodyBloomCount(p)
+        : p.flowering_stems > 0 ? p.flowering_stems
         : _BRANCH_HEADS[p.stem_branching] || 6))));
       // Flowers are held on STEMS, and stems converge on one crown: they do not
       // fill the canopy disc the way leaves do. The billboard spread its quads
@@ -378,8 +377,7 @@ function buildFlorets(plants, month, terrain) {
       // is correct for foliage and wrong for blooms) and a lupine came out with
       // racemes floating half a metre off its own stem.
       const spread = b.arch === 'corymb' || b.arch === 'umbel' ? 0.55 : 0.42;
-      const va = (window.vineAnchorsFor && vineAnchorsFor(p))            // V2.89
-        || (window.succulentAnchorsFor && succulentAnchorsFor(p));      // V2.93
+      const va = bloomAnchors(p, heads, month);        // on its body (15b-anchors.js)
       for (let k = 0; k < heads; k++) {
         const a = rnd() * Math.PI * 2;
         const rr = rad * spread * Math.sqrt(rnd());
@@ -436,6 +434,9 @@ function buildFlorets(plants, month, terrain) {
 // the shade of the tree beside it. This is a bloom's whole relationship with the
 // scene it is in, and it was the second half of why the flowers read as pasted
 // on rather than growing there.
+// The share of the light on a petal's far side that it lets through (01c-leaves.js
+// does the same for a leaf at 0.45 to 0.55; a petal is thinner).
+const PETAL_TRANSLUCENCY = 0.8;
 let _FLORET_MAT = null;
 function floretMaterial() {
   if (_FLORET_MAT) return _FLORET_MAT;
@@ -456,6 +457,10 @@ function floretMaterial() {
        '  totalEmissiveRadiance += vInstanceColor * ' +
        (sceneNight ? '0.45' : '0.22') + ';',
        '#endif'].join('\n'));
+    // A petal is thinner than a leaf: seen from behind or below it shows its
+    // colour, not a shadow (V3.48). Until this, every flower seen from the side
+    // was half bright faces and half near-black backs.
+    if (typeof applyLeafLight === 'function') applyLeafLight(shader, PETAL_TRANSLUCENCY);
   };
   _FLORET_MAT.customProgramCacheKey = () => 'floret' + (sceneNight ? 'n' : 'd');
   return _FLORET_MAT;
