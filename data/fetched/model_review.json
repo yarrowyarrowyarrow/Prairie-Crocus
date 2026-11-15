@@ -221,6 +221,38 @@
   "note": "A tall hairy stem with large leaves of 5 to 9 big, coarsely toothed leaflets and tiny ones between them, ending in a long slim wand of small bright yellow five-petalled flowers; nodding burs with hooked bristles. The model is two nearly bare stems with tiny ladder leaves and short strings of pale dots.",
   "read_in": "V3.48"
  },
+ "Agrostis scabra": {
+  "refs": {
+   "habit": [
+    "154761048",
+    "158290209",
+    "85716314"
+   ],
+   "leaf": [
+    "158290209",
+    "154761048"
+   ],
+   "flower": [
+    "706478353",
+    "237115191",
+    "423601093"
+   ],
+   "fruit": [
+    "421399",
+    "237895037",
+    "578709108"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "proportion",
+   "leaf_colour"
+  ],
+  "note": "A small tuft of short, fine basal leaves a hand high, under a huge, diffuse cloud of hair-thin branches, purple then straw, wider than the plant is tall, with tiny spikelets only at the tips; the whole head breaks off and tumbles. The model's beaded sprays are stiff and small beside a tall spray of wide straps: the proportions are reversed.",
+  "read_in": "V3.48"
+ },
  "Alisma triviale": {
   "refs": {
    "habit": [
@@ -748,6 +780,36 @@
   "note": "A grey-woolly mat of small leaves with slender stalks to 20 cm, each topped by a tight cluster of heads wrapped in rose-pink to deep pink papery bracts. The model is the same grey mound of plates as the other pussytoes with white specks: no pink, which is its name, and no stalks.",
   "read_in": "V3.48"
  },
+ "Anthoxanthum hirtum": {
+  "refs": {
+   "habit": [
+    "694715441",
+    "505521263"
+   ],
+   "leaf": [
+    "694715441"
+   ],
+   "flower": [
+    "281968470",
+    "281968550",
+    "202073836",
+    "662118334"
+   ],
+   "fruit": [
+    "20532274",
+    "7629418"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "data"
+  ],
+  "note": "A spreading grass of flat, glossy, bright green leaves, with slender stems carrying an open pyramid-shaped panicle 4 to 10 cm long of shiny, rounded, golden-bronze spikelets on fine spreading branches. It is recorded as a contracted spike; it is an open panicle. The model has tan blocks on a dark column.",
+  "read_in": "V3.48"
+ },
  "Apocynum androsaemifolium": {
   "refs": {
    "habit": [
@@ -1129,6 +1191,39 @@
    "habit"
   ],
   "note": "A low spreading clump of many stems with grey-green pinnate leaves, each stem ending in a dense egg-shaped head of purple and white pea flowers 2 to 3 cm across, like a clover. The model is one stem with a few tiny dark flecks scattered through the leaves: the dense purple heads are the plant.",
+  "read_in": "V3.48"
+ },
+ "Beckmannia syzigachne": {
+  "refs": {
+   "habit": [
+    "218321307",
+    "288770433",
+    "526478329"
+   ],
+   "leaf": [
+    "8210269",
+    "526478329"
+   ],
+   "flower": [
+    "305035185",
+    "359424452",
+    "538171449",
+    "8210265"
+   ],
+   "fruit": [
+    "8041561",
+    "701757353",
+    "208031999"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A stout, leafy, light green wetland grass whose head is a narrow panicle 10 to 25 cm long of short side branches, each packed with two rows of flat round spikelets like stacked coins. The model has tan blocks at the top of a dark column of straps: right place, none of the beaded look.",
   "read_in": "V3.48"
  },
  "Betula occidentalis": {
@@ -2211,6 +2306,39 @@
   "note": "A loose tuft of broad blue-green leaves, with stems to 1.2 m each ending in a thick, bristly spike 10 to 25 cm long that arches over and nods, its long awns curving outward, like a bearded rye. The model is a narrow dark column of stiff straps with one small pale upright block: the big nodding bristly head is the plant's whole character.",
   "read_in": "V3.48"
  },
+ "Elymus trachycaulus": {
+  "refs": {
+   "habit": [
+    "554999975",
+    "152701898",
+    "419659924"
+   ],
+   "leaf": [
+    "152701898",
+    "554999975"
+   ],
+   "flower": [
+    "141359832",
+    "152701937",
+    "356424755"
+   ],
+   "fruit": [
+    "110058844",
+    "9761092",
+    "439282016",
+    "151783448"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A loose upright tuft of flat blue-green leaves, with many stiff stems each ending in a very slender, straight spike 8 to 20 cm long, the spikelets pressed flat against it in two rows. The model's narrow upright column suits it better than most grasses; its heads are short tan blocks where the plant's are long and pencil-thin.",
+  "read_in": "V3.48"
+ },
  "Equisetum arvense": {
   "refs": {
    "habit": [
@@ -3166,6 +3294,26 @@
    "dense"
   ],
   "note": "A dense bunch of fine, rolled, grey-green leaves, with stems whose seeds each trail a thread-thin awn 10 to 15 cm long, straight then curling and tangling, so the heads shimmer silver in wind. The model's bristly head is a flat fan of rays on a stick, like a dandelion clock, beside a spray of wide dark straps.",
+  "read_in": "V3.48"
+ },
+ "Hesperostipa curtiseta": {
+  "refs": {
+   "habit": [
+    "84708524"
+   ],
+   "fruit": [
+    "546881643",
+    "724215185"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "photos"
+  ],
+  "note": "A bunchgrass of fine rolled leaves with long, bent, thread-like awns, shorter than Porcupine Grass's. The model is the same wide straps and flat dandelion-clock fans. Only four photographs and one is a thistle with the grass behind it, so little can be judged from the sheet.",
   "read_in": "V3.48"
  },
  "Hesperostipa spartea": {
@@ -4366,6 +4514,37 @@
   "note": "A small stiff plant, one or a few upright stems crowded with narrow leaves, the upper half a dense leafy spike with golden-yellow club-shaped flowers poking out of green bracts. The model is close: narrow-leaved stems with yellow flowers up the spike. Some flowers render dark orange-brown and the leaves are long.",
   "read_in": "V3.48"
  },
+ "Oryzopsis asperifolia": {
+  "refs": {
+   "habit": [
+    "373036942",
+    "504627064"
+   ],
+   "leaf": [
+    "373036942",
+    "510628884"
+   ],
+   "flower": [
+    "661916992",
+    "664712004",
+    "511177177"
+   ],
+   "fruit": [
+    "512212390",
+    "512051691",
+    "203937543"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "seed_head",
+   "habit",
+   "leaf_size",
+   "proportion"
+  ],
+  "note": "A woodland grass with long, broad, leathery, dark evergreen leaves that lie flat on the ground, and a few slender stems each with a narrow, sparse raceme of plump greenish-white grains. It is recorded as an open panicle; it is a narrow raceme. The model's stiff upright spray with large pale ladders hanging beside it is neither.",
+  "read_in": "V3.48"
+ },
  "Osmorhiza longistylis": {
   "refs": {
    "habit": [
@@ -4428,6 +4607,37 @@
    "leaf_colour"
   ],
   "note": "A tuft of silky grey-green leaves with many small leaflets, and several bare stalks each ending in a dense head of pale yellow to cream pea flowers. Its name says yellow and most of the photographs are cream; it is recorded purple (photographs 1, 3 and 13 are a purple locoweed, likely another species). The model is one stalk with purple specks scattered around it in the air.",
+  "read_in": "V3.48"
+ },
+ "Pascopyrum smithii": {
+  "refs": {
+   "habit": [
+    "75151056",
+    "623939519"
+   ],
+   "leaf": [
+    "623939519",
+    "153103467"
+   ],
+   "flower": [
+    "398512516",
+    "91114330",
+    "152692735"
+   ],
+   "fruit": [
+    "742623729",
+    "512731357",
+    "340414593"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_colour",
+   "seed_head",
+   "habit",
+   "leaf_size"
+  ],
+  "note": "Stiff, strongly blue-grey, ribbed leaves standing out from the stem at an angle, in open spreading patches rather than a bunch, with a stiff upright spike 6 to 15 cm long of overlapping flat spikelets. The blue is its field mark; the model is dark olive, in a tight bunch, with tan blocks.",
   "read_in": "V3.48"
  },
  "Penstemon gracilis": {
