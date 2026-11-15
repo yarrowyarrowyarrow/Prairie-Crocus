@@ -32,6 +32,34 @@
   "note": "A bushy plant of large leaves divided two or three times into sharply toothed, lobed leaflets; a dense fluffy white ball of flowers 3 to 5 cm on a stalk above the leaves; then a tight cluster of glossy red berries on the same stalk. The model has plain oval leaflets, a tall thin column of specks, and berries scattered through the air around the plant.",
   "read_in": "V3.48"
  },
+ "Agastache foeniculum": {
+  "refs": {
+   "habit": [
+    "295805876",
+    "417901162",
+    "441114479"
+   ],
+   "leaf": [
+    "136942199",
+    "211115026",
+    "380674822"
+   ],
+   "flower": [
+    "354283847",
+    "416802903",
+    "324605928",
+    "295805876"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "flower_arch",
+   "flower_colour",
+   "leaf_shape"
+  ],
+  "note": "Square stems with opposite, toothed, pointed oval leaves, pale beneath, each stem ending in a dense, fuzzy, solid blue-violet spike 3 to 10 cm long and 2 cm thick. The model's posture, opposite leaves and spike position are right. Its spikes are open strings of small dark and lilac dots, where the plant's are solid.",
+  "read_in": "V3.48"
+ },
  "Agoseris glauca": {
   "refs": {
    "habit": [
@@ -272,6 +300,70 @@
   "note": "One or a few unbranched stems, knee high, with 4 to 6 pairs of oval grey-green leaves 5 to 8 cm, and one to three round clusters of cream flowers near the top; narrow upright pods. Recorded with 15 cm leaves on a 50 cm plant, so the model is a pagoda of huge plates with white specks lying on top.",
   "read_in": "V3.48"
  },
+ "Astragalus canadensis": {
+  "refs": {
+   "habit": [
+    "86882633",
+    "14189968",
+    "47082274"
+   ],
+   "leaf": [
+    "427010539",
+    "149578969",
+    "417087429"
+   ],
+   "flower": [
+    "303961904",
+    "22584465",
+    "47082274"
+   ],
+   "fruit": [
+    "317353733",
+    "418365696"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "sparse",
+   "flower_arch",
+   "flower_place",
+   "leaf_size"
+  ],
+  "note": "A stout bushy plant to a metre with large pinnate leaves of 15 to 35 leaflets, and dense upright spikes 5 to 15 cm long of creamy to greenish-yellow nodding pea flowers; the brown pod spikes stand through winter. The model is a few thin stems with tiny leaves and a thin scatter of pale flecks.",
+  "read_in": "V3.48"
+ },
+ "Astragalus laxmannii": {
+  "refs": {
+   "habit": [
+    "526467990",
+    "548414113",
+    "46567309"
+   ],
+   "leaf": [
+    "413291960",
+    "548414113"
+   ],
+   "flower": [
+    "20983424",
+    "302391236",
+    "398509332",
+    "8145709"
+   ],
+   "fruit": [
+    "301707517"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "flower_arch",
+   "flower_place",
+   "flower_count",
+   "leaf_colour",
+   "habit"
+  ],
+  "note": "A low spreading clump of many stems with grey-green pinnate leaves, each stem ending in a dense egg-shaped head of purple and white pea flowers 2 to 3 cm across, like a clover. The model is one stem with a few tiny dark flecks scattered through the leaves: the dense purple heads are the plant.",
+  "read_in": "V3.48"
+ },
  "Betula occidentalis": {
   "refs": {
    "habit": [
@@ -442,6 +534,39 @@
   "note": "Leafy stems with clasping lance leaves, branching at the top into purple daisies 3 to 4 cm across with many narrow rays, a sticky purplish cup beneath. The model is a few thin stems with grass-like leaves and a handful of tan specks: no purple anywhere.",
   "read_in": "V3.48"
  },
+ "Chamaenerion angustifolium": {
+  "refs": {
+   "habit": [
+    "298707644",
+    "303634457",
+    "574105373"
+   ],
+   "leaf": [
+    "210958064",
+    "296173225",
+    "556061720"
+   ],
+   "flower": [
+    "709949866",
+    "580637725",
+    "271082135",
+    "219098963"
+   ],
+   "fruit": [
+    "751355062",
+    "574105373"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "flower_colour",
+   "flower_count",
+   "sparse",
+   "flower_place"
+  ],
+  "note": "A tall unbranched stem crowded with willow-like leaves, ending in a long tapering spike of magenta four-petalled flowers 2 to 3 cm, buds drooping at the tip, long red seed pods below that split into white fluff. The model's leafy stems are right in kind. Its flowers are pale pink and dark maroon squares floating round the stem, where the plant is a solid magenta spire.",
+  "read_in": "V3.48"
+ },
  "Cirsium flodmanii": {
   "refs": {
    "habit": [
@@ -472,6 +597,35 @@
    "leaf_colour"
   ],
   "note": "A leafy thistle to a metre, the stem and leaf undersides white-woolly, the leaves deeply cut and spiny; each branch ends in a pink-purple brush 3 to 4 cm across on a spiny green urn. The model is a dark rosette of broad leaves under bare wires tipped with pink dots: not a thistle.",
+  "read_in": "V3.48"
+ },
+ "Coreopsis tinctoria": {
+  "refs": {
+   "habit": [
+    "418355080",
+    "61038502",
+    "284474701"
+   ],
+   "leaf": [
+    "131169943",
+    "494421138",
+    "262435514"
+   ],
+   "flower": [
+    "335262025",
+    "410425435",
+    "229488080",
+    "206008859"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "flower_colour",
+   "flower_place",
+   "flower_size",
+   "leaf_shape"
+  ],
+  "note": "A slender, much-branched plant with leaves cut into thread-like segments, and many heads 3 to 4 cm: eight broad, notched yellow rays, each with a maroon base, round a dark red-brown button. The model is a thin leafy stem with a few small dark discs lying flat, the yellow rays hardly showing.",
   "read_in": "V3.48"
  },
  "Cornus sericea": {
@@ -891,6 +1045,70 @@
   "note": "A low spreading plant of leafy stems, lance to oval leaves 3 to 6 cm, each stem ending in one to a few lilac daisies 3 cm across with yellow centres. Recorded with 12 cm leaves on a 40 cm plant, so the model is a pagoda of leaf plates each a third of the plant wide, with a few specks on top.",
   "read_in": "V3.48"
  },
+ "Euthamia graminifolia": {
+  "refs": {
+   "habit": [
+    "86090727",
+    "152013449",
+    "319323222"
+   ],
+   "leaf": [
+    "152013449",
+    "88422940",
+    "294881381"
+   ],
+   "flower": [
+    "10148349",
+    "674748",
+    "427680918",
+    "570845087"
+   ],
+   "fruit": [
+    "10756421"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "no_flower",
+   "flower_count",
+   "leaf_size",
+   "sparse"
+  ],
+  "note": "A bushy plant branching in its upper half, with many narrow grass-like leaves 4 to 8 cm, each branch ending in a small dense cluster of yellow so the top is one broad flat plate of gold. The model has the narrow leaves, drawn large and stiff; its flat top is a faint line of specks.",
+  "read_in": "V3.48"
+ },
+ "Eutrochium maculatum": {
+  "refs": {
+   "habit": [
+    "250898204",
+    "310074313",
+    "424002947"
+   ],
+   "leaf": [
+    "688002358",
+    "441727665",
+    "462219760"
+   ],
+   "flower": [
+    "424593258",
+    "250898204",
+    "4378650"
+   ],
+   "fruit": [
+    "583008517",
+    "435548138"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "no_flower",
+   "leaf_shape",
+   "stems",
+   "flower_count"
+  ],
+  "note": "A stout purple or purple-spotted stem to 1.5 m with whorls of 4 or 5 toothed lance leaves, topped by a broad, flat to domed head 10 to 20 cm across of fuzzy pink-purple. The model's whorled leaves up a tall stem are the right kind, the best whorled body so far; in August it shows no flower at all, and the leaves are thin blades.",
+  "read_in": "V3.48"
+ },
  "Gaillardia aristata": {
   "refs": {
    "habit": [
@@ -1149,6 +1367,36 @@
    "leaf_shape"
   ],
   "note": "A rounded bushy plant, much branched, with small toothed oblong leaves and dozens of bright yellow daisies 2.5 to 3.5 cm, each on a green bur of curled-back sticky bracts. The model is a few thin stems with long grass blades and five or six small orange specks.",
+  "read_in": "V3.48"
+ },
+ "Hedysarum americanum": {
+  "refs": {
+   "habit": [
+    "84750229",
+    "528690565",
+    "146055142"
+   ],
+   "leaf": [
+    "530811196",
+    "146055142"
+   ],
+   "flower": [
+    "304308057",
+    "146055142",
+    "84750229"
+   ],
+   "fruit": [
+    "413184412",
+    "176098869"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "flower_arch",
+   "flower_place",
+   "sparse"
+  ],
+  "note": "A bushy clump of leafy stems, leaves of 9 to 21 leaflets, each stem ending in a long, slim, one-sided raceme of drooping pink-purple pea flowers; flat pods pinched into round links. The model's pinnate leaves read well. It is one stem, and its flowers are a cloud of pink flecks spread across the whole plant, not on spikes.",
   "read_in": "V3.48"
  },
  "Helianthus nuttallii": {
@@ -1445,6 +1693,72 @@
   "note": "An upright shrub with large pointed opposite leaves; pairs of yellow tubular flowers in the leaf axils, cupped in green bracts that turn dark red around a pair of shiny black berries. The catalogue has the flower red and the fruit red: the red is the bracts, the flowers are yellow and the berries black. The model's flowers are specks floating outside the bush.",
   "read_in": "V3.48"
  },
+ "Lysimachia ciliata": {
+  "refs": {
+   "habit": [
+    "83474552",
+    "9698229",
+    "206879914"
+   ],
+   "leaf": [
+    "71285257",
+    "68732692",
+    "206879914"
+   ],
+   "flower": [
+    "281055829",
+    "417628255",
+    "47582353"
+   ],
+   "fruit": [
+    "92816123"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_shape",
+   "flower_place",
+   "flower_colour",
+   "flower_size"
+  ],
+  "note": "Upright stems with opposite, broad, pointed oval leaves on fringed stalks; yellow five-petalled flowers 2 cm, each petal ending in a small point, nodding singly on long stalks from the upper leaf axils. It is recorded as a raceme. The model has thin grass-blade leaves and a column of orange and brown flecks round the stem top.",
+  "read_in": "V3.48"
+ },
+ "Maianthemum amplexicaule": {
+  "refs": {
+   "habit": [
+    "206722958",
+    "280519953",
+    "327252795"
+   ],
+   "leaf": [
+    "615025924",
+    "232653302",
+    "573612809"
+   ],
+   "flower": [
+    "531803747",
+    "689939500",
+    "206722958"
+   ],
+   "fruit": [
+    "320075380",
+    "4111124",
+    "219447642"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "dense",
+   "leaf_place",
+   "stems",
+   "flower_arch",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "One arching, zigzag stem with 6 to 12 broad, pointed, pleated leaves in two flat rows, like a ladder, ending in a creamy plume 5 to 12 cm; then a bunch of red speckled berries at the stem tip. The model is a spiral pagoda of plates round a straight pole, the flowers a few specks to one side, the berries scattered in the air.",
+  "read_in": "V3.48"
+ },
  "Mertensia paniculata": {
   "refs": {
    "habit": [
@@ -1604,6 +1918,63 @@
    "leaf_colour"
   ],
   "note": "A tuft of silky grey-green leaves with many small leaflets, and several bare stalks each ending in a dense head of pale yellow to cream pea flowers. Its name says yellow and most of the photographs are cream; it is recorded purple (photographs 1, 3 and 13 are a purple locoweed, likely another species). The model is one stalk with purple specks scattered around it in the air.",
+  "read_in": "V3.48"
+ },
+ "Penstemon gracilis": {
+  "refs": {
+   "habit": [
+    "80121118",
+    "403499377",
+    "402966370"
+   ],
+   "leaf": [
+    "528268812",
+    "2235596"
+   ],
+   "flower": [
+    "395504207",
+    "290133730",
+    "2235591",
+    "2235593"
+   ],
+   "fruit": [
+    "544083613"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "flower_colour",
+   "flower_shape",
+   "dense",
+   "leaf_size"
+  ],
+  "note": "A slender plant: one to a few thin stems from a small rosette, pairs of narrow leaves, and a narrow open raceme of pale lilac tubes 1.5 to 2 cm, held level, with a white, purple-lined throat. The model has the tubes on the stems, the right idea, but dark violet and stubby, on a dense bush of broad blades.",
+  "read_in": "V3.48"
+ },
+ "Physostegia ledinghamii": {
+  "refs": {
+   "habit": [
+    "178178983",
+    "185565034"
+   ],
+   "flower": [
+    "217516224",
+    "577164300",
+    "178178983"
+   ],
+   "leaf": [
+    "185565034"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "dense",
+   "leaf_size",
+   "flower_size",
+   "flower_place",
+   "photos"
+  ],
+  "note": "Square stems with opposite, toothed lance leaves, ending in a spike of pink-purple tubular two-lipped flowers 1.5 to 2.5 cm in four rows. The model is a tower of long blades with dark purple specks hidden among them. Only four photographs.",
   "read_in": "V3.48"
  },
  "Picea glauca": {
@@ -2601,6 +2972,72 @@
   "note": "A rounded leafy shrub; opposite oval leaves, dark green above, silvery with rust-brown dots beneath; brown scurfy twigs; red berries clustered tight at the nodes along the stems. The model is bare forked sticks with a few grey leaves, and its berries are red specks scattered through the air around it.",
   "read_in": "V3.48"
  },
+ "Solidago gigantea": {
+  "refs": {
+   "habit": [
+    "269342918",
+    "264551707",
+    "9567301"
+   ],
+   "leaf": [
+    "382324258",
+    "51594321",
+    "23435358"
+   ],
+   "flower": [
+    "240059362",
+    "11572598",
+    "406357169"
+   ],
+   "fruit": [
+    "457223303",
+    "603899429"
+   ],
+   "winter": [
+    "603899429"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "no_flower",
+   "flower_count",
+   "sparse",
+   "flower_arch"
+  ],
+  "note": "A tall, smooth, leafy stem topped by a large pyramid of bright yellow on arching, one-sided branches; the fluffy tan seed plumes stand into winter. The model is a few thin stems with small leaves and a faint dust of dots: nothing yellow from two steps away.",
+  "read_in": "V3.48"
+ },
+ "Solidago lepida": {
+  "refs": {
+   "habit": [
+    "471946224",
+    "148982091",
+    "161936698"
+   ],
+   "leaf": [
+    "711895655",
+    "157943788"
+   ],
+   "flower": [
+    "47120870",
+    "242095794",
+    "148982091"
+   ],
+   "fruit": [
+    "561106820",
+    "441577446"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "no_flower",
+   "flower_count",
+   "flower_arch",
+   "leaf_size"
+  ],
+  "note": "A leafy stem with many toothed lance leaves, topped by a dense pyramid or plume of bright yellow, 10 to 20 cm tall, the branches often arching to one side. The model in August, its flowering, shows a dozen yellow specks among stiff blades: a goldenrod with no gold.",
+  "read_in": "V3.48"
+ },
  "Spiraea alba": {
   "refs": {
    "habit": [
@@ -2959,6 +3396,40 @@
   "note": "A stout, bristly, purple-red stem to 1.8 m with clasping lance leaves, branching above into many blue-violet daisies 2.5 to 4 cm with 30 to 60 rays. The model is one thin green stem with a scatter of pale specks: no purple stem, no blue flowers.",
   "read_in": "V3.48"
  },
+ "Thermopsis rhombifolia": {
+  "refs": {
+   "habit": [
+    "703114",
+    "381572822",
+    "510816924"
+   ],
+   "leaf": [
+    "439255897",
+    "533121131",
+    "25665964"
+   ],
+   "flower": [
+    "390142235",
+    "25665962",
+    "397459704",
+    "25665965"
+   ],
+   "fruit": [
+    "90718723",
+    "310399840",
+    "510816924"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_shape",
+   "flower_arch",
+   "flower_colour",
+   "leaf_colour"
+  ],
+  "note": "Low patches, a hand or two high: three-part leaves of broad grey-green leaflets with big leafy stipules; a short dense raceme of bright yellow pea flowers 2 cm at the top of each stem; curled, sickle-shaped pods. The model draws long ladder leaves of a dozen leaflets where the plant has three, and its flowers are loose yellow and orange chips.",
+  "read_in": "V3.48"
+ },
  "Vaccinium myrtilloides": {
   "refs": {
    "habit": [
@@ -3101,6 +3572,38 @@
    "leaf_colour"
   ],
   "note": "A leafy plant a hand or two high: broad heart-shaped leaves on the stems as well as at the base, and white violets 2 cm across with a yellow throat and purple lines, held just above the leaves. It is recorded pink; every photograph is white. The model is a flat near-black rosette under 30 cm bare wires with small dark blobs at the tips.",
+  "read_in": "V3.48"
+ },
+ "Zizia aptera": {
+  "refs": {
+   "habit": [
+    "75570328",
+    "392857972",
+    "84557703"
+   ],
+   "leaf": [
+    "324606085",
+    "502873988",
+    "75570337"
+   ],
+   "flower": [
+    "477080681",
+    "20327298",
+    "75570349"
+   ],
+   "fruit": [
+    "534967976",
+    "416802106"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_shape",
+   "leaf_place",
+   "flower_place",
+   "flower_colour"
+  ],
+  "note": "A rosette of long-stalked, undivided heart-shaped leaves with scalloped edges, and stems with a few three-part leaves, each ending in a flat umbel 4 to 6 cm across of tiny bright yellow flowers. It is recorded pinnate; the basal leaf is a simple heart. The model is a tall ladder-leaf plant with umbels that read as dark flecks.",
   "read_in": "V3.48"
  }
 }
