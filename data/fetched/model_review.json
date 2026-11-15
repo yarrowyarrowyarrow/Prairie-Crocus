@@ -1244,6 +1244,75 @@
   "note": "A leafy, branching stem with triangular to arrowhead-shaped, coarsely toothed leaves, and round, bright red, strawberry-like clusters 1 to 1.5 cm across strung along the upper stem, which is the whole of what it is known by. The model is a stack of plain oval plates with no red anywhere: no flower or fruit shape is recorded.",
   "read_in": "V3.48"
  },
+ "Bouteloua gracilis": {
+  "refs": {
+   "habit": [
+    "281785635",
+    "84747016",
+    "442459298"
+   ],
+   "leaf": [
+    "442459298",
+    "84747016"
+   ],
+   "flower": [
+    "552106035",
+    "79232001",
+    "742545731"
+   ],
+   "fruit": [
+    "424840496",
+    "50085318",
+    "5531628",
+    "281781106"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_size",
+   "leaf_colour",
+   "seed_head",
+   "dense"
+  ],
+  "note": "A low mat of fine, curling, grey-green blades a hand high, with thin stalks to 30 cm each carrying one to three combs: a one-sided spike 2 to 5 cm long, purple then straw, held out sideways like an eyelash and curling as it dries. The seed head is recorded correctly; the model shows only two or three small pale chips. The blades are wide straps, dark olive, and the plant is drawn as tall as its stalks.",
+  "read_in": "V3.48"
+ },
+ "Calamagrostis canadensis": {
+  "refs": {
+   "habit": [
+    "228811542",
+    "144506094",
+    "415187979"
+   ],
+   "leaf": [
+    "84480734",
+    "415187979"
+   ],
+   "flower": [
+    "80168258",
+    "20640118",
+    "142739",
+    "352164994"
+   ],
+   "fruit": [
+    "439247243",
+    "439378988"
+   ],
+   "winter": [
+    "11273193",
+    "54572144"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_size",
+   "seed_head",
+   "leaf_colour",
+   "dense"
+  ],
+  "note": "A big arching tussock of long, flat, drooping leaves, with stems to 1.5 m ending in a nodding, feathery, loosely branched plume 10 to 20 cm long, purplish then tan, that stands through winter. It is recorded as a contracted spike; it is an open nodding plume. The model's fan of stiff wide straps with two pale blocks at the top reads as a yucca more than a grass.",
+  "read_in": "V3.48"
+ },
  "Calla palustris": {
   "refs": {
    "habit": [
@@ -1391,6 +1460,38 @@
    "sparse"
   ],
   "note": "Leafy stems with clasping lance leaves, branching at the top into purple daisies 3 to 4 cm across with many narrow rays, a sticky purplish cup beneath. The model is a few thin stems with grass-like leaves and a handful of tan specks: no purple anywhere.",
+  "read_in": "V3.48"
+ },
+ "Carex utriculata": {
+  "refs": {
+   "habit": [
+    "210601554",
+    "210187460",
+    "233845283"
+   ],
+   "leaf": [
+    "233845283",
+    "210601554"
+   ],
+   "flower": [
+    "297323913",
+    "550167888",
+    "685763960"
+   ],
+   "fruit": [
+    "301932213",
+    "567194491",
+    "47312810"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "seed_head",
+   "leaf_colour",
+   "proportion",
+   "flower_place"
+  ],
+  "note": "Stands of stout stems with wide yellow-green leaves, each stem with thin male spikes at the top and below them two to four thick, dense cylinders 4 to 10 cm long, straw-yellow to orange-brown, of inflated beaked sacs. No seed head is recorded, so the model draws yellow daisy shapes lying flat in a ring round a dark column.",
   "read_in": "V3.48"
  },
  "Cerastium arvense": {
@@ -2014,6 +2115,39 @@
   "note": "Upright stems with brown scurfy twigs, silver leaves on both sides, small yellow flowers tucked in the leaf axils in June, silvery mealy berries that stay into winter. The model has the silver. It is a sparse V of brown trunks, and since no flower shape is recorded it never flowers; its berries do not show.",
   "read_in": "V3.48"
  },
+ "Elymus canadensis": {
+  "refs": {
+   "habit": [
+    "53028467",
+    "29297873",
+    "315401132"
+   ],
+   "leaf": [
+    "437407915",
+    "130587268"
+   ],
+   "flower": [
+    "135541963",
+    "9444150",
+    "130587268"
+   ],
+   "fruit": [
+    "53028420",
+    "449543523",
+    "100532388",
+    "486560659"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "proportion",
+   "dense"
+  ],
+  "note": "A loose tuft of broad blue-green leaves, with stems to 1.2 m each ending in a thick, bristly spike 10 to 25 cm long that arches over and nods, its long awns curving outward, like a bearded rye. The model is a narrow dark column of stiff straps with one small pale upright block: the big nodding bristly head is the plant's whole character.",
+  "read_in": "V3.48"
+ },
  "Equisetum arvense": {
   "refs": {
    "habit": [
@@ -2597,6 +2731,38 @@
    "fruit"
   ],
   "note": "A rosette of ferny leaves, many toothed leaflets growing larger toward the tip; several reddish stalks each with three nodding, closed, dusky rose-pink urns; then long feathery pink plumes, the smoke it is named for. The model's rosette is the right kind. It has one stalk, open stars facing sideways, and no plumes.",
+  "read_in": "V3.48"
+ },
+ "Glyceria grandis": {
+  "refs": {
+   "habit": [
+    "402866817",
+    "530984758",
+    "44854726"
+   ],
+   "leaf": [
+    "223084658",
+    "572571452"
+   ],
+   "flower": [
+    "9671436",
+    "24258314",
+    "382744002"
+   ],
+   "fruit": [
+    "48912448",
+    "49757796",
+    "306422126"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "proportion",
+   "dense"
+  ],
+  "note": "A stout wetland grass with broad flat leaves, topped by a very large, open, much-branched panicle 20 to 40 cm long and nearly as wide, its many small spikelets purple, nodding at the ends of fine branches. The seed head is recorded correctly as an open panicle; the model shows a faint speck at the top of a narrow column of straps.",
   "read_in": "V3.48"
  },
  "Glycyrrhiza lepidota": {
@@ -3682,6 +3848,34 @@
    "flower_count"
   ],
   "note": "A leafy clump of square stems with opposite, toothed, lance to oval grey-green leaves; each stem ends in one round shaggy head 4 to 6 cm of pale lilac tubes; dark round seed heads stand all winter. The best body so far: leafy, upright, opposite. The heads are small clusters of pink and maroon balls rather than one lilac mop, and the leaves are thin as grass.",
+  "read_in": "V3.48"
+ },
+ "Myriophyllum sibiricum": {
+  "refs": {
+   "habit": [
+    "46868956",
+    "131761716",
+    "131762229"
+   ],
+   "leaf": [
+    "274883604",
+    "314616995",
+    "131762229"
+   ],
+   "flower": [
+    "543119143",
+    "546050974",
+    "46868956"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_shape",
+   "flower_place",
+   "flower_size",
+   "sparse"
+  ],
+  "note": "Underwater stems with whorls of feather-like leaves cut into thread-fine segments, and thin reddish spikes standing a few centimetres out of the water with small flowers in whorls. The model is a scatter of broad oval leaves on the water, like a floating pondweed: the feathers are the plant.",
   "read_in": "V3.48"
  },
  "Nuphar variegata": {
@@ -5756,6 +5950,36 @@
   "note": "A hairy square stem with opposite, toothed, lance to oblong leaves, ending in a spike of separate whorls of pale pink-lilac two-lipped flowers, the lower lip spotted purple. The model's whorls spaced up the stem are the right idea. They are dark violet dots, where the plant is pale pink, and the leaves are thin grass blades.",
   "read_in": "V3.48"
  },
+ "Stuckenia pectinata": {
+  "refs": {
+   "habit": [
+    "131252497",
+    "68670400",
+    "131252565"
+   ],
+   "leaf": [
+    "150019714",
+    "433249711",
+    "417499034"
+   ],
+   "flower": [
+    "580664402",
+    "359440028"
+   ],
+   "fruit": [
+    "307190080",
+    "476976783"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "sparse",
+   "leaf_size",
+   "leaf_colour"
+  ],
+  "note": "Dense underwater beds of thread-fine leaves on much-branched stems, all combed one way by the current, bright green to olive; small beaded spikes that barely reach the surface. The model shows a dozen short blades on the water, which is fair for a submerged plant seen from the bank; the plant is far denser and its leaves are threads.",
+  "read_in": "V3.48"
+ },
  "Symphoricarpos albus": {
   "refs": {
    "habit": [
@@ -6271,6 +6495,37 @@
    "leaf_shape"
   ],
   "note": "Tall, unbranched, square stems in dense patches, with opposite, coarsely toothed, pointed leaves 7 to 15 cm, deeply veined, and drooping green-yellow strings of tiny flowers from the upper leaf joints. The model's tall stems with opposite leaves are right in kind; the leaves are small smooth ovals a third the size, and the hanging strings are missing.",
+  "read_in": "V3.48"
+ },
+ "Utricularia vulgaris": {
+  "refs": {
+   "habit": [
+    "226558534",
+    "558451442",
+    "79629629"
+   ],
+   "leaf": [
+    "82745209",
+    "558451442"
+   ],
+   "flower": [
+    "17661262",
+    "539193503",
+    "23261039",
+    "409748434"
+   ],
+   "fruit": [
+    "548915497"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "flower_size",
+   "flower_place",
+   "sparse",
+   "leaf_shape"
+  ],
+  "note": "Free-floating feathery stems under the surface, finely branched and dotted with small dark bladders, and stout reddish stalks standing 10 to 20 cm out of the water, each with several bright yellow snapdragon-like flowers 1.5 to 2 cm with a rounded pouch. The model has a few blades on the water and yellow pinpoints: the flowers stand clear of the water and are the only part most people see.",
   "read_in": "V3.48"
  },
  "Vaccinium myrtilloides": {
