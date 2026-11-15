@@ -1,0 +1,1624 @@
+{
+ "Alnus alnobetula": {
+  "refs": {
+   "habit": [
+    "238615062",
+    "241564592",
+    "504508395"
+   ],
+   "leaf": [
+    "432018056",
+    "200187838",
+    "691785143"
+   ],
+   "flower": [
+    "518316973",
+    "215757230",
+    "504508395"
+   ],
+   "fruit": [
+    "249569635",
+    "479458308",
+    "106671695",
+    "691785143"
+   ],
+   "winter": [
+    "479458308",
+    "335626577"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "no_flower"
+  ],
+  "note": "A dense many-stemmed shrub; shiny oval leaves with sharp fine teeth; long yellow catkins in spring; small woody cones that stay through winter. The model is thick sticks with leaf cards at the tips, and bare sticks in April with no catkins.",
+  "read_in": "V3.48"
+ },
+ "Alnus incana": {
+  "refs": {
+   "habit": [
+    "116710866",
+    "476570226"
+   ],
+   "leaf": [
+    "236075066",
+    "209379408",
+    "542369972",
+    "163616406"
+   ],
+   "flower": [
+    "182515891",
+    "117693878",
+    "481612836"
+   ],
+   "fruit": [
+    "351740509",
+    "623449339",
+    "45810766",
+    "84274123"
+   ],
+   "winter": [
+    "261286028",
+    "64166976"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "no_flower"
+  ],
+  "note": "A tall many-stemmed shrub or small tree with smooth grey bark; dull oval leaves, doubly toothed, deeply veined; long catkins on bare twigs in April; small woody cones all year. The model is the same sticks with leaf cards as Green Alder, and bare in April.",
+  "read_in": "V3.48"
+ },
+ "Amelanchier alnifolia": {
+  "refs": {
+   "habit": [
+    "507075410",
+    "41709210",
+    "552933810"
+   ],
+   "leaf": [
+    "317629478",
+    "41709204",
+    "41709199"
+   ],
+   "flower": [
+    "381573038",
+    "129855499",
+    "503125435"
+   ],
+   "fruit": [
+    "415606419",
+    "307195210",
+    "552933810"
+   ],
+   "winter": [
+    "183960155",
+    "595528162"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "A dense thicket of slender grey stems, leafy throughout; oval leaves toothed above the middle, 3 to 5 cm; white five-petalled flowers with narrow petals all over it in May; purple-black berries in July. The model is a fan of thick square sticks from one point with a few large leaf cards at the tips; no flower shows in May and no berry in July.",
+  "read_in": "V3.48"
+ },
+ "Betula occidentalis": {
+  "refs": {
+   "habit": [
+    "373551933",
+    "102845595",
+    "615913132"
+   ],
+   "leaf": [
+    "295743282",
+    "295327497",
+    "280951567",
+    "301289877"
+   ],
+   "flower": [
+    "642171877",
+    "3358233",
+    "369977351"
+   ],
+   "fruit": [
+    "110645241",
+    "611147784",
+    "13534078"
+   ],
+   "bark": [
+    "227784665",
+    "341376827"
+   ],
+   "winter": [
+    "102845595",
+    "615913132",
+    "611147784"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "crown",
+   "stems"
+  ],
+  "note": "A clump of several stems with shiny coppery-red bark, twiggy and leafy from low down, small toothed oval leaves. The bark colour is right. The model is a fan of straight rods bare for most of their height under a flat cap of leaves, like a parasol.",
+  "read_in": "V3.48"
+ },
+ "Betula papyrifera": {
+  "refs": {
+   "habit": [
+    "215141429",
+    "165906643",
+    "618488593"
+   ],
+   "leaf": [
+    "149514833",
+    "154260425",
+    "7963576"
+   ],
+   "flower": [
+    "273508743",
+    "273509308"
+   ],
+   "fruit": [
+    "419527233",
+    "230578240"
+   ],
+   "bark": [
+    "571664145",
+    "348354478",
+    "8683551"
+   ],
+   "winter": [
+    "651403988",
+    "74028416",
+    "466254085"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "crown",
+   "sparse"
+  ],
+  "note": "White peeling bark, an oval open crown of many fine branches and drooping twigs. The model is a white pole with four upright leaders and a thin scatter of leaves on each; leafless in April it has almost no branches at all. The bark is right, the crown is not a crown.",
+  "read_in": "V3.48"
+ },
+ "Cornus sericea": {
+  "refs": {
+   "habit": [
+    "48219792",
+    "548737684",
+    "616508806"
+   ],
+   "leaf": [
+    "304934784",
+    "561155284",
+    "148408129"
+   ],
+   "flower": [
+    "301866430",
+    "302586019"
+   ],
+   "fruit": [
+    "554377561",
+    "221057288",
+    "739074715"
+   ],
+   "bark": [
+    "2256716",
+    "611148120"
+   ],
+   "winter": [
+    "616508806",
+    "611148120",
+    "261120989",
+    "617348929"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "flower_place",
+   "flower_size",
+   "fruit"
+  ],
+  "note": "Many slender bright red stems, opposite oval leaves with curved veins, flat white clusters 4 to 5 cm across at the branch tips, white berries. The model has the red, on trunks as thick as an arm; the leaves are big plates in tiers; the flowers are specks floating above the shrub, and the berries do not show.",
+  "read_in": "V3.48"
+ },
+ "Corylus cornuta": {
+  "refs": {
+   "habit": [
+    "286698202",
+    "74471206",
+    "479499721"
+   ],
+   "leaf": [
+    "677169477",
+    "141313270",
+    "624415599",
+    "392763339"
+   ],
+   "flower": [
+    "479499721",
+    "172129973",
+    "644455104",
+    "25729"
+   ],
+   "fruit": [
+    "461542739",
+    "154688990",
+    "443434606"
+   ],
+   "winter": [
+    "261285789",
+    "172129973"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "no_flower"
+  ],
+  "note": "A dense many-stemmed shrub of slender stems; bright green oval leaves, doubly toothed, 5 to 10 cm; hanging yellow catkins on bare twigs in April; nuts in a long-beaked bristly husk. The model is thick sticks carrying big leaf plates in tiers, and bare sticks in April.",
+  "read_in": "V3.48"
+ },
+ "Crataegus chrysocarpa": {
+  "refs": {
+   "habit": [
+    "284601787",
+    "231059946",
+    "448299812"
+   ],
+   "leaf": [
+    "78850199",
+    "283908153"
+   ],
+   "flower": [
+    "509452467",
+    "505508166",
+    "526455939"
+   ],
+   "fruit": [
+    "424841988"
+   ],
+   "bark": [
+    "349489216",
+    "347708096"
+   ],
+   "winter": [
+    "448299812",
+    "349489216"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "sparse",
+   "crown",
+   "leaf_size",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "A dense, thorny, twiggy small tree; broad roundish leaves, sharply toothed and shallowly lobed; clusters of white five-petalled flowers in May; red haws. The model is a few thick forked trunks with leaf cards at the ends, no flower in May and no haws in August.",
+  "read_in": "V3.48"
+ },
+ "Dasiphora fruticosa": {
+  "refs": {
+   "habit": [
+    "102915988",
+    "235572426",
+    "59750605",
+    "373766261"
+   ],
+   "leaf": [
+    "18913095",
+    "279891653",
+    "89356357"
+   ],
+   "flower": [
+    "86982931",
+    "22186391",
+    "470443938",
+    "89356357"
+   ],
+   "fruit": [
+    "24611663",
+    "435120696"
+   ],
+   "winter": [
+    "59750605",
+    "348172800",
+    "167642720"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "sparse",
+   "stems",
+   "habit",
+   "flower_place"
+  ],
+  "note": "A dense, rounded, fine-textured bush; small grey-green leaves of five narrow leaflets; yellow five-petalled flowers 2 to 3 cm scattered over the whole bush all summer; shredding red-brown bark. The model has the yellow flowers at their size, all in a flat cap above a sparse V of sticks.",
+  "read_in": "V3.48"
+ },
+ "Elaeagnus commutata": {
+  "refs": {
+   "habit": [
+    "176680359",
+    "511773331",
+    "619955397"
+   ],
+   "leaf": [
+    "286774448",
+    "282977633",
+    "397099785"
+   ],
+   "flower": [
+    "7857935",
+    "252014344",
+    "240436263"
+   ],
+   "fruit": [
+    "7857934",
+    "26884015",
+    "209892866"
+   ],
+   "winter": [
+    "117211969",
+    "619955397",
+    "345424582"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "Upright stems with brown scurfy twigs, silver leaves on both sides, small yellow flowers tucked in the leaf axils in June, silvery mealy berries that stay into winter. The model has the silver. It is a sparse V of brown trunks, and since no flower shape is recorded it never flowers; its berries do not show.",
+  "read_in": "V3.48"
+ },
+ "Juniperus communis": {
+  "refs": {
+   "habit": [
+    "630293233",
+    "112059387",
+    "93082546"
+   ],
+   "leaf": [
+    "250494100",
+    "9389026",
+    "111614425"
+   ],
+   "fruit": [
+    "267513931",
+    "359531236",
+    "326823075"
+   ],
+   "winter": [
+    "599899827",
+    "185421444"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "habit",
+   "sparse",
+   "leaf_colour"
+  ],
+  "note": "A dense evergreen mat or low spreading bush of sharp awl needles in threes, bright green with a white stripe, with blue-black berries. The model is bare brown sticks radiating from a point with dark slivers on them: a dead bush. Nothing of the green mass that is the whole plant.",
+  "read_in": "V3.48"
+ },
+ "Larix laricina": {
+  "refs": {
+   "habit": [
+    "139808720",
+    "603535562"
+   ],
+   "leaf": [
+    "286762752",
+    "341232490",
+    "207140293"
+   ],
+   "fruit": [
+    "341232490",
+    "28898",
+    "259498477"
+   ],
+   "winter": [
+    "360128378",
+    "361642000",
+    "349408552"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "crown",
+   "dense"
+  ],
+  "note": "An open, airy cone of slender level branches carrying soft tufts of light green needles; bare and twiggy in winter. The model's colour is right, but the crown is solid flat plates with the spruce's pencil tip: nothing of the tree's feathery, see-through look.",
+  "read_in": "V3.48"
+ },
+ "Ledum groenlandicum": {
+  "refs": {
+   "habit": [
+    "235560151",
+    "317482399",
+    "14124095"
+   ],
+   "leaf": [
+    "86883924",
+    "200675",
+    "257798890"
+   ],
+   "flower": [
+    "44570815",
+    "401453944",
+    "316086135",
+    "211829602"
+   ],
+   "fruit": [
+    "235573647"
+   ],
+   "winter": [
+    "253556757",
+    "601875105",
+    "628340896"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_shape",
+   "leaf_size",
+   "stems",
+   "flower_place"
+  ],
+  "note": "A low evergreen shrub; narrow leathery leaves with rolled edges, rusty wool beneath, drooping in winter; round white clusters 4 to 5 cm across at the shoot tips. The model's leaves are broad bright plates on a thick trunk and its flowers are white specks hovering above the bush.",
+  "read_in": "V3.48"
+ },
+ "Lonicera involucrata": {
+  "refs": {
+   "habit": [
+    "106729239",
+    "181757474"
+   ],
+   "leaf": [
+    "675754741",
+    "552603563",
+    "718294007"
+   ],
+   "flower": [
+    "249312756",
+    "677166766"
+   ],
+   "fruit": [
+    "29855",
+    "53021406",
+    "46460715",
+    "397181360"
+   ],
+   "winter": [
+    "172128465",
+    "450890650"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_size",
+   "flower_colour",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "An upright shrub with large pointed opposite leaves; pairs of yellow tubular flowers in the leaf axils, cupped in green bracts that turn dark red around a pair of shiny black berries. The catalogue has the flower red and the fruit red: the red is the bracts, the flowers are yellow and the berries black. The model's flowers are specks floating outside the bush.",
+  "read_in": "V3.48"
+ },
+ "Picea glauca": {
+  "refs": {
+   "habit": [
+    "251979013",
+    "433149241",
+    "460801296",
+    "50469372"
+   ],
+   "leaf": [
+    "630812003",
+    "145863430"
+   ],
+   "fruit": [
+    "134085727",
+    "145774062",
+    "145863430"
+   ],
+   "winter": [
+    "460801296",
+    "623681413",
+    "251979013"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "crown"
+  ],
+  "note": "A dense cone, branches to the ground when grown in the open, blue-green. The model reads as a spruce; the flat stacked plates and the smooth pencil tip are the giveaway, and the lowest branches stop well above the ground.",
+  "read_in": "V3.48"
+ },
+ "Picea mariana": {
+  "refs": {
+   "habit": [
+    "345425131",
+    "110644966",
+    "360128626",
+    "188262344"
+   ],
+   "leaf": [
+    "256178777",
+    "180422096",
+    "172573029"
+   ],
+   "winter": [
+    "345425131",
+    "360128626"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "crown"
+  ],
+  "note": "A very narrow spire with short drooping branches and often a dense club at the top. The model is White Spruce's: flat stacked plates with a smooth solid cone for a tip. It reads as a spruce from a distance; the plates and the pencil-point tip are what give it away.",
+  "read_in": "V3.48"
+ },
+ "Pinus banksiana": {
+  "refs": {
+   "habit": [
+    "625857260",
+    "431736520"
+   ],
+   "leaf": [
+    "320040430",
+    "320220525",
+    "180484401"
+   ],
+   "fruit": [
+    "250013190",
+    "261133829",
+    "625855329",
+    "157275056"
+   ],
+   "bark": [
+    "625857260",
+    "157274970"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "crown",
+   "sparse",
+   "leaf_colour"
+  ],
+  "note": "Open irregular crown of long limbs carrying yellow-green needle tufts, curved cones held along the branches. The model is a pole with small dark whorls, a bottle brush: too narrow, too little foliage, and darker than the yellow-green in every photograph.",
+  "read_in": "V3.48"
+ },
+ "Populus balsamifera": {
+  "refs": {
+   "habit": [
+    "446686561",
+    "361491683",
+    "473766708"
+   ],
+   "leaf": [
+    "639910572",
+    "715376301",
+    "661146727"
+   ],
+   "flower": [
+    "652100112",
+    "385249579"
+   ],
+   "fruit": [
+    "385798827",
+    "75980996"
+   ],
+   "bark": [
+    "349412119",
+    "446686561"
+   ],
+   "winter": [
+    "630754539",
+    "361491683"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "crown",
+   "trunk"
+  ],
+  "note": "Tall straight bole, grey furrowed bark, an open irregular crown of ascending limbs. The model is a narrow tuft on a long square-sectioned post: the crown is too small for the trunk and the trunk reads as a fence post at the base.",
+  "read_in": "V3.48"
+ },
+ "Populus tremuloides": {
+  "refs": {
+   "habit": [
+    "196870304",
+    "362675227",
+    "600537193"
+   ],
+   "leaf": [
+    "678951973",
+    "661146525",
+    "284732190"
+   ],
+   "flower": [
+    "492512289",
+    "276832270",
+    "642682036"
+   ],
+   "fruit": [
+    "666246901",
+    "473779993"
+   ],
+   "bark": [
+    "183968303",
+    "235254401",
+    "726205433"
+   ],
+   "winter": [
+    "362675227",
+    "600537193"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "crown",
+   "sparse"
+  ],
+  "note": "A pale smooth trunk with black scars and a rounded crown of fine branches in the top third to half, the round leaves on flat stalks. The model is a very long pole with a dozen leaf clumps near the top and, leafless, almost no branches. Bark colour is right.",
+  "read_in": "V3.48"
+ },
+ "Prunus pensylvanica": {
+  "refs": {
+   "habit": [
+    "125461191",
+    "171108935"
+   ],
+   "leaf": [
+    "431764994",
+    "212167734",
+    "519916506",
+    "320040329"
+   ],
+   "flower": [
+    "503052596",
+    "284062946",
+    "3808757"
+   ],
+   "fruit": [
+    "85548572",
+    "250015144"
+   ],
+   "bark": [
+    "2708051",
+    "27952475",
+    "631776971",
+    "38559367"
+   ],
+   "winter": [
+    "171108935"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "crown",
+   "leaf_size",
+   "leaf_shape",
+   "flower_count",
+   "fruit",
+   "trunk"
+  ],
+  "note": "Slender tree, shiny red-brown bark with horizontal lenticels, drooping lance leaves 8 cm, flat clusters of 5 to 7 white flowers in May, red cherries on long stalks. The model's leaf cards are long stiff blades pointing every way, so it reads as a palm or a yucca; no flower shows in May and no fruit in August.",
+  "read_in": "V3.48"
+ },
+ "Prunus virginiana": {
+  "refs": {
+   "habit": [
+    "382754909",
+    "555457196",
+    "103673578"
+   ],
+   "leaf": [
+    "326333560",
+    "429186404",
+    "146282566"
+   ],
+   "flower": [
+    "503698506",
+    "503699005",
+    "76751529",
+    "208731123"
+   ],
+   "fruit": [
+    "146282565",
+    "312470972",
+    "429186404",
+    "309667527"
+   ],
+   "winter": [
+    "332919099",
+    "256995118",
+    "242815848"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "A tall dense shrub; oval leaves, widest above the middle, finely toothed; white bottlebrush racemes 8 to 10 cm long all over it in May; hanging racemes of dark red to black cherries. The model is a bundle of thick grey sticks with sparse leaf cards at the tips, with no flower in May and no fruit in August: none of what makes a chokecherry.",
+  "read_in": "V3.48"
+ },
+ "Ribes americanum": {
+  "refs": {
+   "habit": [
+    "206927814",
+    "392670896"
+   ],
+   "leaf": [
+    "663101311",
+    "348404254",
+    "167260226"
+   ],
+   "flower": [
+    "388762004",
+    "75076769",
+    "507087660"
+   ],
+   "fruit": [
+    "24207957",
+    "308767194"
+   ],
+   "winter": [
+    "333581107"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "leaf_shape",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "A leafy mound with maple-like lobed leaves dotted with gold glands beneath; drooping racemes of creamy yellow bell flowers; black berries. The model is a believable leafy mound. Its berries are red, and the catalogue records them red: they are black. In April its flowers are specks floating above bare sticks.",
+  "read_in": "V3.48"
+ },
+ "Ribes glandulosum": {
+  "refs": {
+   "habit": [
+    "503050101",
+    "503125913"
+   ],
+   "leaf": [
+    "94250005",
+    "72393627",
+    "504628779"
+   ],
+   "flower": [
+    "503050101",
+    "470807015",
+    "503125913"
+   ],
+   "fruit": [
+    "693892821",
+    "295384447",
+    "293569378"
+   ],
+   "winter": [
+    "588553352",
+    "174210605"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_shape",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "A low sprawling currant; maple-like leaves of 5 to 7 sharp lobes; upright racemes of small white-pink flowers; red bristly berries. The model is a low spreading bush with red berry strings, some hanging in the air beside it; the leaves are plain ovals.",
+  "read_in": "V3.48"
+ },
+ "Ribes hudsonianum": {
+  "refs": {
+   "habit": [
+    "384256004",
+    "88124329"
+   ],
+   "leaf": [
+    "657010898",
+    "291027407",
+    "608518292"
+   ],
+   "flower": [
+    "509010053",
+    "386160328",
+    "286793047",
+    "512148317"
+   ],
+   "fruit": [
+    "564427397"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "leaf_shape",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "An upright shrub with large maple-like leaves of 3 to 5 lobes; upright racemes of small white flowers in May; black berries. The model is a believable leafy bush, the best of the shrubs so far; its leaves are unlobed plates, no flower shows in May, and some of its black berries hang outside the plant.",
+  "read_in": "V3.48"
+ },
+ "Ribes lacustre": {
+  "refs": {
+   "habit": [
+    "409488652",
+    "235574084"
+   ],
+   "leaf": [
+    "723397809",
+    "437486572",
+    "470807140"
+   ],
+   "flower": [
+    "394835602",
+    "175218206",
+    "202297709",
+    "206710627"
+   ],
+   "fruit": [
+    "232460699",
+    "235574084"
+   ],
+   "bark": [
+    "179325699",
+    "362200545",
+    "117695541"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "sparse",
+   "stems",
+   "leaf_shape",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "A low sprawling shrub with bristly stems; glossy maple-like leaves cut into 3 to 5 lobes; drooping racemes of small pinkish saucer flowers; dark purple-black bristly berries. The model is bare sticks with a few small plain leaves; its berries are red and some hang in the air beside the plant; in May its flowers are a cloud above it.",
+  "read_in": "V3.48"
+ },
+ "Ribes oxyacanthoides": {
+  "refs": {
+   "habit": [
+    "138411693",
+    "234970244"
+   ],
+   "leaf": [
+    "703047920",
+    "606789337",
+    "79158528"
+   ],
+   "flower": [
+    "375391623",
+    "278539604",
+    "470802301"
+   ],
+   "fruit": [
+    "225916769",
+    "411213917",
+    "463227781"
+   ],
+   "bark": [
+    "278539604",
+    "255076546"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_shape",
+   "flower_arch",
+   "fruit"
+  ],
+  "note": "A low bristly, thorny shrub; small rounded leaves cut into 3 to 5 lobes; flowers singly or in twos and threes in the axils, greenish white; smooth berries ripening purple-black. It is recorded as a raceme of 12 and a red berry. The model's two bare elbowed canes reaching out sideways are the first thing the eye sees.",
+  "read_in": "V3.48"
+ },
+ "Ribes triste": {
+  "refs": {
+   "habit": [
+    "130965309",
+    "509262554"
+   ],
+   "leaf": [
+    "8770860",
+    "39464963",
+    "509263898"
+   ],
+   "flower": [
+    "207915111",
+    "3681448",
+    "202870644"
+   ],
+   "fruit": [
+    "8770849",
+    "46423707",
+    "144835442"
+   ]
+  },
+  "score": 5,
+  "faults": [
+   "leaf_shape",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "A low sprawling currant of the forest floor; broad leaves of 3 to 5 shallow lobes; drooping racemes of small reddish-purple saucer flowers; strings of bright red, shiny currants. The model is a low leafy bush with red berry strings, close in kind. Its leaves are plain ovals and several of its berry strings hang in the air well outside the plant.",
+  "read_in": "V3.48"
+ },
+ "Rosa acicularis": {
+  "refs": {
+   "habit": [
+    "416346067",
+    "573613747"
+   ],
+   "leaf": [
+    "511773154",
+    "573613747",
+    "22872022"
+   ],
+   "flower": [
+    "675787297",
+    "680107685",
+    "511773154"
+   ],
+   "fruit": [
+    "23130255",
+    "22872022",
+    "340748542"
+   ],
+   "bark": [
+    "347725874",
+    "81944195"
+   ],
+   "winter": [
+    "334178706",
+    "617351335",
+    "451965850"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_shape",
+   "flower_count",
+   "flower_size",
+   "fruit"
+  ],
+  "note": "Slender bristly stems; leaves of 5 to 7 oval toothed leaflets; pink flowers 5 to 7 cm across with a yellow centre, many open at once; red pear-shaped hips. The model's leaflets are narrow blades, so it reads as a willow; the flowers are a few specks, some dark; no hip shows in August.",
+  "read_in": "V3.48"
+ },
+ "Rosa arkansana": {
+  "refs": {
+   "habit": [
+    "20623605",
+    "439571840",
+    "398505607"
+   ],
+   "leaf": [
+    "308943704",
+    "23389677",
+    "443425184"
+   ],
+   "flower": [
+    "78054420",
+    "417645045",
+    "111103",
+    "398505607"
+   ],
+   "fruit": [
+    "25088350",
+    "103892973",
+    "22766736"
+   ],
+   "winter": [
+    "31541121",
+    "1355924"
+   ]
+  },
+  "score": 6,
+  "faults": [
+   "stems",
+   "leaf_shape",
+   "fruit"
+  ],
+  "note": "A low rose, knee high at most, dying back hard; leaves of 9 to 11 leaflets; pink flowers 4 to 5 cm in clusters at the stem tips; round red hips. The model reads as a low rose in flower, the flowers at their size. The base is a thick trunk, the leaflets are narrow, and no hip shows in September.",
+  "read_in": "V3.48"
+ },
+ "Rosa woodsii": {
+  "refs": {
+   "habit": [
+    "210895098",
+    "51899346",
+    "40080674"
+   ],
+   "leaf": [
+    "662101560",
+    "578675782",
+    "4560367"
+   ],
+   "flower": [
+    "316891188",
+    "4560367",
+    "390167645",
+    "210895098"
+   ],
+   "fruit": [
+    "25139074",
+    "237519799",
+    "60276002"
+   ],
+   "bark": [
+    "253336945",
+    "346990394"
+   ],
+   "winter": [
+    "474196270",
+    "474196655"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_shape",
+   "flower_place",
+   "flower_count",
+   "fruit"
+  ],
+  "note": "A thicket of red-brown prickly stems; leaves of 5 to 9 oval toothed leaflets; pink flowers 4 to 5 cm, several together; clusters of red hips. The model is thick brown sticks with narrow-bladed leaves, a few pink specks floating above it and no hips.",
+  "read_in": "V3.48"
+ },
+ "Rubus idaeus": {
+  "refs": {
+   "habit": [
+    "169310354",
+    "298342059",
+    "415639096"
+   ],
+   "leaf": [
+    "705280151",
+    "415934796",
+    "306919869"
+   ],
+   "flower": [
+    "44299574",
+    "44296934",
+    "405494830"
+   ],
+   "fruit": [
+    "358785151",
+    "416102306",
+    "415567213"
+   ],
+   "bark": [
+    "81983727",
+    "262059181",
+    "116565006"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "crown",
+   "leaf_shape",
+   "leaf_size",
+   "proportion"
+  ],
+  "note": "Arching bristly canes forming a thicket as wide as it is tall; leaves of 3 to 5 broad toothed leaflets, pale beneath; white flowers with small narrow petals; red raspberries. The model is a narrow upright bundle of straight canes on one stem with narrow blades: the right height, none of the arching or the broad leaves.",
+  "read_in": "V3.48"
+ },
+ "Salix bebbiana": {
+  "refs": {
+   "habit": [
+    "664867591",
+    "184711816",
+    "578105182"
+   ],
+   "leaf": [
+    "527067292",
+    "511234151",
+    "303664635",
+    "413222295"
+   ],
+   "flower": [
+    "510637765"
+   ],
+   "fruit": [
+    "79354690",
+    "44476295",
+    "303664635"
+   ],
+   "winter": [
+    "184711816",
+    "3081066"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "crown",
+   "sparse",
+   "stems",
+   "no_flower"
+  ],
+  "note": "A big shrub or small tree of many crooked stems, bushy from low down; dull green elliptic leaves, pale beneath; yellow catkins on bare twigs in April. The model is three or four thick straight trunks with leaves only at the top, and in April it is bare sticks with no catkins.",
+  "read_in": "V3.48"
+ },
+ "Salix discolor": {
+  "refs": {
+   "habit": [
+    "45959867",
+    "387166551",
+    "277479875"
+   ],
+   "leaf": [
+    "567193919",
+    "739023944",
+    "521136629"
+   ],
+   "flower": [
+    "372421342",
+    "63688620",
+    "49108731",
+    "197480442"
+   ],
+   "fruit": [
+    "672623985",
+    "676905381"
+   ],
+   "winter": [
+    "245558131",
+    "49108731"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "crown",
+   "sparse",
+   "no_flower"
+  ],
+  "note": "A tall many-stemmed willow, leafy to the ground; elliptic leaves, blue-white beneath; silvery furry catkins along bare twigs in March and April, which is the whole of what it is known for. The model is a narrow bundle of thick straight poles with leaves at the top, and in March it is bare sticks with no catkins.",
+  "read_in": "V3.48"
+ },
+ "Salix exigua": {
+  "refs": {
+   "habit": [
+    "141053539",
+    "386250539",
+    "208284941"
+   ],
+   "leaf": [
+    "330215248",
+    "48447",
+    "449239797",
+    "332014891"
+   ],
+   "flower": [
+    "110211684",
+    "36452549",
+    "377462831"
+   ],
+   "fruit": [
+    "117732926",
+    "207016"
+   ],
+   "winter": [
+    "357216792"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "sparse",
+   "stems",
+   "leaf_colour",
+   "no_flower"
+  ],
+  "note": "A thicket of slender wands thick with long, very narrow silvery grey-green leaves: a soft feathery grey mass. The model is a grey skeleton with slivers, which reads as dead or thorny. Many of the photographs are from the American south-west; the form is the same.",
+  "read_in": "V3.48"
+ },
+ "Salix interior": {
+  "refs": {
+   "habit": [
+    "20840881",
+    "421805777",
+    "629429128"
+   ],
+   "leaf": [
+    "666933329",
+    "136871189",
+    "386198914",
+    "297879824"
+   ],
+   "flower": [
+    "671070540",
+    "281703377",
+    "675109137"
+   ],
+   "fruit": [
+    "359389568",
+    "294746378"
+   ],
+   "winter": [
+    "629429128",
+    "350418658",
+    "1689270"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "sparse",
+   "stems",
+   "leaf_colour",
+   "no_flower"
+  ],
+  "note": "Thickets of slender upright wands on sandbars, each closely set with long narrow leaves, green to silvery; slim yellow catkins on leafy shoots. The model is three thick trunks with tufts of slivers: nothing of the dense leafy wand.",
+  "read_in": "V3.48"
+ },
+ "Salix petiolaris": {
+  "refs": {
+   "habit": [
+    "663620816",
+    "663661233",
+    "507066984"
+   ],
+   "leaf": [
+    "411112552",
+    "526477911",
+    "679451313",
+    "671262858"
+   ],
+   "flower": [
+    "500300175",
+    "499068095",
+    "181013044"
+   ],
+   "fruit": [
+    "507066984"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "sparse",
+   "stems",
+   "leaf_size",
+   "no_flower"
+  ],
+  "note": "A dense clump of slender stems thick with narrow lance leaves 5 to 10 cm long, green above and silvery beneath; catkins in April and May. The model is a grey skeleton with slivers for leaves: it reads as a dead bush. In April it has no catkins.",
+  "read_in": "V3.48"
+ },
+ "Shepherdia argentea": {
+  "refs": {
+   "habit": [
+    "115121265",
+    "233820146",
+    "449918340"
+   ],
+   "leaf": [
+    "99666902",
+    "9801114",
+    "556446314"
+   ],
+   "flower": [
+    "72375592",
+    "375491176",
+    "370153286"
+   ],
+   "fruit": [
+    "102797041",
+    "460335902",
+    "305315922",
+    "118601348"
+   ],
+   "winter": [
+    "372481888",
+    "592011248",
+    "118601348"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "stems",
+   "sparse",
+   "leaf_size",
+   "fruit"
+  ],
+  "note": "A thorny shrub, silvery on both sides of its narrow oblong leaves, pale grey twigs; tiny yellow flowers on bare twigs in May; masses of bright red berries along the branches. The model has the silver, which is most of the plant; the trunks are too thick and the berries do not show.",
+  "read_in": "V3.48"
+ },
+ "Shepherdia canadensis": {
+  "refs": {
+   "habit": [
+    "547802641",
+    "99300348",
+    "490388759"
+   ],
+   "leaf": [
+    "707895218",
+    "115112382",
+    "230162250",
+    "282977572"
+   ],
+   "flower": [
+    "200644826",
+    "594739768"
+   ],
+   "fruit": [
+    "250498382",
+    "695942640",
+    "296388329"
+   ],
+   "winter": [
+    "354191546",
+    "340752022",
+    "590280377"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "sparse",
+   "stems",
+   "leaf_colour",
+   "fruit"
+  ],
+  "note": "A rounded leafy shrub; opposite oval leaves, dark green above, silvery with rust-brown dots beneath; brown scurfy twigs; red berries clustered tight at the nodes along the stems. The model is bare forked sticks with a few grey leaves, and its berries are red specks scattered through the air around it.",
+  "read_in": "V3.48"
+ },
+ "Spiraea alba": {
+  "refs": {
+   "habit": [
+    "529052459",
+    "214150481",
+    "52047556"
+   ],
+   "leaf": [
+    "517753399",
+    "520340253",
+    "284460546"
+   ],
+   "flower": [
+    "615314264",
+    "120726",
+    "405535054",
+    "214150481"
+   ],
+   "fruit": [
+    "7973373",
+    "445770936"
+   ],
+   "winter": [
+    "252165738",
+    "185128732"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "stems",
+   "leaf_size",
+   "flower_arch",
+   "flower_place",
+   "flower_size"
+  ],
+  "note": "Slender upright wands, closely set with small toothed lance leaves, each ending in a dense white steeple of tiny flowers 5 to 15 cm tall; the brown seed heads stand through winter. It is recorded as a flat-topped cluster; it is a cone (a panicle). The model is thick canes with long stiff blades and specks floating above.",
+  "read_in": "V3.48"
+ },
+ "Symphoricarpos albus": {
+  "refs": {
+   "habit": [
+    "148965971",
+    "436546401"
+   ],
+   "leaf": [
+    "624415681",
+    "702501346",
+    "76909250"
+   ],
+   "flower": [
+    "21409592",
+    "22872785",
+    "40205082"
+   ],
+   "fruit": [
+    "41394",
+    "243742110",
+    "429186446",
+    "607201059"
+   ],
+   "winter": [
+    "619629103",
+    "113240756",
+    "607201059"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_size",
+   "leaf_colour",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "A fine twiggy shrub of slender arching stems; small roundish opposite leaves, dull blue-green; tiny pink bells; clusters of white berries that stay into winter and are how most people know it. The model's canes are thick, its flowers hover above it in the air, and the white berries do not show.",
+  "read_in": "V3.48"
+ },
+ "Symphoricarpos occidentalis": {
+  "refs": {
+   "habit": [
+    "748383152",
+    "509274716",
+    "211137301"
+   ],
+   "leaf": [
+    "428326155",
+    "421943652",
+    "82982314"
+   ],
+   "flower": [
+    "216120853",
+    "49457487",
+    "46575587"
+   ],
+   "fruit": [
+    "449543868",
+    "747448728"
+   ],
+   "winter": [
+    "118601485",
+    "356419905"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_size",
+   "leaf_colour",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "A dense colony of upright stems to a metre, oval grey-green leaves 3 to 6 cm, clusters of small pink-white flowers at the tips and in the axils, greenish-white berries that blacken over winter. The model is a pile of large bright plates, like a cabbage; no flower shows in July and no berry in September.",
+  "read_in": "V3.48"
+ },
+ "Vaccinium myrtilloides": {
+  "refs": {
+   "habit": [
+    "419037188",
+    "473424791",
+    "53528990"
+   ],
+   "leaf": [
+    "518511112",
+    "411756020",
+    "180371"
+   ],
+   "flower": [
+    "41620320",
+    "566334146",
+    "387266168"
+   ],
+   "fruit": [
+    "90836108",
+    "473424791",
+    "571662935"
+   ],
+   "winter": [
+    "343819828",
+    "471928087"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_size",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "A low twiggy bush, knee high; small soft elliptic leaves 2 to 4 cm, velvety, red in autumn; clusters of small pink-white bells in May; blue berries with a pale bloom in clusters. The model has the height and blue berries, some floating outside it. The leaves are large flat plates (the same body as Western Snowberry); no flower shows in May.",
+  "read_in": "V3.48"
+ },
+ "Viburnum edule": {
+  "refs": {
+   "habit": [
+    "41787174",
+    "176338197"
+   ],
+   "leaf": [
+    "519982527",
+    "510640660",
+    "216041631",
+    "573612751"
+   ],
+   "flower": [
+    "80761572",
+    "134102149",
+    "510640660"
+   ],
+   "fruit": [
+    "243321205",
+    "308093629",
+    "151539411",
+    "10080477"
+   ],
+   "winter": [
+    "61976739",
+    "258275838",
+    "354194520"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_shape",
+   "leaf_size",
+   "flower_place",
+   "fruit"
+  ],
+  "note": "A straggling slender shrub; opposite leaves with three shallow lobes, like a small maple leaf, red in autumn; small flat white clusters; red berries in small bunches. The model's leaves are plain plates in tiers on thick canes, the flowers float above it, and the berries it draws in August sit outside the plant.",
+  "read_in": "V3.48"
+ },
+ "Viburnum opulus": {
+  "refs": {
+   "habit": [
+    "51178525",
+    "428325926"
+   ],
+   "leaf": [
+    "677454238",
+    "86398322",
+    "208033299"
+   ],
+   "flower": [
+    "517977602",
+    "353432172",
+    "133891304"
+   ],
+   "fruit": [
+    "301071062",
+    "167101616",
+    "179640181",
+    "58344451"
+   ],
+   "winter": [
+    "58344451",
+    "252165656"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "stems",
+   "leaf_shape",
+   "leaf_size",
+   "no_flower",
+   "fruit"
+  ],
+  "note": "A tall shrub; opposite three-lobed maple-like leaves, red to purple in autumn; flat white lace-caps 8 to 10 cm across ringed with large sterile flowers; drooping bunches of bright red berries into winter. The model has plain dark plates on thick trunks, no flower in May, rust-brown rather than red leaves in September and no berries.",
+  "read_in": "V3.48"
+ }
+}

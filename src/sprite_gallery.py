@@ -259,7 +259,7 @@ VINE_HOST = "Cornus sericea"
 _VINE_SIDE = (1.1 / math.hypot(0.9, 1.1), 0.9 / math.hypot(0.9, 1.1))
 
 
-def _vine_scene(plant, pid, name, i):
+def _vine_scene(plant, pid, name, i, when=None):
     """A vine climbing the gallery's host shrub, and a second copy of it in the
     open with nothing to climb. None if the host is not in the seed data."""
     host_row = next((r for r in _seed_rows()
@@ -280,7 +280,7 @@ def _vine_scene(plant, pid, name, i):
              at(ux * (hr + 0.25), uy * (hr + 0.25), pid, name),
              at(-(hr + 1.2 + vr), 0.0, pid, name)]
     by_id = {pid: plant, host_id: host}
-    sc = build_scene(_fc(feats), year=0, when=WHEN, get_plant=by_id.get)
+    sc = build_scene(_fc(feats), year=0, when=when or WHEN, get_plant=by_id.get)
     xs = [p["x"] for p in sc["plants"]]
     ys = [p["y"] for p in sc["plants"]]
     h = max(float(p.get("height_m") or 1.0) for p in sc["plants"]
@@ -311,21 +311,25 @@ def _pond_for(p0):
             "properties": {"element_type": "structure", "struct_def": sd}}
 
 
-def _scene_for(plant, pid, name, i):
+def _scene_for(plant, pid, name, i, when=None):
+    """One specimen's scene. ``when`` is July noon unless a caller wants the
+    plant in another month (scripts/model_references.py draws each plant in
+    the month it flowers, V3.48)."""
+    when = when or WHEN
     if plant.get("plant_type") == "vine":
-        sc = _vine_scene(plant, pid, name, i)
+        sc = _vine_scene(plant, pid, name, i, when)
         if sc is not None:
             return sc
     feat = plant_feature({"plant_id": pid, "common_name": name,
                           "lat": LAT0, "lng": LNG0})
     proj = _fc([_boundary(LAT0, LNG0, 8.0), feat])
-    sc = build_scene(proj, year=0, when=WHEN, get_plant=lambda _id: plant)
+    sc = build_scene(proj, year=0, when=when, get_plant=lambda _id: plant)
     p0 = sc["plants"][0] if sc["plants"] else {}
     # A floating or submerged plant is shown on a pond's water (V2.90): on the
     # lawn a pond-lily is a scatter of pads on grass.
     if (p0.get("drawn") or {}).get("body") in ("floating", "submerged"):
         proj = _fc([_boundary(LAT0, LNG0, 8.0), _pond_for(p0), feat])
-        sc = build_scene(proj, year=0, when=WHEN, get_plant=lambda _id: plant)
+        sc = build_scene(proj, year=0, when=when, get_plant=lambda _id: plant)
         p0 = next(p for p in sc["plants"] if p.get("plant_id") == pid)
     h = float(p0.get("height_m") or 1.0)
     c = float(p0.get("canopy_m") or 0.5)
