@@ -1277,6 +1277,38 @@
   "note": "A low mat of fine, curling, grey-green blades a hand high, with thin stalks to 30 cm each carrying one to three combs: a one-sided spike 2 to 5 cm long, purple then straw, held out sideways like an eyelash and curling as it dries. The seed head is recorded correctly; the model shows only two or three small pale chips. The blades are wide straps, dark olive, and the plant is drawn as tall as its stalks.",
   "read_in": "V3.48"
  },
+ "Bromus ciliatus": {
+  "refs": {
+   "habit": [
+    "217214544",
+    "327769775"
+   ],
+   "leaf": [
+    "217214544",
+    "308093647"
+   ],
+   "flower": [
+    "304971215",
+    "87598980",
+    "174919"
+   ],
+   "fruit": [
+    "327769775",
+    "281523895",
+    "516888054",
+    "324517125"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A loose tuft of broad flat leaves, with a few tall stems each ending in an open, drooping panicle of large, flattened, hanging spikelets 1.5 to 2.5 cm long with short awns, like oats. The model shows a couple of specks at the top of a narrow column of straps: the hanging oat-like spikelets are the plant.",
+  "read_in": "V3.48"
+ },
  "Calamagrostis canadensis": {
   "refs": {
    "habit": [
@@ -1556,6 +1588,37 @@
    "flower_place"
   ],
   "note": "A tall unbranched stem crowded with willow-like leaves, ending in a long tapering spike of magenta four-petalled flowers 2 to 3 cm, buds drooping at the tip, long red seed pods below that split into white fluff. The model's leafy stems are right in kind. Its flowers are pale pink and dark maroon squares floating round the stem, where the plant is a solid magenta spire.",
+  "read_in": "V3.48"
+ },
+ "Cinna latifolia": {
+  "refs": {
+   "habit": [
+    "92343378",
+    "710114576",
+    "232676380"
+   ],
+   "leaf": [
+    "526660750",
+    "183561"
+   ],
+   "flower": [
+    "301392998",
+    "148662324",
+    "305095004"
+   ],
+   "fruit": [
+    "462219614",
+    "417456157"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A loose woodland grass with broad, flat, soft, bright green leaves spaced up the stem, and a large, open, drooping panicle 15 to 30 cm long whose fine branches hang to one side. The seed head is recorded nodding; the model shows almost none. The body is the same stiff column of dark straps as every grass.",
   "read_in": "V3.48"
  },
  "Cirsium flodmanii": {
@@ -2765,6 +2828,38 @@
   "note": "A stout wetland grass with broad flat leaves, topped by a very large, open, much-branched panicle 20 to 40 cm long and nearly as wide, its many small spikelets purple, nodding at the ends of fine branches. The seed head is recorded correctly as an open panicle; the model shows a faint speck at the top of a narrow column of straps.",
   "read_in": "V3.48"
  },
+ "Glyceria striata": {
+  "refs": {
+   "habit": [
+    "174184586",
+    "134376158",
+    "445919232"
+   ],
+   "leaf": [
+    "702575129",
+    "134376158"
+   ],
+   "flower": [
+    "9676993",
+    "20623459",
+    "129824"
+   ],
+   "fruit": [
+    "508412003",
+    "461477913",
+    "688179038"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "leaf_colour"
+  ],
+  "note": "A slender wetland grass in loose tufts, with an open panicle 10 to 20 cm long of drooping thread-fine branches beaded with small oval spikelets, green then purple. The model's pale beaded heads are the right idea and the best seed head of the grasses so far; they stand stiffly upright where the plant's droop, on the same column of wide straps.",
+  "read_in": "V3.48"
+ },
  "Glycyrrhiza lepidota": {
   "refs": {
    "habit": [
@@ -3167,6 +3262,39 @@
   "note": "A flat evergreen carpet of long trailing woody branches with feathery sprays of tiny scale leaves, blue-green to grey-green, purplish in winter, with blue-white berries. The model is a star of grass-like blades from one point, bright green: a tuft, not a woody mat. Only six photographs, none in flower since it has none.",
   "read_in": "V3.48"
  },
+ "Koeleria macrantha": {
+  "refs": {
+   "habit": [
+    "288271030",
+    "692235555",
+    "384202454"
+   ],
+   "leaf": [
+    "288271030",
+    "692235555"
+   ],
+   "flower": [
+    "405633514",
+    "614056130",
+    "79378658",
+    "410810330"
+   ],
+   "fruit": [
+    "488264046",
+    "89484825",
+    "10591993"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "flower_shape",
+   "proportion"
+  ],
+  "note": "A small dense tuft of short, narrow, grey-green basal leaves a hand high, with many stiff bare stems to 50 cm each ending in a dense, narrow, silvery-green to pale gold spike 4 to 10 cm long that opens fluffy in flower. No seed head is recorded, so the model draws white daisies lying flat above a spray of long wide straps as tall as the stems.",
+  "read_in": "V3.48"
+ },
  "Larix laricina": {
   "refs": {
    "habit": [
@@ -3319,6 +3447,37 @@
    "photos"
   ],
   "note": "Thin, translucent, olive-green fronds 0.5 to 1 cm long, pointed and stalked, joined crosswise in chains and tangled mats that float just under the surface, not on it. The model is round green dots on the water, the common duckweed's look. At this size the difference hardly shows in a yard. Only four photographs.",
+  "read_in": "V3.48"
+ },
+ "Leymus innovatus": {
+  "refs": {
+   "habit": [
+    "412396767",
+    "345423854"
+   ],
+   "leaf": [
+    "412396767"
+   ],
+   "flower": [
+    "598755505",
+    "444991896",
+    "163954125"
+   ],
+   "fruit": [
+    "617388980"
+   ],
+   "winter": [
+    "345423854"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "photos"
+  ],
+  "note": "A stiff blue-green grass with rolled leaves and a dense, erect to slightly arching spike 5 to 12 cm long, grey-purple and visibly hairy. The model's pale upright blocks are the right position; they are flat tan rectangles, and the leaves are wide straps. Only six photographs, none of the whole plant in leaf.",
   "read_in": "V3.48"
  },
  "Liatris ligulistylis": {
@@ -3876,6 +4035,38 @@
    "sparse"
   ],
   "note": "Underwater stems with whorls of feather-like leaves cut into thread-fine segments, and thin reddish spikes standing a few centimetres out of the water with small flowers in whorls. The model is a scatter of broad oval leaves on the water, like a floating pondweed: the feathers are the plant.",
+  "read_in": "V3.48"
+ },
+ "Nassella viridula": {
+  "refs": {
+   "habit": [
+    "83608146",
+    "395082888",
+    "408508279"
+   ],
+   "leaf": [
+    "395082888",
+    "83608146"
+   ],
+   "flower": [
+    "706449369",
+    "154481899",
+    "408508279"
+   ],
+   "fruit": [
+    "420654611",
+    "412040319",
+    "429208"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "dense",
+   "flower_shape"
+  ],
+  "note": "A dense bunch of fine, rolled, bright green leaves, with stems to 80 cm ending in a narrow, upright, greenish-then-straw panicle 10 to 25 cm long with fine wavy awns. No seed head is recorded, so the model draws white daisy shapes lying flat beside a column of wide straps.",
   "read_in": "V3.48"
  },
  "Nuphar variegata": {
