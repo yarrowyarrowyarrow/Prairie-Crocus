@@ -1589,6 +1589,38 @@
   "note": "Leafy stems with clasping lance leaves, branching at the top into purple daisies 3 to 4 cm across with many narrow rays, a sticky purplish cup beneath. The model is a few thin stems with grass-like leaves and a handful of tan specks: no purple anywhere.",
   "read_in": "V3.48"
  },
+ "Carex aquatilis": {
+  "refs": {
+   "habit": [
+    "675358251",
+    "57594583",
+    "204755348"
+   ],
+   "leaf": [
+    "73911184",
+    "675358251"
+   ],
+   "flower": [
+    "21137276",
+    "284355884",
+    "203523854"
+   ],
+   "fruit": [
+    "308571970",
+    "545089451",
+    "428971139",
+    "429206323"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_colour",
+   "leaf_size"
+  ],
+  "note": "A big tussock of long, arching, blue-green leaves, with stems carrying several slim, upright, dark purple-brown and green cylinders 3 to 8 cm long. The model's fan of straps suits a big sedge better than most; its heads are small cream ovals where the plant's are long dark fingers, and the leaves are dark olive rather than blue-green.",
+  "read_in": "V3.48"
+ },
  "Carex atherodes": {
   "refs": {
    "habit": [
@@ -1740,6 +1772,37 @@
   "note": "Bright yellow-green, wide leaves and stems from which three to five thick, bristly, bottle-brush cylinders 3 to 6 cm long hang on thin stalks, green then brown. The hanging brushes are how it is known. The model has small cream ovals standing upright on sticks over dark straps.",
   "read_in": "V3.48"
  },
+ "Carex retrorsa": {
+  "refs": {
+   "habit": [
+    "541793357",
+    "428327765"
+   ],
+   "leaf": [
+    "541793357",
+    "138810847"
+   ],
+   "flower": [
+    "159513791",
+    "149204444",
+    "537253095"
+   ],
+   "fruit": [
+    "551675229",
+    "233843470",
+    "24302349",
+    "43665830"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_colour",
+   "leaf_size"
+  ],
+  "note": "Wide, bright yellow-green leaves much longer than the stems, and three to six fat, spiky, green-yellow burs 3 to 5 cm long crowded together near the stem top, their beaked sacs bent backward. The model's small cream ovals do not read as spiky burs, and the body is dark.",
+  "read_in": "V3.48"
+ },
  "Carex rostrata": {
   "refs": {
    "habit": [
@@ -1771,6 +1834,67 @@
    "leaf_shape"
   ],
   "note": "Narrow, blue-grey, channelled leaves and stems carrying two to four dense upright cylinders 3 to 8 cm long, yellow-green then straw, of round inflated sacs with sharp beaks. The model's small cream ovals on stalks are the right position, a fraction of the size, over dark green straps where the plant is blue-grey.",
+  "read_in": "V3.48"
+ },
+ "Carex sartwellii": {
+  "refs": {
+   "habit": [
+    "205740040",
+    "206530877"
+   ],
+   "leaf": [
+    "205740040"
+   ],
+   "flower": [
+    "7765644",
+    "395604534",
+    "563978096"
+   ],
+   "fruit": [
+    "167683801",
+    "408766536",
+    "404357908"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour"
+  ],
+  "note": "A stiff sedge in stands, each stem ending in one narrow, dense, brown, cylindrical head 3 to 6 cm long made of many small spikes pressed together. The model's separate cream ovals on sticks over wide dark straps do not read as one brown head.",
+  "read_in": "V3.48"
+ },
+ "Carex sprengelii": {
+  "refs": {
+   "habit": [
+    "413297948",
+    "680358701",
+    "293486040"
+   ],
+   "leaf": [
+    "413297948",
+    "293486040"
+   ],
+   "flower": [
+    "211333672",
+    "515023265",
+    "169862287"
+   ],
+   "fruit": [
+    "529087389",
+    "2063546",
+    "301253947",
+    "520501047"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour"
+  ],
+  "note": "A woodland sedge in arching clumps of narrow, soft, bright green leaves, with thin stems from which several pale green cylinders 2 to 3 cm long hang on thread-like stalks, each sac drawn out into a long beak. The model's ovals stand upright on sticks over stiff dark straps: nothing arches or hangs.",
   "read_in": "V3.48"
  },
  "Carex utriculata": {
@@ -2661,6 +2785,39 @@
    "flower_place"
   ],
   "note": "A rosette of soft spoon-shaped leaves and a hairy stem with clasping leaves, branching at the top into ten to thirty daisies 1.5 to 2.5 cm: a hundred or more thread-thin white to pale pink rays round a yellow centre. The model has the rosette, then bare wires and a few orange-brown specks in the air.",
+  "read_in": "V3.48"
+ },
+ "Eriophorum angustifolium": {
+  "refs": {
+   "habit": [
+    "566216387",
+    "221670066",
+    "400267272"
+   ],
+   "leaf": [
+    "400267272",
+    "191655707"
+   ],
+   "flower": [
+    "627392634",
+    "395360659",
+    "191655707"
+   ],
+   "fruit": [
+    "684447300",
+    "615793318",
+    "217808983",
+    "220095877"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "data",
+   "leaf_colour"
+  ],
+  "note": "Slender stems in open bog, each hanging two to seven tufts of long, pure white, silky cotton 3 to 4 cm, which is the plant: white-flecked bog from a distance. The seed head is recorded bristly, so the model draws the needle-grass's flat fan of rays, tan, beside wide dark straps. The cotton shows in June and July, after its recorded May flowering.",
   "read_in": "V3.48"
  },
  "Eurybia conspicua": {
@@ -6240,6 +6397,71 @@
    "proportion"
   ],
   "note": "Round, smooth, leafless, grey-green stems to 2.5 m, as thick as a finger at the base and tapering to a point, in open stands; a drooping bunch of red-brown spikelets hangs from one side just below the stem's tip. The model is the cattail's column of flat blades with small orange plates floating beside it: it has no flat blades at all.",
+  "read_in": "V3.48"
+ },
+ "Schoenoplectus pungens": {
+  "refs": {
+   "habit": [
+    "112109086",
+    "11649229",
+    "101343399"
+   ],
+   "leaf": [
+    "305848662",
+    "546956742"
+   ],
+   "flower": [
+    "99144",
+    "679745696",
+    "104742959"
+   ],
+   "fruit": [
+    "54109049",
+    "610503583",
+    "445907932",
+    "24992"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "habit",
+   "leaf_shape",
+   "seed_head",
+   "leaf_colour"
+  ],
+  "note": "Stands of stiff, sharply three-sided, leafless stems, each with a tight knot of one to five red-brown spikelets that sits on the side of the stem a few centimetres below its sharp tip. The model is a tussock of wide flat straps with cream ovals on sticks: the plant has no flat leaves, and its head is on the stem, not on a stalk.",
+  "read_in": "V3.48"
+ },
+ "Scirpus microcarpus": {
+  "refs": {
+   "habit": [
+    "710030186",
+    "12836",
+    "702981174"
+   ],
+   "leaf": [
+    "710030186",
+    "298106506"
+   ],
+   "flower": [
+    "290543250",
+    "520487932",
+    "529108072"
+   ],
+   "fruit": [
+    "214191164",
+    "12835",
+    "532236204"
+   ]
+  },
+  "score": 2,
+  "faults": [
+   "seed_head",
+   "leaf_colour",
+   "leaf_place",
+   "proportion"
+  ],
+  "note": "A stout, leafy stem with broad, bright yellow-green leaves up it, topped by a wide, flat, much-branched spray 10 to 20 cm across of many small dark green-brown clusters, with long leafy bracts beneath like the ribs of an umbrella. The model is a dark narrow column with a few pale flecks: the broad starburst head is missing.",
   "read_in": "V3.48"
  },
  "Scutellaria galericulata": {
