@@ -1715,6 +1715,38 @@
   "note": "A dense tuft of narrow leaves with many slender stems, each ending in one tight, egg-shaped head 1.5 to 3 cm long made of 5 to 10 crowded, bristly little balls, green-gold then rusty brown. The model's small ovals on stalks at leaf height are fair in kind; they are pale cream, spaced apart, and the leaves are wide straps.",
   "read_in": "V3.48"
  },
+ "Carex pellita": {
+  "refs": {
+   "habit": [
+    "7954298",
+    "138633895",
+    "137543241"
+   ],
+   "leaf": [
+    "518908715",
+    "7954298"
+   ],
+   "flower": [
+    "506884002",
+    "290563075",
+    "304017506"
+   ],
+   "fruit": [
+    "281754795",
+    "322425734",
+    "720201355",
+    "79790450"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "seed_head",
+   "leaf_size",
+   "leaf_colour"
+  ],
+  "note": "Narrow grey-green leaves in open stands, with slim dark male spikes at the stem top and one to three short, fat, upright cylinders 2 to 4 cm long below them, the sacs densely furry, green then brown. The model's small cream ovals on stalks are the right place and nothing of the size or colour.",
+  "read_in": "V3.48"
+ },
  "Carex praticola": {
   "refs": {
    "habit": [
@@ -2581,6 +2613,34 @@
   "note": "Upright stems with brown scurfy twigs, silver leaves on both sides, small yellow flowers tucked in the leaf axils in June, silvery mealy berries that stay into winter. The model has the silver. It is a sparse V of brown trunks, and since no flower shape is recorded it never flowers; its berries do not show.",
   "read_in": "V3.48"
  },
+ "Eleocharis acicularis": {
+  "refs": {
+   "habit": [
+    "546949230",
+    "529106448",
+    "300589694"
+   ],
+   "leaf": [
+    "718554109",
+    "546949230"
+   ],
+   "flower": [
+    "513164922",
+    "560117420",
+    "294450378"
+   ]
+  },
+  "score": 1,
+  "faults": [
+   "habit",
+   "proportion",
+   "seed_head",
+   "leaf_shape",
+   "data"
+  ],
+  "note": "A low, bright green turf of hair-fine stems 5 to 15 cm tall, like a lawn of green threads, each tipped with a tiny spikelet a few millimetres long. The model is one tall narrow column of blades with tan blocks as big as the plant floating beside it. It is the smallest plant drawn with the largest seed head.",
+  "read_in": "V3.48"
+ },
  "Eleocharis palustris": {
   "refs": {
    "habit": [
@@ -2722,6 +2782,48 @@
    "leaf_colour"
   ],
   "note": "Stands of tall, smooth, hollow, bright green stems in shallow water, many with no branches at all and others with short irregular whorls in the middle; a dark cone at the tip of some. The model does the job: thin jointed stems with whorls in the middle. It is darker than the plant's light green.",
+  "read_in": "V3.48"
+ },
+ "Equisetum hyemale": {
+  "refs": {
+   "habit": [
+    "96154808"
+   ],
+   "leaf": [
+    "446686511",
+    "369520826"
+   ],
+   "fruit": [
+    "157943232",
+    "369520826"
+   ]
+  },
+  "score": 8,
+  "faults": [],
+  "note": "Stiff, unbranched, dark evergreen stems, jointed, each joint ringed by a pale sheath with black bands, ending in a small pointed cone. The model does the job: unbranched jointed stems with dark rings and pointed tips, in a loose stand. Its rings are all black where the plant's are ash-grey between two black lines. Four photographs.",
+  "read_in": "V3.48"
+ },
+ "Equisetum variegatum": {
+  "refs": {
+   "habit": [
+    "273887047",
+    "95123124",
+    "212696762"
+   ],
+   "leaf": [
+    "717826190",
+    "212696762"
+   ],
+   "fruit": [
+    "513753896",
+    "212696762"
+   ]
+  },
+  "score": 7,
+  "faults": [
+   "stems"
+  ],
+  "note": "As the Scouring-rush in miniature: thin, wiry, unbranched evergreen stems 10 to 35 cm tall in loose tufts, the sheath teeth black with white edges, a small pointed cone at the tip. The model reads as a small horsetail. Its stems are too thick for their height, and lean out more than the plant's do.",
   "read_in": "V3.48"
  },
  "Erigeron glabellus": {
@@ -3837,6 +3939,86 @@
    "leaf_colour"
   ],
   "note": "Unbranched stems standing out of shallow water, closely ringed with whorls of 6 to 12 soft, narrow leaves 1 to 3 cm that curve upward, so each stem is a soft green bottle-brush tapering to the tip; yellow-green. The model reads as the plant: whorled upright stems. Its whorls are short stiff spikes set far apart on a thick dark stem, more like a bamboo cane.",
+  "read_in": "V3.48"
+ },
+ "Juncus balticus": {
+  "refs": {
+   "habit": [
+    "91356144",
+    "210554257",
+    "390636530"
+   ],
+   "leaf": [
+    "400031619",
+    "210554257"
+   ],
+   "flower": [
+    "526297440",
+    "398502759",
+    "292848664"
+   ],
+   "fruit": [
+    "19692523",
+    "46339870",
+    "435604199",
+    "421805709"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "habit",
+   "leaf_shape",
+   "seed_head",
+   "leaf_colour"
+  ],
+  "note": "Straight rows of stiff, round, dark green, leafless stems rising from a creeping root, each with a loose spray of dark brown flowers bursting from one side a third of the way down from its sharp tip. The model is a tussock of wide flat straps with rust clusters on separate stalks: the plant is a row of wires, and its head is on the stem's side.",
+  "read_in": "V3.48"
+ },
+ "Juncus nodosus": {
+  "refs": {
+   "habit": [
+    "571577697",
+    "550043411",
+    "228042011"
+   ],
+   "leaf": [
+    "228042011",
+    "571577697"
+   ],
+   "flower": [
+    "531622558",
+    "289155119"
+   ],
+   "fruit": [
+    "445551730",
+    "743260677",
+    "446469376",
+    "22858829"
+   ]
+  },
+  "score": 4,
+  "faults": [
+   "leaf_shape",
+   "leaf_size",
+   "seed_head"
+  ],
+  "note": "Thin, round, bright green stems and leaves, with several perfectly round, spiky, star-burst balls 1 cm across, red-brown, at the top. The model's rust-coloured clusters on stalks are the right colour and place, the best seed head of the rushes; they are loose dots rather than tight spiky balls, over wide flat straps.",
+  "read_in": "V3.48"
+ },
+ "Juncus vaseyi": {
+  "refs": {
+   "fruit": [
+    "178345750",
+    "298736570"
+   ]
+  },
+  "score": 3,
+  "faults": [
+   "leaf_shape",
+   "leaf_size",
+   "photos"
+  ],
+  "note": "A slender rush with thin round stems and a small tight cluster of straw to chestnut capsules at the top. The model's brown clusters at leaf height are fair; the body is wide flat straps where a rush is round wires. Only two photographs, both of the seed head, so the plant's form cannot be judged from the sheet.",
   "read_in": "V3.48"
  },
  "Juniperus communis": {
