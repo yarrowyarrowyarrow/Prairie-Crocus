@@ -45,7 +45,7 @@ const WOODY_BUDGET_H = [1, 4];
 // How much larger than life a spray may be drawn, and the share of the crown's
 // shell the drawn leaves are asked to cover.
 const WOODY_GAIN_MAX = 3;
-const WOODY_COVER = 0.5;
+const WOODY_COVER = 0.75;
 const WOODY_STEMS_MAX = 36;
 // Sprays one drawn shoot carries.
 const WOODY_PER_SHOOT = 3;
@@ -78,10 +78,10 @@ function _wdEnvelope(form, t) {
 // Leaves a spray holds, by how narrow the leaf is: a willow shoot the length
 // of three or four of its leaves carries far more of them than a dogwood's.
 function _wdSprayLeaves(shape) {
-  if (shape === 'needle' || shape === 'awl' || shape === 'scale') return 44;
-  if (isCompoundShape(shape) || shape === 'palmately_lobed' || shape === 'lobed') return 6;
+  if (shape === 'needle' || shape === 'awl' || shape === 'scale') return 64;
+  if (isCompoundShape(shape) || shape === 'palmately_lobed' || shape === 'lobed') return 7;
   const r = LEAF_WIDTH_RATIO[shape] == null ? 0.4 : LEAF_WIDTH_RATIO[shape];
-  return r < 0.1 ? 16 : (r < 0.3 ? 12 : (r > 0.8 ? 5 : 7));
+  return r < 0.1 ? 28 : (r < 0.3 ? 16 : (r > 0.8 ? 6 : 9));
 }
 
 // One leaf of `len` pixels, painted white, pointing up the canvas from (0, 0).
@@ -154,35 +154,51 @@ function _wdMip(src, w, h, cover) {
 // middle of the card with its leaves either side. {key, map, depth, cover, w, h}:
 // `cover` is the share of the card the leaves fill, and `w` x `h` its size in
 // leaf lengths. One a shape and arrangement, kept for the session.
+//
+// Two layouts. Narrow leaves, needles and leaves in pairs stand along a length
+// of shoot, as a willow wand's or a dogwood twig's do. Broad leaves borne
+// singly are a short shoot of a few, each on its stalk and no two alike in
+// size or angle: nine in two even rows read as one feather-shaped leaf, and
+// crowded round a point they ran together into one lobed one.
 const WOODY_CUT = 0.4;
 const _WD_SPRAYS = new Map();
 function _wdSpray(shape, perNode) {
   const needle = shape === 'needle' || shape === 'awl' || shape === 'scale';
-  const key = (needle ? 'needle' : shape) + '|' + Math.min(2, perNode);
+  const per = needle ? 2 : Math.min(2, perNode);
+  const ratio = LEAF_WIDTH_RATIO[shape] == null ? 0.4 : LEAF_WIDTH_RATIO[shape];
+  const cluster = !needle && per === 1 && (ratio >= 0.3 || isCompoundShape(shape));
+  const key = (needle ? 'needle' : shape) + '|' + per;
   let sp = _WD_SPRAYS.get(key);
   if (sp) return sp;
-  const W = 128, H = 256, cv = document.createElement('canvas');
+  const W = 128, H = cluster ? 192 : 256, cv = document.createElement('canvas');
   cv.width = W; cv.height = H;
   const g = cv.getContext('2d', { willReadFrequently: true });
   g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
   g.fillStyle = g.strokeStyle = '#fff'; g.lineCap = 'round';
   const rnd = _lcg(11 + key.length * 97 + key.charCodeAt(0) * 13);      // 01b-surface.js
-  const wide = needle ? 2.2 : 1.8, len = W / wide;       // one leaf, in pixels
-  const K = _wdSprayLeaves(shape), per = needle ? 2 : Math.min(2, perNode);
-  const nodes = Math.max(2, Math.ceil(K / per)), y0 = 3, y1 = H - len * (needle ? 0.7 : 0.9);
+  const wide = needle ? 2.2 : (cluster ? 2.0 : 1.8), len = W / wide;    // one leaf, in pixels
+  const K = cluster ? 6 : _wdSprayLeaves(shape), nodes = Math.max(2, Math.ceil(K / per));
+  // Where the shoot's first and last leaves leave it, up the card.
+  const y0 = cluster ? len * 0.12 : 3, y1 = H - len * (needle ? 0.7 : (cluster ? 1.08 : 0.9));
   g.lineWidth = 2.6;
   g.beginPath(); g.moveTo(W / 2, H); g.lineTo(W / 2, H - y1); g.stroke();
-  g.lineWidth = needle ? 2.4 : 1.8;
+  g.lineWidth = needle ? 3 : 1.8;
   for (let j = 0; j < nodes; j++) {
-    const y = y0 + (y1 - y0) * j / (nodes - 1), last = j === nodes - 1;
+    const t = j / (nodes - 1), y = y0 + (y1 - y0) * t, last = j === nodes - 1;
     for (let m = 0; m < per; m++) {
       const side = per > 1 ? (m ? 1 : -1) : (j % 2 ? 1 : -1);
-      // The topmost leaf continues the twig; the rest stand off it.
-      const a = last && per === 1 ? (rnd() - 0.5) * 0.3 : side * (0.75 + rnd() * 0.3);
+      // How far a leaf stands off the shoot; the last one continues it.
+      const off = cluster ? 1.15 - 0.45 * t + (rnd() - 0.5) * 0.35 : 0.75 + rnd() * 0.3;
+      const a = last && per === 1 ? (rnd() - 0.5) * 0.3 : side * off;
       g.save();
       g.translate(W / 2, H - y); g.rotate(a);
       if (needle) { g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -len * (0.75 + 0.25 * rnd())); g.stroke(); }
-      else _wdPaintLeaf(g, shape, len * (0.8 + 0.22 * rnd()));
+      else if (cluster) {                              // on its stalk, clear of the next
+        const st = len * 0.1;
+        g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -st); g.stroke();
+        g.translate(0, -st);
+        _wdPaintLeaf(g, shape, len * (0.62 + 0.3 * rnd()));
+      } else _wdPaintLeaf(g, shape, len * (0.8 + 0.22 * rnd()));
       g.restore();
     }
   }
@@ -201,7 +217,8 @@ function _wdSpray(shape, perNode) {
   // The shadow of a card is the shadow of its leaves.
   const depth = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking,
                                               alphaMap: map, alphaTest: WOODY_CUT });
-  sp = { key: 'cut:' + key, map, depth, test: WOODY_CUT, cover, w: wide, h: H / len, leaves: K };
+  sp = { key: 'cut:' + key, map, depth, test: WOODY_CUT, cover, w: wide, h: H / len, leaves: K,
+         cluster };
   _WD_SPRAYS.set(key, sp);
   return sp;
 }
@@ -271,6 +288,7 @@ function _wdChild(G, p, tg, len, r, quota, psi) {
   const a = psi + rng() * 0.6, th = 0.55 + rng() * 0.4;
   const e = _lbMix(u, w, Math.cos(a), Math.sin(a)), out = _lbUnit([p[0], 0, p[2]]);
   let c = _lbMix(tg, e, Math.cos(th), Math.sin(th));
+  if (P.form === 'mat') c = [c[0] * 0.5, Math.abs(c[1]) * 0.5, c[2] * 0.5];
   c = [c[0] + out[0] * bias[1], c[1] + bias[0], c[2] + out[2] * bias[1]];
   if (c[1] < 0) c[1] *= -0.3;                          // a branch does not grow into the ground
   c = _lbUnit(c);
@@ -295,26 +313,28 @@ function _woodyStems(G) {
   const reach = _wdClamp(0.9 * R / Math.sqrt(N) + 0.12 * H, 0.08 * H, 0.5 * Math.max(R, H))
     * (P.form === 'thicket' ? 0.55 : 1);
   for (let i = 0; i < N; i++) {
-    const fr = N === 1 ? 0 : Math.sqrt((i + 0.5) / N), a = rot + i * 2.39996;
+    // Where it stands, 0 at the middle to 1 at the edge: of a few, one is in the middle.
+    const fr = Math.sqrt((i + (N < 8 ? 0 : 0.5)) / N), a = rot + i * 2.39996;
     const dx = Math.cos(a), dz = Math.sin(a), jit = 0.85 + 0.15 * rng();
     const base = [dx * rb * fr, 0, dz * rb * fr];
-    let at, clear = 0.3;
+    // `clear`: how far up a stem its first branch leaves. A shrub in leaf is
+    // leafy nearly to the ground.
+    let at, clear = 0.15;
     if (P.form === 'thicket') {                   // upright, the outer ones shorter
       const h = H * (1 - 0.4 * fr * fr) * jit, lean = h * (0.03 + 0.08 * fr);
       at = (t) => [base[0] + dx * lean * t * t, h * t, base[2] + dz * lean * t * t];
-      clear = 0.22;
+      clear = 0.12;
     } else if (P.form === 'arching' || P.form === 'mat') {   // up and over, or along the ground
-      const mat = P.form === 'mat', far = R * (mat ? 0.5 + 0.45 * fr : 0.45 + 0.5 * fr);
-      const hp = H * (mat ? 0.12 : 1.5) * jit;
-      const p1 = [dx * far * (mat ? 0.55 : 0.3), hp, dz * far * (mat ? 0.55 : 0.3)];
-      const p2 = [dx * far, H * (mat ? 0.3 : 0.5) * jit, dz * far];
+      const mat = P.form === 'mat', far = R * (mat ? 0.45 + 0.5 * fr : 0.45 + 0.5 * fr);
+      const p1 = [dx * far * (mat ? 0.55 : 0.4), H * (mat ? 0.1 : 1.75) * jit, dz * far * (mat ? 0.55 : 0.4)];
+      const p2 = [dx * far, H * (mat ? 0.12 : 0.28) * jit, dz * far];
       at = (t) => {
         const s = 1 - t;
         return [s * s * base[0] + 2 * s * t * p1[0] + t * t * p2[0],
                 2 * s * t * p1[1] + t * t * p2[1],
                 s * s * base[2] + 2 * s * t * p1[2] + t * t * p2[2]];
       };
-      clear = mat ? 0.12 : 0.25;
+      clear = 0.08;
     } else {                                      // a vase: the outer stems lean out
       const tipR = R * 0.8 * Math.pow(fr, 0.8), tipY = H * (0.97 - 0.42 * Math.pow(fr, 1.5)) * jit;
       at = (t) => [base[0] + (dx * tipR - base[0]) * Math.pow(t, 1.7), tipY * t,
@@ -328,8 +348,13 @@ function _woodyStems(G) {
     for (let j = 0; j < kids; j++) {
       const f = clear + (0.95 - clear) * (j + 0.3 + 0.4 * rng()) / kids;
       const tg = _lbUnit(_lbAdd(at(Math.min(1, f + 0.05)), at(Math.max(0, f - 0.05)), -1));
-      _wdChild(G, at(f), tg, reach * (1 - 0.35 * f) * (0.8 + 0.4 * rng()),
-               rs * (1 - 0.6 * f) * 0.55, (quota - 1) / kids, turn + j * 2.39996);
+      const p = at(f);
+      // A mat's shoots stand up from its limbs to the top of the mound there.
+      const len = P.form === 'mat'
+        ? Math.max(0.15 * H, H * _wdEnvelope('mat', Math.min(1, Math.hypot(p[0], p[2]) / R)) - p[1])
+        : reach * (1 - 0.35 * f);
+      _wdChild(G, p, tg, len * (0.8 + 0.4 * rng()), rs * (1 - 0.6 * f) * 0.55,
+               (quota - 1) / kids, turn + j * 2.39996);
     }
   }
 }
@@ -382,7 +407,7 @@ function _woodyLeaves(G) {
       const T = _lbUnit(_lbAdd(D, Nn, -dn)), S = _lbCross(Nn, T);
       const hh = h * (0.8 + 0.4 * rng());
       _wdCard(F, at, T, S, w * (0.85 + 0.3 * rng()), hh, shade);
-      G.tips.push(_lbAdd(at, T, hh * 0.8));
+      G.tips.push(_lbAdd(at, T, hh * 0.65));
     }
   });
 }
@@ -439,7 +464,11 @@ function buildWoodyGeo(p, v) {
   // twigs when the leaves are down, from a quarter of the way up, in an order
   // that spreads any few of them round the crown (15b-anchors.js).
   const spread = (pts) => {
-    const ends = pts.map(q => ({ x: q[0] * sxz, y: q[1] * sy, z: q[2] * sxz }))
+    // The outermost two fifths: a shrub flowers where its shoots reach the light.
+    const far = (q) => Math.hypot(Math.hypot(q[0], q[2]) / P.R, q[1] / P.H);
+    const cut = pts.map(far).sort((x, y) => x - y)[Math.floor(pts.length * 0.6)] || 0;
+    const ends = pts.filter(q => far(q) >= cut)
+      .map(q => ({ x: q[0] * sxz, y: q[1] * sy, z: q[2] * sxz }))
       .filter(e => e.y >= 0.25 || P.form === 'mat');
     const out = [];
     for (let i = 0, j = 0; i < ends.length; i++, j = (j + 37) % ends.length) {
