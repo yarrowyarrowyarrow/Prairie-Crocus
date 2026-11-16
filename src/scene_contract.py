@@ -68,8 +68,11 @@ Scene schema (``SCENE_VERSION`` = 1)::
                                        #   wildlife alike. A vine's habit and
                                        #   host (src/vine_habit.py, V2.89); a
                                        #   wetland plant's body and the water
-                                       #   under it (src/pond_habit.py, V2.90).
-                                       #   Both carry x, y, height_m, canopy_m
+                                       #   under it (src/pond_habit.py, V2.90);
+                                       #   a wildflower's own leaves and stems
+                                       #   once its numbers were read
+                                       #   (src/herb_habit.py, V3.48).
+                                       #   All carry x, y, height_m, canopy_m
                                        # bark_color / fall_color / leaf_size_cm:
                                        #   botanical morphology (schema v47) —
                                        #   the species' real trunk colour, its
@@ -618,6 +621,12 @@ def build_scene(project: dict, *, year: int = 0,
             # single-leadered paper birch were the same sprite.
             "branching": plant.get("branching") or "",
             "growth_form": plant.get("growth_form") or "",
+            # Whether leaves sit at the ground too, and whether the leaf and
+            # habit numbers were read or are the seeder's estimate (V3.48):
+            # what src/herb_habit.py decides a wildflower's body from.
+            "basal_rosette": 1 if plant.get("basal_rosette") else 0,
+            "stem_leaf_nodes": plant.get("stem_leaf_nodes"),
+            "leaf_data_source": plant.get("leaf_data_source") or "",
             "opacity": opacity,
             "health": health,
             "health_state": health_state,
@@ -864,6 +873,11 @@ def build_scene(project: dict, *, year: int = 0,
     # (V2.93, F177). Additive; an older viewer draws the mat or bush it did.
     from src.succulent_habit import apply_succulent_habits
     apply_succulent_habits(plants)
+    # A wildflower whose leaves somebody read is drawn from those numbers, at
+    # their size (V3.48, F268). Additive; an older viewer, and a plant whose
+    # numbers are still an estimate, keep the baked figure.
+    from src.herb_habit import apply_herb_habits
+    apply_herb_habits(plants)
     # The season (V3.46, F263): how far up a herb is, whether a woody plant is
     # in leaf, whether snow lies, from the region pack's frost dates. Last,
     # because a body decides whether a season applies to it. Additive; a

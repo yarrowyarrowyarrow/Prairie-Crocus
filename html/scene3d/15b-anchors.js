@@ -39,6 +39,8 @@ function noteBloomBody(p, geo, x, gy, z, sxz, sy, rotY) {
 // The highest point of the body in each cell of a grid laid over it: its stem
 // tips, tallest first. Points in the lower three quarters are leaves, not tips.
 function _stemTips(geo) {
+  // A body built from the plant's own numbers says where its stems end (03c-leafy.js).
+  if (geo.userData && geo.userData.tips) return geo.userData.tips;
   let tips = _TIP_CACHE.get(geo.uuid);
   if (tips) return tips;
   const pos = geo.attributes.position, G = 9, cells = new Map();

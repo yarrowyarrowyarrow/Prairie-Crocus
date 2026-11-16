@@ -36,12 +36,12 @@ do are not the ones you would guess. This is the honest map, traced through
 | `leaf_surface` | `01b-surface.js` | Matte / glossy / hairy / waxy grain. |
 | `branching` | `02-plants.js` | Woody silhouette — trees and shrubs only. |
 
-**The caution.** `leaf_shape` has nineteen values but the renderer collapses
+**The caution.** `leaf_shape` has twenty-one values but the baked models collapse
 them into **four blade classes**:
 
 - **narrow** — `linear`, `needle`, `awl`, `scale`, `lanceolate`
-- **cut** — `lobed`, `pinnatifid`, `sagittate`
-- **compound** — `trifoliate`, `compound_pinnate`, `compound_palmate`, `bipinnate`
+- **cut** — `lobed`, `palmately_lobed`, `pinnatifid`, `sagittate`
+- **compound** — `trifoliate`, `compound_pinnate`, `compound_palmate`, `bipinnate`, `ternate`
 - **broad** — everything else (`elliptic`, `ovate`, `obovate`, `orbicular`,
   `cordate`, `reniform`, `spatulate`)
 
@@ -159,11 +159,13 @@ in three different blade classes.
 | <img src="img/botany/leaf_shape-reniform.svg" width="76"> | `reniform` | Kidney-shaped: wider than long, shallow notch at the base, no point at the tip. |
 | <img src="img/botany/leaf_shape-sagittate.svg" width="76"> | `sagittate` | Arrowhead-shaped: pointed tip, with two lobes pointing backwards past the stalk. |
 | <img src="img/botany/leaf_shape-lobed.svg" width="76"> | `lobed` | Rounded projections with the notches between them stopping well short of the midrib. An oak. |
+| <img src="img/botany/leaf_shape-palmately_lobed.svg" width="76"> | `palmately_lobed` | Lobes fanned out from the top of the stalk, like a maple. Currants, alumroot, anemones. |
 | <img src="img/botany/leaf_shape-pinnatifid.svg" width="76"> | `pinnatifid` | Cut so deeply the notches nearly reach the midrib — but the blade is still one piece. |
 | <img src="img/botany/leaf_shape-trifoliate.svg" width="76"> | `trifoliate` | Three separate leaflets on one stalk. Clover, strawberry. |
 | <img src="img/botany/leaf_shape-compound_pinnate.svg" width="76"> | `compound_pinnate` | Separate leaflets in two rows along a central stalk, like a feather. |
 | <img src="img/botany/leaf_shape-compound_palmate.svg" width="76"> | `compound_palmate` | Separate leaflets all radiating from one point, like fingers from a palm. |
 | <img src="img/botany/leaf_shape-bipinnate.svg" width="76"> | `bipinnate` | Twice divided — each division is itself pinnate. Yarrow's ferny foliage. |
+| <img src="img/botany/leaf_shape-ternate.svg" width="76"> | `ternate` | Divided in threes, and each third in threes again, with broad leaflets. Columbine, meadow-rue. |
 
 ---
 

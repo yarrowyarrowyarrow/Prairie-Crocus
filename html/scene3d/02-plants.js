@@ -533,10 +533,10 @@ function shrubProfileFor(p) {
 // to the neutral one, silently losing the species' identity).
 const BLADE_CLASSES = ['narrow', 'broad', 'cut', 'compound'];
 const _COMPOUND_SHAPES = ['trifoliate', 'compound_pinnate', 'compound_palmate',
-                          'bipinnate'];
+                          'bipinnate', 'ternate'];
 const _NARROW_SHAPES = ['linear', 'strap', 'needle', 'awl', 'scale',
                         'lanceolate'];
-const _CUT_SHAPES = ['lobed', 'pinnatifid', 'sagittate'];
+const _CUT_SHAPES = ['lobed', 'pinnatifid', 'sagittate', 'palmately_lobed'];
 function bladeClassFor(leafShape) {
   const sh = (leafShape || '').toLowerCase();
   if (_COMPOUND_SHAPES.indexOf(sh) >= 0) return 'compound';

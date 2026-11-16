@@ -507,7 +507,11 @@ class TestStructuralCeilings(unittest.TestCase):
         # Stylised half of F178 took it to 758/700 — the split the ceiling
         # asks for, along the herbs/trees seam.
         (_HTML / "scene3d" / "03b-trees.js", 450),     # ~339 now
-        (_HTML / "scene3d" / "04-quality.js", 900),    # 896 now (V2.93): move code out first
+        # V3.48 (F268): a wildflower built from its own leaf, arrangement and
+        # stem count once those were read. When this trips, the leaf outlines
+        # (_lbBlade, _lbLeaf) are the seam: they know nothing of the forms.
+        (_HTML / "scene3d" / "03c-leafy.js", 680),     # 583 now
+        (_HTML / "scene3d" / "04-quality.js", 900),    # 899 now (V3.48): move code out first
         (_HTML / "scene3d" / "05-flowers.js", 800),    # 775 now (V3.04)
         (_HTML / "scene3d" / "06-fly.js", 950),        # ~732 now
         (_HTML / "scene3d" / "07-wildlife.js", 800),   # ~550 now

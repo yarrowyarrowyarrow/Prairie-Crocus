@@ -20,6 +20,9 @@ window.SCENE3D_CHUNKS = [
   'scene3d/02c-site.js',
   'scene3d/03-herbs.js',
   'scene3d/03b-trees.js',   // V2.92: the procedural trees, split from 03-herbs
+  // V3.48: a wildflower built from its own leaf, arrangement and stem count
+  // where those were read (F268). After 03-herbs.js for its leaf outlines.
+  'scene3d/03c-leafy.js',
   'scene3d/04-quality.js',
   'scene3d/05-flowers.js',
   'scene3d/06-fly.js',

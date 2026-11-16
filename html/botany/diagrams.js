@@ -188,8 +188,8 @@ var LEAF_SHAPE_ORDER = [
   // Blades with a notched or lobed base.
   'cordate', 'reniform', 'sagittate',
   // The cut continuum: shallow → deep → all the way through.
-  'lobed', 'pinnatifid', 'trifoliate', 'compound_pinnate',
-  'compound_palmate', 'bipinnate'
+  'lobed', 'palmately_lobed', 'pinnatifid', 'trifoliate', 'compound_pinnate',
+  'compound_palmate', 'bipinnate', 'ternate'
 ];
 
 /* A short leaf stalk, drawn below the blade so the base of the blade reads as
@@ -279,6 +279,24 @@ var LEAF_SHAPES = {
       blade(cut(profile(26, 0.52, 1.05), 2.5, 0.52), { length: 74, samples: 200 });
   },
 
+  palmately_lobed: function () {
+    // Lobes fanned from the top of the stalk, joined for the lower half of
+    // their length: a maple, a currant, an alumroot. The next-door `lobed` has
+    // its lobes down both sides of a midrib. Drawn as five blades from one
+    // point, wide enough to close into one leaf below the notches.
+    var out = line(50, 96, 50, 74, C.stem, 2.0), i;
+    var ang = [-78, -40, 0, 40, 78], len = [34, 46, 54, 46, 34];
+    for (i = 0; i < 5; i++) {
+      out += leaflet(50, 74, len[i], len[i] * 0.30, ang[i],
+                     { widestAt: 0.50, blunt: 1.2, midrib: false });
+    }
+    for (i = 0; i < 5; i++) {
+      out += '<g transform="rotate(' + ang[i] + ' 50 74)">' +
+        line(50, 74, 50, 74 - len[i] * 0.86, C.vein, 1.0) + '</g>';
+    }
+    return out;
+  },
+
   pinnatifid: function () {
     // Cut almost to the midrib — but the blade is still one continuous piece,
     // and that strip down the middle is the whole distinction from compound.
@@ -340,6 +358,21 @@ var LEAF_SHAPES = {
       out += pinna(y, 66) + pinna(y, -66);
     }
     return out + pinna(32, 0);
+  },
+
+  ternate: function () {
+    // Divided in threes, and each third in threes again, the leaflets broad
+    // and round-lobed: a columbine, a meadow-rue, a baneberry. As wide as it
+    // is long, where the feather next to it is several times longer than wide.
+    function three(cx, cy, angle) {
+      var g = line(cx, cy, cx, cy - 16, C.stem, 1.4) +
+        leaflet(cx, cy - 16, 17, 6.5, 0, { widestAt: 0.62, blunt: 1.1, midrib: false }) +
+        leaflet(cx, cy - 16, 15, 6, -64, { widestAt: 0.62, blunt: 1.1, midrib: false }) +
+        leaflet(cx, cy - 16, 15, 6, 64, { widestAt: 0.62, blunt: 1.1, midrib: false });
+      return '<g transform="rotate(' + n(angle) + ' ' + n(cx) + ' ' + n(cy) + ')">' + g + '</g>';
+    }
+    return line(50, 96, 50, 66, C.stem, 2.0) +
+      three(50, 66, 0) + three(50, 66, -62) + three(50, 66, 62);
   }
 };
 
@@ -599,11 +632,13 @@ var BOTANY_GLOSSARY = {
     reniform: 'Kidney-shaped: wider than long, shallow notch at the base, no point at the tip.',
     sagittate: 'Arrowhead-shaped: pointed tip, with two lobes pointing backwards past the stalk.',
     lobed: 'Rounded projections with the notches between them stopping well short of the midrib. An oak.',
+    palmately_lobed: 'Lobes fanned out from the top of the stalk, like a maple. Currants, alumroot, anemones.',
     pinnatifid: 'Cut so deeply the notches nearly reach the midrib — but the blade is still one piece.',
     trifoliate: 'Three separate leaflets on one stalk. Clover, strawberry.',
     compound_pinnate: 'Separate leaflets in two rows along a central stalk, like a feather.',
     compound_palmate: 'Separate leaflets all radiating from one point, like fingers from a palm.',
-    bipinnate: 'Twice divided — each division is itself pinnate. Yarrow’s ferny foliage.'
+    bipinnate: 'Twice divided — each division is itself pinnate. Yarrow’s ferny foliage.',
+    ternate: 'Divided in threes, and each third in threes again, with broad leaflets. Columbine, meadow-rue.'
   },
 
   leaf_arrangement: {

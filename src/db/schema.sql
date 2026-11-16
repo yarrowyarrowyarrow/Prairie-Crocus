@@ -219,7 +219,15 @@ CREATE TABLE IF NOT EXISTS plants (
     -- pair, because they get verified in different sittings from different
     -- sources — a photograph settles petal count, a flora settles leaf length.
     leaf_data_source TEXT DEFAULT '',
-    leaf_data_citation TEXT DEFAULT ''
+    leaf_data_citation TEXT DEFAULT '',
+    -- How many leaves stand up one stem of a grown plant (schema v98, V3.48):
+    -- single leaves, pairs or whorls, each counted once. A fireweed stem holds
+    -- about sixty and a columbine's three, and nothing else recorded says so:
+    -- the 3D viewer spaced leaves by a multiple of their length, which drew
+    -- the columbine as a spiral stair. Counted off a photograph and covered by
+    -- the leaf provenance pair above. NULL leaves it to the viewer's spacing
+    -- estimate (html/scene3d/03c-leafy.js INTERNODE), which says it is one.
+    stem_leaf_nodes INTEGER
 );
 
 -- Companion pairings (schema v61: + source/notes).

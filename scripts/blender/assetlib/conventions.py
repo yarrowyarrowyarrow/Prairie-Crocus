@@ -397,11 +397,12 @@ def blade_class(leaf_shape):
     """Construction class for a recorded ``leaf_shape``. Unknown → 'broad',
     which is the profile the herb forms carried before there was any data."""
     sh = (leaf_shape or "").lower()
-    if sh in ("trifoliate", "compound_pinnate", "compound_palmate", "bipinnate"):
+    if sh in ("trifoliate", "compound_pinnate", "compound_palmate", "bipinnate",
+              "ternate"):
         return "compound"
     if sh in ("linear", "strap", "needle", "awl", "scale", "lanceolate"):
         return "narrow"
-    if sh in ("lobed", "pinnatifid", "sagittate"):
+    if sh in ("lobed", "pinnatifid", "sagittate", "palmately_lobed"):
         return "cut"
     return "broad"
 

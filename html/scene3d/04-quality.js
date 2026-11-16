@@ -585,7 +585,8 @@ function getHerbArch(formName, v, vkey, morph) {
   const key = formName + '_' + v + '_' + vkey + '_q' + QUALITY;
   let a = HERB_CACHE.get(key);
   if (a) return a;
-  a = (useGLB() && window.glbHerbArch && window.glbHerbArch(formName, vkey)) ||
+  a = (formName === 'leafy' && buildLeafyGeo(morph, v)) ||     // 03c-leafy.js (V3.48)
+      (useGLB() && window.glbHerbArch && window.glbHerbArch(formName, vkey)) ||
       buildPerennialGeo(mulberry32(29 + v * 89 + formName.charCodeAt(0) * 7),
                         HERB_FORMS[formName], morph);
   HERB_CACHE.set(key, a);
@@ -616,12 +617,13 @@ function buildHerbLayer(list, month, year, terrain) {
   if (!list || !list.length) return;
   const buckets = {};
   for (const p of list) {
-    const formName = herbFormFor(p);
+    const own = window.leafyKeyFor && leafyKeyFor(p);   // its own numbers (V3.48)
+    const formName = own ? 'leafy' : herbFormFor(p);
     const v = hashPid(p.plant_id) % HERB_VARIANTS;
     // The variant key is part of the bucket key because it changes the geometry:
     // two species sharing a form but not a leaf would otherwise be instanced from
     // whichever of them the bucket happened to build first.
-    const vkey = variantKeyFor(p, 'herb', formName);
+    const vkey = own || variantKeyFor(p, 'herb', formName);
     // Leaf surface joins the key for the same reason it does on trees: one mesh,
     // one material. It pays off most here — the woolly and silvery forbs
     // (pussytoes, pearly everlasting, the sages, silky lupine) are where a
@@ -629,7 +631,7 @@ function buildHerbLayer(list, month, year, terrain) {
     const surf = leafSurfaceFor(p);
     const bk = formName + '_' + v + '_' + vkey + '_' + surf;
     (buckets[bk] = buckets[bk]
-      || { formName, v, vkey, surf, morph: morphOf(p, 'herb'), items: [] })
+      || { formName, v, vkey, surf, morph: own ? p : morphOf(p, 'herb'), items: [] })
       .items.push(p);
   }
   for (const key in buckets) {
@@ -755,8 +757,8 @@ function buildPlants(group, plants, month, year, terrain) {
     const pb = p.drawn && p.drawn.body;
     if (p.growth_form === 'jointed' || pb === 'whorled') { byKind.horsetail.push(p); continue; }
     if (window.SUCCULENT_BODIES && SUCCULENT_BODIES[pb]) { byKind.succulent.push(p); continue; }
-    if (pb && pb !== 'reed' && pb !== 'herb') { byKind.pond.push(p); continue; }
-    let t = pb === 'herb' ? 'herb' : p.plant_type;
+    if (pb && pb !== 'reed' && pb !== 'herb' && pb !== 'leafy') { byKind.pond.push(p); continue; }
+    let t = pb === 'herb' || pb === 'leafy' ? 'herb' : p.plant_type;
     if (t === 'sedge' || t === 'rush') t = 'grass';   // graminoids share blades
     const k = byKind[t] ? t : 'herb';
     byKind[k].push(p);

@@ -101,6 +101,10 @@ FLOWER_FIELDS = ("flower_arch", "flower_symmetry", "petal_shape", "petal_count",
 # fidelity-per-minute work available in the catalogue.
 LEAF_FIELDS = ("leaf_shape", "leaf_size_cm", "leaf_arrangement", "leaf_surface",
                "growth_form", "branching", "mature_height_m",
+               # V3.48: leaves (or pairs, or whorls) up one stem, counted off
+               # a photograph. Written by scripts/leaf_readings.py; listed here
+               # so the bench carries it through a save untouched.
+               "stem_leaf_nodes",
                "leaf_data_source", "leaf_data_citation")
 
 FIELDS = FLOWER_FIELDS + LEAF_FIELDS
@@ -121,7 +125,7 @@ DATA_SOURCES = ("estimated", "photo", "flora", "measured")
 
 # Numbers, so a blank round-trips as null rather than "".
 _INT_FIELDS = ("petal_count", "florets_per_head", "basal_rosette",
-               "flowering_stems")
+               "flowering_stems", "stem_leaf_nodes")
 _FLOAT_FIELDS = ("flower_diameter_cm", "flower_height_frac", "leaf_size_cm",
                  "mature_height_m")
 

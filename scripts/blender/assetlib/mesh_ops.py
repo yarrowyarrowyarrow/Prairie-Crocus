@@ -219,11 +219,12 @@ def _leaf_width(shape, t):
         # Arrowhead: flared basal lobes, then a long taper.
         return (1.15 if t < 0.16 else
                 max(0.08, math.sin(math.pi * tc) ** 0.9 * 0.95))
-    if shape in ("lobed", "pinnatifid", "bipinnate"):
+    if shape in ("lobed", "pinnatifid", "bipinnate", "palmately_lobed"):
         # Deeply cut blades read as a lobed silhouette on a flat ribbon: a
         # sinusoid on the base profile. True notches would need a triangulated
         # outline, which costs 2-3x the triangles for a sub-centimetre effect.
-        lobes = 3 if shape == "lobed" else (5 if shape == "pinnatifid" else 7)
+        lobes = (3 if shape in ("lobed", "palmately_lobed")
+                 else (5 if shape == "pinnatifid" else 7))
         wobble = 1.0 - (0.45 if shape == "bipinnate" else 0.32) * (
             0.5 - 0.5 * math.cos(2 * math.pi * lobes * tc))
         return max(0.06, math.sin(math.pi * tc) ** 0.7 * wobble)
@@ -245,14 +246,17 @@ LEAF_WIDTH_RATIO = {
     "sagittate": 0.55, "lobed": 0.75, "pinnatifid": 0.42, "bipinnate": 0.35,
     "trifoliate": 0.85, "compound_pinnate": 0.45, "compound_palmate": 0.9,
     "strap": 0.06,
+    # V3.48: as wide as long. The baked models draw them as their class's
+    # representative; html/scene3d/03c-leafy.js draws the outlines themselves.
+    "palmately_lobed": 1.0, "ternate": 1.0,
 }
 
 # Blades stamped as a rachis carrying leaflets rather than one ribbon.
 COMPOUND_SHAPES = frozenset({"trifoliate", "compound_pinnate",
-                             "compound_palmate", "bipinnate"})
+                             "compound_palmate", "bipinnate", "ternate"})
 # Leaflet pairs (plus a terminal leaflet) per compound outline.
 _LEAFLET_PAIRS = {"trifoliate": 1, "compound_pinnate": 3,
-                  "compound_palmate": 2, "bipinnate": 4}
+                  "compound_palmate": 2, "bipinnate": 4, "ternate": 1}
 
 
 def leaflet_frac(shape, pairs):

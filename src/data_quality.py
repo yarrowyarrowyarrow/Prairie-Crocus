@@ -115,7 +115,15 @@ LEAF_SHAPES       = {"needle", "awl", "scale", "linear", "lanceolate",
                      # (prairie crocus, thistle) or "twice-divided" (yarrow,
                      # meadow rue) — between them a large share of the flora.
                      "spatulate", "reniform", "sagittate", "pinnatifid",
-                     "bipinnate"}
+                     "bipinnate",
+                     # V3.48, from the reference photographs: `lobed` is an
+                     # oak's leaf, lobes down both sides of a midrib, and it
+                     # was the only word for a currant's, an alumroot's or an
+                     # anemone's, whose lobes fan from the stalk like a
+                     # maple's. And a columbine's or a meadow-rue's leaf is
+                     # divided in threes and in threes again, with round
+                     # leaflets: not a yarrow's feather (`bipinnate`).
+                     "palmately_lobed", "ternate"}
 LEAF_ARRANGEMENTS = {"alternate", "opposite", "whorled", "fascicled", "basal"}
 BRANCHING_HABITS  = {"excurrent", "decurrent", "multi_stem", "suckering",
                      "arching", "prostrate", "rosette"}
@@ -137,7 +145,13 @@ GROWTH_FORMS      = {"erect", "ferny", "rosette", "clump", "grassy", "mat",
                      # flat pads (the prickly pears) and a spiny ball (the ball
                      # cactus), drawn by src/succulent_habit.py. "succulent" is
                      # the rest: fleshy leaves on an ordinary stem or mat.
-                     "pads", "globose"}
+                     "pads", "globose",
+                     # V3.48: separate upright shoots from creeping roots,
+                     # spread over the ground the plant covers (bunchberry,
+                     # wild lily-of-the-valley, Canada anemone). `erect` and
+                     # `clump` are stems from one crown; drawn as one, a
+                     # carpet of single stems was a fan (src/herb_habit.py).
+                     "colony"}
 # Surface character (schema v52). What a species' bark and foliage look like
 # close up — the 3D viewer's procedural grain (html/scene3d/01b-surface.js).
 # Empty is meaningful and common: a per-genus bark default and a matte leaf.
@@ -479,6 +493,15 @@ def validate_plant(
         err(f"leaf_size_cm={record.get('leaf_size_cm')!r} is not a number")
     elif leaf_cm is not None and not (0.1 <= leaf_cm <= 120):
         err(f"leaf_size_cm={leaf_cm} out of range 0.1–120 cm")
+
+    # stem_leaf_nodes (schema v98): leaves, pairs or whorls up one stem. A
+    # whole number; 80 is more than a fireweed carries.
+    nodes = record.get("stem_leaf_nodes")
+    if nodes not in (None, ""):
+        if isinstance(nodes, bool) or not isinstance(nodes, int):
+            err(f"stem_leaf_nodes={nodes!r} is not a whole number")
+        elif not 1 <= nodes <= 80:
+            err(f"stem_leaf_nodes={nodes} out of range 1–80")
 
     # ── Soft enums (deviations = warning) ────────────────────────────────
     val = (record.get("growth_curve") or "").strip()
