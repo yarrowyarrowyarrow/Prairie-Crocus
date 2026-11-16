@@ -143,6 +143,12 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
             elif field in FLAGS and value not in (0, 1):
                 out.append(f"{sci}: {field} must be 0 or 1")
         merged = {**row, **reading}
+        # A rayless head (a thistle, pussytoes, pearly everlasting, Joe-Pye)
+        # records no rays: its white "petals" are bracts. And a count is per
+        # flower or per head's rays, never the florets in a head.
+        if (reading.get("petal_count") or 0) > 0 and merged.get("petal_shape") == "tubular":
+            out.append(f"{sci}: petal_count on a rayless head (petal_shape tubular) "
+                       f"must stay 0")
         for field in NEEDED:
             if not merged.get(field):
                 out.append(f"{sci}: {field} is not recorded and was not read")
