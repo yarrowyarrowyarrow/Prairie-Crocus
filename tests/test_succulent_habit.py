@@ -250,10 +250,15 @@ class TheViewerAgrees(unittest.TestCase):
         self.assertIn("'scene3d/24-succulents.js'", chunks)
 
     def test_the_flowers_and_fruit_ask_where_the_body_is(self):
-        for name in ("05-flowers.js", "11-fruit.js", "15-florets.js"):
+        # The fruit and the florets ask 15b-anchors.js (V3.48), which asks the
+        # succulent's own anchors before any other body's.
+        for name in ("05-flowers.js", "15b-anchors.js"):
             with self.subTest(name):
                 self.assertTrue("succulentAnchorsFor(p)" in self._js(name),
                                 f"{name} does not put blooms on a succulent's body")
+        for name in ("11-fruit.js", "15-florets.js"):
+            with self.subTest(name):
+                self.assertIn("bloomAnchors(p,", self._js(name))
 
     def test_the_herb_fallback_knows_the_new_habits(self):
         """Should the chunk ever fail, a cactus falls back to the herb mat, and
