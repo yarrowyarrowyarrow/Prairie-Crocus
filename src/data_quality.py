@@ -503,6 +503,15 @@ def validate_plant(
         elif not 1 <= nodes <= 80:
             err(f"stem_leaf_nodes={nodes} out of range 1–80")
 
+    # woody_stems (schema v99): the stems a grown shrub sends up from the
+    # ground. A whole number; a willow thicket's footprint holds a few dozen.
+    stems = record.get("woody_stems")
+    if stems not in (None, ""):
+        if isinstance(stems, bool) or not isinstance(stems, int):
+            err(f"woody_stems={stems!r} is not a whole number")
+        elif not 1 <= stems <= 60:
+            err(f"woody_stems={stems} out of range 1–60")
+
     # ── Soft enums (deviations = warning) ────────────────────────────────
     val = (record.get("growth_curve") or "").strip()
     if val and val not in GROWTH_CURVES:

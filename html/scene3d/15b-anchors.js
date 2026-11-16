@@ -61,6 +61,8 @@ function _stemTips(geo) {
 // The outermost point of a crown in each bearing and height band, from a
 // quarter of the way up. Ordered so that any few of them are spread round it.
 function _crownPoints(geos) {
+  // A shrub built from its own numbers says where its shoots end (03d-woody.js).
+  if (geos[0].userData && geos[0].userData.crown) return geos[0].userData.crown;
   const key = geos.map(g => g.uuid).join('|');
   let pts = _CROWN_CACHE.get(key);
   if (pts) return pts;

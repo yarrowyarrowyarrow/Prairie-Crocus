@@ -555,26 +555,8 @@ function buildLayer(list, variants, mat, archOf, scaleOf, month, year, noRot,
   });
 }
 
-// Shrub archetypes are profile-specific (growth form, red-stem dogwood…), so
-// they're cached by (profile × variant × quality) like trees rather than the
-// flat ARCH.shrub array. buildShrubGeo returns {foliageGeo, stemGeo} — the
-// faceted leaf masses and the woody stems, each shaded/coloured separately.
-const SHRUB_VARIANTS = 3;
-const SHRUB_CACHE = new Map();
-// `morph` is the species' leaf characters and `vkey` their baked-variant name
-// (02-plants.js variantKeyFor). Both belong in the cache key: they select a
-// DIFFERENT geometry, so leaving them out would hand a rose the dogwood's leaves
-// whenever the two shared a profile and variant.
-function getShrubArch(prof, v, vkey, morph) {
-  const key = prof.id + '_' + v + '_' + vkey + '_q' + QUALITY;
-  let a = SHRUB_CACHE.get(key);
-  if (a) return a;
-  a = (useGLB() && window.glbShrubArch && window.glbShrubArch(prof.form, vkey)) ||
-      buildShrubGeo(mulberry32(13 + v * 97 + prof.id.charCodeAt(0) * 7), prof,
-                    morph);
-  SHRUB_CACHE.set(key, a);
-  return a;
-}
+// The shrub layer (getShrubArch, buildShrubLayer, SHRUB_CACHE) is in
+// 03d-woody.js since V3.49: this file was at its ceiling.
 
 // Herb archetypes are growth-form specific (HERB_CACHE), cached by
 // (form × variant × quality). One green geometry per form (leaves + stems +
@@ -665,72 +647,6 @@ function buildHerbLayer(list, month, year, terrain) {
   }
 }
 
-function buildShrubLayer(list, month, year, terrain) {
-  if (!list || !list.length) return;
-  const buckets = {};
-  for (const p of list) {
-    const prof = shrubProfileFor(p);
-    const v = hashPid(p.plant_id) % SHRUB_VARIANTS;
-    const vkey = variantKeyFor(p, 'shrub');
-    const bark = barkClassFor(p), surf = leafSurfaceFor(p);
-    const bk = prof.id + '_' + v + '_' + vkey + '_' + bark + '_' + surf;
-    (buckets[bk] = buckets[bk]
-      || { prof, v, vkey, bark, surf, morph: morphOf(p, 'shrub'), items: [] })
-      .items.push(p);
-  }
-  for (const key in buckets) {
-    const { prof, v, vkey, morph, bark, surf, items } = buckets[key];
-    const arch = getShrubArch(prof, v, vkey, morph);
-    const places = items.map(p => spreadPlacements(p, year));
-    const total = places.reduce((s, pl) => s + pl.length, 0);
-    // Both paths carry colours (the GLB's baked shade, the procedural gradient).
-    // Without `true` they were off, and no shrub drew either until V2.96 (F188).
-    const foliage = instancedMesh(arch.foliageGeo, total,
-      surfaceMaterial(MAT_PRESETS.shrubLeaf, surf, true));
-    const stems = arch.stemGeo
-      ? instancedMesh(arch.stemGeo, total,
-                      surfaceMaterial(MAT_PRESETS.bark, bark,
-                                      !!arch.vertexColorBark))
-      : null;
-    // Woody stems take the species' own bark colour where the seed data has
-    // one — which is how red-osier dogwood gets its red, generalised from the
-    // genus special case that used to be the only way to say so.
-    const stemHex = items.length && items[0].bark_color
-      ? items[0].bark_color : (prof.redStems ? '#b5402e' : '#6b5236');
-    const names = new Array(total), ids = new Array(total);
-    let idx = 0;
-    items.forEach((p, ii) => {
-      const c = unitXZ(arch.foliageGeo, Math.max(0.25, p.canopy_m));
-      const h = bodyHeightOf(p);
-      const rotY0 = (indHash(p) % 628) / 100;
-      const col = bodyColor(p, month);                 // 01d-season.js
-      const scol = fadeToward(stemHex, p.opacity);
-      const lf = stems && leafless(p, month) ? 0.001 : 1;   // leaves down (V3.46)
-      places[ii].forEach((pl, k) => {
-        const m = pl.mul, x = p.x + pl.dx, wy = p.y + pl.dz;
-        const rotY = rotY0 + (k ? pl.dx : 0);
-        const gy = terrainHeightAt(x, wy, terrain);
-        if (!k && window.noteVineHost) {
-          noteVineHost(p, [arch.foliageGeo, arch.stemGeo], x, gy, -wy, c * m, h * m, rotY);
-        }
-        setInst2(foliage, idx, x, gy, -wy, c * m * lf, h * m * lf, c * m * lf, rotY, col);
-        if (stems) setInst2(stems, idx, x, gy, -wy, c * m, h * m, c * m, rotY, scol);
-        names[idx] = p.common_name || '';
-        ids[idx] = p.plant_id;
-        idx++;
-      });
-    });
-    foliage.userData.pick = names;
-    foliage.userData.pickId = ids;
-    // Pick from the stems too, the way trees already do from the trunk: a
-    // deciduous shrub in winter is nothing BUT stems, and it should still name
-    // and open on a click.
-    if (stems) { stems.userData.pick = names; stems.userData.pickId = ids; }
-    plantsGroup.add(foliage);
-    if (stems) plantsGroup.add(stems);
-  }
-}
-
 function buildPlants(group, plants, month, year, terrain) {
   if (plantsGroup) { disposeDesignGroup(plantsGroup); group.remove(plantsGroup); }
   plantsGroup = new THREE.Group();
@@ -757,7 +673,7 @@ function buildPlants(group, plants, month, year, terrain) {
     const pb = p.drawn && p.drawn.body;
     if (p.growth_form === 'jointed' || pb === 'whorled') { byKind.horsetail.push(p); continue; }
     if (window.SUCCULENT_BODIES && SUCCULENT_BODIES[pb]) { byKind.succulent.push(p); continue; }
-    if (pb && pb !== 'reed' && pb !== 'herb' && pb !== 'leafy') { byKind.pond.push(p); continue; }
+    if (pb && ['reed', 'herb', 'leafy', 'woody'].indexOf(pb) < 0) { byKind.pond.push(p); continue; }
     let t = pb === 'herb' || pb === 'leafy' ? 'herb' : p.plant_type;
     if (t === 'sedge' || t === 'rush') t = 'grass';   // graminoids share blades
     const k = byKind[t] ? t : 'herb';

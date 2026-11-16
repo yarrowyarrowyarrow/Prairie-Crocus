@@ -23,6 +23,10 @@ window.SCENE3D_CHUNKS = [
   // V3.48: a wildflower built from its own leaf, arrangement and stem count
   // where those were read (F268). After 03-herbs.js for its leaf outlines.
   'scene3d/03c-leafy.js',
+  // V3.49: a shrub built from its own stem count and leaf where those were
+  // read (F268), and the shrub layer, moved out of 04-quality.js. After
+  // 03c-leafy.js for its leaf outlines and tubes.
+  'scene3d/03d-woody.js',
   'scene3d/04-quality.js',
   'scene3d/05-flowers.js',
   'scene3d/06-fly.js',

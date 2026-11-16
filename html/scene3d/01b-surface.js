@@ -366,6 +366,8 @@ function plantMaterial(opts = {}) {
     side: opts.doubleSide ? THREE.DoubleSide : THREE.FrontSide,
     flatShading: !!opts.flatShading,
   });
+  // A leafy shoot drawn as one card, cut to its leaves' outline (03d-woody.js).
+  if (opts.cut) { mat.alphaMap = opts.cut.map; mat.alphaTest = opts.cut.test; }
   const strength = opts.wind || 0;
   const detail = opts.detail || '';
   const dscale = opts.detailScale || 1.0;
@@ -462,8 +464,9 @@ const _MAT_CACHE = {};
 // vertexColors:true material over geometry with no colour attribute renders
 // black. The two paths have always needed two materials for this reason; the
 // flag is what keeps that true now that the material is also per-surface-class.
-function surfaceMaterial(preset, cls, vc) {
-  const key = preset.key + '|' + cls + '|' + (vc ? 'c' : '') + (STYLISED ? '|s' : '');
+function surfaceMaterial(preset, cls, vc, cut) {
+  const key = preset.key + '|' + cls + '|' + (vc ? 'c' : '') + (STYLISED ? '|s' : '')
+    + (cut ? '|' + cut.key : '');
   if (!_MAT_CACHE[key]) {
     _MAT_CACHE[key] = plantMaterial(Object.assign({}, preset, STYLISED
       // Stylised drops the whole surface layer: no bark grain, no leaf veining,
@@ -474,7 +477,7 @@ function surfaceMaterial(preset, cls, vc) {
       ? { vertexColors: !!vc, detail: '', flatShading: true }
       : { vertexColors: !!vc,
           detail: cls ? preset.detailKind + '.' + cls : preset.detailKind },
-      { translucency: preset.translucency ?? LEAF_TRANSLUCENCY[preset.key] ?? 0 }));
+      { translucency: preset.translucency ?? LEAF_TRANSLUCENCY[preset.key] ?? 0, cut }));
   }
   return _MAT_CACHE[key];
 }

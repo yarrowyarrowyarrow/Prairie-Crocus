@@ -8,6 +8,8 @@ photographs, and write what was read into the catalogue (V3.48, F268).
     python scripts/leaf_readings.py strips --only "Yarrow" --per 2
     python scripts/leaf_readings.py add batch.json         # record readings
     python scripts/leaf_readings.py add batch.json --dry-run
+    python scripts/leaf_readings.py status --group shrubs  # the shrubs (V3.49)
+    python scripts/leaf_readings.py strips --group shrubs
 
 Until V3.48 every leaf and habit number in the catalogue was the seeder's
 estimate for the genus: an 8 cm leaf on every aster, three stems on everything.
@@ -36,6 +38,17 @@ also gives flower numbers (``FLOWER_READ``), the flower pair is marked the same
 way. ``flowering_stems`` is the flower clusters on a grown plant, not its
 stems; the viewer divides by how a stem forks.
 
+A shrub (``--group shrubs``, V3.49) is read the same way and drawn by
+``src/shrub_habit.py``. Its habit is the woody one (``branching``:
+``multi_stem``, ``suckering``, ``arching``, ``prostrate``) and it needs one
+number a wildflower does not, ``woody_stems``: the stems a grown plant sends
+up from the ground, easiest to count on a winter photograph, which is why a
+shrub's strip shows one::
+
+    {"Cornus sericea": {"branching": "multi_stem", "woody_stems": 25,
+                        "leaf_shape": "ovate", "leaf_size_cm": 8,
+                        "leaf_arrangement": "opposite"}}
+
 Only form, size and count are read. Nothing about what a plant is used for
 belongs here (P12), and a flower's colour is the owner's answer (V3.34): this
 tool refuses ``flower_color``.
@@ -55,12 +68,12 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from src import data_quality as dq  # noqa: E402
-from src import herb_habit, native_here, photo_picks  # noqa: E402
+from src import herb_habit, native_here, photo_picks, shrub_habit  # noqa: E402
 
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.48"
+READ_IN = "V3.49"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -68,6 +81,7 @@ WORDS = {
     "leaf_shape": dq.LEAF_SHAPES,
     "leaf_arrangement": dq.LEAF_ARRANGEMENTS,
     "leaf_surface": dq.LEAF_SURFACES,
+    "branching": dq.BRANCHING_HABITS,
     "stem_branching": dq.STEM_BRANCHINGS,
     "flower_arch": dq.FLOWER_ARCHITECTURES,
     "petal_shape": dq.PETAL_SHAPES,
@@ -78,20 +92,40 @@ NUMBERS = {
     "leaf_size_cm": (0.2, 80.0),
     "stem_leaf_nodes": (1, 80),
     "flowering_stems": (1, 300),
-    "mature_height_m": (0.02, 3.0),
+    "woody_stems": (1, 60),
+    "mature_height_m": (0.02, 8.0),
     "petal_count": (0, 60),
     "florets_per_head": (1, 2000),
     "flower_diameter_cm": (0.1, 20.0),
     "flower_height_frac": (0.3, 1.3),
 }
-WHOLE = ("stem_leaf_nodes", "flowering_stems", "petal_count", "florets_per_head")
+WHOLE = ("stem_leaf_nodes", "flowering_stems", "woody_stems", "petal_count",
+         "florets_per_head")
 FLAGS = ("basal_rosette",)
 FIELDS = tuple(WORDS) + tuple(NUMBERS) + FLAGS
 #: A reading that gives any of these read the flower too.
 FLOWER_READ = ("flower_arch", "petal_shape", "flower_symmetry", "petal_count",
                "florets_per_head", "flower_diameter_cm", "flower_height_frac")
-#: What a reading must give for the viewer to draw the plant from it.
+#: What a reading must give for the viewer to draw the plant from it: a
+#: wildflower's habit, or a shrub's woody habit and its stems.
 NEEDED = ("growth_form", "leaf_shape", "leaf_size_cm", "leaf_arrangement")
+NEEDED_WOODY = ("branching", "woody_stems", "leaf_shape", "leaf_size_cm",
+                "leaf_arrangement")
+#: The plants a sitting reads: which types, the module that says whether one
+#: is drawn from its numbers, and the photographs a strip shows of each.
+GROUPS = {
+    "herbs": {"types": herb_habit.TYPES, "habit": herb_habit,
+              "words": "wildflowers, herbs and groundcovers",
+              "kinds": (("habit", 3), ("leaf", 3), ("flower", 2))},
+    "shrubs": {"types": shrub_habit.TYPES, "habit": shrub_habit,
+               "words": "shrubs",
+               "kinds": (("habit", 3), ("winter", 1), ("leaf", 2), ("flower", 1),
+                         ("fruit", 1))},
+}
+
+
+def needed(row: dict) -> tuple:
+    return NEEDED_WOODY if row.get("plant_type") in shrub_habit.TYPES else NEEDED
 
 
 def _load(path: Path, default):
@@ -104,10 +138,11 @@ def _load(path: Path, default):
 
 def citation(sci: str, review: dict) -> str:
     """The photographs a reading of ``sci`` was made from: the review's picks
-    for the whole plant and the leaf (and the flower), by photograph id."""
+    for the whole plant (in leaf and in winter), the leaf and the flower, by
+    photograph id."""
     refs = (review.get(sci) or {}).get("refs") or {}
     ids = []
-    for kind in ("habit", "leaf", "flower"):
+    for kind in ("habit", "winter", "leaf", "flower"):
         for pid in refs.get(kind, []):
             if str(pid) not in ids:
                 ids.append(str(pid))
@@ -149,7 +184,7 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
         if (reading.get("petal_count") or 0) > 0 and merged.get("petal_shape") == "tubular":
             out.append(f"{sci}: petal_count on a rayless head (petal_shape tubular) "
                        f"must stay 0")
-        for field in NEEDED:
+        for field in needed(row):
             if not merged.get(field):
                 out.append(f"{sci}: {field} is not recorded and was not read")
         if not citation(sci, review):
@@ -187,6 +222,7 @@ def apply(batch: dict, rows: list, review: dict) -> int:
 # ── which plants ────────────────────────────────────────────────────────────
 
 def plants(only=None, types=herb_habit.TYPES) -> list:
+    """The region's natives of ``types``, or the plants named in ``only``."""
     rows = _load(MASTER, [])
     if only:
         want = {n.lower() for n in only}
@@ -197,17 +233,19 @@ def plants(only=None, types=herb_habit.TYPES) -> list:
             and r.get("plant_type") in types]
 
 
-def status() -> None:
-    rows = plants()
+def status(group: str = "herbs") -> None:
+    g = GROUPS[group]
+    rows = plants(types=g["types"])
     read = [r for r in rows if herb_habit.is_read(r)]
-    drawn = [r for r in read if herb_habit.form_for(r)]
-    print(f"{len(rows)} native wildflowers, herbs and groundcovers.")
+    drawn = [r for r in read if g["habit"].form_for(r)]
+    print(f"{len(rows)} native {g['words']}.")
     print(f"Leaves and habit read off photographs: {len(read)}.")
-    print(f"Drawn from their own numbers (src/herb_habit.py): {len(drawn)}.")
+    print(f"Drawn from their own numbers (src/{g['habit'].__name__.split('.')[-1]}.py): "
+          f"{len(drawn)}.")
     for r in read:
         if r not in drawn:
             print(f"  read, but its habit is not one the new body draws: "
-                  f"{r['common_name']} ({r.get('growth_form')})")
+                  f"{r['common_name']} ({r.get('growth_form') or r.get('branching')})")
     left = [r for r in rows if r not in read]
     if left:
         print(f"Not read yet: {len(left)}.")
@@ -222,9 +260,12 @@ KINDS = (("habit", 3), ("leaf", 3), ("flower", 2))
 
 
 def _recorded(row: dict) -> str:
+    woody = row.get("plant_type") in shrub_habit.TYPES
     bits = [f"{row.get('plant_type')}", f"height {row.get('mature_height_m')} m",
             f"spacing {row.get('spacing_m')} m",
-            f"habit {row.get('growth_form') or '-'}",
+            f"habit {row.get('branching') or '-'}, {row.get('woody_stems') or '-'} "
+            f"stems from the ground" if woody
+            else f"habit {row.get('growth_form') or '-'}",
             f"leaf {row.get('leaf_shape') or '-'} {row.get('leaf_size_cm') or '-'} cm "
             f"{row.get('leaf_arrangement') or '-'}",
             f"{row.get('stem_branching') or 'branching -'}",
@@ -236,17 +277,17 @@ def _recorded(row: dict) -> str:
     return "   ".join(bits)
 
 
-def strips(rows: list, per: int = 3) -> list:
+def strips(rows: list, per: int = 3, kinds: tuple = KINDS) -> list:
     """One picture for every ``per`` plants: its recorded numbers, what the
     review said, and the photographs picked for the whole plant, the leaf and
-    the flower."""
+    the flower (``kinds``: which, and how many of each)."""
     from PIL import Image, ImageDraw
     import model_references as mr
     manifest = _load(REFS / "manifest.json", {})
     review = _load(REVIEW, {})
     out_dir = REFS / "reading"
     out_dir.mkdir(parents=True, exist_ok=True)
-    cols = sum(n for _, n in KINDS)
+    cols = sum(n for _, n in kinds)
     width = PAD + cols * (TILE + PAD)
     band = HEAD + TILE + CAP + PAD
     written = []
@@ -266,7 +307,7 @@ def strips(rows: list, per: int = 3) -> list:
             by_id = {str(photo_picks.photo_id(p["url"]) or ""): p
                      for p in (manifest.get(sci) or {}).get("photos", [])}
             shown, col = set(), 0
-            for kind, n in KINDS:
+            for kind, n in kinds:
                 picks = [pid for pid in (rec.get("refs") or {}).get(kind, [])
                          if str(pid) in by_id and str(pid) not in shown][:n]
                 for pid in picks:
@@ -295,16 +336,19 @@ def main(argv=None) -> int:
     ap.add_argument("--unread", action="store_true",
                     help="strips: only plants not read yet")
     ap.add_argument("--per", type=int, default=3, help="strips: plants a picture")
+    ap.add_argument("--group", choices=tuple(GROUPS), default="herbs",
+                    help="status, strips: which plants (default: herbs)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
     if args.step == "status":
-        status()
+        status(args.group)
         return 0
     if args.step == "strips":
-        rows = plants(args.only)
+        g = GROUPS[args.group]
+        rows = plants(args.only, g["types"])
         if args.unread:
             rows = [r for r in rows if not herb_habit.is_read(r)]
-        strips(rows, args.per)
+        strips(rows, args.per, g["kinds"])
         return 0
     if not args.batch:
         ap.error("add needs a JSON file")

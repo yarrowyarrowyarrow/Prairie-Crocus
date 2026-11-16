@@ -227,7 +227,15 @@ CREATE TABLE IF NOT EXISTS plants (
     -- the columbine as a spiral stair. Counted off a photograph and covered by
     -- the leaf provenance pair above. NULL leaves it to the viewer's spacing
     -- estimate (html/scene3d/03c-leafy.js INTERNODE), which says it is one.
-    stem_leaf_nodes INTEGER
+    stem_leaf_nodes INTEGER,
+    -- How many woody stems a grown shrub sends up from the ground (schema v99,
+    -- V3.49). A red-osier dogwood is two dozen wands and a hawthorn four
+    -- trunks, and until this column every shrub was a handful of sticks as
+    -- thick as an arm: the stems' thickness follows from their number (the
+    -- same crown shared between more stems is thinner ones). Counted off a
+    -- photograph, most easily a winter one, and covered by the leaf provenance
+    -- pair. NULL keeps the shrub on the shared baked figure.
+    woody_stems INTEGER
 );
 
 -- Companion pairings (schema v61: + source/notes).
