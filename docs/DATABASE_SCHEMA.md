@@ -12,7 +12,7 @@ seeded reference data every project draws from.
   [`recipes.py`](../src/db/recipes.py),
   [`structures.py`](../src/db/structures.py),
   [`fauna.py`](../src/db/fauna.py)
-- **Current schema version:** `97` (`src/db/plants.py:_SCHEMA_VERSION` — the
+- **Current schema version:** `98` (`src/db/plants.py:_SCHEMA_VERSION` — the
   authoritative value; this doc's narrative may lag, the code wins). It sat at
   `75` here through nine bumps, which is what the parenthesis above is for and
   is also why it is worth re-reading it whenever you bump.
@@ -68,6 +68,7 @@ One row per species. Key columns (full list in the DDL):
 | `flower_height_frac` | How far the bloom is held above the foliage, as a fraction of height (v53) |
 | `stem_branching` | unbranched \| branched_above \| branched_throughout (v53). **Read since V2.34**: the stem is a forked skeleton, and a goldenrod's silhouette IS its two orders of branching. Only the `erect` and `clump` growth forms have a stem to fork; on a `jointed` horsetail (v89) it says where the whorls of branches are (`branched_throughout` Common Horsetail, `branched_above` Swamp Horsetail, `unbranched` the scouring-rushes) |
 | `basal_rosette` | 0/1 (v53) |
+| `stem_leaf_nodes` | Leaves, pairs or whorls up one stem of a grown plant (v98, V3.48). Counted off a photograph and covered by the leaf provenance pair; NULL leaves the 3D viewer to space leaves by a multiple of their length, which it says is an estimate |
 | `flowering_stems` | How many inflorescences a MATURE plant carries (v54). Bloom display used to be sized off the plant's *canopy*, which is a proxy for spread and not for flowering: a pasqueflower holds three and a mature bergamot twenty-eight. **No flora records this** — the seeded values follow from the branching habit and are meant to be corrected in the field with `scripts/tune_morphology.py`. Empty falls back to a count derived from `stem_branching` |
 | `flower_data_source` | measured \| flora \| photo \| estimated (v55). **Where each flower number came from.** The seeder's values are genus-level botanical judgement, which is a reasonable start and is not a measurement; reporting "307 described" as though it meant 307 verified is what P9 forbids. Raised by `scripts/tune_morphology.py` as species are actually checked |
 | `flower_data_citation` | Free text (v56). **WHICH source** — `FNA vol. 21`, `Budd's 442`, `my yard 2026-07-12`. `flower_data_source` says what kind of source; "read in a flora" that does not name the flora is not a citation. Blank from the seeder on purpose: naming a book nobody opened for that species would be worse than an empty field. Same shape as `safety_source`. See [`DATA_SOURCES.md`](DATA_SOURCES.md) |
