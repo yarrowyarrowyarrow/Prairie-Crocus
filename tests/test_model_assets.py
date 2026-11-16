@@ -29,6 +29,8 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from src import herb_habit  # noqa: E402
+
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _MODELS = os.path.join(_ROOT, "html", "assets", "models")
 _MANIFEST = os.path.join(_MODELS, "manifest.json")
@@ -336,10 +338,16 @@ class ModelAssetsTest(unittest.TestCase):
             self.skipTest("assetlib.conventions not importable")
         path = os.path.join(_ROOT, "data", "plants_master.json")
         catalogue = json.loads(_read(path))
-        checked = 0
+        checked = own_body = 0
         for family, (types, form_of, prefix) in conventions.FAMILY_FORMS.items():
             for rec in catalogue:
                 if rec.get("plant_type") not in types:
+                    continue
+                # A plant whose leaves were read is drawn from its own numbers
+                # (src/herb_habit.py, 03c-leafy.js, V3.48) and never asks for
+                # a baked unit, so its numbers need not match one.
+                if herb_habit.form_for(rec):
+                    own_body += 1
                     continue
                 form = form_of(rec)
                 entry = self.mf["plants"].get(f"{prefix}.{form}")
@@ -373,7 +381,7 @@ class ModelAssetsTest(unittest.TestCase):
         # variants rather than morphology ones. The floor only has to catch the
         # lookup going empty, so it sits well below the count on purpose —
         # a floor set one row under it fails on every legitimate removal.
-        self.assertGreater(checked, 250, "catalogue stopped resolving")
+        self.assertGreater(checked + own_body, 250, "catalogue stopped resolving")
 
     def test_the_viewer_asks_for_what_was_baked(self):
         """The same check from the VIEWER's side (V2.88).
@@ -394,10 +402,16 @@ class ModelAssetsTest(unittest.TestCase):
         from src.scene3d import plant_3d_state            # noqa: PLC0415
         catalogue = json.loads(_read(os.path.join(_ROOT, "data",
                                                   "plants_master.json")))
-        missing, checked = [], 0
+        missing, checked, own_body = [], 0, 0
         for family, (types, form_of, prefix) in conventions.FAMILY_FORMS.items():
             for rec in catalogue:
                 if rec.get("plant_type") not in types:
+                    continue
+                # A plant whose leaves were read is drawn from its own numbers
+                # (src/herb_habit.py, 03c-leafy.js, V3.48) and never asks for
+                # a baked unit, so its numbers need not match one.
+                if herb_habit.form_for(rec):
+                    own_body += 1
                     continue
                 form = form_of(rec)
                 # db.plants._row_to_dict: canopy defaults to 1.5 x spacing.
@@ -424,7 +438,7 @@ class ModelAssetsTest(unittest.TestCase):
                 checked += 1
         self.assertEqual(missing, [], "the viewer would ask for units nobody "
                                       "baked; its lookup then falls back")
-        self.assertGreater(checked, 250, "catalogue stopped resolving")
+        self.assertGreater(checked + own_body, 250, "catalogue stopped resolving")
 
     def test_layer_and_fauna_keys_match_viewer(self):
         layers = {k.split(".", 1)[1]: e for k, e in self.mf["plants"].items()
