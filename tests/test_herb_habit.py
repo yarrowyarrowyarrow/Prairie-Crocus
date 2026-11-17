@@ -177,7 +177,7 @@ class TheViewerAgrees(unittest.TestCase):
         self.assertIn("formName === 'leafy' && buildLeafyGeo(morph, v)", quality)
         # A groundcover with its own body is placed by the herb layer, not as
         # a capped mat and not as a pond plant.
-        self.assertIn("pb !== 'leafy'", quality)
+        self.assertRegex(quality, r"if \(pb && \[[^\]]*'leafy'[^\]]*\]\.indexOf\(pb\) < 0\)")
         self.assertIn("pb === 'herb' || pb === 'leafy' ? 'herb'", quality)
 
     def test_stylised_keeps_its_faceted_forms(self):

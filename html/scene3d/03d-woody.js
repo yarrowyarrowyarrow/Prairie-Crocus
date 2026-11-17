@@ -47,6 +47,16 @@ const WOODY_BUDGET_H = [1, 4];
 const WOODY_GAIN_MAX = 3;
 const WOODY_COVER = 0.75;
 const WOODY_STEMS_MAX = 36;
+// A shrub part grown is built as a smaller shrub, not as a grown one shrunk:
+// at the first of these shares of its grown height that holds it, with fewer
+// stems, and its leaves at their own size. Scaled down from the grown body a
+// second-summer saskatoon had leaves a centimetre long.
+const WOODY_TIERS = [0.4, 0.7, 1];
+function _woodyTier(d) {
+  const f = d.mature_h > 0 ? d.height_m / d.mature_h : 1;
+  for (const t of WOODY_TIERS) if (f <= t * 1.05) return t;
+  return 1;
+}
 // Sprays one drawn shoot carries.
 const WOODY_PER_SHOOT = 3;
 // A stem's radius at the ground, in metres: WOODY_PIPE x sqrt(R x H / stems).
@@ -225,7 +235,8 @@ function _wdSpray(shape, perNode) {
 
 // ── the plan: what the budget buys ──────────────────────────────────────────
 function _woodyPlan(d, quality) {
-  const H = Math.max(0.15, d.mature_h), R = Math.max(0.1, d.mature_w / 2);
+  const tier = _woodyTier(d);
+  const H = Math.max(0.15, d.mature_h * tier), R = Math.max(0.1, d.mature_w / 2 * tier);
   const L = Math.max(0.004, d.leaf_m), shape = d.leaf_shape;
   const q = _wdClamp(quality, 1, 2), b = WOODY_BUDGET[q];
   const budget = Math.round(b[0] + (b[1] - b[0])
@@ -237,8 +248,9 @@ function _woodyPlan(d, quality) {
   // Sprays that cover it at life size: each fills `cover` of its card, and is
   // seen at an angle.
   const need = WOODY_COVER * area / (spray.w * L * spray.h * L * spray.cover * 0.6);
-  const P = { H, R, L, shape, form: d.form, budget, area, need, spray, gain: 1, cards: 0,
-              stems: _wdClamp(Math.round(d.stems) || 1, 1, WOODY_STEMS_MAX) };
+  const P = { H, R, L, shape, form: d.form, budget, area, need, spray, gain: 1, cards: 0, tier,
+              // A young shrub has sent up fewer of its stems.
+              stems: _wdClamp(Math.round((d.stems || 1) * (0.4 + 0.6 * tier)), 1, WOODY_STEMS_MAX) };
   _woodyCards(P, budget * 0.62);
   P.shoots = Math.max(P.stems, Math.round(P.cards / WOODY_PER_SHOOT));
   return P;
@@ -407,19 +419,20 @@ function _woodyLeaves(G) {
       const T = _lbUnit(_lbAdd(D, Nn, -dn)), S = _lbCross(Nn, T);
       const hh = h * (0.8 + 0.4 * rng());
       _wdCard(F, at, T, S, w * (0.85 + 0.3 * rng()), hh, shade);
-      G.tips.push(_lbAdd(at, T, hh * 0.65));
+      G.tips.push(_lbAdd(at, T, hh));
     }
   });
 }
 
 // ── the body ────────────────────────────────────────────────────────────────
 
-// What makes two shrubs' bodies the same geometry: the species and its numbers.
+// What makes two shrubs' bodies the same geometry: the species, its numbers and
+// how far grown this one is.
 function woodyKeyFor(p) {
   const d = p && p.drawn;
   if (STYLISED || !d || d.body !== 'woody' || WOODY_FORMS.indexOf(d.form) < 0) return null;
   return ['woody', p.genus || '', p.species || '', d.form, d.mature_h, d.mature_w, d.stems,
-          d.leaf_m, d.leaf_shape, d.arrangement].join('|');
+          d.leaf_m, d.leaf_shape, d.arrangement, _woodyTier(d)].join('|');
 }
 
 function _wdGeometry(B, sy, sxz) {
@@ -464,9 +477,10 @@ function buildWoodyGeo(p, v) {
   // twigs when the leaves are down, from a quarter of the way up, in an order
   // that spreads any few of them round the crown (15b-anchors.js).
   const spread = (pts) => {
-    // The outermost two fifths: a shrub flowers where its shoots reach the light.
+    // The outermost third: a shrub flowers where its shoots reach the light,
+    // and a cluster among the leaves behind them would not be seen.
     const far = (q) => Math.hypot(Math.hypot(q[0], q[2]) / P.R, q[1] / P.H);
-    const cut = pts.map(far).sort((x, y) => x - y)[Math.floor(pts.length * 0.6)] || 0;
+    const cut = pts.map(far).sort((x, y) => x - y)[Math.floor(pts.length * 0.67)] || 0;
     const ends = pts.filter(q => far(q) >= cut)
       .map(q => ({ x: q[0] * sxz, y: q[1] * sy, z: q[2] * sxz }))
       .filter(e => e.y >= 0.25 || P.form === 'mat');

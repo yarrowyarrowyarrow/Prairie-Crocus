@@ -29,7 +29,7 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src import herb_habit  # noqa: E402
+from src import herb_habit, shrub_habit  # noqa: E402
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _MODELS = os.path.join(_ROOT, "html", "assets", "models")
@@ -344,9 +344,10 @@ class ModelAssetsTest(unittest.TestCase):
                 if rec.get("plant_type") not in types:
                     continue
                 # A plant whose leaves were read is drawn from its own numbers
-                # (src/herb_habit.py, 03c-leafy.js, V3.48) and never asks for
+                # (src/herb_habit.py, 03c-leafy.js, V3.48; a shrub by
+                # src/shrub_habit.py, 03d-woody.js, V3.49) and never asks for
                 # a baked unit, so its numbers need not match one.
-                if herb_habit.form_for(rec):
+                if herb_habit.form_for(rec) or shrub_habit.form_for(rec):
                     own_body += 1
                     continue
                 form = form_of(rec)
@@ -408,9 +409,10 @@ class ModelAssetsTest(unittest.TestCase):
                 if rec.get("plant_type") not in types:
                     continue
                 # A plant whose leaves were read is drawn from its own numbers
-                # (src/herb_habit.py, 03c-leafy.js, V3.48) and never asks for
+                # (src/herb_habit.py, 03c-leafy.js, V3.48; a shrub by
+                # src/shrub_habit.py, 03d-woody.js, V3.49) and never asks for
                 # a baked unit, so its numbers need not match one.
-                if herb_habit.form_for(rec):
+                if herb_habit.form_for(rec) or shrub_habit.form_for(rec):
                     own_body += 1
                     continue
                 form = form_of(rec)
