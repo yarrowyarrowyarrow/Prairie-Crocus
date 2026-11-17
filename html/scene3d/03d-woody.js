@@ -176,7 +176,9 @@ function _wdSpray(shape, perNode) {
   const needle = shape === 'needle' || shape === 'awl' || shape === 'scale';
   const per = needle ? 2 : Math.min(2, perNode);
   const ratio = LEAF_WIDTH_RATIO[shape] == null ? 0.4 : LEAF_WIDTH_RATIO[shape];
-  const cluster = !needle && per === 1 && (ratio >= 0.3 || isCompoundShape(shape));
+  // Narrow but not grass-like leaves borne singly (a cherry's, a meadowsweet's)
+  // cluster too: sixteen in two rows read as one feather-shaped leaf (V3.50).
+  const cluster = !needle && per === 1 && (ratio >= 0.15 || isCompoundShape(shape));
   const key = (needle ? 'needle' : shape) + '|' + per;
   let sp = _WD_SPRAYS.get(key);
   if (sp) return sp;
@@ -212,7 +214,17 @@ function _wdSpray(shape, perNode) {
       g.restore();
     }
   }
-  const px = g.getImageData(0, 0, W, H).data;
+  sp = Object.assign(woodyMask(key, cv), { w: wide, h: H / len, leaves: K, cluster });
+  _WD_SPRAYS.set(key, sp);
+  return sp;
+}
+
+// A painted mask as the material reads it: its smaller copies made here so
+// each keeps its share of pixels over the cut (_wdMip), and a depth material
+// so the shadow is of what is painted. Shared with 03e-crowns.js's needles.
+function woodyMask(key, cv) {
+  const W = cv.width, H = cv.height;
+  const px = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, W, H).data;
   let on = 0;
   for (let i = 0; i < px.length; i += 4) if (px[i] > 127) on++;
   const cover = Math.max(0.02, on / (W * H)), mips = [cv];
@@ -227,10 +239,7 @@ function _wdSpray(shape, perNode) {
   // The shadow of a card is the shadow of its leaves.
   const depth = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking,
                                               alphaMap: map, alphaTest: WOODY_CUT });
-  sp = { key: 'cut:' + key, map, depth, test: WOODY_CUT, cover, w: wide, h: H / len, leaves: K,
-         cluster };
-  _WD_SPRAYS.set(key, sp);
-  return sp;
+  return { key: 'cut:' + key, map, depth, test: WOODY_CUT, cover };
 }
 
 // ── the plan: what the budget buys ──────────────────────────────────────────
@@ -295,20 +304,22 @@ function _wdAxis(G, o, dir, len, r, quota) {
 // out at `psi` round it, turned toward the sky and away from the shrub's
 // middle as its form says, and never out of the crown's outline.
 function _wdChild(G, p, tg, len, r, quota, psi) {
-  const P = G.P, rng = G.rng, bias = _WD_BIAS[P.form];
+  // A tree (03e-crowns.js) passes its own outline, bias and droop on G.
+  const P = G.P, rng = G.rng, bias = G.bias || _WD_BIAS[P.form];
+  const env = G.env || ((t) => _wdEnvelope(P.form, t));
   const u = _lbUnit(_lbCross(tg, Math.abs(tg[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0])), w = _lbCross(tg, u);
   const a = psi + rng() * 0.6, th = 0.55 + rng() * 0.4;
   const e = _lbMix(u, w, Math.cos(a), Math.sin(a)), out = _lbUnit([p[0], 0, p[2]]);
   let c = _lbMix(tg, e, Math.cos(th), Math.sin(th));
   if (P.form === 'mat') c = [c[0] * 0.5, Math.abs(c[1]) * 0.5, c[2] * 0.5];
   c = [c[0] + out[0] * bias[1], c[1] + bias[0], c[2] + out[2] * bias[1]];
-  if (c[1] < 0) c[1] *= -0.3;                          // a branch does not grow into the ground
+  if (c[1] < -(G.droop || 0)) c[1] = -(G.droop || 0) + (-(G.droop || 0) - c[1]) * 0.3;
   c = _lbUnit(c);
   let l = len;
   for (let k = 0; k < 5; k++) {
     const q = _lbAdd(p, c, l);
     if (q[1] <= P.H * 1.02 && Math.hypot(q[0], q[2])
-        <= P.R * _wdEnvelope(P.form, _wdClamp(q[1] / P.H, 0, 1)) + 0.02) break;
+        <= P.R * env(_wdClamp(q[1] / P.H, 0, 1)) + 0.02) break;
     l *= 0.78;
   }
   _wdAxis(G, p, c, l, Math.max(0.0012, r), quota);
@@ -409,22 +420,45 @@ function _woodyLeaves(G) {
       const e = _lbMix(u, wv, Math.cos(psi), Math.sin(psi));
       const D = [dir[0] + e[0] * off, dir[1] + e[1] * off + (rng() - 0.65) * 0.35, dir[2] + e[2] * off];
       // In the crown's shade a leaf is darker: by how far out and up it is.
-      const rho = Math.hypot(Math.hypot(at[0], at[2]) / P.R, (at[1] - 0.3 * P.H) / (0.7 * P.H));
+      const b0 = P.base == null ? 0.3 : P.base;
+      const rho = Math.hypot(Math.hypot(at[0], at[2]) / P.R, (at[1] - b0 * P.H) / ((1 - b0) * P.H));
       const shade = (0.5 + 0.45 * Math.pow(_wdClamp(rho, 0, 1), 2)) * (0.92 + 0.16 * rng());
       // It faces the sky and the open side of the crown, where its light comes from.
       const out = _lbUnit([at[0], 0.001, at[2]]);
-      const Nn = _lbUnit([out[0] * 0.6 + (rng() - 0.5) * 0.8, 0.7 + (rng() - 0.5) * 0.6,
-                          out[2] * 0.6 + (rng() - 0.5) * 0.8]);
+      // How much a card faces the sky rather than out (a tree's are its own).
+      const up = P.faceUp == null ? 0.7 : P.faceUp, side = 1.3 - up;
+      const Nn = _lbUnit([out[0] * side + (rng() - 0.5) * 0.8, up + (rng() - 0.5) * 0.6,
+                          out[2] * side + (rng() - 0.5) * 0.8]);
       const dn = D[0] * Nn[0] + D[1] * Nn[1] + D[2] * Nn[2];
       const T = _lbUnit(_lbAdd(D, Nn, -dn)), S = _lbCross(Nn, T);
-      const hh = h * (0.8 + 0.4 * rng());
-      _wdCard(F, at, T, S, w * (0.85 + 0.3 * rng()), hh, shade);
+      // A tree's sprays are smaller where its crown narrows (03e-crowns.js).
+      const ks = G.cardScale ? G.cardScale(at) : 1;
+      const hh = h * ks * (0.8 + 0.4 * rng());
+      _wdCard(F, at, T, S, w * ks * (0.85 + 0.3 * rng()), hh, shade);
       G.tips.push(_lbAdd(at, T, hh));
     }
   });
 }
 
 // ── the body ────────────────────────────────────────────────────────────────
+
+// Where flowers and fruit go: the outermost third of `pts` (a plant flowers
+// where its shoots reach the light, and a cluster among the leaves behind
+// them would not be seen), from `floor` of the way up, into the unit frame,
+// in an order that spreads any few of them round the crown (15b-anchors.js).
+function woodyEnds(P, pts, sxz, sy, floor) {
+  const far = (q) => Math.hypot(Math.hypot(q[0], q[2]) / P.R, q[1] / P.H);
+  const cut = pts.map(far).sort((x, y) => x - y)[Math.floor(pts.length * 0.67)] || 0;
+  const ends = pts.filter(q => far(q) >= cut)
+    .map(q => ({ x: q[0] * sxz, y: q[1] * sy, z: q[2] * sxz }))
+    .filter(e => e.y >= floor);
+  const out = [];
+  for (let i = 0, j = 0; i < ends.length; i++, j = (j + 37) % ends.length) {
+    while (ends[j] === null) j = (j + 1) % ends.length;
+    out.push(ends[j]); ends[j] = null;
+  }
+  return out;
+}
 
 // What makes two shrubs' bodies the same geometry: the species, its numbers and
 // how far grown this one is.
@@ -476,23 +510,9 @@ function buildWoodyGeo(p, v) {
   // Where flowers and fruit go: the ends of the leafy shoots, or of the bare
   // twigs when the leaves are down, from a quarter of the way up, in an order
   // that spreads any few of them round the crown (15b-anchors.js).
-  const spread = (pts) => {
-    // The outermost third: a shrub flowers where its shoots reach the light,
-    // and a cluster among the leaves behind them would not be seen.
-    const far = (q) => Math.hypot(Math.hypot(q[0], q[2]) / P.R, q[1] / P.H);
-    const cut = pts.map(far).sort((x, y) => x - y)[Math.floor(pts.length * 0.67)] || 0;
-    const ends = pts.filter(q => far(q) >= cut)
-      .map(q => ({ x: q[0] * sxz, y: q[1] * sy, z: q[2] * sxz }))
-      .filter(e => e.y >= 0.25 || P.form === 'mat');
-    const out = [];
-    for (let i = 0, j = 0; i < ends.length; i++, j = (j + 37) % ends.length) {
-      while (ends[j] === null) j = (j + 1) % ends.length;
-      out.push(ends[j]); ends[j] = null;
-    }
-    return out;
-  };
-  foliageGeo.userData.crown = spread(G.tips);
-  stemGeo.userData.crown = spread(G.shoots.map(s => s.b));
+  foliageGeo.userData.crown = woodyEnds(P, G.tips, sxz, sy, P.form === 'mat' ? 0 : 0.25);
+  stemGeo.userData.crown = woodyEnds(P, G.shoots.map(s => s.b), sxz, sy,
+                                     P.form === 'mat' ? 0 : 0.25);
   for (const g of [foliageGeo, stemGeo]) g.userData.unitHalfWidth = half * sxz;
   foliageGeo.userData.cut = P.spray;
   foliageGeo.userData.woody = { triangles: (G.F.idx.length + G.S.idx.length) / 3,

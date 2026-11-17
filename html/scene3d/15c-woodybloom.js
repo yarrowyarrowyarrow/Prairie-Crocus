@@ -50,8 +50,12 @@ function woodyClusterSize(arch, d, n) {
   return Math.max(d * 1.6, d * Math.sqrt(n) * (arch === 'cyme' ? 1.3 : 1.15));
 }
 
+// A shrub with its own body (03d-woody.js), a tree with its own crown
+// (03e-crowns.js) and a vine whose leaves were read (22b-vineleaves.js).
 function woodyBloomApplies(p) {
-  return !!(window.woodyKeyFor && woodyKeyFor(p)) && !!p.flower_arch && !p.inflorescence_form;
+  const own = (window.woodyKeyFor && woodyKeyFor(p)) || (window.crownKeyFor && crownKeyFor(p))
+    || (window.vineReadFor && vineReadFor(p));
+  return !!own && !!p.flower_arch && !p.inflorescence_form;
 }
 
 // One flower painted white at (x, y), `r` its radius in pixels: its petals
@@ -199,7 +203,10 @@ function buildWoodyBlooms(plants, month, terrain) {
     const petals = Math.max(0, Math.min(60, p.petal_count == null ? 5 : p.petal_count));
     const d = Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
     const natural = woodyClusterSize(arch, d, Math.max(1, p.florets_per_head || 1));
-    const reach = natural * Math.min(WOODY_BLOOM_GAIN_MAX, woodyBloomGain(p));   // 15b-anchors.js
+    // A tree's clusters take the whole of 15b-anchors.js's allowance (2.5 at 6 m
+    // and over): at life size a pin cherry's are pixels at a yard's distance.
+    const tree = p.drawn && p.drawn.body === 'crown';
+    const reach = natural * (tree ? woodyBloomGain(p) : Math.min(WOODY_BLOOM_GAIN_MAX, woodyBloomGain(p)));
     const mk = _wbMask(arch, petals, d / natural);
     const anchors = bloomAnchors(p, WOODY_BLOOM_MAX, month);     // 15b-anchors.js
     if (!anchors || !anchors.length) continue;
@@ -215,6 +222,9 @@ function buildWoodyBlooms(plants, month, terrain) {
       const q = anchors[(k * 7 + seed) % anchors.length];
       gr.items.push({ x: q.x, y: q.y, z: q.z, nx: q.nx, nz: q.nz, size: reach * (0.85 + 0.3 * rnd()),
                       lean: 0.25 + 0.5 * rnd(), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
+                      // A poplar's, an aspen's or a birch's catkins hang (src/tree_habit.py).
+                      hang: !!(p.drawn && p.drawn.catkins_hang) && petals < 3 && arch === 'spike',
+                      out: tree ? 0.6 : 0.35,
                       name: p.common_name || '', id: p.plant_id });
     }
   }
@@ -227,7 +237,7 @@ function buildWoodyBlooms(plants, month, terrain) {
     gr.items.forEach((it, i) => {
       // The cluster stands on the shoot's end, leaning out from the shrub. One
       // card faces out and up; a crossed pair turns freely about its axis.
-      Y.set(it.nx * it.lean, 1, it.nz * it.lean).normalize();
+      Y.set(it.nx * it.lean, it.hang ? -1 : 1, it.nz * it.lean).normalize();
       if (gr.long) Z.set(Math.cos(it.spin), 0, Math.sin(it.spin));
       else Z.set(it.nx, 0.55, it.nz);
       X.crossVectors(Y, Z).normalize();
@@ -235,8 +245,8 @@ function buildWoodyBlooms(plants, month, terrain) {
       m.makeBasis(X, Y, Z);
       // Its middle just past the shoot's end and a little out from the
       // shrub: a cluster stands proud of the last leaves, or it is not seen.
-      v.set(it.x + it.nx * it.size * 0.35, it.y, it.z + it.nz * it.size * 0.35)
-        .addScaledVector(Y, -it.size * 0.3);
+      v.set(it.x + it.nx * it.size * it.out, it.y, it.z + it.nz * it.size * it.out)
+        .addScaledVector(Y, it.hang ? 0 : -it.size * 0.3);      // a hanging one from its twig
       m.setPosition(v);
       m.scale(v.set(it.size, it.size * 1.1, it.size));
       mesh.setMatrixAt(i, m);

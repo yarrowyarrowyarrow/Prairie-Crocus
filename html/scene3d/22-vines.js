@@ -396,7 +396,11 @@ function buildVines(list, all, month, year, terrain) {
       const q = pa.pts[pa.pts.length - 1], n = pa.nrm[pa.nrm.length - 1];
       if (q.y >= floorY) anchors.push({ x: q.x, y: q.y, z: q.z, nx: n.x, nz: n.z });
     }
-    if (!bare) {
+    // Leaves read off photographs: its own leafy shoots (22b-vineleaves.js, V3.50).
+    const own = !bare && window.vineReadFor && vineReadFor(p)
+      ? buildVineSprays(p, paths, rng, floorY, anchors, month) : null;
+    if (own) plantsGroup.add(own);
+    else if (!bare) {
       const shape = p.leaf_shape || 'elliptic';
       if (!units.has(shape)) units.set(shape, unitLeafGeo(shape));
       const len = Math.max(0.03, Math.min(0.25, (p.leaf_size_cm || 6) / 100));

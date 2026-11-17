@@ -27,6 +27,9 @@ window.SCENE3D_CHUNKS = [
   // read (F268), and the shrub layer, moved out of 04-quality.js. After
   // 03c-leafy.js for its leaf outlines and tubes.
   'scene3d/03d-woody.js',
+  // V3.50: a tree built from its own crown where that was read (F268): its
+  // trunks, bare bole, limbs and outline, on 03d-woody.js's shoots.
+  'scene3d/03e-crowns.js',
   'scene3d/04-quality.js',
   'scene3d/05-flowers.js',
   'scene3d/06-fly.js',
@@ -67,6 +70,8 @@ window.SCENE3D_CHUNKS = [
   // V2.89: vines on the tree or shrub beside them (F179). Called from
   // buildPlants after the trees and shrubs have noted where they stand.
   'scene3d/22-vines.js',
+  // V3.50: a vine's own leafy shoots where its leaves were read (F268).
+  'scene3d/22b-vineleaves.js',
   // V2.90: the pond (F175) — floating leaves on a pond's water, submerged
   // plants showing what reaches the surface, broad leaves on stalks.
   'scene3d/23-pond.js',

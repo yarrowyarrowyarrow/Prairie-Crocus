@@ -73,7 +73,9 @@ Scene schema (``SCENE_VERSION`` = 1)::
                                        #   once its numbers were read
                                        #   (src/herb_habit.py, V3.48); a
                                        #   shrub's own stems and leaves
-                                       #   (src/shrub_habit.py, V3.49).
+                                       #   (src/shrub_habit.py, V3.49); a
+                                       #   tree's own crown
+                                       #   (src/tree_habit.py, V3.50).
                                        #   All carry x, y, height_m, canopy_m
                                        # bark_color / fall_color / leaf_size_cm:
                                        #   botanical morphology (schema v47) —
@@ -631,6 +633,10 @@ def build_scene(project: dict, *, year: int = 0,
             # The stems a grown shrub sends up (schema v99, V3.49): with the
             # leaf numbers, what src/shrub_habit.py decides a shrub's body from.
             "woody_stems": plant.get("woody_stems"),
+            # A tree's crown as read (schema v100, V3.50): src/tree_habit.py.
+            "crown_shape": plant.get("crown_shape") or "",
+            "crown_clear": plant.get("crown_clear"),
+            "limb_habit": plant.get("limb_habit") or "",
             "leaf_data_source": plant.get("leaf_data_source") or "",
             "opacity": opacity,
             "health": health,
@@ -887,6 +893,10 @@ def build_scene(project: dict, *, year: int = 0,
     # slender stems, leafy to their ends (V3.49, F268). Additive in the same way.
     from src.shrub_habit import apply_shrub_habits
     apply_shrub_habits(plants)
+    # And a tree whose crown was read: its trunks, its bare bole, its limbs
+    # and its outline (V3.50, F268).
+    from src.tree_habit import apply_tree_habits
+    apply_tree_habits(plants)
     # The season (V3.46, F263): how far up a herb is, whether a woody plant is
     # in leaf, whether snow lies, from the region pack's frost dates. Last,
     # because a body decides whether a season applies to it. Additive; a

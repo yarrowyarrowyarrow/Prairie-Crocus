@@ -546,7 +546,11 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # photographs (F268): leaf length, outline and arrangement, the woody habit
 # and the stem count, each row `leaf_data_source = 'photo'`. A read shrub is
 # drawn in 3D from those numbers (src/shrub_habit.py).
-_SCHEMA_VERSION = 99
+# v100 (V3.50): a tree's crown as read off its photographs, `crown_shape`,
+# `crown_clear` and `limb_habit`, and a reseed for the 10 native trees and 5
+# native vines read (F268). A read tree is drawn from those numbers by
+# src/tree_habit.py; a read vine carries its own leaf sprays and flowers.
+_SCHEMA_VERSION = 100
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
@@ -977,6 +981,20 @@ def _migrate_to_v99(conn: sqlite3.Connection):
         conn.execute("ALTER TABLE plants ADD COLUMN woody_stems INTEGER")
     except sqlite3.OperationalError:
         pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v100(conn: sqlite3.Connection):
+    """A tree's crown (V3.50): its outline, how much of the trunk is bare,
+    and which way its limbs go. Additive and idempotent; empty on every row
+    until the reseed this version forces fills it for the trees read."""
+    for ddl in ("ALTER TABLE plants ADD COLUMN crown_shape TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN crown_clear REAL",
+                "ALTER TABLE plants ADD COLUMN limb_habit TEXT DEFAULT ''"):
+        try:
+            conn.execute(ddl)
+        except sqlite3.OperationalError:
+            pass                          # column already present
     conn.commit()
 
 
@@ -2084,6 +2102,9 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             p.get("native_provinces_source", ""),
             p.get("stem_leaf_nodes"),
             p.get("woody_stems"),
+            p.get("crown_shape", ""),
+            p.get("crown_clear"),
+            p.get("limb_habit", ""),
         ))
 
     conn.executemany(
@@ -2112,10 +2133,11 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             flower_height_frac, stem_branching, basal_rosette,
             flowering_stems, flower_data_source, flower_data_citation,
             leaf_data_source, leaf_data_citation, flower_colour_source,
-            native_provinces_source, stem_leaf_nodes, woody_stems)
+            native_provinces_source, stem_leaf_nodes, woody_stems,
+            crown_shape, crown_clear, limb_habit)
            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-                   ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                   ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
         plant_rows,
     )
     conn.commit()
@@ -2264,6 +2286,9 @@ def init_db() -> None:
 
         if current_version < 99:
             _migrate_to_v99(conn)
+
+        if current_version < 100:
+            _migrate_to_v100(conn)
 
         # Add parent_id to polycultures if missing
         try:

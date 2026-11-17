@@ -235,7 +235,19 @@ CREATE TABLE IF NOT EXISTS plants (
     -- same crown shared between more stems is thinner ones). Counted off a
     -- photograph, most easily a winter one, and covered by the leaf provenance
     -- pair. NULL keeps the shrub on the shared baked figure.
-    woody_stems INTEGER
+    woody_stems INTEGER,
+    -- A grown tree's crown, read off a photograph of one grown in the open
+    -- (schema v100, V3.50). Nothing else recorded says that an aspen carries
+    -- its crown in the top half of a bare white trunk and a white spruce
+    -- carries branches to the ground, or that a spruce's limbs droop and a
+    -- poplar's climb. `crown_shape` is the outline (conical, spire, oval,
+    -- rounded, irregular), `crown_clear` the share of the height that is bare
+    -- trunk below the lowest live limb, and `limb_habit` which way the main
+    -- limbs go (ascending, spreading, drooping). Covered by the leaf
+    -- provenance pair. NULL keeps the tree on the shared baked crown.
+    crown_shape TEXT DEFAULT '',
+    crown_clear REAL,
+    limb_habit TEXT DEFAULT ''
 );
 
 -- Companion pairings (schema v61: + source/notes).

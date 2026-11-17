@@ -68,12 +68,12 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from src import data_quality as dq  # noqa: E402
-from src import herb_habit, native_here, photo_picks, shrub_habit  # noqa: E402
+from src import herb_habit, native_here, photo_picks, shrub_habit, tree_habit  # noqa: E402
 
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.49"
+READ_IN = "V3.50"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -82,6 +82,8 @@ WORDS = {
     "leaf_arrangement": dq.LEAF_ARRANGEMENTS,
     "leaf_surface": dq.LEAF_SURFACES,
     "branching": dq.BRANCHING_HABITS,
+    "crown_shape": dq.CROWN_SHAPES,
+    "limb_habit": dq.LIMB_HABITS,
     "stem_branching": dq.STEM_BRANCHINGS,
     "flower_arch": dq.FLOWER_ARCHITECTURES,
     "petal_shape": dq.PETAL_SHAPES,
@@ -93,7 +95,8 @@ NUMBERS = {
     "stem_leaf_nodes": (1, 80),
     "flowering_stems": (1, 300),
     "woody_stems": (1, 60),
-    "mature_height_m": (0.02, 8.0),
+    "crown_clear": (0.0, 0.8),
+    "mature_height_m": (0.02, 30.0),
     "petal_count": (0, 60),
     "florets_per_head": (1, 2000),
     "flower_diameter_cm": (0.1, 20.0),
@@ -111,6 +114,10 @@ FLOWER_READ = ("flower_arch", "petal_shape", "flower_symmetry", "petal_count",
 NEEDED = ("growth_form", "leaf_shape", "leaf_size_cm", "leaf_arrangement")
 NEEDED_WOODY = ("branching", "woody_stems", "leaf_shape", "leaf_size_cm",
                 "leaf_arrangement")
+#: A tree, and the crown it is drawn from (V3.50); a vine, its leaves.
+NEEDED_TREE = ("woody_stems", "crown_shape", "crown_clear", "limb_habit",
+               "leaf_shape", "leaf_size_cm", "leaf_arrangement")
+NEEDED_VINE = ("leaf_shape", "leaf_size_cm", "leaf_arrangement")
 #: The plants a sitting reads: which types, the module that says whether one
 #: is drawn from its numbers, and the photographs a strip shows of each.
 GROUPS = {
@@ -121,11 +128,19 @@ GROUPS = {
                "words": "shrubs",
                "kinds": (("habit", 3), ("winter", 1), ("leaf", 2), ("flower", 1),
                          ("fruit", 1))},
+    "trees": {"types": tree_habit.TYPES, "habit": tree_habit, "words": "trees and vines",
+              "kinds": (("habit", 3), ("winter", 1), ("leaf", 2), ("flower", 1),
+                        ("fruit", 1))},
 }
 
 
 def needed(row: dict) -> tuple:
-    return NEEDED_WOODY if row.get("plant_type") in shrub_habit.TYPES else NEEDED
+    kind = row.get("plant_type")
+    if kind == "tree":
+        return NEEDED_TREE
+    if kind == "vine":
+        return NEEDED_VINE
+    return NEEDED_WOODY if kind in shrub_habit.TYPES else NEEDED
 
 
 def _load(path: Path, default):

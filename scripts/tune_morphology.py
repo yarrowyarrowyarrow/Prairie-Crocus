@@ -107,6 +107,8 @@ LEAF_FIELDS = ("leaf_shape", "leaf_size_cm", "leaf_arrangement", "leaf_surface",
                "stem_leaf_nodes",
                # V3.49: the stems a grown shrub sends up from the ground.
                "woody_stems",
+               # V3.50: a tree's crown, read off a photograph.
+               "crown_shape", "crown_clear", "limb_habit",
                "leaf_data_source", "leaf_data_citation")
 
 FIELDS = FLOWER_FIELDS + LEAF_FIELDS
@@ -128,7 +130,7 @@ DATA_SOURCES = ("estimated", "photo", "flora", "measured")
 # Numbers, so a blank round-trips as null rather than "".
 _INT_FIELDS = ("petal_count", "florets_per_head", "basal_rosette",
                "flowering_stems", "stem_leaf_nodes", "woody_stems")
-_FLOAT_FIELDS = ("flower_diameter_cm", "flower_height_frac", "leaf_size_cm",
+_FLOAT_FIELDS = ("flower_diameter_cm", "flower_height_frac", "leaf_size_cm", "crown_clear",
                  "mature_height_m")
 
 
@@ -155,6 +157,8 @@ def _vocabularies() -> dict:
         "leaf_shape":       L(dq.LEAF_SHAPES),
         "leaf_arrangement": L(dq.LEAF_ARRANGEMENTS),
         "leaf_surface":     L(dq.LEAF_SURFACES),
+        "crown_shape":      L(dq.CROWN_SHAPES),
+        "limb_habit":       L(dq.LIMB_HABITS),
         "growth_form":      L(dq.GROWTH_FORMS),
         "branching":        L(dq.BRANCHING_HABITS),
         "flower_data_source": list(DATA_SOURCES),

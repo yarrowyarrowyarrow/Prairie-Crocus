@@ -52,8 +52,15 @@ function bodies(w) {
     let bad = 0, half = 0;
     for (let i = 0; i < pos.count * 3; i++) if (!Number.isFinite(pos.array[i])) bad++;
     for (let i = 0; i < pos.count; i++) half = Math.max(half, Math.hypot(pos.getX(i), pos.getZ(i)));
+    // How far out the body reaches, band by band up it (unit frame).
+    const bands = Array.from({ length: 10 }, () => []);
+    for (let i = 0; i < pos.count; i++) {
+      const y = pos.getY(i), b = Math.max(0, Math.min(9, Math.floor(y * 10)));
+      bands[b].push(Math.hypot(pos.getX(i), pos.getZ(i)));
+    }
+    const profile = bands.map((r) => { r.sort((a, b) => a - b); return r.length ? [r[Math.floor(r.length * 0.5)], r[Math.floor(r.length * 0.9)]] : [0, 0]; });
     found.push({
-      id: o.userData.pickId[0], name: o.userData.pick[0],
+      id: o.userData.pickId[0], name: o.userData.pick[0], profile,
       leaves: !!u.woody, woody: !!(u.woody || u.crown),
       triangles: g.index ? g.index.count / 3 : pos.count / 3,
       whole: u.woody ? u.woody.triangles : null, shoots: u.woody ? u.woody.shoots : null,
@@ -90,6 +97,19 @@ function blooms(w) {
   return { cards, florets };
 }
 
+function vines(w) {
+  // A read vine's leafy shoots (22b-vineleaves.js): one mesh a vine.
+  const out = [];
+  w.eval('plantsGroup').traverse((o) => {
+    if (!o.isInstancedMesh || o.userData.part !== 'vine') return;
+    out.push({ name: o.userData.pick[0], cards: o.userData.vineCards || 0,
+               cut: !!(o.material && o.material.alphaMap),
+               shadow_cut: !!(o.customDepthMaterial && o.customDepthMaterial.alphaMap),
+               triangles: o.geometry.index ? o.geometry.index.count / 3 : 0 });
+  });
+  return out;
+}
+
 function anchors(w, sc) {
   // What the flower layer is handed for the first plant, in the scene.
   const p = w.eval('lastSceneObj').plants[0];
@@ -105,7 +125,7 @@ async function run(w, job) {
     w.permaSetScene(sc);
     await until(() => w.permaModelsReady(), 60000);
     await sleep(400);
-    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), blooms: blooms(w),
+    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), blooms: blooms(w), vines: vines(w),
                          budget: w.eval('WOODY_BUDGET'), gain_max: w.eval('WOODY_GAIN_MAX') };
   }
   // A cluster's size at life size, for the flowers the tests name.

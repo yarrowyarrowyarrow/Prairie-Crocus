@@ -673,7 +673,7 @@ function buildPlants(group, plants, month, year, terrain) {
     const pb = p.drawn && p.drawn.body;
     if (p.growth_form === 'jointed' || pb === 'whorled') { byKind.horsetail.push(p); continue; }
     if (window.SUCCULENT_BODIES && SUCCULENT_BODIES[pb]) { byKind.succulent.push(p); continue; }
-    if (pb && ['reed', 'herb', 'leafy', 'woody'].indexOf(pb) < 0) { byKind.pond.push(p); continue; }
+    if (pb && ['reed', 'herb', 'leafy', 'woody', 'crown'].indexOf(pb) < 0) { byKind.pond.push(p); continue; }
     let t = pb === 'herb' || pb === 'leafy' ? 'herb' : p.plant_type;
     if (t === 'sedge' || t === 'rush') t = 'grass';   // graminoids share blades
     const k = byKind[t] ? t : 'herb';
@@ -700,22 +700,26 @@ function buildPlants(group, plants, month, year, terrain) {
       // a bucket even when everything else about them matches.
       const bark = barkClassFor(p);
       const surf = cls === 'conifer' ? 'needle' : leafSurfaceFor(p);
-      const key = cls + '_' + ck + '_' + prof.id + '_' + form + '_' + t + '_' + sub
-        + '_' + bark + '_' + surf;
-      (buckets[key] = buckets[key] || { cls, prof, form, t, sub, bark, surf, items: [] })
+      // A tree whose crown was read is drawn from it (03e-crowns.js, V3.50).
+      const own = window.crownKeyFor && crownKeyFor(p);
+      const key = (own ? 'own|' + own : cls + '_' + ck + '_' + prof.id + '_' + form + '_' + t)
+        + '_' + sub + '_' + bark + '_' + surf;
+      (buckets[key] = buckets[key] || { cls, prof, form, t, sub, bark, surf, own, items: [] })
         .items.push(p);
     }
     for (const key in buckets) {
-      const { cls, prof, form, t, sub, bark, surf, items } = buckets[key];
-      const arch = getTreeArch(cls, prof, form, t, sub);
+      const { cls, prof, form, t, sub, bark, surf, own, items } = buckets[key];
+      const arch = own ? getCrownArch(items[0], sub) : getTreeArch(cls, prof, form, t, sub);
+      const cut = arch.foliageGeo.userData.cut;           // its leaves' outline
       const places = items.map(p => spreadPlacements(p, year));
       const total = places.reduce((s, pl) => s + pl.length, 0);
       const vcBark = !!arch.vertexColorBark;
       const branch = instancedMesh(arch.branchGeo, total,
         surfaceMaterial(MAT_PRESETS.bark, bark, vcBark));
       const foliage = instancedMesh(arch.foliageGeo, total,
-        surf === 'needle' ? surfaceMaterial(MAT_PRESETS.needle, '', true)
-                          : surfaceMaterial(MAT_PRESETS.crown, surf, true));
+        surf === 'needle' ? surfaceMaterial(MAT_PRESETS.needle, '', true, cut)
+                          : surfaceMaterial(MAT_PRESETS.crown, surf, true, cut));
+      if (cut) foliage.customDepthMaterial = cut.depth;
       const names = new Array(total), ids = new Array(total);
       let idx = 0;
       items.forEach((p, ii) => {
@@ -732,7 +736,9 @@ function buildPlants(group, plants, month, year, terrain) {
           const rotY = rotY0 + (k ? pl.dx + pl.dz : 0);
           const gy = terrainHeightAt(x, wy, terrain);
           if (!k && window.noteVineHost) {     // something a vine can climb
-            noteVineHost(p, bare ? [arch.branchGeo] : [arch.branchGeo, arch.foliageGeo],
+            // Its own crown names its leafy ends first, so flowers sit on them.
+            noteVineHost(p, bare ? [arch.branchGeo] : (own ? [arch.foliageGeo, arch.branchGeo]
+                                                           : [arch.branchGeo, arch.foliageGeo]),
                          x, gy, z, c * m, h * m, rotY);
           }
           setInst2(branch, idx, x, gy, z, c * m, h * m, c * m, rotY, bcol);

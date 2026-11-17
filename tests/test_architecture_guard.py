@@ -515,7 +515,12 @@ class TestStructuralCeilings(unittest.TestCase):
         # the shrub layer moved here from 04-quality.js (899 of 900). When
         # this trips, the leafy shoot's mask (_wdSpray and its painters) is
         # the seam: 15c-woodybloom.js already shares its smaller-copy rule.
-        (_HTML / "scene3d" / "03d-woody.js", 700),     # 600 now
+        (_HTML / "scene3d" / "03d-woody.js", 700),     # 630 now
+        # V3.50 (F268): a tree built from its own crown on 03d-woody.js's
+        # shoots. When this trips, the needle masks (_crNeedles) are the seam.
+        (_HTML / "scene3d" / "03e-crowns.js", 520),    # 420 now
+        # V3.50: a read vine's leafy shoots along its stems.
+        (_HTML / "scene3d" / "22b-vineleaves.js", 160),  # 100 now
         (_HTML / "scene3d" / "04-quality.js", 900),    # 815 now (V3.49)
         (_HTML / "scene3d" / "05-flowers.js", 800),    # 775 now (V3.04)
         (_HTML / "scene3d" / "06-fly.js", 950),        # ~732 now

@@ -155,6 +155,10 @@ GROWTH_FORMS      = {"erect", "ferny", "rosette", "clump", "grassy", "mat",
 # Surface character (schema v52). What a species' bark and foliage look like
 # close up — the 3D viewer's procedural grain (html/scene3d/01b-surface.js).
 # Empty is meaningful and common: a per-genus bark default and a matte leaf.
+# A tree's crown (schema v100, V3.50), read off a photograph of one grown in
+# the open: its outline and which way its main limbs go.
+CROWN_SHAPES      = ("conical", "spire", "oval", "rounded", "irregular")
+LIMB_HABITS       = ("ascending", "spreading", "drooping")
 BARK_TEXTURES     = {"smooth", "furrowed", "papery", "shaggy", "scaly"}
 LEAF_SURFACES     = {"matte", "glossy", "pubescent", "glaucous"}
 # The graminoid field mark (schema v52) — separate from flower_form, which
@@ -511,6 +515,19 @@ def validate_plant(
             err(f"woody_stems={stems!r} is not a whole number")
         elif not 1 <= stems <= 60:
             err(f"woody_stems={stems} out of range 1–60")
+
+    # The crown (schema v100): two words from their vocabularies and the
+    # share of the height that is bare trunk.
+    for field, vocab in (("crown_shape", CROWN_SHAPES), ("limb_habit", LIMB_HABITS)):
+        val = (record.get(field) or "").strip()
+        if val and val not in vocab:
+            err(f"{field}={val!r} is not one of {', '.join(vocab)}")
+    clear = record.get("crown_clear")
+    if clear not in (None, ""):
+        if isinstance(clear, bool) or not isinstance(clear, (int, float)):
+            err(f"crown_clear={clear!r} is not a number")
+        elif not 0.0 <= clear <= 0.8:
+            err(f"crown_clear={clear} out of range 0–0.8")
 
     # ── Soft enums (deviations = warning) ────────────────────────────────
     val = (record.get("growth_curve") or "").strip()

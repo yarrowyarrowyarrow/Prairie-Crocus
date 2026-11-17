@@ -291,7 +291,11 @@ function buildFlowers(plants, month, terrain) {
     // pollinator logic and a wind-pollinated grass offers a bee nothing.
     const form = (p.inflorescence_form && p.inflorescence_form !== 'cattail_spike')
       ? p.inflorescence_form : p.flower_form;
-    if (!p.flower_color || !byForm[form]) continue;
+    // A body that carries its flowers as cards needs only their colour: a
+    // poplar's catkins are recorded flower_form 'none', which the pollinator
+    // logic reads, and are still drawn (15c-woodybloom.js, V3.50).
+    const carries = window.woodyBloomApplies && woodyBloomApplies(p);
+    if (!p.flower_color || (!byForm[form] && !carries)) continue;
     if ((p.opacity ?? 1) < 0.25) continue;            // not-yet-present plants
     const bs = p.bloom_start || 0;
     // A seed head is not a bloom: prairie grasses hold theirs from flowering
@@ -310,7 +314,7 @@ function buildFlowers(plants, month, terrain) {
     if (window.floretsApply && window.floretsApply(p)) {
       // A shrub drawn from its own numbers carries each cluster as one
       // cut-out card on its shoots (15c-woodybloom.js, V3.49).
-      (window.woodyBloomApplies && woodyBloomApplies(p) ? carded : modelled).push(p);
+      (carries ? carded : modelled).push(p);
       continue;
     }
     byForm[form].push(p);

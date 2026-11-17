@@ -223,7 +223,8 @@ class TheViewerAgrees(unittest.TestCase):
         """Before the floret layer, which would build each cluster a floret
         at a time and lose it among the leaves."""
         flowers, bloom = _js("05-flowers.js"), _js("15c-woodybloom.js")
-        self.assertIn("woodyBloomApplies(p) ? carded : modelled", flowers)
+        self.assertIn("const carries = window.woodyBloomApplies && woodyBloomApplies(p);", flowers)
+        self.assertIn("(carries ? carded : modelled).push(p)", flowers)
         self.assertIn("window.buildWoodyBlooms(carded, month, terrain)", flowers)
         self.assertIn("woodyKeyFor(p)", bloom[bloom.index("function woodyBloomApplies"):])
         order = re.findall(r"'scene3d/([\w-]+\.js)'", _js("chunks.js"))
@@ -273,7 +274,9 @@ class TheCatalogue(unittest.TestCase):
             if r.get("woody_stems"):
                 self.assertTrue(herb_habit.is_read(r),
                                 f"{r['scientific_name']}: a stem count with no reading")
-                self.assertIn(r.get("plant_type"), shrub_habit.TYPES, r["scientific_name"])
+                # A tree's trunks are counted in the same column (V3.50).
+                self.assertIn(r.get("plant_type"), shrub_habit.TYPES + ("tree",),
+                              r["scientific_name"])
 
     def test_every_native_shrub_is_drawn_from_its_own_numbers(self):
         names = native_here.native_names()
