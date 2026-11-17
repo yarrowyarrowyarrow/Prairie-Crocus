@@ -521,6 +521,9 @@ class TestStructuralCeilings(unittest.TestCase):
         (_HTML / "scene3d" / "03e-crowns.js", 520),    # 420 now
         # V3.50: a read vine's leafy shoots along its stems.
         (_HTML / "scene3d" / "22b-vineleaves.js", 160),  # 100 now
+        # V3.51 (F268): a grass, sedge or rush from its own blades and head.
+        # When this trips, the head builders (_tfHead) are the seam.
+        (_HTML / "scene3d" / "03f-tufts.js", 520),     # 430 now
         (_HTML / "scene3d" / "04-quality.js", 900),    # 815 now (V3.49)
         (_HTML / "scene3d" / "05-flowers.js", 800),    # 775 now (V3.04)
         (_HTML / "scene3d" / "06-fly.js", 950),        # ~732 now

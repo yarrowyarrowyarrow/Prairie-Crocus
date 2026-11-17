@@ -247,7 +247,30 @@ CREATE TABLE IF NOT EXISTS plants (
     -- provenance pair. NULL keeps the tree on the shared baked crown.
     crown_shape TEXT DEFAULT '',
     crown_clear REAL,
-    limb_habit TEXT DEFAULT ''
+    limb_habit TEXT DEFAULT '',
+    -- The colour of a species' leaves as a photograph shows them in summer
+    -- (schema v101, V3.51), '#rrggbb'. Empty keeps the green the 3D viewer
+    -- gives the plant's type or genus. Not a flower colour: those are the
+    -- owner's answers (flower_colour_source). Covered by the leaf pair.
+    leaf_color TEXT DEFAULT '',
+    -- A grass's, sedge's or rush's blades and seed head, read off its
+    -- photographs (schema v101, V3.51). `blade_width_mm` is a blade's width
+    -- (a leafless rush records none), `blade_habit` how the blades are held
+    -- (upright, arching, drooping, flat on the ground, or none: leafless
+    -- stems). The head: `head_length_cm` and `head_width_cm` its size (a
+    -- panicle's length and spread, a sedge's cylinder, a rush's spray),
+    -- `head_count` how many a stem carries, `head_color` its colour in
+    -- flower or fruit, and `head_attitude` how it is held (erect, nodding,
+    -- hanging, or from the stem's side below its tip). The form is
+    -- inflorescence_form. Covered by the leaf pair. NULL keeps the plant on
+    -- the shared baked tuft.
+    blade_width_mm REAL,
+    blade_habit TEXT DEFAULT '',
+    head_length_cm REAL,
+    head_width_cm REAL,
+    head_count INTEGER,
+    head_color TEXT DEFAULT '',
+    head_attitude TEXT DEFAULT ''
 );
 
 -- Companion pairings (schema v61: + source/notes).

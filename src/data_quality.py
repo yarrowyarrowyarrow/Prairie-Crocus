@@ -159,13 +159,24 @@ GROWTH_FORMS      = {"erect", "ferny", "rosette", "clump", "grassy", "mat",
 # the open: its outline and which way its main limbs go.
 CROWN_SHAPES      = ("conical", "spire", "oval", "rounded", "irregular")
 LIMB_HABITS       = ("ascending", "spreading", "drooping")
+# A grass's, sedge's or rush's blades and seed head (schema v101, V3.51), read
+# off a photograph: how the blades are held (`none`: leafless stems, a rush's
+# or a bulrush's) and how the head is (`side`: from the stem's side below its
+# tip, a wire rush's spray or a bulrush's knot).
+BLADE_HABITS      = ("upright", "arching", "drooping", "flat", "none")
+HEAD_ATTITUDES    = ("erect", "nodding", "hanging", "side")
 BARK_TEXTURES     = {"smooth", "furrowed", "papery", "shaggy", "scaly"}
 LEAF_SURFACES     = {"matte", "glossy", "pubescent", "glaucous"}
 # The graminoid field mark (schema v52) — separate from flower_form, which
 # stays 'plume' for every grass because that column feeds pollinator logic.
 INFLORESCENCE_FORMS = {"turkey_foot", "open_panicle", "contracted_spike",
                        "nodding_raceme", "one_sided_raceme", "bristly",
-                       "sedge_cluster", "rush_umbel", "cattail_spike"}
+                       "sedge_cluster", "rush_umbel", "cattail_spike",
+                       # V3.51, read off photographs: a cotton-grass's silky
+                       # white tufts (not a needle grass's awns), a
+                       # bur-reed's round spiky burs, and a sweet flag's
+                       # finger-like spike jutting from its stalk's side.
+                       "cotton", "bur", "spadix"}
 
 # Flower morphology (schema v53). These four lived in
 # scripts/seed_flower_morphology.py — the only place that wrote them — which
@@ -528,6 +539,30 @@ def validate_plant(
             err(f"crown_clear={clear!r} is not a number")
         elif not 0.0 <= clear <= 0.8:
             err(f"crown_clear={clear} out of range 0–0.8")
+
+    # The leaf colour and a graminoid's blades and seed head (schema v101).
+    for field in ("leaf_color", "head_color"):
+        val = (record.get(field) or "").strip()
+        if val and not re.fullmatch(r"#[0-9a-fA-F]{6}", val):
+            err(f"{field}={val!r} is not a #rrggbb colour")
+    for field, vocab in (("blade_habit", BLADE_HABITS),
+                         ("head_attitude", HEAD_ATTITUDES)):
+        val = (record.get(field) or "").strip()
+        if val and val not in vocab:
+            err(f"{field}={val!r} is not one of {', '.join(vocab)}")
+    for field, lo, hi in (("blade_width_mm", 0.2, 40.0),
+                          ("head_length_cm", 0.1, 60.0),
+                          ("head_width_cm", 0.1, 60.0),
+                          ("head_count", 1, 60)):
+        val = record.get(field)
+        if val in (None, ""):
+            continue
+        if isinstance(val, bool) or not isinstance(val, (int, float)):
+            err(f"{field}={val!r} is not a number")
+        elif not lo <= val <= hi:
+            err(f"{field}={val} out of range {lo}–{hi}")
+        elif field == "head_count" and val != int(val):
+            err(f"head_count={val!r} is not a whole number")
 
     # ── Soft enums (deviations = warning) ────────────────────────────────
     val = (record.get("growth_curve") or "").strip()

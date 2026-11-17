@@ -550,7 +550,12 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # `crown_clear` and `limb_habit`, and a reseed for the 10 native trees and 5
 # native vines read (F268). A read tree is drawn from those numbers by
 # src/tree_habit.py; a read vine carries its own leaf sprays and flowers.
-_SCHEMA_VERSION = 100
+# v101 (V3.51): a species' leaf colour (`leaf_color`) and a grass's, sedge's
+# or rush's blades and seed head (`blade_width_mm`, `blade_habit`,
+# `head_length_cm`, `head_width_cm`, `head_count`, `head_color`,
+# `head_attitude`), and a reseed for the grasses, sedges, rushes and
+# grass-like water plants read (F268). Drawn by src/grass_habit.py.
+_SCHEMA_VERSION = 101
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
@@ -981,6 +986,27 @@ def _migrate_to_v99(conn: sqlite3.Connection):
         conn.execute("ALTER TABLE plants ADD COLUMN woody_stems INTEGER")
     except sqlite3.OperationalError:
         pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v101(conn: sqlite3.Connection):
+    """A species' leaf colour, and a graminoid's blades and seed head
+    (V3.51). Additive and idempotent; empty on every row until the reseed
+    this version forces fills it for the plants read."""
+    for ddl in (
+                "ALTER TABLE plants ADD COLUMN leaf_color TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN blade_width_mm REAL",
+                "ALTER TABLE plants ADD COLUMN blade_habit TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN head_length_cm REAL",
+                "ALTER TABLE plants ADD COLUMN head_width_cm REAL",
+                "ALTER TABLE plants ADD COLUMN head_count INTEGER",
+                "ALTER TABLE plants ADD COLUMN head_color TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN head_attitude TEXT DEFAULT ''",
+    ):
+        try:
+            conn.execute(ddl)
+        except sqlite3.OperationalError:
+            pass                          # column already present
     conn.commit()
 
 
@@ -2105,6 +2131,14 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             p.get("crown_shape", ""),
             p.get("crown_clear"),
             p.get("limb_habit", ""),
+            p.get("leaf_color", ""),
+            p.get("blade_width_mm"),
+            p.get("blade_habit", ""),
+            p.get("head_length_cm"),
+            p.get("head_width_cm"),
+            p.get("head_count"),
+            p.get("head_color", ""),
+            p.get("head_attitude", ""),
         ))
 
     conn.executemany(
@@ -2134,10 +2168,13 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             flowering_stems, flower_data_source, flower_data_citation,
             leaf_data_source, leaf_data_citation, flower_colour_source,
             native_provinces_source, stem_leaf_nodes, woody_stems,
-            crown_shape, crown_clear, limb_habit)
+            crown_shape, crown_clear, limb_habit, leaf_color,
+            blade_width_mm, blade_habit, head_length_cm, head_width_cm,
+            head_count, head_color, head_attitude)
            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-                   ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                   ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
+                   ?,?,?,?,?,?,?,?)""",
         plant_rows,
     )
     conn.commit()
@@ -2289,6 +2326,9 @@ def init_db() -> None:
 
         if current_version < 100:
             _migrate_to_v100(conn)
+
+        if current_version < 101:
+            _migrate_to_v101(conn)
 
         # Add parent_id to polycultures if missing
         try:

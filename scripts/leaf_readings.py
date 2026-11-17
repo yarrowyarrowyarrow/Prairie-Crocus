@@ -10,6 +10,7 @@ photographs, and write what was read into the catalogue (V3.48, F268).
     python scripts/leaf_readings.py add batch.json --dry-run
     python scripts/leaf_readings.py status --group shrubs  # the shrubs (V3.49)
     python scripts/leaf_readings.py strips --group shrubs
+    python scripts/leaf_readings.py strips --group grasses # grasses, sedges, rushes (V3.51)
 
 Until V3.48 every leaf and habit number in the catalogue was the seeder's
 estimate for the genus: an 8 cm leaf on every aster, three stems on everything.
@@ -68,12 +69,13 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from src import data_quality as dq  # noqa: E402
-from src import herb_habit, native_here, photo_picks, shrub_habit, tree_habit  # noqa: E402
+from src import (grass_habit, herb_habit, native_here, photo_picks, shrub_habit,  # noqa: E402
+                 tree_habit)
 
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.50"
+READ_IN = "V3.51"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -88,7 +90,14 @@ WORDS = {
     "flower_arch": dq.FLOWER_ARCHITECTURES,
     "petal_shape": dq.PETAL_SHAPES,
     "flower_symmetry": dq.FLOWER_SYMMETRIES,
+    # V3.51: a grass's, sedge's or rush's blades and seed head.
+    "blade_habit": dq.BLADE_HABITS,
+    "head_attitude": dq.HEAD_ATTITUDES,
+    "inflorescence_form": dq.INFLORESCENCE_FORMS,
 }
+#: A colour, '#rrggbb': a species' leaves and a graminoid's head (V3.51).
+#: Never a flower's, which is the owner's answer.
+COLOURS = ("leaf_color", "head_color")
 #: A number, with the range a reading may fall in.
 NUMBERS = {
     "leaf_size_cm": (0.2, 80.0),
@@ -101,11 +110,15 @@ NUMBERS = {
     "florets_per_head": (1, 2000),
     "flower_diameter_cm": (0.1, 20.0),
     "flower_height_frac": (0.3, 1.3),
+    "blade_width_mm": (0.2, 40.0),
+    "head_length_cm": (0.1, 60.0),
+    "head_width_cm": (0.1, 60.0),
+    "head_count": (1, 60),
 }
 WHOLE = ("stem_leaf_nodes", "flowering_stems", "woody_stems", "petal_count",
-         "florets_per_head")
+         "florets_per_head", "head_count")
 FLAGS = ("basal_rosette",)
-FIELDS = tuple(WORDS) + tuple(NUMBERS) + FLAGS
+FIELDS = tuple(WORDS) + tuple(NUMBERS) + FLAGS + COLOURS
 #: A reading that gives any of these read the flower too.
 FLOWER_READ = ("flower_arch", "petal_shape", "flower_symmetry", "petal_count",
                "florets_per_head", "flower_diameter_cm", "flower_height_frac")
@@ -118,6 +131,9 @@ NEEDED_WOODY = ("branching", "woody_stems", "leaf_shape", "leaf_size_cm",
 NEEDED_TREE = ("woody_stems", "crown_shape", "crown_clear", "limb_habit",
                "leaf_shape", "leaf_size_cm", "leaf_arrangement")
 NEEDED_VINE = ("leaf_shape", "leaf_size_cm", "leaf_arrangement")
+#: A grass, sedge or rush (V3.51): its habit, its blades and its head.
+NEEDED_GRASS = ("growth_form", "blade_habit", "inflorescence_form", "head_length_cm",
+                "head_color")
 #: The plants a sitting reads: which types, the module that says whether one
 #: is drawn from its numbers, and the photographs a strip shows of each.
 GROUPS = {
@@ -131,11 +147,16 @@ GROUPS = {
     "trees": {"types": tree_habit.TYPES, "habit": tree_habit, "words": "trees and vines",
               "kinds": (("habit", 3), ("winter", 1), ("leaf", 2), ("flower", 1),
                         ("fruit", 1))},
+    "grasses": {"types": grass_habit.GRAMINOIDS + ("aquatic",), "habit": grass_habit,
+                "words": "grasses, sedges, rushes and water plants",
+                "kinds": (("habit", 3), ("leaf", 1), ("flower", 3), ("winter", 1))},
 }
 
 
 def needed(row: dict) -> tuple:
     kind = row.get("plant_type")
+    if grass_habit.is_graminoid(row) or row.get("inflorescence_form"):
+        return NEEDED_GRASS
     if kind == "tree":
         return NEEDED_TREE
     if kind == "vine":
@@ -157,7 +178,8 @@ def citation(sci: str, review: dict) -> str:
     photograph id."""
     refs = (review.get(sci) or {}).get("refs") or {}
     ids = []
-    for kind in ("habit", "winter", "leaf", "flower"):
+    # The fruit last: a seed head is a sedge's or a rush's fruit (V3.51).
+    for kind in ("habit", "winter", "leaf", "flower", "fruit"):
         for pid in refs.get(kind, []):
             if str(pid) not in ids:
                 ids.append(str(pid))
@@ -190,6 +212,11 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
                     out.append(f"{sci}: {field} {value} is outside {lo} to {hi}")
                 elif field in WHOLE and value != int(value):
                     out.append(f"{sci}: {field} must be a whole number")
+            elif field in COLOURS and not (isinstance(value, str) and len(value) == 7
+                                           and value[0] == "#"
+                                           and all(ch in "0123456789abcdefABCDEF"
+                                                   for ch in value[1:])):
+                out.append(f"{sci}: {field} must be a '#rrggbb' colour")
             elif field in FLAGS and value not in (0, 1):
                 out.append(f"{sci}: {field} must be 0 or 1")
         merged = {**row, **reading}
@@ -219,6 +246,8 @@ def apply(batch: dict, rows: list, review: dict) -> int:
             if field == "mature_height_m":
                 # The catalogue keeps a height as text ("0.15", "1").
                 value = f"{float(value):g}"
+            elif field in COLOURS:
+                value = value.lower()
             elif field in NUMBERS and field not in WHOLE:
                 value = float(value)
             elif field in WHOLE or field in FLAGS:

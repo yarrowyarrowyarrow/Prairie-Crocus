@@ -291,6 +291,9 @@ def _foliage_color(plant: dict) -> str:
     marker = plant.get("marker_color")
     if marker:
         return marker
+    # The species' own, read off its photographs (schema v101, V3.51).
+    if plant.get("leaf_color"):
+        return plant["leaf_color"]
     genus = _genus_of(plant)
     if genus in _SILVER_FOLIAGE_GENERA:
         return "#9aa890"
@@ -637,6 +640,15 @@ def build_scene(project: dict, *, year: int = 0,
             "crown_shape": plant.get("crown_shape") or "",
             "crown_clear": plant.get("crown_clear"),
             "limb_habit": plant.get("limb_habit") or "",
+            # A graminoid's blades and seed head as read (schema v101,
+            # V3.51): what src/grass_habit.py decides its body from.
+            "blade_width_mm": plant.get("blade_width_mm"),
+            "blade_habit": plant.get("blade_habit") or "",
+            "head_length_cm": plant.get("head_length_cm"),
+            "head_width_cm": plant.get("head_width_cm"),
+            "head_count": plant.get("head_count"),
+            "head_color": plant.get("head_color") or "",
+            "head_attitude": plant.get("head_attitude") or "",
             "leaf_data_source": plant.get("leaf_data_source") or "",
             "opacity": opacity,
             "health": health,
@@ -897,6 +909,11 @@ def build_scene(project: dict, *, year: int = 0,
     # and its outline (V3.50, F268).
     from src.tree_habit import apply_tree_habits
     apply_tree_habits(plants)
+    # And a grass, sedge or rush whose blades and seed head were read: its
+    # blades at their size and as they are held, its head by its form
+    # (V3.51, F268). Additive; an unread one keeps the baked tuft.
+    from src.grass_habit import apply_grass_habits
+    apply_grass_habits(plants)
     # The season (V3.46, F263): how far up a herb is, whether a woody plant is
     # in leaf, whether snow lies, from the region pack's frost dates. Last,
     # because a body decides whether a season applies to it. Additive; a

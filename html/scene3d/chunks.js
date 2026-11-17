@@ -30,6 +30,9 @@ window.SCENE3D_CHUNKS = [
   // V3.50: a tree built from its own crown where that was read (F268): its
   // trunks, bare bole, limbs and outline, on 03d-woody.js's shoots.
   'scene3d/03e-crowns.js',
+  // V3.51: a grass, sedge or rush built from its own blades and seed head
+  // where those were read (F268). After 03c-leafy.js for its blades and tubes.
+  'scene3d/03f-tufts.js',
   'scene3d/04-quality.js',
   'scene3d/05-flowers.js',
   'scene3d/06-fly.js',

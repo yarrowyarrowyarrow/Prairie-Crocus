@@ -12,7 +12,7 @@ seeded reference data every project draws from.
   [`recipes.py`](../src/db/recipes.py),
   [`structures.py`](../src/db/structures.py),
   [`fauna.py`](../src/db/fauna.py)
-- **Current schema version:** `100` (`src/db/plants.py:_SCHEMA_VERSION` — the
+- **Current schema version:** `101` (`src/db/plants.py:_SCHEMA_VERSION` — the
   authoritative value; this doc's narrative may lag, the code wins). It sat at
   `75` here through nine bumps, which is what the parenthesis above is for and
   is also why it is worth re-reading it whenever you bump.
@@ -73,6 +73,13 @@ One row per species. Key columns (full list in the DDL):
 | `crown_shape` | A grown tree's outline (v100, V3.50): conical \| spire \| oval \| rounded \| irregular. Read off a photograph of one grown in the open, covered by the leaf provenance pair; with `crown_clear` and `limb_habit` it is what `src/tree_habit.py` draws a tree from. Empty keeps the tree on the baked crown |
 | `crown_clear` | The share of a grown tree's height that is bare trunk below the lowest live limb (v100): 0.02 a white spruce, 0.55 an aspen |
 | `limb_habit` | Which way a tree's main limbs go (v100): ascending \| spreading \| drooping |
+| `leaf_color` | A species' leaves as a photograph shows them in summer (v101, V3.51), `#rrggbb`; the 3D body's colour when set, else the type's or genus's green. Not a flower colour. Covered by the leaf provenance pair |
+| `blade_width_mm` | A grass's, sedge's or rush's blade width (v101): 0.8 a Rocky Mountain fescue, 20 a cattail; NULL on a leafless rush |
+| `blade_habit` | How the blades are held (v101): upright \| arching \| drooping \| flat \| none (leafless stems) |
+| `head_length_cm`, `head_width_cm` | The seed head's size (v101): a panicle's length and spread, a sedge's cylinder, a rush's spray. With `blade_habit` and `inflorescence_form` what `src/grass_habit.py` draws a graminoid from; NULL keeps the baked tuft |
+| `head_count` | Heads one stem carries (v101): a sedge's cylinders, a cotton-grass's tufts |
+| `head_color` | The seed head's colour in flower or fruit (v101). Not `flower_color`, which is the owner's |
+| `head_attitude` | How the head is held (v101): erect \| nodding \| hanging \| side (from the stem's side below its tip) |
 | `flowering_stems` | How many inflorescences a MATURE plant carries (v54). Bloom display used to be sized off the plant's *canopy*, which is a proxy for spread and not for flowering: a pasqueflower holds three and a mature bergamot twenty-eight. **No flora records this** — the seeded values follow from the branching habit and are meant to be corrected in the field with `scripts/tune_morphology.py`. Empty falls back to a count derived from `stem_branching` |
 | `flower_data_source` | measured \| flora \| photo \| estimated (v55). **Where each flower number came from.** The seeder's values are genus-level botanical judgement, which is a reasonable start and is not a measurement; reporting "307 described" as though it meant 307 verified is what P9 forbids. Raised by `scripts/tune_morphology.py` as species are actually checked |
 | `flower_data_citation` | Free text (v56). **WHICH source** — `FNA vol. 21`, `Budd's 442`, `my yard 2026-07-12`. `flower_data_source` says what kind of source; "read in a flora" that does not name the flora is not a citation. Blank from the seeder on purpose: naming a book nobody opened for that species would be worse than an empty field. Same shape as `safety_source`. See [`DATA_SOURCES.md`](DATA_SOURCES.md) |

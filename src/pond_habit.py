@@ -70,6 +70,11 @@ def body_for(plant: dict) -> Optional[str]:
     form = (plant.get("growth_form") or "").lower()
     if form == "jointed" or ptype in _GRAMINOIDS:
         return None
+    # A grass-like water plant whose blades and head were read (a cattail, a
+    # bulrush, a bur-reed, sweet flag) is drawn from them (V3.51).
+    from src import grass_habit                          # noqa: PLC0415
+    if grass_habit.form_for(plant):
+        return None
     if form in ("floating", "submerged"):
         return form
     if form == "emergent":

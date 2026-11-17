@@ -109,6 +109,9 @@ LEAF_FIELDS = ("leaf_shape", "leaf_size_cm", "leaf_arrangement", "leaf_surface",
                "woody_stems",
                # V3.50: a tree's crown, read off a photograph.
                "crown_shape", "crown_clear", "limb_habit",
+               # V3.51: a species' leaf colour, a graminoid's blades and head.
+               "leaf_color", "blade_width_mm", "blade_habit", "head_length_cm",
+               "head_width_cm", "head_count", "head_color", "head_attitude",
                "leaf_data_source", "leaf_data_citation")
 
 FIELDS = FLOWER_FIELDS + LEAF_FIELDS
@@ -129,9 +132,9 @@ DATA_SOURCES = ("estimated", "photo", "flora", "measured")
 
 # Numbers, so a blank round-trips as null rather than "".
 _INT_FIELDS = ("petal_count", "florets_per_head", "basal_rosette",
-               "flowering_stems", "stem_leaf_nodes", "woody_stems")
+               "flowering_stems", "stem_leaf_nodes", "woody_stems", "head_count")
 _FLOAT_FIELDS = ("flower_diameter_cm", "flower_height_frac", "leaf_size_cm", "crown_clear",
-                 "mature_height_m")
+                 "mature_height_m", "blade_width_mm", "head_length_cm", "head_width_cm")
 
 
 def _vocabularies() -> dict:
@@ -159,6 +162,8 @@ def _vocabularies() -> dict:
         "leaf_surface":     L(dq.LEAF_SURFACES),
         "crown_shape":      L(dq.CROWN_SHAPES),
         "limb_habit":       L(dq.LIMB_HABITS),
+        "blade_habit":      L(dq.BLADE_HABITS),
+        "head_attitude":    L(dq.HEAD_ATTITUDES),
         "growth_form":      L(dq.GROWTH_FORMS),
         "branching":        L(dq.BRANCHING_HABITS),
         "flower_data_source": list(DATA_SOURCES),

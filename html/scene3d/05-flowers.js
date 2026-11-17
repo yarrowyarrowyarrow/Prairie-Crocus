@@ -295,6 +295,8 @@ function buildFlowers(plants, month, terrain) {
     // poplar's catkins are recorded flower_form 'none', which the pollinator
     // logic reads, and are still drawn (15c-woodybloom.js, V3.50).
     const carries = window.woodyBloomApplies && woodyBloomApplies(p);
+    // A grass drawn from its own head carries it (03f-tufts.js, V3.51).
+    if (window.tuftKeyFor && tuftKeyFor(p)) continue;
     if (!p.flower_color || (!byForm[form] && !carries)) continue;
     if ((p.opacity ?? 1) < 0.25) continue;            // not-yet-present plants
     const bs = p.bloom_start || 0;

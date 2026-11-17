@@ -666,13 +666,16 @@ function buildPlants(group, plants, month, year, terrain) {
   if (window.bloomBodiesReset) bloomBodiesReset();
 
   const byKind = { tree: [], shrub: [], vine: [], groundcover: [], grass: [],
-                   aquatic: [], herb: [], horsetail: [], pond: [], succulent: [] };
+                   aquatic: [], herb: [], horsetail: [], pond: [], succulent: [], tuft: [] };
   for (const p of plants || []) {
     // A horsetail is jointed stems whatever its type (V2.89); a wetland plant or a
     // succulent is the body Python gave it (V2.90 23-pond.js, V2.93 24-succulents.js).
     const pb = p.drawn && p.drawn.body;
     if (p.growth_form === 'jointed' || pb === 'whorled') { byKind.horsetail.push(p); continue; }
     if (window.SUCCULENT_BODIES && SUCCULENT_BODIES[pb]) { byKind.succulent.push(p); continue; }
+    // A grass, sedge or rush read off its photographs (03f-tufts.js, V3.51);
+    // at Stylised it keeps the tuft its type has always had.
+    if (pb === 'tuft') { (tuftKeyFor(p) ? byKind.tuft : byKind.grass).push(p); continue; }
     if (pb && ['reed', 'herb', 'leafy', 'woody', 'crown'].indexOf(pb) < 0) { byKind.pond.push(p); continue; }
     let t = pb === 'herb' || pb === 'leafy' ? 'herb' : p.plant_type;
     if (t === 'sedge' || t === 'rush') t = 'grass';   // graminoids share blades
@@ -769,6 +772,8 @@ function buildPlants(group, plants, month, year, terrain) {
              (p) => [Math.max(0.16, p.canopy_m), bodyHeightOf(p),
                      Math.max(0.16, p.canopy_m)], month, year, false, terrain,
              (p) => aspectBucket(p, 'grass'));
+
+  buildTuftLayer(byKind.tuft, month, year, terrain);     // 03f-tufts.js (V3.51)
 
   // Aquatic / emergent marsh plants — tall erect reed/strap-leaf clumps; the
   // cattail's brown spike comes from the flower layer (V1.92).

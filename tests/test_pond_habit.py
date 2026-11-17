@@ -24,6 +24,7 @@ import src.db.plants as _plants_mod  # noqa: E402
 _plants_mod._DATA_DIR = _TMP_DIR
 _plants_mod._DB_PATH = os.path.join(_TMP_DIR, "permadesign_test.db")
 
+from src import grass_habit  # noqa: E402
 from src import pond_habit as PH  # noqa: E402
 
 _ROOT = Path(__file__).resolve().parent.parent
@@ -45,11 +46,13 @@ EXPECTED = {
     "Water Arum (Wild Calla)": "broadleaf",
     "Common Mare's-tail": "whorled",
     "Water Parsnip": "herb",
-    "Cattail": "reed",
-    "Great Bulrush": "reed",
-    "Giant Bur-reed": "reed",
-    "Rat Root": "reed",
-    "Small Bottle Sedge": "reed",
+    # Read off their photographs in V3.51: drawn from their own blades and
+    # heads by src/grass_habit.py, so the pond gives them no body.
+    "Cattail": None,
+    "Great Bulrush": None,
+    "Giant Bur-reed": None,
+    "Rat Root": None,
+    "Small Bottle Sedge": None,
     "River Bulrush": None,
     "Alkali Bulrush": None,
     "Three-square Rush": None,
@@ -91,7 +94,8 @@ class TheBody(unittest.TestCase):
             with self.subTest(r["common_name"]):
                 body = PH.body_for(r)
                 self.assertTrue(body in PH.BODIES
-                                or r.get("growth_form") == "jointed")
+                                or r.get("growth_form") == "jointed"
+                                or grass_habit.form_for(r))
 
     def test_the_habit_decides_not_the_habitat(self):
         # A wildflower that is an emergent with broad leaves (Water Arum).
