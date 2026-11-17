@@ -507,7 +507,8 @@ def main(argv=None) -> int:
     if measured:
         import html as _html
         table = json.loads(_html.unescape(measured.group(1)))
-        with open(os.path.join(args.out, "light.json"), "w") as fh:
+        with open(os.path.join(args.out, "light.json"), "w",
+                  encoding="utf-8") as fh:
             json.dump({"label": label, "shots": table,
                        "captions": spec.get("captions", {})}, fh, indent=1)
         print(f"{'':52s} luma  near-black  washed-out")
