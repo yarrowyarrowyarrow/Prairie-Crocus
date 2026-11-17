@@ -1199,7 +1199,13 @@
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 446686561, 361491683, 473766708, 630754539, 639910572, 715376301, 661146727, 652100112 (read V3.50)",
     "flower_data_source": "photo",
-    "flower_data_citation": "iNaturalist photographs 446686561, 361491683, 473766708, 630754539, 639910572, 715376301, 661146727, 652100112 (read V3.50)"
+    "flower_data_citation": "iNaturalist photographs 446686561, 361491683, 473766708, 630754539, 639910572, 715376301, 661146727, 652100112 (read V3.50)",
+    "flower_symmetry": "radial",
+    "petal_shape": "narrow",
+    "flower_center_color": "",
+    "flower_height_frac": 1.0,
+    "stem_branching": "branched_throughout",
+    "basal_rosette": 0
   },
   {
     "common_name": "Balsamroot",
@@ -22458,7 +22464,13 @@
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 196870304, 362675227, 600537193, 678951973, 661146525, 284732190, 492512289, 276832270 (read V3.50)",
     "flower_data_source": "photo",
-    "flower_data_citation": "iNaturalist photographs 196870304, 362675227, 600537193, 678951973, 661146525, 284732190, 492512289, 276832270 (read V3.50)"
+    "flower_data_citation": "iNaturalist photographs 196870304, 362675227, 600537193, 678951973, 661146525, 284732190, 492512289, 276832270 (read V3.50)",
+    "flower_symmetry": "radial",
+    "petal_shape": "narrow",
+    "flower_center_color": "",
+    "flower_height_frac": 1.0,
+    "stem_branching": "branched_throughout",
+    "basal_rosette": 0
   },
   {
     "common_name": "Tufted Hairgrass",
@@ -23243,7 +23255,13 @@
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 373551933, 102845595, 615913132, 611147784, 295743282, 295327497, 280951567, 301289877 (read V3.50)",
     "flower_data_source": "photo",
-    "flower_data_citation": "iNaturalist photographs 373551933, 102845595, 615913132, 611147784, 295743282, 295327497, 280951567, 301289877 (read V3.50)"
+    "flower_data_citation": "iNaturalist photographs 373551933, 102845595, 615913132, 611147784, 295743282, 295327497, 280951567, 301289877 (read V3.50)",
+    "flower_symmetry": "radial",
+    "petal_shape": "narrow",
+    "flower_center_color": "",
+    "flower_height_frac": 1.0,
+    "stem_branching": "branched_throughout",
+    "basal_rosette": 0
   },
   {
     "common_name": "Water Parsnip",
