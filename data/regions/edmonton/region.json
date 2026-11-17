@@ -4207,7 +4207,8 @@
         ]
       }
     ],
-    "notes": "This is a worked example, not a recommendation for your yard.\n\nIt holds 399 plants of 16 kinds, every one native around Edmonton. Design → Overview says what it feeds, when it flowers and how full it is."
+    "notes": "This is a worked example, not a recommendation for your yard.\n\nIt holds 399 plants of 16 kinds, every one native around Edmonton. Design → Overview says what it feeds, when it flowers and how full it is.",
+    "street_side": "east"
   },
   "overview": {
     "price_note": "at Edmonton native nurseries"

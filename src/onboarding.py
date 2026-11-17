@@ -389,6 +389,10 @@ def build_example_project(lat: Optional[float] = None,
     site_config["latitude"] = round(lat, 7)
     site_config["longitude"] = round(lng, 7)
     site_config["pin_label"] = "Example site"
+    # Which side the street is on (V3.54), as Plan My Yard stores a person's
+    # answer: the 3D window stands there, and draws the street only when told.
+    if ex.get("street_side"):
+        site_config["street_side"] = ex["street_side"]
     site_config["priorities"] = list(FIRST_RUN_GOALS)
 
     ring = example_boundary_ring(sw_lat, sw_lng, outline=ex.get("outline"),

@@ -219,6 +219,11 @@ def example_from_design(design: dict, pack, *, name: str = DEFAULT_NAME,
         "features": features,
         "notes": _notes(design, len(plants), len(set(names)), pack.short),
     }
+    # The street's side, where the person told the design (V3.54).
+    side = str(((design.get("properties") or {}).get("site_config") or {})
+               .get("street_side") or "").strip().lower()
+    if side in region.STREET_SIDES:
+        example["street_side"] = side
     errs = region.example_errors(example)
     if errs:
         raise Refused("; ".join(errs))

@@ -75,7 +75,8 @@ def _design(plants=None, notes="Two drifts along the walk.") -> dict:
             "project_name": "8103 95A Street NW",
             "notes": notes,
             "site_config": {"latitude": _LAT, "longitude": _LNG,
-                            "pin_label": "8103, 95A Street NW, Edmonton"},
+                            "pin_label": "8103, 95A Street NW, Edmonton",
+                            "street_side": "east"},
         },
         "features": [
             _poly("property_boundary", [(0, 0), (15, 0), (15, 9), (0, 9)],
@@ -239,6 +240,13 @@ class TheRoundTrip(unittest.TestCase):
         self.assertNotIn("num_plants", back["properties"])
         self.assertNotEqual(back["properties"]["hedge_id"], "hedge_x")
 
+    def test_the_street_side_comes_back(self):
+        """V3.54: without it the 3D window assumed the south and stood the
+        street view between two houses."""
+        self.assertEqual(self.example["street_side"], "east")
+        self.assertEqual(
+            self.project["properties"]["site_config"]["street_side"], "east")
+
     def test_ids_are_fresh_and_distinct(self):
         ids = [f["properties"]["shape_id"] for f in self.project["features"]
                if "shape_id" in f["properties"]]
@@ -304,6 +312,11 @@ class TheFormatIsChecked(unittest.TestCase):
         errs = " ".join(region.example_errors(ex))
         self.assertIn("'hot_tub'", errs)
         self.assertIn("unknown properties uses", errs)
+
+    def test_a_street_side_is_a_compass_side(self):
+        ex = dict(self.example, street_side="front")
+        self.assertTrue(any("street_side" in e
+                            for e in region.example_errors(ex)))
 
     def test_a_line_needs_two_points(self):
         ex = copy.deepcopy(self.example)

@@ -43,7 +43,10 @@ SCHEMA = 1
 #: metres from the plot's south-west corner, and plants are names, never ids.
 #: Unknown fields are refused here as at the top.
 EXAMPLE_REQUIRED = ("centre", "name", "width_m", "depth_m", "planting")
-EXAMPLE_OPTIONAL = ("own_place", "outline", "features", "notes")
+EXAMPLE_OPTIONAL = ("own_place", "outline", "features", "notes",
+                    "street_side")
+#: The compass sides a street can be on (V3.54: the example says which).
+STREET_SIDES = ("north", "south", "east", "west")
 #: What the example may draw besides plants, and the properties each kind may
 #: carry: a polygon kind has a ``ring``, a point kind an ``at``.
 EXAMPLE_POLYGONS = {
@@ -158,6 +161,10 @@ def example_errors(example) -> list[str]:
         errs.append(f"example is missing {', '.join(missing)}")
     if unknown:
         errs.append(f"example has unknown fields {', '.join(unknown)}")
+    side = example.get("street_side")
+    if side is not None and side not in STREET_SIDES:
+        errs.append(f"example.street_side must be one of "
+                    f"{', '.join(STREET_SIDES)}")
     outline = example.get("outline")
     if outline is not None and len(outline) < 3:
         errs.append("example.outline needs three corners or more")
