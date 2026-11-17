@@ -511,7 +511,12 @@ class TestStructuralCeilings(unittest.TestCase):
         # stem count once those were read. When this trips, the leaf outlines
         # (_lbBlade, _lbLeaf) are the seam: they know nothing of the forms.
         (_HTML / "scene3d" / "03c-leafy.js", 680),     # 583 now
-        (_HTML / "scene3d" / "04-quality.js", 900),    # 899 now (V3.48): move code out first
+        # V3.49 (F268): a shrub built from its own stem count and leaf, with
+        # the shrub layer moved here from 04-quality.js (899 of 900). When
+        # this trips, the leafy shoot's mask (_wdSpray and its painters) is
+        # the seam: 15c-woodybloom.js already shares its smaller-copy rule.
+        (_HTML / "scene3d" / "03d-woody.js", 700),     # 600 now
+        (_HTML / "scene3d" / "04-quality.js", 900),    # 815 now (V3.49)
         (_HTML / "scene3d" / "05-flowers.js", 800),    # 775 now (V3.04)
         (_HTML / "scene3d" / "06-fly.js", 950),        # ~732 now
         (_HTML / "scene3d" / "07-wildlife.js", 800),   # ~550 now
@@ -560,6 +565,8 @@ class TestStructuralCeilings(unittest.TestCase):
         # inflorescence architectures. 05-flowers.js was at 737 of its
         # 800 and this is a different thing from a canvas drawing.
         (_HTML / "scene3d" / "15-florets.js", 500),    # ~493 now (V2.93)
+        # V3.49 (F268): a read shrub's flower clusters as cut-out cards.
+        (_HTML / "scene3d" / "15c-woodybloom.js", 320),  # 258 now
         # V2.43: click-to-plant + the viewer's first QWebChannel. Geometry in,
         # coordinates out — if this file grows past its ceiling the cause is
         # almost certainly placement logic that belongs in

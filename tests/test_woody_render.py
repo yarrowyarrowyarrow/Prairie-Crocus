@@ -19,6 +19,10 @@ viewer in headless Chromium and reads back what was built
 * out of leaf its stems still stand;
 * a young shrub is a smaller shrub, with fewer stems;
 * the flower layer is handed points on the body;
+* in flower it carries its clusters as cut-out cards on its shoots, as many
+  as its crown has room for, each the size its recorded flowers make
+  (``html/scene3d/15c-woodybloom.js``), and an estimated shrub keeps the
+  florets it had;
 * Stylised draws none of it;
 * every form builds with every leaf outline in the vocabulary.
 
@@ -96,6 +100,23 @@ SCENES = {
     "lifelike": _scene(quality=2, **_READ),
 }
 SCENES["young"] = _young(SCENES["read"], 0.3)
+# A willow in April: catkins on bare twigs.
+SCENES["catkin"] = _scene("Test Willow", month=4, bloom_period="April–May",
+                          flower_form="spike", flower_arch="spike", petal_count=0,
+                          flower_diameter_cm=0.3, florets_per_head=80,
+                          leaf_shape="lanceolate", leaf_arrangement="alternate", **_READ)
+SCENES["rose"] = _scene("Test Rose", branching="suckering", mature_height_m="1.5",
+                        spacing_m="1", leaf_shape="compound_pinnate", leaf_size_cm=9.0,
+                        leaf_arrangement="alternate", flower_arch="solitary",
+                        flower_diameter_cm=5.0, florets_per_head=3, petal_count=5,
+                        petal_shape="notched", flower_color="#e58fb0",
+                        leaf_data_source="photo", woody_stems=15)
+
+#: Flowers the cluster sizes are asked for: architecture, one flower's width
+#: in metres, flowers in a cluster.
+CLUSTERS = {"chokecherry": ("raceme", 0.012, 30), "dogwood": ("cyme", 0.006, 60),
+            "rose": ("solitary", 0.05, 3), "cranberry": ("corymb", 0.006, 120),
+            "catkin": ("spike", 0.003, 80), "meadowsweet": ("panicle", 0.005, 120)}
 
 #: The forms drawn in the scenes above, by name.
 FORMS = {"read": "clump", "thicket": "thicket", "arching": "arching", "mat": "mat",
@@ -108,7 +129,8 @@ class TheShrubInTheRealViewer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         job = {"scenes": SCENES, "forms": list(shrub_habit.FORMS),
-               "shapes": sorted(data_quality.LEAF_SHAPES)}
+               "shapes": sorted(data_quality.LEAF_SHAPES),
+               "clusters": list(CLUSTERS.values())}
         try:
             server = render_yard.Server({"/__yard/job.json": job})
         except OSError as exc:
@@ -304,6 +326,78 @@ class TheShrubInTheRealViewer(unittest.TestCase):
         self.assertGreater(len(anchors), 20)
         for x, y, z in anchors:
             self.assertLessEqual(math.hypot(x - p["x"], z + p["y"]), p["canopy_m"] / 2 + 0.05)
+
+    # ── in flower ────────────────────────────────────────────────────────────
+
+    def _cards(self, name):
+        return self.got["scenes"][name]["blooms"]["cards"]
+
+    def _count(self, name):
+        return sum(c["count"] for c in self._cards(name))
+
+    def test_a_read_shrub_in_flower_carries_its_clusters_as_cards(self):
+        for name in ("read", "rose", "big"):
+            cards = self._cards(name)
+            self.assertTrue(cards, f"{name}: in flower, and no cluster was drawn")
+            self.assertEqual(self.got["scenes"][name]["blooms"]["florets"], 0,
+                             f"{name}: its flowers were built a floret at a time as well")
+            for c in cards:
+                self.assertTrue(c["cut"], name)
+                self.assertGreaterEqual(c["mips"], 8, name)
+                self.assertFalse(c["shadow"], f"{name}: a flower casts no shadow here")
+                self.assertLessEqual(c["triangles"], 4, name)
+
+    def test_an_estimated_shrub_keeps_its_florets(self):
+        blooms = self.got["scenes"]["estimated"]["blooms"]
+        self.assertEqual(blooms["cards"], [])
+        self.assertGreater(blooms["florets"], 0)
+
+    def test_out_of_flower_there_are_none(self):
+        self.assertEqual(self._cards("winter"), [])
+        self.assertEqual(self._cards("mat"), [])
+
+    def test_catkins_stand_on_bare_twigs(self):
+        """The leaves are put away in April and the flowers are not."""
+        self.assertLess(self._leaves("catkin")["scale"][1], 0.01)
+        cards = self._cards("catkin")
+        self.assertTrue(cards, "a willow in April with no catkins")
+        self.assertEqual(cards[0]["triangles"], 4, "a catkin shows from every side")
+
+    def test_the_clusters_are_on_the_shrub(self):
+        for name in ("read", "rose", "big", "catkin"):
+            p = SCENES[name]["plants"][0]
+            for c in self._cards(name):
+                big = max(c["sizes"])
+                for x, y, z in c["at"]:
+                    self.assertLessEqual(math.hypot(x - p["x"], z + p["y"]),
+                                         p["canopy_m"] / 2 * 1.08 + 0.05 + big, name)
+                    self.assertTrue(-big <= y <= p["height_m"] * 1.05 + 0.05 + big, name)
+
+    def test_a_bigger_crown_carries_more_of_them(self):
+        self.assertGreater(self._count("big"), self._count("rose"))
+        top = self.got["bloom"]["max"]
+        for name in ("read", "rose", "big", "catkin"):
+            self.assertTrue(8 <= self._count(name) <= top,
+                            f"{name}: {self._count(name)} clusters")
+
+    def test_a_cluster_is_the_size_its_flowers_make(self):
+        """Thirty 1.2 cm chokecherry flowers are a 10 cm raceme and sixty 6 mm
+        dogwood flowers a 6 cm head: the sizes in the photographs, to a third."""
+        got = dict(zip(CLUSTERS, self.got["clusters"]))
+        want = {"chokecherry": 0.10, "dogwood": 0.06, "rose": 0.05, "cranberry": 0.076,
+                "catkin": 0.055, "meadowsweet": 0.127}
+        for name, size in want.items():
+            self.assertAlmostEqual(got[name], size, delta=size * 0.33, msg=name)
+
+    def test_a_cluster_is_drawn_no_more_than_twice_its_size(self):
+        gain = self.got["bloom"]["gain_max"]
+        self.assertLessEqual(gain, 2.0)
+        natural = dict(zip(CLUSTERS, self.got["clusters"]))
+        for name, key in (("read", "dogwood"), ("rose", "rose"), ("catkin", "catkin")):
+            for c in self._cards(name):
+                # 15% either way is one cluster's own variation.
+                self.assertLessEqual(max(c["sizes"]), natural[key] * gain * 1.16, name)
+                self.assertGreaterEqual(min(c["sizes"]), natural[key] * 0.84, name)
 
     # ── every form, every leaf ───────────────────────────────────────────────
 

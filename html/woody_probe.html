@@ -16,7 +16,8 @@ iframe{width:640px;height:480px;border:0;display:block}
 // whether the body is one of html/scene3d/03d-woody.js's, its triangles, its
 // plan (the sprays, how much larger than life, the budget), its extent and the
 // scale it was placed at, whether the leaves wear a cut-out and cast its
-// shadow, and where the flowers were put. Then it builds every form with
+// shadow, where the flowers were put and the flower clusters drawn as cards
+// (15c-woodybloom.js). Then it builds every form with
 // every leaf outline, off the scene, and reports each one's triangles and
 // whether any coordinate is not a number. The result goes into document.title
 // as "MEASURED {...}", as the other probes' does.
@@ -68,6 +69,27 @@ function bodies(w) {
   return found;
 }
 
+function blooms(w) {
+  // The flower clusters drawn as cards (15c-woodybloom.js), and whether any
+  // flower was built a floret at a time as well.
+  const cards = [];
+  let florets = 0;
+  w.eval('plantsGroup').traverse((o) => {
+    if (!o.isInstancedMesh) return;
+    if (o.userData.part === 'floret') florets += o.count;
+    if (o.userData.part !== 'bloom_card') return;
+    const m = new w.THREE.Matrix4(), p = new w.THREE.Vector3();
+    const at = [];
+    for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, m); p.setFromMatrixPosition(m); at.push([p.x, p.y, p.z]); }
+    cards.push({ count: o.count, at, sizes: o.userData.clusterSizes,
+                 triangles: o.geometry.index.count / 3,
+                 cut: !!o.material.alphaMap, alpha_test: o.material.alphaTest,
+                 mips: o.material.alphaMap ? o.material.alphaMap.mipmaps.length : 0,
+                 shadow: o.castShadow, name: o.userData.pick[0] });
+  });
+  return { cards, florets };
+}
+
 function anchors(w, sc) {
   // What the flower layer is handed for the first plant, in the scene.
   const p = w.eval('lastSceneObj').plants[0];
@@ -83,9 +105,13 @@ async function run(w, job) {
     w.permaSetScene(sc);
     await until(() => w.permaModelsReady(), 60000);
     await sleep(400);
-    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc),
+    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), blooms: blooms(w),
                          budget: w.eval('WOODY_BUDGET'), gain_max: w.eval('WOODY_GAIN_MAX') };
   }
+  // A cluster's size at life size, for the flowers the tests name.
+  res.clusters = (job.clusters || []).map((c) => w.woodyClusterSize(c[0], c[1], c[2]));
+  res.bloom = { per_m2: w.eval('WOODY_BLOOM_PER_M2'), max: w.eval('WOODY_BLOOM_MAX'),
+                gain_max: w.eval('WOODY_BLOOM_GAIN_MAX') };
   // Every form with every outline, built off the scene.
   w.permaSetQuality(1);
   for (const form of job.forms || []) {

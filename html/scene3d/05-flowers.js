@@ -284,7 +284,7 @@ function buildFlowers(plants, month, terrain) {
     FLOWER_TEX.cattail_spike = FLOWER_TEX.cattail;
   }
   const byForm = {}; ALL_FORMS.forEach(f => byForm[f] = []);
-  const modelled = [];
+  const modelled = [], carded = [];
   for (const p of plants || []) {
     // A grass's inflorescence_form (schema v52) supersedes its flower_form,
     // which stays 'plume' for every graminoid because that column feeds the
@@ -308,12 +308,15 @@ function buildFlowers(plants, month, terrain) {
     // the whole scene at Stylised — keeps the billboard below, which is why
     // partial coverage of the new fields is never a broken plant (P9).
     if (window.floretsApply && window.floretsApply(p)) {
-      modelled.push(p);
+      // A shrub drawn from its own numbers carries each cluster as one
+      // cut-out card on its shoots (15c-woodybloom.js, V3.49).
+      (window.woodyBloomApplies && woodyBloomApplies(p) ? carded : modelled).push(p);
       continue;
     }
     byForm[form].push(p);
   }
   if (modelled.length) window.buildFlorets(modelled, month, terrain);
+  if (carded.length) window.buildWoodyBlooms(carded, month, terrain);
   const _fc = new THREE.Color();
   for (const form of ALL_FORMS) {
     const list = byForm[form];

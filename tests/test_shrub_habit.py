@@ -219,6 +219,24 @@ class TheViewerAgrees(unittest.TestCase):
         self.assertIn("foliageGeo.userData.crown =", woody)
         self.assertIn("stemGeo.userData.crown =", woody)
 
+    def test_a_shrub_in_flower_is_handed_to_the_cluster_cards(self):
+        """Before the floret layer, which would build each cluster a floret
+        at a time and lose it among the leaves."""
+        flowers, bloom = _js("05-flowers.js"), _js("15c-woodybloom.js")
+        self.assertIn("woodyBloomApplies(p) ? carded : modelled", flowers)
+        self.assertIn("window.buildWoodyBlooms(carded, month, terrain)", flowers)
+        self.assertIn("woodyKeyFor(p)", bloom[bloom.index("function woodyBloomApplies"):])
+        order = re.findall(r"'scene3d/([\w-]+\.js)'", _js("chunks.js"))
+        self.assertLess(order.index("15b-anchors.js"), order.index("15c-woodybloom.js"))
+        self.assertLess(order.index("03d-woody.js"), order.index("15c-woodybloom.js"))
+
+    def test_the_cluster_estimates_are_named(self):
+        head = _js("15c-woodybloom.js")[:2600]
+        for word in ("woodyClusterSize", "WOODY_BLOOM_PER_M2", "WOODY_BLOOM_GAIN_MAX",
+                     "estimate"):
+            self.assertIn(word, head)
+        self.assertIsNone(re.search(r"month\s*[<>=!]=?\s*\d", _js("15c-woodybloom.js")))
+
     def test_what_is_estimated_is_named_as_an_estimate(self):
         head = _js("03d-woody.js")[:3200]
         for word in ("WOODY_PIPE", "WOODY_PER_SHOOT", "WOODY_GAIN_MAX", "estimate"):
