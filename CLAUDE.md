@@ -50,8 +50,9 @@ feature, skim where it sits in that philosophy. The sources of truth:
   (V3.43), 3D-2 ([V3.44](docs/plans/V3.44-getting-to-3d.md)), 3D-3
   ([V3.45](docs/plans/V3.45-your-yard-not-a-green-field.md)) and 3D-4
   ([V3.46](docs/plans/V3.46-a-timeline-you-can-believe.md)) are built, and 3D-5
-  ([V3.52](docs/plans/V3.52-a-plan-that-survives-its-preview.md)); 3D-6 (light) is next, on the
-  next free version. **Fetch the `V*` branches before trusting the hook's proposed branch**: it
+  ([V3.52](docs/plans/V3.52-a-plan-that-survives-its-preview.md)) and 3D-6
+  ([V3.53](docs/plans/V3.53-light.md), light: `html/scene3d/01e-light.js`, the owner approving
+  from its sheet, D6); 3D-7 is next, on the next free version. **Fetch the `V*` branches before trusting the hook's proposed branch**: it
   counts only refs the clone has, and proposed V3.50 when V3.50 and V3.51 were on the server. **For the plant models**, read
   [V3.48](docs/plans/V3.48-models-against-photographs.md) first: all 250 Edmonton natives were read
   against their iNaturalist reference photographs, and what each sheet showed (the photographs to
