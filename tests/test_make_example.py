@@ -93,6 +93,15 @@ def _design(plants=None, notes="Two drifts along the walk.") -> dict:
                 canopy_radius_m=3.0, label="Boulevard elm", source="osm"),
             _pt("structure", 9.0, 5.0, struct_id="brush_pile",
                 name="Brush Pile", size_m=1.5),
+            # V3.54: a fence along the side line, as Draw › Shape stores one.
+            {"type": "Feature",
+             "geometry": {"type": "LineString",
+                          "coordinates": [_ll(0, 0.2), _ll(0, 8.8)]},
+             "properties": {"element_type": "hedgerow", "style": "fence",
+                            "hedge_id": "hedge_x", "species": "",
+                            "color": "#8d6e63", "width_m": 0.2,
+                            "spacing_m": 1.0, "length_m": 8.6,
+                            "num_plants": 0}},
         ] + [_pt("plant", e, n, plant_id=1000 + i, common_name=name)
              for i, (name, e, n) in enumerate(plants)],
     }
@@ -118,7 +127,7 @@ class ADesignBecomesTheExample(unittest.TestCase):
         self.assertEqual(
             sorted(f["kind"] for f in self.example["features"]),
             ["canopy_footprint", "custom_shape", "custom_shape",
-             "existing_tree", "structure"])
+             "existing_tree", "hedgerow", "structure"])
 
     def test_it_never_carries_the_address_or_the_designs_name(self):
         text = json.dumps(self.example)
@@ -214,6 +223,22 @@ class TheRoundTrip(unittest.TestCase):
         self.assertEqual(pile["properties"]["struct_def"]["id"], "brush_pile")
         self.assertEqual(pile["properties"]["struct_def"]["size_m"], 1.5)
 
+    def test_a_fence_comes_back_where_it_was_drawn(self):
+        """V3.54: the example carries lines, so the owner's lot keeps its
+        fences. Only the named properties travel; the id is made fresh."""
+        mine = self._features(self.design, "hedgerow")[0]
+        back = self._features(self.project, "hedgerow")
+        self.assertEqual(len(back), 1)
+        back = back[0]
+        self.assertEqual(back["geometry"]["type"], "LineString")
+        for a, b in zip(mine["geometry"]["coordinates"],
+                        back["geometry"]["coordinates"]):
+            self.assertTrue(self._close(a, b), (a, b))
+        self.assertEqual(back["properties"]["style"], "fence")
+        self.assertEqual(back["properties"]["width_m"], 0.2)
+        self.assertNotIn("num_plants", back["properties"])
+        self.assertNotEqual(back["properties"]["hedge_id"], "hedge_x")
+
     def test_ids_are_fresh_and_distinct(self):
         ids = [f["properties"]["shape_id"] for f in self.project["features"]
                if "shape_id" in f["properties"]]
@@ -279,6 +304,13 @@ class TheFormatIsChecked(unittest.TestCase):
         errs = " ".join(region.example_errors(ex))
         self.assertIn("'hot_tub'", errs)
         self.assertIn("unknown properties uses", errs)
+
+    def test_a_line_needs_two_points(self):
+        ex = copy.deepcopy(self.example)
+        line = next(f for f in ex["features"] if f["kind"] == "hedgerow")
+        line["points"] = line["points"][:1]
+        self.assertTrue(any("two points" in e
+                            for e in region.example_errors(ex)))
 
     def test_a_polygon_needs_a_ring(self):
         ex = copy.deepcopy(self.example)

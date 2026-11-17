@@ -9,6 +9,7 @@ species whose answer is known, then the sentences every page prints.
 """
 
 import json
+import math
 import os
 import sys
 import unittest
@@ -424,7 +425,13 @@ class TestTheShippedList(unittest.TestCase):
         dot = next((lat, lng) for name, lat, lng in CITIES
                    if name == "Edmonton")
         self.assertEqual(tuple(EDMONTON["centre"]), dot)
-        self.assertEqual(tuple(EDMONTON["centre"]), EXAMPLE_DEFAULT_LATLNG)
+        # The example opens on its own lot since V3.54 (the owner's choice),
+        # which is in Edmonton: within the list's own circle.
+        from src.projection import metres_per_deg
+        m_lat, m_lng = metres_per_deg(EDMONTON["centre"][0])
+        far = ((EXAMPLE_DEFAULT_LATLNG[0] - EDMONTON["centre"][0]) * m_lat,
+               (EXAMPLE_DEFAULT_LATLNG[1] - EDMONTON["centre"][1]) * m_lng)
+        self.assertLess(math.hypot(*far), 15_000)
 
     def test_the_answers_that_are_known(self):
         # The parkland's defining shrub, documented by specimens alone.

@@ -58,6 +58,12 @@ EXAMPLE_POINTS = {
     "existing_building": ("label", "height_m", "canopy_radius_m"),
     "structure": ("struct_id", "name", "size_m"),
 }
+#: A line kind has ``points`` (V3.54): a fence or a hedge, as Draw › Shape
+#: stores one.
+EXAMPLE_LINES = {
+    "hedgerow": ("style", "species", "color", "width_m", "spacing_m",
+                 "length_m"),
+}
 _KEY = re.compile(r"^[a-z_]+$")
 
 #: Kinds of :class:`Coverage`.
@@ -157,18 +163,23 @@ def example_errors(example) -> list[str]:
         errs.append("example.outline needs three corners or more")
     for feature in example.get("features") or []:
         kind = (feature or {}).get("kind")
-        allowed = EXAMPLE_POLYGONS.get(kind) or EXAMPLE_POINTS.get(kind)
+        allowed = (EXAMPLE_POLYGONS.get(kind) or EXAMPLE_POINTS.get(kind)
+                   or EXAMPLE_LINES.get(kind))
         if allowed is None:
             errs.append(f"example feature {kind!r} is not one of "
                         + ", ".join(sorted({**EXAMPLE_POLYGONS,
-                                            **EXAMPLE_POINTS})))
+                                            **EXAMPLE_POINTS,
+                                            **EXAMPLE_LINES})))
             continue
         extra = sorted(set(feature.get("props") or {}) - set(allowed))
         if extra:
             errs.append(f"example {kind} carries unknown properties "
                         f"{', '.join(extra)}")
-        shape = "ring" if kind in EXAMPLE_POLYGONS else "at"
-        if shape not in feature:
+        shape = ("ring" if kind in EXAMPLE_POLYGONS
+                 else "points" if kind in EXAMPLE_LINES else "at")
+        if shape == "points" and len(feature.get("points") or []) < 2:
+            errs.append(f"example {kind} needs two points or more")
+        elif shape not in feature:
             errs.append(f"example {kind} needs {shape!r}")
     return errs
 

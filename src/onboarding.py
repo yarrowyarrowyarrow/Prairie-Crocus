@@ -261,7 +261,8 @@ def _shoelace_m2(points) -> float:
 
 def example_features(sw_lat: float, sw_lng: float,
                      example: Optional[dict] = None) -> list:
-    """The example's beds, paths, house, trees and structures (V3.38, F254)
+    """The example's beds, paths, house, trees, fences and structures
+    (V3.38, F254; lines since V3.54)
     as design features, from the pack's metre offsets. Ids are made fresh, as
     a drawing would make them; nothing here is a plant."""
     from src import region                                   # noqa: PLC0415
@@ -280,6 +281,13 @@ def example_features(sw_lat: float, sw_lng: float,
                 from src.osm_features import ring_radius_m   # noqa: PLC0415
                 props["canopy_radius_m"] = max(0.5, ring_radius_m(ring))
             geometry = {"type": "Polygon", "coordinates": [ring]}
+        elif kind in region.EXAMPLE_LINES:
+            pts = [_offset_latlng(sw_lat, sw_lng, float(e), float(n))
+                   for e, n in f["points"]]
+            props["hedge_id"] = f"hedge_example_{i}"
+            props.setdefault("species", "")
+            geometry = {"type": "LineString", "coordinates": [
+                [round(lng, 7), round(lat, 7)] for lat, lng in pts]}
         else:
             plat, plng = _offset_latlng(sw_lat, sw_lng, *map(float, f["at"]))
             geometry = {"type": "Point",

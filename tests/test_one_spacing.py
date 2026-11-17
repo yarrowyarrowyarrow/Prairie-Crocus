@@ -68,12 +68,21 @@ def _row(name):
 
 
 def _example():
-    """The worked example on the real catalogue: two Wild Bergamot in it."""
+    """The worked example on the real catalogue, with two Wild Bergamot in it.
+    The example held two until V3.54 gave it the owner's lot; they are planted
+    here now, beside its first plant, so the case is still the example's."""
     from src import onboarding
     from src.project_store import ProjectStore
     project, missing = onboarding.build_example_project()
     assert not missing, missing
-    return project, ProjectStore(project).placed_plants
+    store = ProjectStore(project)
+    if sum(p["common_name"] == "Wild Bergamot" for p in store.placed_plants) != 2:
+        first = store.placed_plants[0]
+        berg = _row("Wild Bergamot")
+        for k in (1, 2):
+            store.add_plant(berg["id"], "Wild Bergamot",
+                            first["lat"] + k * 0.3 / 111320.0, first["lng"])
+    return project, store.placed_plants
 
 
 class _Recorder:

@@ -61,14 +61,16 @@ P12_WORDS = ("indigenous", "traditional use", "ethnobotan", "first nations",
              "medicine wheel", "ceremonial", "medicinal", "remedy",
              "poultice", "tea from")
 
-_KINDS = {**region.EXAMPLE_POLYGONS, **region.EXAMPLE_POINTS}
+_KINDS = {**region.EXAMPLE_POLYGONS, **region.EXAMPLE_POINTS,
+          **region.EXAMPLE_LINES}
 
 #: The report's words for each kind.
 _WORDS = {"custom_shape": "drawn areas (beds, paths, lawn)",
           "canopy_footprint": "buildings or drawn canopies",
           "existing_tree": "existing trees",
           "existing_building": "existing buildings (as points)",
-          "structure": "structures"}
+          "structure": "structures",
+          "hedgerow": "fences or hedges"}
 
 
 class Refused(ValueError):
@@ -96,6 +98,12 @@ def _ring(feature: dict) -> list:
     if len(pts) > 1 and pts[0] == pts[-1]:
         pts = pts[:-1]
     return pts
+
+
+def _line(feature: dict) -> list:
+    """A line's points as ``(lat, lng)``."""
+    return [(float(p[1]), float(p[0])) for p in
+            ((feature.get("geometry") or {}).get("coordinates") or [])]
 
 
 def _point(feature: dict) -> tuple:
@@ -165,6 +173,8 @@ def example_from_design(design: dict, pack, *, name: str = DEFAULT_NAME,
     for f in kept:
         if _kind(f) in region.EXAMPLE_POLYGONS:
             corners += _ring(f)
+        elif _kind(f) in region.EXAMPLE_LINES:
+            corners += _line(f)
         else:
             corners.append(_point(f))
     corners += [_point(f) for f in plants]
@@ -192,6 +202,8 @@ def example_from_design(design: dict, pack, *, name: str = DEFAULT_NAME,
         item = {"kind": kind, "props": keep}
         if kind in region.EXAMPLE_POLYGONS:
             item["ring"] = [off(*p) for p in _ring(f)]
+        elif kind in region.EXAMPLE_LINES:
+            item["points"] = [off(*p) for p in _line(f)]
         else:
             item["at"] = off(*_point(f))
         features.append(item)
