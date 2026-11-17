@@ -390,6 +390,31 @@ class ProjectStore:
                 return self._placed.pop(i)
         return None
 
+    def change_species(self, feature_id: str, plant_id: int, common_name: str,
+                       *, why_here=None) -> bool:
+        """Make the plant ``feature_id`` another kind where it stands (V3.52,
+        F264: Plan My Yard trades a plant the shade would kill for one that
+        takes it). The spot, the identity, the group and the plan it belongs
+        to stay; ``why_here`` replaces its reason when given. Returns True
+        when both structures changed."""
+        if not feature_id:
+            return False
+        feature = next((f for f in self.features
+                        if (f.get("properties") or {}).get("element_type")
+                        == "plant"
+                        and f["properties"].get("feature_id") == feature_id),
+                       None)
+        record = next((p for p in self._placed
+                       if p.get("feature_id") == feature_id), None)
+        if feature is None or record is None:
+            return False
+        for target in (feature["properties"], record):
+            target["plant_id"] = plant_id
+            target["common_name"] = common_name
+            if why_here:
+                target["why_here"] = list(why_here)
+        return True
+
     def remove_plants_batch(self, keys: Iterable[tuple]) -> list[dict]:
         """Remove many plants in one pass. ``keys`` is an iterable of
         ``(plant_id, lat, lng)``; duplicate keys remove duplicate-position

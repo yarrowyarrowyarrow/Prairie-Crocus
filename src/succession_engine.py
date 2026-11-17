@@ -229,16 +229,23 @@ class SuccessionEngine:
 
     Results are aligned by the *index* of ``placed`` so a caller iterating the
     same feature list can join them positionally.
+
+    ``fixed_only`` (V3.52, F264) leaves the placed plants out as casters, so
+    every answer is the shade of what does not grow (the buildings and the
+    trees already here) alone: what Plan My Yard asks before it keeps a plant
+    in a spot (:mod:`src.plan_shade`).
     """
 
     def __init__(self, placed, get_plant: Optional[Callable] = None, *,
                  static_casters: Optional[list] = None,
                  origin: Optional[tuple] = None,
-                 lethal_stress_years: float = _LETHAL_STRESS_YEARS):
+                 lethal_stress_years: float = _LETHAL_STRESS_YEARS,
+                 fixed_only: bool = False):
         if get_plant is None:
             from src.db.plants import get_plant as _gp
             get_plant = _gp
         self._lethal = max(0.5, float(lethal_stress_years))
+        self._fixed_only = bool(fixed_only)
 
         rec_cache: dict = {}
 
@@ -368,7 +375,7 @@ class SuccessionEngine:
         rx, ry = pl["x"], pl["y"]
         rh = pl["mature_h"]
         out: list = []
-        for j, other in enumerate(self._plants):
+        for j, other in enumerate(() if self._fixed_only else self._plants):
             if j == i or other is None:
                 continue
             if other["mature_h"] <= rh + _OVERTOP_MARGIN_M:
