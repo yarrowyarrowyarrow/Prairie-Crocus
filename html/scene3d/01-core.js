@@ -456,8 +456,9 @@ function setSun(azDeg, altDeg) {
   const v = sunVector(azDeg, altDeg);
   skyU.uSunDir.value.copy(v);          // sun disc + halo in the sky dome
   updateAtmosphere(altDeg);
-  sun.position.copy(v).multiplyScalar(300);
-  sun.target.position.set(0, 0, 0);
+  // Round the target, which 01e-light.js's fitShadowToYard puts at the yard's
+  // centre (V3.53); the origin until a scene has said where the yard is.
+  sun.position.copy(sun.target.position).addScaledVector(v, 300);
 }
 setSun(180, 55);   // sane default until the host pushes the real sun
 

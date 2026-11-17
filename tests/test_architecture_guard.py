@@ -493,6 +493,9 @@ class TestStructuralCeilings(unittest.TestCase):
         # grows past its ceiling the cause is most likely a decision that
         # belongs in src/scene_season.py.
         (_HTML / "scene3d" / "01d-season.js", 160),    # 102 now
+        # V3.53 (F265): the light that follows the sun, and the shadow map
+        # over the yard. Opted in on arrival.
+        (_HTML / "scene3d" / "01e-light.js", 220),     # ~150 now
         # 687 now (V3.04, one ground on a slope). The next ground work is a chunk
         # of its own, which needs the bootstrap's FILES list moved out first.
         (_HTML / "scene3d" / "02-plants.js", 700),     # 635 now (V3.45)

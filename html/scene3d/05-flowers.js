@@ -606,7 +606,7 @@ window.permaSetScene = function (sc) {
   buildStructures(designGroup, sc.structures);
   if (sc.is_night) setNight();
   else { setDay(); if (sc.sun) setSun(sc.sun.azimuth_deg, sc.sun.altitude_deg); }
-  fitShadow(sc.bounds);
+  placeShadow(sc);
 
   // Frame the camera only on first load or when a genuinely different design is
   // opened (origin moved) — a slider re-push of the same design keeps the
@@ -638,7 +638,20 @@ window.permaSetScene = function (sc) {
   if (typeof showTimeline === 'function') showTimeline();
 };
 
-window.permaSetSun = function (azDeg, altDeg) { setSun(azDeg, altDeg); };
+window.permaSetSun = function (azDeg, altDeg) {
+  setSun(azDeg, altDeg);
+  if (lastSceneObj && !sceneNight) placeShadow(lastSceneObj);
+};
+// The light for the sun just placed, and the shadow map over the yard
+// (01e-light.js, V3.53), else 01-core.js's square over the stage.
+function placeShadow(sc) {
+  if (typeof relight === 'function') relight();
+  if (typeof fitShadowToYard === 'function' && fitShadowToYard(sc)) return;
+  const v = sun.position.clone().sub(sun.target.position).normalize();
+  sun.target.position.set(0, 0, 0);
+  sun.position.copy(v).multiplyScalar(300);
+  fitShadow(sc.bounds);
+}
 
 // Detail / quality knob (V1.94): 0 Stylised · 1 Balanced · 2 Lifelike. Drops the
 // cached archetypes (their density AND, at level 0, their whole construction

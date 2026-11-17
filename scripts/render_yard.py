@@ -372,6 +372,49 @@ def job(label: str, lot_name: str, with_example: bool, width: int,
     }
 
 
+#: The light sheet (V3.53, F265): one view through a July day, the low suns
+#: of October and January, eye level in the yard, and the night. Hours are the
+#: scene's own (solar): in July the sun is 15 degrees up at 6, 57 at noon, 17 at
+#: 6 pm and 8.5 at 7 pm; October at 3 pm 13; January at noon 16, over snow.
+LIGHT_MOMENTS = {
+    "l06": (5, 7, 6), "l09": (5, 7, 9), "l12": (5, 7, 12), "l15": (5, 7, 15),
+    "l18": (5, 7, 18), "l19": (5, 7, 19), "l23": (5, 7, 23),
+    "oct15": (5, 10, 15), "jan12": (5, 1, 12),
+}
+
+
+def light_job(label: str, width: int, height: int) -> dict:
+    """The light sheet's shots, measured (``measure_light``)."""
+    lot = lambda tag: f"/__yard/lot_{tag}.json"              # noqa: E731
+    back = {"at": [-10, 7, -4], "looks_at": [3, 0.5, -12]}
+    tiles = [
+        ("l06", "street", "July, 6 am: the sun 15 degrees up, in the east."),
+        ("l09", "street", "July, 9 am."),
+        ("l12", "street", "July, noon: the sun 57 degrees up."),
+        ("l15", "street", "July, 3 pm (the window opens on this)."),
+        ("l18", "street", "July, 6 pm: 17 degrees, in the west."),
+        ("l19", "street", "July, 7 pm: 8.5 degrees."),
+        ("l12", "yard", "July, noon, a few steps into the yard."),
+        ("l19", "yard", "July, 7 pm, a few steps into the yard."),
+        ("l15", back, "July, 3 pm: the back yard, the house's shaded side."),
+        ("oct15", "street", "October, 3 pm: 13 degrees."),
+        ("jan12", "street", "January, noon, over snow: 16 degrees."),
+        ("l23", "street", "July, 11 pm: moonlight."),
+    ]
+    shots = [{"name": f"light{i:02d}", "scene": lot(tag), "view": view}
+             for i, (tag, view, _c) in enumerate(tiles)]
+    return {
+        "width": width, "height": height, "tile_width": 760,
+        "shots": shots, "measure_light": True,
+        "sheets": [{"name": "light", "title": f"3D Preview at {label}: the light",
+                    "sub": "The review lot, fifth summer, through a day and "
+                           "the year. Drawn in software.",
+                    "tiles": [{"shot": f"light{i:02d}", "caption": c}
+                              for i, (_t, _v, c) in enumerate(tiles)]}],
+        "captions": {f"light{i:02d}": c for i, (_t, _v, c) in enumerate(tiles)},
+    }
+
+
 def images(dom: str, attr: str) -> dict:
     """``{name: bytes}`` for every ``<img data-<attr>="name" src="data:…">``
     in a dumped DOM, whichever order the browser wrote the attributes in."""
@@ -399,6 +442,9 @@ def main(argv=None) -> int:
     ap.add_argument("--tiles", action="store_true",
                     help="also save every tile on its own")
     ap.add_argument("--size", default="1280x760", help="a tile, WxH")
+    ap.add_argument("--light", action="store_true",
+                    help="the light sheet instead, each picture measured "
+                         "(light.jpg and light.json)")
     args = ap.parse_args(argv)
 
     if find_chromium() is None:
@@ -417,9 +463,10 @@ def main(argv=None) -> int:
         print("planning the review lot…")
         lot, name = review_lot(), "The review lot"
     routes = {}
-    for tag, (year, month, hour) in MOMENTS.items():
+    moments = LIGHT_MOMENTS if args.light else MOMENTS
+    for tag, (year, month, hour) in moments.items():
         routes[f"/__yard/lot_{tag}.json"] = scene(lot, year, month, hour)
-    with_example = not args.design
+    with_example = not args.design and not args.light
     if with_example:
         from src.onboarding import build_example_project
         routes["/__yard/example_open.json"] = scene(
@@ -428,7 +475,8 @@ def main(argv=None) -> int:
     if not label:
         from src.app_version import running_version
         label = running_version() or "this checkout"
-    spec = job(label, name, with_example, width, height)
+    spec = (light_job(label, width, height) if args.light
+            else job(label, name, with_example, width, height))
     spec["keep_shots"] = bool(args.tiles)
     # "As the window opens" is the view the window would choose for that
     # scene (V3.44): the street, or the house or the whole yard where the
@@ -455,6 +503,18 @@ def main(argv=None) -> int:
               "here?) or threw before it finished.")
         return 1
     os.makedirs(args.out, exist_ok=True)
+    measured = re.search(r'<pre id="light">(.*?)</pre>', dom, re.S)
+    if measured:
+        import html as _html
+        table = json.loads(_html.unescape(measured.group(1)))
+        with open(os.path.join(args.out, "light.json"), "w") as fh:
+            json.dump({"label": label, "shots": table,
+                       "captions": spec.get("captions", {})}, fh, indent=1)
+        print(f"{'':52s} luma  near-black  washed-out")
+        for key in sorted(table):
+            t = table[key]
+            print(f"{spec['captions'][key][:52]:52s} {t['luma']:.3f}  "
+                  f"{t['dark']:6.1%}      {t['bright']:6.1%}")
     for kind, extra in (("sheet", sheets),
                         ("shot", images(dom, "shot") if args.tiles else {})):
         for key, data in extra.items():

@@ -172,6 +172,29 @@ function timeline(w) {
            rings };
 }
 
+// The light as the viewer set it: the up-light's luma (the hemisphere's ground
+// colour times its strength, linear), the exposure, the shadow map's size, and
+// whether the yard's corners are inside it.
+function lightState(w, sc) {
+  const T = w.THREE, hemi = w.eval('hemi'), sun = w.eval('sun');
+  const L = (c) => 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+  const cam = sun.shadow.camera, eye = new T.OrthographicCamera();
+  eye.position.copy(sun.position); eye.lookAt(sun.target.position);
+  eye.updateMatrixWorld();
+  const f = sc.focus || sc.bounds, v = new T.Vector3();
+  let inside = true;
+  for (const [x, y] of [[f.min_x, f.min_y], [f.max_x, f.min_y],
+                        [f.max_x, f.max_y], [f.min_x, f.max_y]]) {
+    v.set(x, 0, -y).applyMatrix4(eye.matrixWorldInverse);
+    if (v.x < cam.left || v.x > cam.right || v.y < cam.bottom || v.y > cam.top)
+      inside = false;
+  }
+  return { up: +(L(hemi.groundColor) * hemi.intensity).toFixed(3),
+           exposure: +w.eval('renderer.toneMappingExposure').toFixed(3),
+           shadow_w: +(cam.right - cam.left).toFixed(1),
+           shadow_h: +(cam.top - cam.bottom).toFixed(1), yard_inside: inside };
+}
+
 async function measure(w, job) {
   const sc = job.scene, res = {};
   await push(w, sc, 1);
@@ -236,6 +259,13 @@ async function measure(w, job) {
   }
   res.july = { herb: bodies(w, job.herb_id), shrub: bodies(w, job.shrub_id),
                tree: bodies(w, job.tree_id) };
+
+  // 6c. The light (V3.53): what the ground sends back up, the exposure, and
+  // where the shadow map lies, at the scene's own sun and at a low one.
+  res.light = { at: lightState(w, sc) };
+  w.permaSetSun(sc.sun.azimuth_deg, 8);
+  res.light.low = lightState(w, sc);
+  w.permaSetSun(sc.sun.azimuth_deg, sc.sun.altitude_deg);
 
   // 7. From the street: the camera the stills and the before/after page use.
   w.permaSetCameraPreset('sidewalk');
@@ -303,6 +333,7 @@ async function measure(w, job) {
   if (job.winter) {
     await push(w, job.winter, 1);
     res.winter = site(w);
+    res.light.winter = lightState(w, job.winter);
     if (typeof w.seasonSnow === 'function') res.january = season(w, job);
   }
   // 13. The seasons (V3.46): the same yard in April, September and October,
@@ -342,6 +373,33 @@ function look(w, sc, view) {
   else w.permaResetView();                 // 'whole', and 'open' before V3.44
 }
 
+// How a picture is lit (V3.53, F265): over what is not sky, the mean sRGB luma,
+// the near-black share (under 0.12, V2.94's measure) and the washed-out share
+// (over 0.92). The sky is found by drawing the same view small once more with
+// the sky dome hidden over magenta.
+const LIGHT_W = 320, LIGHT_H = 190;
+async function pixels(url) {
+  const im = new Image(); im.src = url; await im.decode();
+  const cv = document.createElement('canvas'); cv.width = LIGHT_W; cv.height = LIGHT_H;
+  const g = cv.getContext('2d'); g.drawImage(im, 0, 0, LIGHT_W, LIGHT_H);
+  return g.getImageData(0, 0, LIGHT_W, LIGHT_H).data;
+}
+async function lightOf(w, url) {
+  w.eval('skyDome.visible=false;scene.background=new THREE.Color(0xff00ff);');
+  const mask = w.permaSnapshot({ width: LIGHT_W, height: LIGHT_H, pixelRatio: 1,
+    mime: 'image/png' });
+  w.eval('skyDome.visible=true;scene.background=null;');
+  const a = await pixels(url), m = await pixels(mask);
+  let n = 0, sum = 0, dark = 0, bright = 0;
+  for (let i = 0; i < a.length; i += 4) {
+    if (m[i] > 200 && m[i + 1] < 60 && m[i + 2] > 200) continue;   // sky
+    const y = (0.2126 * a[i] + 0.7152 * a[i + 1] + 0.0722 * a[i + 2]) / 255;
+    n++; sum += y; if (y < 0.12) dark++; if (y > 0.92) bright++;
+  }
+  return { px: n, luma: n ? +(sum / n).toFixed(3) : 0,
+    dark: n ? +(dark / n).toFixed(3) : 0, bright: n ? +(bright / n).toFixed(3) : 0 };
+}
+
 function wrap(g, text, width) {
   const lines = []; let cur = '';
   for (const word of String(text).split(' ')) {
@@ -377,7 +435,7 @@ async function sheet(spec, pictures, tileW, tileH) {
 }
 
 async function shots(w, job) {
-  const scenes = {}, pictures = {};
+  const scenes = {}, pictures = {}, light = {};
   for (const s of job.shots) {
     if (!scenes[s.scene]) scenes[s.scene] = await (await fetch(s.scene)).json();
     const sc = scenes[s.scene];
@@ -385,6 +443,7 @@ async function shots(w, job) {
     look(w, sc, s.view);
     pictures[s.name] = w.permaSnapshot({ width: job.width, height: job.height,
       pixelRatio: 1, mime: 'image/jpeg', quality: 0.9 });
+    if (job.measure_light) light[s.name] = await lightOf(w, pictures[s.name]);
     out.textContent = 'rendered ' + Object.keys(pictures).length + ' of ' + job.shots.length;
   }
   for (const spec of job.sheets || []) {
@@ -393,6 +452,11 @@ async function shots(w, job) {
     im.src = await sheet(spec, pictures, job.tile_width || 760,
       Math.round((job.tile_width || 760) * job.height / job.width));
     document.body.appendChild(im);
+  }
+  if (job.measure_light) {
+    const pre = document.createElement('pre');
+    pre.id = 'light'; pre.textContent = JSON.stringify(light);
+    document.body.appendChild(pre);
   }
   if (job.keep_shots) for (const name in pictures) {
     const im = document.createElement('img');

@@ -550,6 +550,38 @@ class TheWholeYard(unittest.TestCase):
 
     # ── the camera ───────────────────────────────────────────────────────────
 
+    # ── the light (V3.53, F265) ──────────────────────────────────────────────
+
+    def _light(self, key):
+        light = self.got.get("light") or {}
+        if key not in light:
+            self.fail(f"the probe measured no light {key!r}")
+        return light[key]
+
+    def test_the_ground_sends_back_what_falls_on_it(self):
+        """F187: the up-light was a fixed dark green, 0.13 in luma, a seventh
+        of what the viewer's own sun and sky put on its lawn."""
+        self.assertGreater(self._light("at")["up"], 0.3)
+
+    def test_snow_sends_back_more_than_grass(self):
+        self.assertGreater(self._light("winter")["up"],
+                           1.5 * self._light("at")["up"])
+
+    def test_a_low_sun_is_exposed_up_and_stays_an_evening(self):
+        at, low = self._light("at"), self._light("low")
+        self.assertGreater(low["exposure"], at["exposure"] * 1.2)
+        self.assertLessEqual(low["exposure"], 1.9)
+        self.assertLess(low["up"], at["up"])
+
+    def test_the_shadow_map_covers_the_yard_not_the_stage(self):
+        b = self.scene["bounds"]
+        stage = 1.5 * max(b["max_x"] - b["min_x"], b["max_y"] - b["min_y"])
+        for key in ("at", "low"):
+            got = self._light(key)
+            self.assertTrue(got["yard_inside"], key)
+            self.assertLess(max(got["shadow_w"], got["shadow_h"]), 0.8 * stage,
+                            f"{key}: {got}, the stage's square {stage:.0f} m")
+
     def test_the_window_opens_on_the_yard(self):
         yard = self.got["opening"]["yard"]
         self.assertTrue(yard["inside"], f"part of the yard is out of frame: {yard}")

@@ -14,6 +14,10 @@ window.SCENE3D_CHUNKS = [
   // V3.46: the season as the scene decided it (F263): one place colours a
   // plant body, says whether leaves are down and whether snow lies.
   'scene3d/01d-season.js',
+  // V3.53: light that follows the sun: the ground's bounce, the exposure, and
+  // the shadow map over the yard (F265, F187). After 01d-season.js, whose
+  // ground it reflects.
+  'scene3d/01e-light.js',
   'scene3d/02-plants.js',
   // V3.45: what the ground is, the lines on it, the street and the houses
   // (F262). After 02-plants.js for terrainHeightAt and the ground's textures.
