@@ -555,7 +555,7 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # `head_length_cm`, `head_width_cm`, `head_count`, `head_color`,
 # `head_attitude`), and a reseed for the grasses, sedges, rushes and
 # grass-like water plants read (F268). Drawn by src/grass_habit.py.
-_SCHEMA_VERSION = 101
+_SCHEMA_VERSION = 102
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
