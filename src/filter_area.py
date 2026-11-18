@@ -55,27 +55,32 @@ class FilterArea(QWidget):
     #: A quality's key, when its toggle is flipped.
     quality_toggled = pyqtSignal(str)
 
-    def __init__(self, criteria: dict, *, wide: bool = False, parent=None):
+    def __init__(self, criteria: dict, *, wide: bool = False, hide=(),
+                 parent=None):
+        """``hide`` names filters a scoped catalogue makes needless
+        (``plant_filters.SCOPED_OUT``, V3.58): they are not built."""
         super().__init__(parent)
+        hide = set(hide)
         col = QVBoxLayout(self)
         col.setContentsMargins(0, 0, 0, 2)
         col.setSpacing(4)
         per_row = 5 if wide else 3
         self.combos: dict = {}
         self._hidden_on = 0
-        everyday = [f for f in pf.FACETS if f.key in EVERYDAY]
+        everyday = [f for f in pf.FACETS
+                    if f.key in EVERYDAY and f.key not in hide]
         first = self._grid(everyday, criteria, per_row)
         col.addLayout(first)
         self.everyday_chips = QualityChips(
-            [q for q in pf.QUALITIES if q.key in EVERYDAY], criteria)
+            [q for q in pf.QUALITIES if q.key in EVERYDAY
+             and q.key not in hide], criteria)
         col.addWidget(self.everyday_chips)
 
         self.more_button = QToolButton()
         self.more_button.setCheckable(True)
         self.more_button.setStyleSheet(SMALL_BUTTON)
         self.more_button.setAccessibleName("More filters")
-        tip = ("What it does, fruit months, the region you are restoring "
-               "toward, and five more toggles.")
+        tip = ("What it does, fruit months and a few more toggles.")
         self.more_button.setToolTip(wrapped(tip))
         self.more_button.setAccessibleDescription(tip)
         if len(everyday) % per_row:
@@ -92,10 +97,11 @@ class FilterArea(QWidget):
         more_col.setContentsMargins(0, 0, 0, 0)
         more_col.setSpacing(4)
         more_col.addLayout(self._grid(
-            [f for f in pf.FACETS if f.key not in EVERYDAY], criteria, per_row))
+            [f for f in pf.FACETS if f.key not in EVERYDAY
+             and f.key not in hide], criteria, per_row))
         self.more_chips = QualityChips(
-            [q for q in pf.QUALITIES if q.key not in EVERYDAY], criteria,
-            soil=False)
+            [q for q in pf.QUALITIES if q.key not in EVERYDAY
+             and q.key not in hide], criteria, soil=False)
         more_col.addWidget(self.more_chips)
         col.addWidget(self.more)
 

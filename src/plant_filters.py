@@ -166,16 +166,17 @@ QUALITIES: tuple = (
             "Has parts recorded as edible for people."),
     Quality("kid_safe_only", "Not known to harm people", "kid_safe_only",
             "No recorded poison for people and no thorns. Same caveat."),
-    Quality("has_image_only", "Has a photo", "has_image_only",
-            "Only plants this catalogue can show you."),
 )
+#: Needless where the region's list is the catalogue (``catalogue_scope``).
+SCOPED_OUT = ("local_native", "native_only", "ecoregion")
+from src.native_here import catalogue_scope  # noqa: E402,F401  (V3.58)
 #: Criteria saved before V3.57 name filters that went: what each became.
 _RENAMED = {"common_only": "sold_locally", "edmonton_native": "local_native"}
 
 #: ``(key, label, tooltip)``. "suits" is offered only where there is a site.
 ORDERS: tuple = (
     # The default (PR-2, V3.26): Impact first, words for the rest (L1).
-    ("priority", "Best picks first",
+    ("priority", "Most wildlife first",
      "Plants that feed the most local wildlife come first, plants on a "
      "local seller's list first among equals. Nothing is hidden: the rest "
      "follow in the same list."),
@@ -184,10 +185,9 @@ ORDERS: tuple = (
      "plants, grasses and water plants, each A to Z."),
     ("height", "Tallest first", "Tallest at maturity first."),
 )
-# "Recorded near this site" ("suits") and "Animals supported" ("wildlife")
-# left the menu in V3.57 (the owner): the native filter answers the first more
-# honestly, and Best picks first already ranks by what a plant feeds.
-# order_plants still takes both keys, so nothing saved with one breaks.
+# "suits" and "wildlife" left the menu in V3.57 (the owner), and order_plants
+# still takes both. The first was "Best picks first" until V3.58: the owner
+# found it implied the others were not good picks.
 
 
 def facet(key: str) -> Optional[Facet]:

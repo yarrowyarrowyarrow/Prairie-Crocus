@@ -214,15 +214,12 @@ class PlantPanel(QWidget):
         # over one vocabulary. Its filters start folded to the line that says
         # which are on; eighteen do not fit above a list in this column.
         from src.plant_picker import PlantPicker
-        # The region's list on from the start in the simple app (ED-10,
-        # V3.26): a cold start lists its 250 natives, not the 424. A chip
-        # says so, and one click takes it off.
-        from src import advanced_tools, region
-        local = (region.default().defaults.get("local_natives_only")
-                 and not advanced_tools.is_on())
+        # The region's list was on from the start in the simple app (ED-10,
+        # V3.26), with a chip to take it off. Since V3.58 the region's list is the catalogue in both apps (the
+        # owner: "Edmonton only, even in Advanced"), searched inside unseen.
+        from src.plant_filters import catalogue_scope
         self.picker = PlantPicker(self, draggable=True,
-                                  criteria={"local_native": True} if local
-                                  else None)
+                                  scope=catalogue_scope())
         self.picker.results_changed.connect(self._on_results)
         self._results_list = self.picker.view
         self._results_model = self.picker.model

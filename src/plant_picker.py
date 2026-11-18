@@ -72,8 +72,13 @@ class PlantPicker(QWidget):
                  filters_open: Optional[bool] = None,
                  criteria: Optional[dict] = None, order: str = "priority",
                  draggable: bool = False, list_apart: bool = False,
-                 search_fn: Optional[Callable] = None):
+                 search_fn: Optional[Callable] = None,
+                 scope: Optional[dict] = None):
+        """``scope`` is searched inside always and never shown or cleared
+        (``plant_filters.catalogue_scope``, V3.58): the region's list as the
+        whole catalogue, so its filters leave the picker."""
         super().__init__(parent)
+        self._scope: dict = dict(scope or {})
         self._wide = wide
         self._search_fn = search_fn
         self._criteria: dict = dict(criteria or {})
@@ -178,7 +183,9 @@ class PlantPicker(QWidget):
     def _build_filters(self, col):
         # The everyday filters first and the rest behind "More filters"
         # (V3.14, src/filter_area.py); the site's soil pH drawn like a quality.
-        self.filter_area = FilterArea(self._criteria, wide=self._wide)
+        self.filter_area = FilterArea(
+            self._criteria, wide=self._wide,
+            hide=pf.SCOPED_OUT if self._scope else ())
         self.combos: dict = self.filter_area.combos
         self.chips: dict = self.filter_area.chips
         self.soil_toggle = self.filter_area.soil
@@ -244,6 +251,8 @@ class PlantPicker(QWidget):
         """Set one facet, leaving the others (a dropped pin ticking its
         region)."""
         values = [str(v) for v in (values or [])]
+        if key not in self.combos:
+            return                  # a filter the scope made needless (V3.58)
         if self.combos[key].checked_keys() == values:
             return
         self.combos[key].set_checked_keys(values)
@@ -458,7 +467,8 @@ class PlantPicker(QWidget):
         search_fn = self._search_fn
         if search_fn is None:
             from src.db.plants import search_plants as search_fn
-        kwargs = pf.criteria_to_kwargs(criteria, self.province())
+        kwargs = pf.criteria_to_kwargs({**criteria, **self._scope},
+                                       self.province())
         if soil and self._soil_ph is not None:
             kwargs["soil_ph"] = self._soil_ph
         return search_fn(**kwargs)

@@ -140,7 +140,7 @@ class TestThePicker(unittest.TestCase):
         self.assertEqual(self.picker.order(), "priority")
         self.assertEqual(pf.ORDERS[0][0], "priority")
         self.assertEqual(self.picker.order_combo.currentText(),
-                         "Best picks first")
+                         "Most wildlife first")
         rows = self.picker.rows()
         self.assertEqual([r["id"] for r in rows],
                          [r["id"] for r in plant_priority.rank(
@@ -149,7 +149,8 @@ class TestThePicker(unittest.TestCase):
         # the menu but order_plants still reads them.
         combo = self.picker.order_combo
         self.assertEqual([combo.itemText(i) for i in range(combo.count())],
-                         ["Best picks first", "Name", "Kind", "Tallest first"])
+                         ["Most wildlife first", "Name", "Kind",
+                          "Tallest first"])
         self.assertEqual(combo.findData("suits"), -1)
 
     def test_recorded_near_this_site_still_works_with_a_site(self):
@@ -498,9 +499,11 @@ class TestWhatARowSays(unittest.TestCase):
         self.assertIn("Native to Alberta", text)
         self.assertIn("1 in this design", text)
 
-    def test_the_simple_row_says_its_band(self):
-        """PR-3 (V3.26): the band's chip where the badges were, its reasons
-        in the tooltip and in what a screen reader is given."""
+    def test_a_row_is_never_graded(self):
+        """PR-3 (V3.26) put the band's chip where the badges were; V3.58 (the
+        owner: a grade implies the rest are not good) leaves the reasons in
+        the tooltip and the screen reader's text, and a chip only for a pond
+        plant or one not native here."""
         from unittest import mock
         import src.plant_list_view as plv
         self.assertIsNotNone(self.delegate._layout(self._PLANT, self.rect, 0)
@@ -510,12 +513,16 @@ class TestWhatARowSays(unittest.TestCase):
             self.delegate.place = "edmonton"
             self.assertIsNone(self.delegate._layout(self._PLANT, self.rect, 0)
                               ["zone"])
-            self.assertEqual(self._at("native"), "Top pick. Berries or seed "
-                             "for 5 kinds of bird.")
+            self.assertEqual(self.delegate._right_w(self._PLANT), 0)
             text = plv.row_description(self._PLANT, 0, "AB", "edmonton")
             self.assertTrue(text.startswith(
-                "Saskatoon Berry, Amelanchier alnifolia. Top pick. Berries "
+                "Saskatoon Berry, Amelanchier alnifolia. Berries "
                 "or seed for 5 kinds of bird. Shrub."), text)
+            self.assertNotIn("Top pick", text)
+        with mock.patch.dict(plv._BANDS, {(7, "edmonton"): (
+                "For a pond", ["Visited by 5 kinds of native bee"])}):
+            self.assertEqual(self._at("native"), "Needs a pond. Visited by 5 "
+                             "kinds of native bee.")
 
     def test_the_card_is_gone(self):
         """No ▶, no expansion, no painted detail block: the page is beside
@@ -549,12 +556,14 @@ class TestTheBuilderUsesThePicker(unittest.TestCase):
         self.dialog = PolycultureBuilderDialog(None)
         self.addCleanup(self.dialog.deleteLater)
 
-    def test_it_starts_on_natives_by_the_flora(self):
+    def test_it_lists_the_regions_catalogue(self):
+        """V3.58: the builder lists the region's natives, as the Plants tab
+        does; until then it started on Alberta's, by the flora."""
         from src.db.plants import search_plants
         picker = self.dialog.picker
-        self.assertTrue(picker.chips["native_only"].isChecked())
+        self.assertNotIn("native_only", picker.chips)
         self.assertEqual(len(picker.rows()),
-                         len(search_plants(native_province="AB")))
+                         len(search_plants(native_near="edmonton")))
 
     def test_a_layer_lifts_its_plants_and_hides_none(self):
         picker = self.dialog.picker

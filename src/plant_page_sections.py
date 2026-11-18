@@ -9,7 +9,7 @@ citations (§7.1). V3.26 cut the simple app's to about a hundred words and kept
 the long one for the advanced app; the owner, V3.56: still "overwhelming with
 data and simply too much", and the details a design needs (when it flowers,
 in what colour, how big, what soil) belong on the short page. So there is one
-page: the band, why to plant it (naming two or three of the animals, by the
+page: why to plant it (naming two or three of the animals, by the
 Overview's rule), what to know, how to grow it, its season, how it looks,
 buying it and whether it is native here. The animal list and where it grows
 wild wait in two folds (``species_page``); the roles, the badges, the photo
@@ -119,9 +119,10 @@ def simple(entry: Mapping, row: Optional[Mapping] = None, *,
     good = list(a.cautions) + _safety(row)
     if entry.get("edible_parts"):
         good.append("Edible parts: " + ", ".join(_tokens(entry["edible_parts"])))
-    # An off-list plant's band is said by the last line instead.
-    sections = [(a.band if a.band != plant_priority.AWAY else "", ""),
-                ("Why this plant", _sentences(named_reasons(a, home.key))),
+    # No band line since V3.58 (the owner: a grade implies the rest are not
+    # good). A pond plant's need is the first caution; an off-list plant's
+    # band is said by the last line.
+    sections = [("Why this plant", _sentences(named_reasons(a, home.key))),
                 ("Good to know", _sentences(good)),
                 ("Growing it", " ".join(p for p in (
                     growing_words(entry), _hardy(row), size_words(entry),
@@ -139,7 +140,7 @@ def simple(entry: Mapping, row: Optional[Mapping] = None, *,
     # A heading with nothing under it is dropped, except the band and the
     # native line, which are whole sentences on their own, and the season,
     # whose bar may be all it has.
-    lone = {a.band, f"Native around {home.short}.",
+    lone = {f"Native around {home.short}.",
             f"Not native around {home.short}."}
     bar = bool(entry.get("bloom_months") or entry.get("fruit_months"))
     return [(h, b) for h, b in sections

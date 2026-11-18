@@ -78,6 +78,16 @@ def province_words(plant: Mapping) -> str:
     return text + (f" Not native to {' or '.join(missing)}." if missing else "")
 
 
+def catalogue_scope() -> dict:
+    """The criteria every plant list searches inside, unseen (V3.58, the
+    owner: "Edmonton only, even in Advanced"): the region's list, when its
+    pack says the list is the catalogue (``defaults.local_natives_only``)."""
+    from src import region                                   # noqa: PLC0415
+    home = region.default()
+    return ({"local_native": True}
+            if home and home.defaults.get("local_natives_only") else {})
+
+
 # ── Around a place ───────────────────────────────────────────────────────────
 
 def around_tip(place: str = EDMONTON) -> str:

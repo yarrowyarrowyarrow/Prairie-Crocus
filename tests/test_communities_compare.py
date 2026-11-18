@@ -46,7 +46,7 @@ class TestTheRowSaysWhatItIs(unittest.TestCase):
         from src.polyculture_panel import community_facts
         self.assertEqual(community_facts({"member_count": 8, "facets": {
             "sun": "Full Sun", "moisture": "Medium moisture"}}),
-            "8 plants · Full Sun · Medium moisture")
+            "8 plants · Full sun · Average soil")      # V3.58's words
         self.assertEqual(community_facts({"member_count": 1, "facets": {
             "sun": "Unknown", "moisture": "Mixed"}}), "1 plant")
 

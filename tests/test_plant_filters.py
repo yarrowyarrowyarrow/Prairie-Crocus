@@ -39,9 +39,15 @@ class TestTheVocabulary(unittest.TestCase):
         # V3.57 (the owner: "drop what isn't useful"): Availability, Perennial
         # and Leaves out known spreaders went; Easy to buy became Sold locally.
         self.assertEqual(len(pf.FACETS), 8)
-        self.assertEqual(len(pf.QUALITIES), 8)
+        self.assertEqual(len(pf.QUALITIES), 7)        # Has a photo, V3.58
         self.assertEqual(len({f.key for f in pf.FACETS}
-                             | {q.key for q in pf.QUALITIES}), 16)
+                             | {q.key for q in pf.QUALITIES}), 15)
+
+    def test_the_region_list_is_the_catalogue(self):
+        """V3.58, the owner: "Edmonton only, even in Advanced"."""
+        self.assertEqual(pf.catalogue_scope(), {"local_native": True})
+        self.assertEqual(set(pf.SCOPED_OUT),
+                         {"local_native", "native_only", "ecoregion"})
 
     def test_old_criteria_still_read(self):
         """A filter saved before V3.57 reads as what it became."""

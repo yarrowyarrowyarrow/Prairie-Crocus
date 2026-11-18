@@ -22,6 +22,8 @@ module:
   to *Not native around …*, both after the rest, because each is a fact about
   the yard rather than a score. A restoration plant no seller lists is at most
   a *Good pick* (the owner, V3.25).
+* **The bands rank; since V3.58 no screen names them** (the owner: a grade
+  implies the rest are not good). Only *For a pond* shows, as a warning.
 * **No size words without an outline** (L3): a plant is "too big for this
   yard" only against a measured area.
 * **Nothing about spreading until it is checked** (L5): a blank

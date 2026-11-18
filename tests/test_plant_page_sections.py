@@ -86,7 +86,7 @@ class TheSimplePage(unittest.TestCase):
     def test_chokecherry_exactly(self):
         sections = pps.simple(_entry("Chokecherry"), place="edmonton")
         self.assertEqual([h for h, _b in sections],
-                         ["Top pick", "Why this plant", "Good to know",
+                         ["Why this plant", "Good to know",
                           "Growing it", pps.SEASON, "Buying it",
                           "Native around Edmonton."])
         self.assertLessEqual(pps.word_count(sections), _MOST_WORDS)

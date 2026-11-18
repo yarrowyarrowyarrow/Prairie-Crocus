@@ -92,15 +92,22 @@ class TestPlantPanelSmoke(unittest.TestCase):
             # local list on by default (ED-10) is tested on its own below.
             self._panel.picker.set_criteria({})
 
-    def test_the_local_list_is_on_from_a_cold_start(self):
-        """ED-10 (V3.26): the simple app lists the region's natives."""
+    def test_the_local_list_is_the_catalogue(self):
+        """ED-10 (V3.26), then V3.58: the region's natives are the whole
+        list, in both apps, with no chip to take off and nothing to clear."""
         from src import native_here
         from src.plant_panel import PlantPanel
         panel = PlantPanel()
         self.addCleanup(panel.deleteLater)
-        self.assertTrue(panel.picker.criteria().get("local_native"))
-        self.assertEqual(len(panel.picker.rows()),
-                         len(native_here.native_names("edmonton")))
+        self.assertFalse(panel.picker.criteria().get("local_native"))
+        self.assertEqual(panel.picker.chip_texts(), [])
+        n = len(native_here.native_names("edmonton"))
+        self.assertEqual(len(panel.picker.rows()), n)
+        self.assertEqual(panel.picker.count_label.text(), f"{n} plants")
+        for key in ("local_native", "native_only", "ecoregion"):
+            self.assertNotIn(key, {**panel.picker.combos, **panel.picker.chips})
+        panel.picker.clear_filters()
+        self.assertEqual(len(panel.picker.rows()), n)
 
     # ── Basic class shape ────────────────────────────────────────────────────
 
@@ -205,15 +212,14 @@ class TestPlantPanelSmoke(unittest.TestCase):
                      "_keystone_btn", "_host_btn", "_birdfood_btn"):
             self.assertFalse(hasattr(self._panel, attr), attr)
         # The non-use extras are the shared picker's qualities.
-        for key in ("native_only", "edible_only", "sold_locally",
-                    "has_image_only"):
+        for key in ("edible_only", "sold_locally", "kid_safe_only"):
             self.assertIn(key, self._panel.picker.chips)
 
     def test_facet_combos_are_multiselect(self):
         from src.plant_panel import CheckableComboBox
         # All facet dropdowns — including ecoregion (V1.85 follow-up) — are
         # multi-select.
-        for key in ("type", "sun", "water", "use", "ecoregion"):
+        for key in ("type", "sun", "water", "use"):
             self.assertIsInstance(self._panel.picker.combos[key],
                                   CheckableComboBox)
         # The ecoregion combo drops the "Any ecoregion" sentinel — its
@@ -230,7 +236,12 @@ class TestPlantPanelSmoke(unittest.TestCase):
                     + len(MOISTURE_NICHES))
         # +1: the line the list opens on, saying how ticked regions combine
         # (V3.01); it is read, never ticked.
-        self.assertEqual(self._panel.picker.combos["ecoregion"].model().rowCount(),
+        # The Plants tab has no region tree since V3.58 (its catalogue is the
+        # region's list); a picker with no scope still builds it.
+        from src.plant_picker import PlantPicker
+        bare = PlantPicker()
+        self.addCleanup(bare.deleteLater)
+        self.assertEqual(bare.combos["ecoregion"].model().rowCount(),
                          expected + 1)
 
     def _set_checked(self, combo, keys):
@@ -257,21 +268,16 @@ class TestPlantPanelSmoke(unittest.TestCase):
         # V1.86: the Plant Browser pane is no longer wrapped in a CollapsiblePanel.
         self.assertFalse(hasattr(self._panel, "_browser_panel"))
 
-    def test_ecoregion_default_is_empty(self):
-        # With no auto-detected pin, the ecoregion picker starts unselected and
-        # shows its placeholder (V1.86).
-        self.assertEqual(self._panel.picker.combos["ecoregion"].checked_keys(), [])
-        self.assertEqual(
-            self._panel.picker.combos["ecoregion"].lineEdit().placeholderText(),
-            "Restoring toward…")
-
-    def test_live_pin_sets_and_clears_ecoregion(self):
-        # A dropped pin's region drives the picker live; clearing removes it.
+    def test_a_pin_ticks_no_hidden_region(self):
+        """Until V3.58 a pin ticked its ecoregion here; with the region's list
+        as the catalogue there is no region filter to tick, and a pin must
+        not filter the list unseen."""
         p = self._panel
+        before = len(p.picker.rows())
         p.set_autodetected_ecoregion("aspen_parkland")
-        self.assertEqual(p.picker.combos["ecoregion"].checked_keys(), ["aspen_parkland"])
+        self.assertNotIn("ecoregion", p.picker.criteria())
+        self.assertEqual(len(p.picker.rows()), before)
         p.set_autodetected_ecoregion("")
-        self.assertEqual(p.picker.combos["ecoregion"].checked_keys(), [])
 
     def test_type_filter_has_full_taxonomy(self):
         # V1.87: full botanical types, dead "root" retired, all colourable.
@@ -321,12 +327,14 @@ class TestPlantPanelSmoke(unittest.TestCase):
         self._set_checked(p.picker.combos["type"], {"tree", "shrub"})
         self._set_checked(p.picker.combos["use"], {"pollinator", "host_plant"})
         p._run_search()
+        here = "edmonton"                       # the catalogue, V3.58
         expected = len(search_plants(plant_type=["tree", "shrub"],
-                                     perm_use=["pollinator", "host_plant"]))
+                                     perm_use=["pollinator", "host_plant"],
+                                     native_near=here))
         # With filters on, the count says how much of the catalogue they left
         # (V3.01).
         self.assertEqual(p.picker.count_label.text(),
-                         f"{expected} of {len(search_plants())} plants")
+                         f"{expected} of {len(search_plants(native_near=here))} plants")
         # AND semantics on uses → strictly fewer than pollinator alone
         self.assertLess(expected, len(search_plants(perm_use="pollinator")))
 
@@ -356,7 +364,8 @@ class TestPlantPanelSmoke(unittest.TestCase):
         self._set_checked(p.picker.combos["colour"], {"purple"})
         p._run_search()
         purple = p._results_model.rowCount()
-        self.assertEqual(purple, len(search_plants(flower_colours=["purple"])))
+        self.assertEqual(purple, len(search_plants(flower_colours=["purple"],
+                                                   native_near="edmonton")))
         self.assertGreater(purple, 0)
         self.assertLess(purple, every)
 
@@ -369,8 +378,10 @@ class TestPlantPanelSmoke(unittest.TestCase):
         self._set_checked(p.picker.combos["colour"], {"purple", "yellow"})
         p._run_search()
         both = p._results_model.rowCount()
-        union = ({r["id"] for r in search_plants(flower_colours=["purple"])}
-                 | {r["id"] for r in search_plants(flower_colours=["yellow"])})
+        union = ({r["id"] for r in search_plants(flower_colours=["purple"],
+                                                 native_near="edmonton")}
+                 | {r["id"] for r in search_plants(flower_colours=["yellow"],
+                                                   native_near="edmonton")})
         self.assertEqual(both, len(union))
         self.assertGreater(both, purple)
 
