@@ -1060,12 +1060,16 @@ class TestEveryTextFileReadPinsItsEncoding(unittest.TestCase):
 
     def test_the_seed_json_is_what_makes_this_bite(self):
         """Not hypothetical. If the seed data were ASCII this guard would be
-        pedantry; it is not, and the byte that killed seven tests is in there."""
+        pedantry; it is not. The byte that killed seven tests (a photographer's
+        Cyrillic name) left with the photo it credited in V3.55, and what is
+        left is worse: Windows' cp1252 now reads the file without an error and
+        gets the text wrong (a dash, an accent), so an unpinned read passes
+        every test and garbles what the app shows."""
         blob = (_SRC.parent / "data" / "plants_master.json").read_bytes()
         self.assertTrue(any(b > 0x7F for b in blob),
                         "plants_master.json is pure ASCII — check why")
-        with self.assertRaises(UnicodeDecodeError):
-            blob.decode("cp1252")
+        self.assertNotEqual(blob.decode("cp1252", errors="replace"),
+                            blob.decode("utf-8"))
 
 
 class TestTheTestSuiteCanReachItsOwnSummary(unittest.TestCase):

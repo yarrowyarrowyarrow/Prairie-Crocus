@@ -40,9 +40,10 @@ class TestTheWords(unittest.TestCase):
     def test_a_planted_species_line(self):
         line = feeds.eaters_line({"animals": {"bird": 1, "bee": 2},
                                   "bloom": [7, 8], "fruit": [9]})
-        # Groups in the page's order (bees first), whatever order they came.
-        self.assertEqual(line, "food for 3 kinds: 2 bees, 1 bird · flowers Jul–Aug · "
-                               "fruit Sep")
+        # The months first (V3.55, the owner), then the groups in the page's
+        # order (bees first), whatever order they came.
+        self.assertEqual(line, "flowers Jul–Aug · fruit Sep · "
+                               "food for 3 kinds: 2 bees, 1 bird")
 
     def test_nothing_recorded_says_so_rather_than_nothing(self):
         """P9: an empty line would read as "feeds nothing", which the
@@ -201,9 +202,8 @@ class TestAgainstTheCatalogue(unittest.TestCase):
     def test_the_planted_line_for_a_real_plant(self):
         pid = self.rows["Chokecherry"]["id"]
         line = feeds.eaters_line(feeds.plant_food([pid])[pid])
-        self.assertRegex(line, r"^food for \d+ kinds?: \d+ bees?, ")
-        self.assertIn("· flowers ", line)
-        self.assertIn("· fruit ", line)
+        self.assertRegex(line, r"^flowers .* · food for \d+ kinds?: \d+ bees?, ")
+        self.assertIn(" · fruit ", line)
 
 
 if __name__ == "__main__":
