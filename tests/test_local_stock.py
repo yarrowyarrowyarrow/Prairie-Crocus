@@ -151,11 +151,14 @@ class TheAppReadsIt(unittest.TestCase):
         easy = {p["scientific_name"] for p in search_plants(common_only=True)}
         self.assertIn("Campanula rotundifolia", easy)
 
-    def test_the_filter_facet_reads_the_tiers(self):
+    def test_sold_locally_keeps_the_listed_tier(self):
+        """V3.57: one buying filter, on a local list and nothing else (the
+        owner), where Easy to buy and Availability had given two answers."""
         from src import plant_filters as pf
-        f = next(f for f in pf.FACETS if f.key == "availability")
-        self.assertEqual(f.param, "stock_in")
-        self.assertEqual(set(f.values), set(ls.TIERS))
+        q = next(q for q in pf.QUALITIES if q.key == "sold_locally")
+        self.assertEqual(q.param, "stock_in")
+        self.assertEqual(tuple(q.value), ("available",))
+        self.assertIn("available", ls.TIERS)
 
     def test_the_plant_page_sentence(self):
         self.assertEqual(ls.clause("Monarda fistulosa"),

@@ -373,8 +373,10 @@ _BAND_W         = 70    # the simple app's "Good pick", 12 px (PR-3, V3.26)
 #: draws no chip. Every pair clears 4.5:1.
 _BAND_CHIP = {"Top pick": ("#1b5e20", "#e8f5e9"),
               "Good pick": ("#37474f", "#e8f5e9"),
-              "For a pond": ("#0d47a1", "#e3f2fd")}
-_BAND_TEXT = {"For a pond": "Pond"}
+              "For a pond": ("#0d47a1", "#e3f2fd"),
+              # The exception is marked, not the rule (V3.57).
+              "Not native here": ("#5d4037", "#efebe9")}
+_BAND_TEXT = {"For a pond": "Pond", "Not native here": "Not native"}
 
 
 class PlantRowDelegate(QStyledItemDelegate):

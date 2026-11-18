@@ -99,7 +99,7 @@ class PlantPicker(QWidget):
 
         self.search_box = QLineEdit()
         self.search_box.setPlaceholderText(
-            "Search plants by name or role…")
+            "Search plants by name…")
         self.search_box.setAccessibleName("Search plants")
         self.search_box.setClearButtonEnabled(True)
         self.search_box.setStyleSheet(_SEARCH)
@@ -189,6 +189,10 @@ class PlantPicker(QWidget):
 
     def set_filters_open(self, on: bool):
         self.filter_area.setVisible(bool(on))
+        # The chips say what is on while the filters are folded away; open,
+        # the controls say it themselves, and a chip beside its own toggle
+        # was the same filter twice (V3.57, the owner's screenshot).
+        self.filter_line.set_folded(not on)
         self.filters_button.blockSignals(True)
         self.filters_button.setChecked(bool(on))
         self.filters_button.blockSignals(False)
@@ -383,8 +387,10 @@ class PlantPicker(QWidget):
         """Native and the row badge name the pin's province (F200, V3.05)."""
         shown = self.province() or "AB"
         self.delegate.province = self.model.province = shown
-        place = self.place() if getattr(self, "_simple", False) else None
-        self.delegate.place = self.model.place = place
+        # The band's chip on every row in both apps since V3.57: the zone
+        # chip read Z2-7 down a whole list of natives, and AB on every row of
+        # a list already filtered to natives.
+        self.delegate.place = self.model.place = self.place()
         self.filter_area.describe("native_only", pf.native_tip(shown))
         if self.province() != before and self._criteria.get("native_only"):
             self.refresh()

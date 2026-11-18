@@ -126,10 +126,10 @@ class TestStructuralCeilings(unittest.TestCase):
         # FlowLayout was deleted. V3.05 (F200): Native began naming the pin's
         # province, the picker passed 560 again, and its quality toggles went
         # to filter_status.QualityChips, as the chips had.
-        (_SRC / "plant_filters.py", 520),              # 520 now (V3.05): full
+        (_SRC / "plant_filters.py", 520),              # 519 now (V3.57): full
         (_SRC / "plant_picker.py", 560),               # 510 now (V3.14): the order
         # block (set_site to _reorder, about 60 lines) is the next to go.
-        (_SRC / "filter_status.py", 300),              # 295 now (V3.14)
+        (_SRC / "filter_status.py", 320),              # 306 now (V3.57: chips only while folded)
         # V3.14, opted in on arrival: the filters in two tiers, everyday first
         # (the owner: "so so busy"), which took the picker's filter building
         # with it; and which ecoregions a community belongs in, Qt-free.

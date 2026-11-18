@@ -205,7 +205,7 @@ class TestPlantPanelSmoke(unittest.TestCase):
                      "_keystone_btn", "_host_btn", "_birdfood_btn"):
             self.assertFalse(hasattr(self._panel, attr), attr)
         # The non-use extras are the shared picker's qualities.
-        for key in ("native_only", "edible_only", "perennial_only",
+        for key in ("native_only", "edible_only", "sold_locally",
                     "has_image_only"):
             self.assertIn(key, self._panel.picker.chips)
 
@@ -213,8 +213,7 @@ class TestPlantPanelSmoke(unittest.TestCase):
         from src.plant_panel import CheckableComboBox
         # All facet dropdowns — including ecoregion (V1.85 follow-up) — are
         # multi-select.
-        for key in ("type", "sun", "water", "use", "availability",
-                    "ecoregion"):
+        for key in ("type", "sun", "water", "use", "ecoregion"):
             self.assertIsInstance(self._panel.picker.combos[key],
                                   CheckableComboBox)
         # The ecoregion combo drops the "Any ecoregion" sentinel — its
@@ -348,7 +347,7 @@ class TestPlantPanelSmoke(unittest.TestCase):
         # earlier test's type/use selections are still checked here. Clear every
         # facet first or this measures the intersection instead of the colour.
         for combo in (p.picker.combos["type"], p.picker.combos["sun"], p.picker.combos["water"], p.picker.combos["use"],
-                      p.picker.combos["availability"], p.picker.combos["bloom_months"], p.picker.combos["fruit_months"],
+                      p.picker.combos["bloom_months"], p.picker.combos["fruit_months"],
                       p.picker.combos["colour"]):
             self._set_checked(combo, set())
         p._run_search()

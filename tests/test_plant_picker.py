@@ -64,7 +64,7 @@ class TestThePicker(unittest.TestCase):
     def test_the_folded_line_names_what_is_on_and_clear_clears_it(self):
         self.picker.chips["native_only"].setChecked(True)
         self.picker.set_facet("type", ["shrub"])
-        self.assertEqual(self.picker.chip_texts(), ["Type: Shrub", "Native to Alberta"])
+        self.assertEqual(self.picker.chip_texts(), ["Kind: Shrubs", "Native to Alberta"])
         self.assertTrue(self.picker.none_label.isHidden())
         self.assertFalse(self.picker.clear_button.isHidden())
         before = len(self.picker.rows())
@@ -82,6 +82,18 @@ class TestThePicker(unittest.TestCase):
         self.assertTrue(all("aster" in (r["common_name"] + r["scientific_name"]
                                         + (r.get("permaculture_uses") or "")
                                         ).lower() for r in self.picker.rows()))
+
+    def test_the_chips_show_only_while_folded(self):
+        """V3.57: open, a chip beside its own toggle said one filter twice."""
+        self.picker.chips["native_only"].setChecked(True)
+        chip = self.picker.filter_line.chips()[0]
+        self.assertFalse(chip.isHidden())
+        self.picker.set_filters_open(True)
+        self.assertTrue(chip.isHidden())
+        self.assertTrue(self.picker.none_label.isHidden())
+        self.assertFalse(self.picker.clear_button.isHidden())
+        self.picker.set_filters_open(False)
+        self.assertFalse(chip.isHidden())
 
     def test_the_filters_button_folds_and_unfolds(self):
         self.picker.filters_button.click()
@@ -133,9 +145,12 @@ class TestThePicker(unittest.TestCase):
         self.assertEqual([r["id"] for r in rows],
                          [r["id"] for r in plant_priority.rank(
                              rows, place=self.picker.place())])
+        # Four orders since V3.57 (the owner); "suits" and "wildlife" left
+        # the menu but order_plants still reads them.
         combo = self.picker.order_combo
-        suits = combo.findData("suits")
-        self.assertFalse(combo.model().item(suits).isEnabled())
+        self.assertEqual([combo.itemText(i) for i in range(combo.count())],
+                         ["Best picks first", "Name", "Kind", "Tallest first"])
+        self.assertEqual(combo.findData("suits"), -1)
 
     def test_recorded_near_this_site_still_works_with_a_site(self):
         """Offered once there is a pin, and no longer chosen for the reader."""
@@ -227,16 +242,16 @@ class TestFiltersPeopleCanRead(unittest.TestCase):
             self.assertEqual(combo.rule_text(), pf.rule(f), f.key)
         self.picker.set_facet("use", ["bird_food", "host_plant"])
         self.assertEqual(self.picker.combos["use"].lineEdit().text(),
-                         "What it does: Larval Host and Bird Food")
+                         "What it does: Caterpillar food and Bird food")
         self.assertEqual(self.picker.chip_texts(),
-                         ["What it does: Larval Host and Bird Food"])
+                         ["What it does: Caterpillar food and Bird food"])
 
     def test_a_chip_removes_its_own_filter_and_nothing_else(self):
         self.picker.set_facet("type", ["shrub", "tree"])
         self.picker.chips["edible_only"].setChecked(True)
         chips = self.picker.filter_line.chips()
         self.assertEqual(chips[0].accessibleName(),
-                         "Remove Type: Tree or Shrub")
+                         "Remove Kind: Shrubs or Trees")
         chips[0].click()
         self.assertEqual(self.picker.combos["type"].checked_keys(), [])
         self.assertTrue(self.picker.chips["edible_only"].isChecked())
@@ -335,19 +350,19 @@ class TestFiltersPeopleCanRead(unittest.TestCase):
                          f"{trees} of {every} plants")
 
     def test_an_empty_list_names_the_filter_that_emptied_it(self):
-        """Ferns have no bloom window, so Blooms in empties a list of ferns."""
+        """Ferns have no bloom window, so Flowers in empties a list of ferns."""
         self.picker.set_facet("type", ["fern"])
         self.picker.set_facet("bloom_months", ["1"])
         self.assertEqual(self.picker.rows(), [])
         ferns = len(self._search(plant_type=["fern"]))
         self.assertGreater(ferns, 0)
         offers = self.picker.why_empty.offers()
-        self.assertIn(f"Remove \u201cBlooms in: January\u201d "
+        self.assertIn(f"Remove \u201cFlowers in: January\u201d "
                       f"({ferns} plant{'s' if ferns != 1 else ''})", offers)
         self.assertFalse(self.picker.why_empty.isHidden())
         # Taking it off is the offer's own button.
         button = next(b for b in self.picker.why_empty._offers
-                      if "Blooms in" in b.text())
+                      if "Flowers in" in b.text())
         button.click()
         self.assertEqual(len(self.picker.rows()), ferns)
         self.assertTrue(self.picker.why_empty.isHidden())

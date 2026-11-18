@@ -78,11 +78,15 @@ class Quality(NamedTuple):
     value: object = True
 
 
+# In the plant page's words since V3.57 ("Full sun to part shade. Dry to
+# average soil."), so the filter and the page say one thing.
 SUN_LABELS: dict = {
-    "full_sun": "Full Sun", "partial_shade": "Partial Shade",
-    "full_shade": "Full Shade",
+    "full_sun": "Full sun", "partial_shade": "Part shade",
+    "full_shade": "Shade",
 }
-WATER_LABELS: dict = {"low": "Low", "medium": "Medium", "high": "High"}
+WATER_LABELS: dict = {"low": "Dry", "medium": "Average", "high": "Moist"}
+# The Kind and What-it-does values (V3.57) live with the other labels.
+from src.plant_facets import KIND_LABELS, KIND_TYPES, ROLE_FILTER  # noqa: E402
 #: The use tags, as the Role facet and the species page both name them.
 ROLE_LABELS: dict = {
     "keystone_species": "Keystone Species", "host_plant": "Larval Host",
@@ -97,41 +101,38 @@ ROLE_LABELS: dict = {
     "aquatic": "Aquatic", "medicinal": "Medicinal",
 }
 #: How easy a plant is to buy, from the region's nurseries' stock (V3.25).
+#: No longer a filter (V3.57: "Sold locally" is); the list's words read it.
 AVAILABILITY_LABELS: dict = dict(_stock.LABELS)
 
 FACETS: tuple = (
-    Facet("type", "Type", "plant_type", dict(_TYPE_LABELS), "any", "Any type",
-          "Plants of any of the types you tick. The colour beside each is the "
+    Facet("type", "Kind", "plant_type", KIND_LABELS, "any", "Any kind",
+          "Plants of any of the kinds you tick. The colour beside each is the "
           "dot the list and the map use for it."),
     Facet("sun", "Sun", "sun_req", SUN_LABELS, "any", "Any sun",
           "Plants that grow in any of the light you tick."),
-    Facet("water", "Water", "water_needs", WATER_LABELS, "any", "Any water",
-          "Plants suited to any of the water levels you tick."),
-    Facet("use", "What it does", "perm_use", ROLE_LABELS, "all", "Any role",
-          "Only plants listed for every role you tick."),
-    Facet("availability", "Availability", "stock_in",
-          AVAILABILITY_LABELS, "any", "Any availability",
-          "Plants at any level you tick, from what the region's native-plant "
-          "nurseries stock. Not checked yet means no list covers it."),
+    Facet("water", "Soil", "water_needs", WATER_LABELS, "any", "Any soil",
+          "Plants suited to any of the soils you tick, dry to moist."),
+    Facet("bloom_months", "Flowers in", "bloom_months", dict(_MONTH_LABELS),
+          "any", "Flowers in…",
+          "Plants flowering in any of the months you tick: the direct way to "
+          "fill a gap in nectar. A plant with no recorded bloom window is left "
+          "out rather than guessed at."),
+    Facet("colour", "Colour", "flower_colours", dict(_COLOUR_LABELS),
+          "any", "Any colour",
+          "Plants flowering in any of the colours you tick. Grasses, sedges "
+          "and rushes are a group of their own: they are wind-pollinated, so "
+          "what you see is a seed head, not a bloom."),
+    Facet("use", "What it does", "perm_use", ROLE_FILTER, "all",
+          "What it does…", "Only plants listed for every role you tick."),
     Facet("ecoregion", "Restoring toward", "ecoregion", None, "any",
           "Restoring toward…",
           "Plants recorded in any of the regions you tick. Ticking a system "
           "includes everything inside it. A pin you drop on the map ticks its "
           "own region here."),
-    Facet("bloom_months", "Blooms in", "bloom_months", dict(_MONTH_LABELS),
-          "any", "Blooms in…",
-          "Plants flowering in any of the months you tick: the direct way to "
-          "fill a gap in nectar. A plant with no recorded bloom window is left "
-          "out rather than guessed at."),
     Facet("fruit_months", "Fruits in", "fruit_months", dict(_MONTH_LABELS),
           "any", "Fruits in…",
           "Plants fruiting in any of the months you tick, for bird food or a "
           "harvest across the season."),
-    Facet("colour", "Flower colour", "flower_colours", dict(_COLOUR_LABELS),
-          "any", "Any flower colour",
-          "Plants flowering in any of the colours you tick. Grasses, sedges "
-          "and rushes are a group of their own: they are wind-pollinated, so "
-          "what you see is a seed head, not a bloom."),
 )
 
 def _home():
@@ -139,44 +140,37 @@ def _home():
     return region.default()
 
 QUALITIES: tuple = (
-    # Read from the province list VASCAN supplies (V2.80), not from the
-    # native_to_alberta flag: five species still carry the seed's "1?" there
-    # (False Box, Flat-topped White Aster, Round-leaved Alumroot, Stiff
-    # Sunflower, Tall Anemone), which the flag's filter dropped although VASCAN
-    # records every one in Alberta and the list's AB badge said so.
-    Quality("native_only", "Native to Alberta", "native_province",
-            "Native to Alberta, as VASCAN records it.", "AB"),
     # F220 (V3.12), the owner's "Edmonton specific native plants": collected
     # near the city. Named and keyed by the default region pack since V3.24
     # (ED-3): "Calgary native" in a Calgary edition, with no code.
     Quality("local_native", f"Native around {_home().short}", "native_near",
             _around_tip(_home().key), _home().key),
-    Quality("perennial_only", "Perennial", "perennial_only",
-            "Comes back every year."),
+    # V3.57, the owner: on a local nursery's list, nothing else. It replaced
+    # "Easy to buy" (187 of the 250, the unlisted counted in) and the
+    # Availability dropdown (whose "Available" kept 70): two answers.
+    Quality("sold_locally", "Sold locally", "stock_in",
+            "On a plant list from a native-plant nursery or plant sale near "
+            "you. Few nurseries publish one, so a plant not listed may still "
+            "be sold: ask.", ("available",)),
+    Quality("pet_safe_only", "Not known to harm pets", "pet_safe_only",
+            "No recorded poison for pets. Silence is not a guarantee: a plant "
+            "nobody has checked passes this filter."),
+    # Read from the province list VASCAN supplies (V2.80), not from the
+    # native_to_alberta flag: five species still carry the seed's "1?" there.
+    Quality("native_only", "Native to Alberta", "native_province",
+            "Native to Alberta, as VASCAN records it.", "AB"),
     Quality("supports_specialist", "Food for a fussy eater",
             "supports_specialist", "Food for at least one animal that eats "
             "only a few kinds of plant."),
     Quality("edible_only", "Edible", "edible_only",
             "Has parts recorded as edible for people."),
-    Quality("pet_safe_only", "Not known to be poisonous to pets",
-            "pet_safe_only",
-            "No recorded toxicity to pets. Silence is not a guarantee: an "
-            "unassessed plant passes this filter."),
-    Quality("kid_safe_only", "Not known to be poisonous to people",
-            "kid_safe_only",
-            "No recorded toxicity to people and no thorns. Same caveat."),
-    Quality("well_behaved_only", "Leaves out known spreaders",
-            "well_behaved_only", "Leaves out plants recorded as spreading "
-            "by runners or seeding freely. A plant nobody has checked stays "
-            "in."),
-    # Said "Stocked somewhere other than a specialist grower" until V3.14, while
-    # the search kept the native nurseries' plants, as it still does.
-    Quality("common_only", "Easy to buy", "common_only",
-            "On a plant list from the region's native-plant nurseries; where "
-            "no list covers a plant yet, not known to be seed only or rare."),
+    Quality("kid_safe_only", "Not known to harm people", "kid_safe_only",
+            "No recorded poison for people and no thorns. Same caveat."),
     Quality("has_image_only", "Has a photo", "has_image_only",
-            "Only species this catalogue can show you."),
+            "Only plants this catalogue can show you."),
 )
+#: Criteria saved before V3.57 name filters that went: what each became.
+_RENAMED = {"common_only": "sold_locally", "edmonton_native": "local_native"}
 
 #: ``(key, label, tooltip)``. "suits" is offered only where there is a site.
 ORDERS: tuple = (
@@ -185,21 +179,15 @@ ORDERS: tuple = (
      "Plants that feed the most local wildlife come first, plants on a "
      "local seller's list first among equals. Nothing is hidden: the rest "
      "follow in the same list."),
-    # Named for what it knows. The review asked for "suits this site", but
-    # nothing here knows the yard's sun or soil: it knows where a species has
-    # been recorded and the zone, and a salt-flat grass recorded near
-    # Edmonton is "near this site" without suiting a front yard (P9).
-    ("suits", "Recorded near this site",
-     "Species recorded near your pin first, then those hardy in your zone. "
-     "Plants that need standing water come last. Nothing is hidden: records "
-     "follow collectors, so a plant with none nearby may still grow there, "
-     "and a record nearby says nothing about your yard's sun or soil."),
     ("name", "Name", "A to Z by common name."),
-    ("type", "Type", "Trees, shrubs and so on, then by name."),
-    ("wildlife", "Animals supported",
-     "Most documented animals first. Undocumented is not unused."),
-    ("height", "Height", "Tallest at maturity first."),
+    ("type", "Kind", "Trees, shrubs, vines, wildflowers, then the low "
+     "plants, grasses and water plants, each A to Z."),
+    ("height", "Tallest first", "Tallest at maturity first."),
 )
+# "Recorded near this site" ("suits") and "Animals supported" ("wildlife")
+# left the menu in V3.57 (the owner): the native filter answers the first more
+# honestly, and Best picks first already ranks by what a plant feeds.
+# order_plants still takes both keys, so nothing saved with one breaks.
 
 
 def facet(key: str) -> Optional[Facet]:
@@ -231,9 +219,13 @@ def criteria_to_kwargs(criteria: Optional[dict], province: str = "") -> dict:
     keeps Alberta, as before.
     """
     criteria = dict(criteria or {})
-    # Criteria said "edmonton_native" until V3.24 (ED-3).
-    if criteria.pop("edmonton_native", None):
-        criteria["local_native"] = True
+    # Criteria said "edmonton_native" until V3.24 (ED-3), "common_only" and
+    # an Availability list until V3.57.
+    for old, new in _RENAMED.items():
+        if criteria.pop(old, None):
+            criteria[new] = True
+    if "available" in (criteria.pop("availability", None) or ()):
+        criteria["sold_locally"] = True
     kwargs: dict = {}
     query = (criteria.get("query") or "").strip()
     if query:
@@ -248,6 +240,9 @@ def criteria_to_kwargs(criteria: Optional[dict], province: str = "") -> dict:
             # Month keys travel as strings (combo keys always do); the search
             # layer wants ints.
             kwargs[f.param] = [int(v) for v in chosen if str(v).isdigit()]
+        elif f.key == "type":
+            kwargs[f.param] = [t for v in chosen
+                               for t in KIND_TYPES.get(v, (v,))]
         elif f.key == "ecoregion":
             # Along the lineage both ways: a ticked ecozone matches plants
             # tagged with any region inside it, and a ticked region matches
@@ -258,8 +253,9 @@ def criteria_to_kwargs(criteria: Optional[dict], province: str = "") -> dict:
             kwargs[f.param] = list(chosen)
     for q in QUALITIES:
         if criteria.get(q.key):
-            kwargs[q.param] = (province if q.key == "native_only"
-                               and province in PROVINCE_NAMES else q.value)
+            value = (province if q.key == "native_only"
+                     and province in PROVINCE_NAMES else q.value)
+            kwargs[q.param] = list(value) if isinstance(value, tuple) else value
     return kwargs
 
 
@@ -473,8 +469,11 @@ def order_plants(rows, key: str = "name", *, site=None,
                     -locality_rank(r.get("scientific_name") or "", lat, lng),
                     not hardy_at(r, zone), name(r))
     elif key == "type":
+        kinds = list(_TYPE_LABELS)              # trees first, water plants last
+
         def main_key(r):
-            return ((r.get("plant_type") or "~"), name(r))
+            t = r.get("plant_type") or ""
+            return (kinds.index(t) if t in kinds else len(kinds), name(r))
     elif key == "height":
         def main_key(r):
             return (-_number(r.get("mature_height_meters")), name(r))

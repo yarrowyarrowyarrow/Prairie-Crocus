@@ -206,14 +206,8 @@ class PlantPanel(QWidget):
         top_layout.setContentsMargins(8, 8, 8, 4)
         top_layout.setSpacing(4)
 
-        # Page header (V1.86) — a plain, non-collapsible title that mirrors the
-        # Plant Community Library page.
-        title_label = QLabel(
-            "<b>Plant Library</b>  "
-            "<span style='color:#90a4ae;font-weight:normal;'>(browse &amp; place)</span>"
-        )
-        title_label.setStyleSheet("font-size: 13px;")
-        top_layout.addWidget(title_label)
+        # No page title since V3.57: "Plant Library (browse & place)" said
+        # again what the Plants tab above it says.
 
         # Search, filters, order and the list (V3.00, src/plant_picker.py):
         # the same widget the Plant Directory and the community builder show,
