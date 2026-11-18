@@ -213,6 +213,33 @@ def named_animals(placed_plants, *, records=None, k: int = 3,
                                      minor=("other_insect", "mammal"))]
 
 
+def names_for(fauna_ids, place: str = "") -> list:
+    """English names for ``fauna_ids`` that this rule may name, familiar
+    first, then the most recorded near the place, then A to Z: the plant
+    page's two or three (V3.56), so it and the Overview cannot disagree."""
+    from src import fauna_fit
+    from src.yard_overview_items import english_name
+    from src.db.plants import get_connection
+    ids = sorted(int(i) for i in fauna_ids or ())
+    if not ids:
+        return []
+    conn = get_connection()
+    try:
+        rows = [dict(r) for r in conn.execute(
+            "SELECT id, common_name, scientific_name FROM fauna WHERE id IN "
+            f"({','.join('?' * len(ids))})", ids)]
+    finally:
+        conn.close()
+    records = fauna_fit.records(place) if place else None
+    keep = [r for r in rows if one_species(r) and _near(records, r)]
+
+    def order(r):
+        sci = r.get("scientific_name") or ""
+        near = (records.near(sci) or 0) if records else 0
+        return (not _familiar(records, r), -near, english_name(r))
+    return [english_name(r) for r in sorted(keep, key=order)]
+
+
 def _row(c: dict, rank: tuple) -> dict:
     _r, _n, plant, kind = rank
     taxon = c["animal"]["taxon"]

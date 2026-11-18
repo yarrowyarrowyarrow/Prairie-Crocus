@@ -105,15 +105,13 @@ class TheLineIsWritten(unittest.TestCase):
                          "To do in March: prune A and B")
 
     def test_the_words_are_the_plant_pages(self):
-        """One job, one name: the status bar and the plant page."""
-        try:
-            from src.species_page import _TASKS
-        except ImportError as exc:                     # no PyQt6 here
-            self.skipTest(f"species_page needs Qt: {exc}")
-        page = dict(_TASKS)
-        page["harvest"] = "Harvest"            # said of edible plants only
-        self.assertEqual({s: w.capitalize() for s, w in month_tasks.JOBS},
-                         page)
+        """One job, one name: the status bar and the plant page read one
+        table since V3.56 (month_tasks.page_line)."""
+        cal = [{"month": 3, "status": s} for s, _w in month_tasks.JOBS]
+        line = month_tasks.page_line(cal, edible=True)
+        self.assertEqual(line, " · ".join(f"{w.capitalize()} in March"
+                                          for _s, w in month_tasks.JOBS))
+        self.assertNotIn("Harvest", month_tasks.page_line(cal, edible=False))
 
     def test_the_plant_page_never_says_prune_in_the_autumn(self):
         try:

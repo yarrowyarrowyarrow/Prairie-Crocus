@@ -86,16 +86,22 @@ class TestThePage(unittest.TestCase):
         self.page = SpeciesPage(actions=True, closable=True)
         self.addCleanup(self.page.deleteLater)
         self.page.resize(400, 700)
-        self.page.set_advanced_tools(True)     # the long page (PR-4, V3.26)
+        self.page.set_advanced_tools(True)
         self.row = _saskatoon()
+        self.page.show_plant(self.row, placed=2)
+        # One page since V3.56; the animals and the range wait in folds.
+        self.page._open = {"animals", "wild"}
         self.page.show_plant(self.row, placed=2)
 
     def test_it_says_what_the_card_said_and_what_it_did_not(self):
         texts = " ".join(_texts(self.page))
         for want in ("Saskatoon Berry", "Amelanchier alnifolia",
-                     "2 in this design", "Roles", "Pollinator Support",
-                     "Conditions", "Season", "Wildlife", "Found in"):
+                     "2 in this design", "Why this plant", "Growing it",
+                     "Looks like", "Recorded in"):
             self.assertIn(want, texts)
+        from PyQt6.QtWidgets import QPushButton
+        fold = self.page.findChild(QPushButton, "speciesPageFold_animals")
+        self.assertEqual(fold.text(), "Animals recorded on it (25) ▾")
 
     def test_every_animal_is_reachable_and_counted_once(self):
         """26 relationships, 25 animals: one of them takes two things from
@@ -106,10 +112,10 @@ class TestThePage(unittest.TestCase):
         self.assertEqual(w["total"], 26)
         self.assertEqual(w["animals"], 25)
         texts = " ".join(_texts(self.page))
-        self.assertIn("Feeds or shelters 25 documented species", texts)
         long = next(g for g in w["groups"] if len(g["items"]) > 8)
+        how = long["how"][:1].upper() + long["how"][1:]
         label = next(l for l in self.page.findChildren(QLabel)
-                     if l.text().startswith(f"<b>{long['how']}</b>"))
+                     if l.text().startswith(f"<b>{how}</b>"))
         last = long["items"][-1]["name"]
         self.assertNotIn(last, label.text())
         self.assertIn("more</a>", label.text())

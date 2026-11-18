@@ -84,7 +84,7 @@ KNOWN = {
     ('range_map.py', 'spec'): 1,
     ('saves.py', 'project'): 1,
     ('site_panel.py', 'project'): 1,
-    ('species_page.py', 'species'): 3,
+    ('species_page.py', 'species'): 2,
     # The file dialog's filter, moved from app.py with the dialog (V3.37).
     ('start_flow.py', '.perma.geojson'): 1,
 }

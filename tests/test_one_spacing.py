@@ -199,13 +199,13 @@ class TestWildBergamotAgrees(unittest.TestCase):
         page = SpeciesPage()
         self.addCleanup(page.deleteLater)
         page.show_plant(_row("Wild Bergamot"))
-        for advanced, end in ((False, "Plant 0.3 m apart."),
-                              (True, "0.3 m apart")):
+        # One page in both modes since V3.56, so one wording.
+        for advanced in (False, True):
             page.set_advanced_tools(advanced)
             size = [lbl.text() for lbl in page.findChildren(QLabel)
                     if "apart" in lbl.text() and lbl.isVisibleTo(page)]
             self.assertEqual(len(size), 1, size)
-            self.assertTrue(size[0].endswith(end), size)
+            self.assertIn("Plant 0.3 m apart.", size[0])
 
 
 if __name__ == "__main__":

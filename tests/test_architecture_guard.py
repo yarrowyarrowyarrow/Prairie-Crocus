@@ -317,7 +317,7 @@ class TestStructuralCeilings(unittest.TestCase):
         (_SRC / "local_flora.py", 360),                # 296 now
         (_SRC / "native_here.py", 280),                # 227 now
         # V3.26 (PR-1): the ranking, one table of weights and its words.
-        (_SRC / "plant_priority.py", 380),             # 340 now
+        (_SRC / "plant_priority.py", 400),             # 386 now (V3.56)
         (_SRC / "plant_page_sections.py", 250),        # 209 now
         # V3.27 (OV-1): what the overview measures, and its six items.
         (_SRC / "yard_overview.py", 400),              # 372 now (V3.28)

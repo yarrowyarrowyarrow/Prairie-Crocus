@@ -1,15 +1,19 @@
 """
-plant_page_sections.py — what the plant page says in the simple app (PR-4,
-V3.26; docs/homeowner/05-plants-that-lead.md §7).
+plant_page_sections.py — what the plant page says (PR-4, V3.26; one page in
+both modes since V3.56; docs/homeowner/05-plants-that-lead.md §7).
 
 Design principle P6 — see docs/DESIGN_PHILOSOPHY.md.
 
 The page was three to four screens of nineteen sections, the longest of them
-citations (§7.1). In the simple app it is now about a hundred words a person
-can act on: the plant's band, why it is worth planting, what to know, how to
-grow it, where to buy it, and whether it is native here. "Everything about
-this plant" opens the rest in place, which is what the advanced app shows from
-the start.
+citations (§7.1). V3.26 cut the simple app's to about a hundred words and kept
+the long one for the advanced app; the owner, V3.56: still "overwhelming with
+data and simply too much", and the details a design needs (when it flowers,
+in what colour, how big, what soil) belong on the short page. So there is one
+page: the band, why to plant it (naming two or three of the animals, by the
+Overview's rule), what to know, how to grow it, its season, how it looks,
+buying it and whether it is native here. The animal list and where it grows
+wild wait in two folds (``species_page``); the roles, the badges, the photo
+numbers and the repeated sentences are gone.
 
 Every word comes from structured fields and the ranking
 (``src.plant_priority``); the free-text notes are never shown on the desktop,
@@ -20,11 +24,10 @@ from __future__ import annotations
 
 from typing import Mapping, Optional
 
-#: Where the season bar goes in the simple page.
-SEASON = "\x00season"
-#: The heading under which the advanced sections open (WD-8).
-MORE = "Everything about this plant"
-#: The ID line (WD-8, W3): on the advanced page and in Help › About only.
+#: The section the season bar goes under: the colours and the form in words,
+#: then the months drawn (the long page wrote the months out over the bar).
+SEASON = "Looks like"
+#: The ID line (WD-8, W3): with Advanced tools on, and in Help › About.
 ID_LINE = ("These photos help you choose plants. They are not a guide to "
            "identifying plants in the wild.")
 
@@ -103,9 +106,9 @@ def buying_words(entry: Mapping, place: str = "") -> str:
 
 def simple(entry: Mapping, row: Optional[Mapping] = None, *,
            place: str = "") -> list:
-    """``[(heading, body), …]`` for the simple page; ``(SEASON, "")`` marks
-    where the season bar goes. ``row`` is the catalogue row (read when not
-    given); ``place`` the region (the edition's when empty)."""
+    """``[(heading, body), …]`` for the page; the page draws the season bar
+    under :data:`SEASON`. ``row`` is the catalogue row (read when not given);
+    ``place`` the region (the edition's when empty)."""
     from src import native_here, plant_priority, region     # noqa: PLC0415
     if row is None:
         from src.db.plants import get_plant                  # noqa: PLC0415
@@ -113,16 +116,18 @@ def simple(entry: Mapping, row: Optional[Mapping] = None, *,
     home = region.regions().get(place) if place else region.default()
     home = home or region.default()
     a = plant_priority.assess(row, place=home.key)
-    good = list(a.cautions)
-    if not (row.get("toxicity_pets") or row.get("toxicity_humans")):
-        good.append("Not checked for poison")
+    good = list(a.cautions) + _safety(row)
+    if entry.get("edible_parts"):
+        good.append("Edible parts: " + ", ".join(_tokens(entry["edible_parts"])))
     # An off-list plant's band is said by the last line instead.
     sections = [(a.band if a.band != plant_priority.AWAY else "", ""),
-                ("Why this plant", _sentences(a.reasons)),
+                ("Why this plant", _sentences(named_reasons(a, home.key))),
                 ("Good to know", _sentences(good)),
-                ("Growing it", " ".join(p for p in (growing_words(entry),
-                                                    size_words(entry)) if p)),
-                (SEASON, ""),
+                ("Growing it", " ".join(p for p in (
+                    growing_words(entry), _hardy(row), size_words(entry),
+                    _tasks(entry)) if p)),
+                (SEASON, " ".join(p for p in (season_words(entry, row),
+                                              looks_words(entry, row)) if p)),
                 ("Buying it", buying_words(entry, home.key))]
     try:
         native = native_here.native_around(row, home.key)
@@ -132,11 +137,100 @@ def simple(entry: Mapping, row: Optional[Mapping] = None, *,
         sections.append((f"Native around {home.short}." if native else
                          f"Not native around {home.short}.", ""))
     # A heading with nothing under it is dropped, except the band and the
-    # native line, which are whole sentences on their own.
+    # native line, which are whole sentences on their own, and the season,
+    # whose bar may be all it has.
     lone = {a.band, f"Native around {home.short}.",
             f"Not native around {home.short}."}
+    bar = bool(entry.get("bloom_months") or entry.get("fruit_months"))
     return [(h, b) for h, b in sections
-            if h == SEASON or (h and (b or h in lone))]
+            if h and (b or h in lone or (h == SEASON and bar))]
+
+
+#: How many animals the page names, in all (the owner, V3.56: "2–3").
+NAMED = 3
+
+
+def named_reasons(a, place: str = "", *, names_fn=None) -> list:
+    """The ranking's reasons with up to :data:`NAMED` animals named, at most
+    two to a reason, in the reasons' order: "Caterpillar food for 4 kinds of
+    moth and butterfly, among them Mourning Cloak and Polyphemus Moth". An animal
+    is named by the Overview's rule (``through_the_year``): one species with
+    an English name, recorded near the place inside a pack, familiar first."""
+    if names_fn is None:
+        from src.through_the_year import names_for         # noqa: PLC0415
+        names_fn = lambda ids: names_for(ids, place)       # noqa: E731
+    out, left = [], NAMED
+    for reason in a.reasons:
+        ids = (getattr(a, "who", None) or {}).get(reason) or set()
+        found = names_fn(ids) if ids and left else []
+        names = found[:min(2, left)]
+        if len(ids) - len(names) == 1 and len(found) > len(names):
+            names = found[:len(names) + 1]     # never "and 1 more"
+        if names:
+            left = max(0, left - len(names))
+            listed = " and ".join(names)
+            reason = (f"{reason}, among them {listed}"
+                      if len(ids) > len(names) else f"{reason}: {listed}")
+        out.append(reason)
+    return out
+
+
+def _safety(row: Mapping) -> list:
+    """What is recorded about poison and thorns, once (the long page said it
+    twice, in two wordings). A high risk is the ranking's caution."""
+    low = [who for field, who in (("toxicity_pets", "pets"),
+                                  ("toxicity_humans", "people"))
+           if (row.get(field) or "").strip() == "low"]
+    said = ["Low poison risk to " + " and ".join(low)] if low else []
+    if row.get("has_thorns"):
+        said.append("Has thorns or prickles")
+    if not (row.get("toxicity_pets") or row.get("toxicity_humans")):
+        said.append("Not checked for poison")
+    return said
+
+
+def _hardy(row: Mapping) -> str:
+    from src.plant_directory import _number                 # noqa: PLC0415
+    zone = _number(row.get("hardiness_zone_min"))
+    return f"Hardy to zone {zone}." if zone else ""
+
+
+def season_words(entry: Mapping, row: Mapping) -> str:
+    """The colours the season bar cannot show: "White flowers, then purple
+    fruit." The months are the bar's."""
+    from src.confidence import mark                          # noqa: PLC0415
+    bits = []
+    label = (entry.get("bloom_colour_label") or "").strip()
+    if label:
+        flowers = (label if entry.get("bloom_colour") == "straw"
+                   else f"{label} flowers")
+        if mark(row.get("flower_colour_source")).inferred:
+            flowers += " (a guess from its genus)"
+        bits.append(flowers[:1].upper() + flowers[1:].lower())
+    fruit = (entry.get("fruit_color") or "").strip()
+    if fruit and not fruit.startswith("#"):
+        bits.append(f"{fruit.lower()} fruit")
+    text = ", then ".join(bits)
+    return text + "." if text else ""
+
+
+def _tasks(entry: Mapping) -> str:
+    """The calendar's jobs as sentences: "Prune in March. Harvest in July"."""
+    from src.month_tasks import page_line                    # noqa: PLC0415
+    tasks = page_line(entry.get("calendar") or [],
+                      edible=bool(entry.get("edible_parts")))
+    return tasks.replace(" · ", ". ") + "." if tasks else ""
+
+
+def looks_words(entry: Mapping, row: Mapping) -> str:
+    from src.confidence import mark                          # noqa: PLC0415
+    parts = list(entry.get("morphology") or [])
+    if not parts:
+        return ""
+    text = "; ".join(parts)
+    if mark(row.get("leaf_data_source")).inferred:
+        text += " (a guess from its genus)"
+    return text[:1].upper() + text[1:] + "."
 
 
 def _sentences(items) -> str:
@@ -144,66 +238,4 @@ def _sentences(items) -> str:
 
 
 def word_count(sections) -> int:
-    return sum(len(f"{h} {b}".split()) for h, b in sections if h != SEASON)
-
-
-# ── The advanced page's words (moved from species_page.py, V3.26) ──────────
-
-def _conditions(entry: dict) -> str:
-    """Sun and water as words. The raw fields are comma-delimited snake_case
-    ("full_sun,partial_shade"); `labels_csv` is the renderer the list rows use,
-    so the two cannot disagree about what a condition is called."""
-    from src.plant_list_view import _SUN_LABELS, _WATER_LABELS, labels_csv
-    sun = labels_csv((entry.get("sun") or "").replace(" ", "_"), _SUN_LABELS)
-    water = labels_csv(entry.get("water") or "", _WATER_LABELS)
-    out = []
-    if sun and sun != "—":
-        out.append(sun)
-    if water and water != "—":
-        out.append(f"{water} water")
-    return " · ".join(out)
-
-
-def _bloom_colour_line(entry: dict) -> str:
-    """"Purple flowers (not verified, a genus-level estimate)" (V2.48). The
-    provenance rides along because the colour was seeded per genus."""
-    label = (entry.get("bloom_colour_label") or "").strip()
-    if not label:
-        return ""
-    note = (entry.get("bloom_colour_note") or "").strip()
-    # The grasses' label is already a full phrase.
-    head = label if entry.get("bloom_colour") == "straw" else f"{label} flowers"
-    return head + (f" ({note})" if note else "")
-
-
-def _colour_word(value, what: str) -> str:
-    """Colour fields hold a name or a hex triplet; the hex drives the 3D bloom
-    and is meaningless on a page. Print names, drop codes."""
-    text = (value or "").strip()
-    if not text or text.startswith("#"):
-        return ""
-    return f"{text} {what}"
-
-
-def _metres(value, word: str) -> str:
-    try:
-        v = float(value or 0)
-    except (TypeError, ValueError):
-        return ""
-    return f"{v:g} m {word}" if v else ""
-
-
-def _apart(value) -> str:
-    """The spacing in the words the buy list and the planting map's key use
-    (V3.19, QF-9): one number, printed one way."""
-    from src.planting_spacing import spacing_words           # noqa: PLC0415
-    words = spacing_words(value)
-    return f"{words} apart" if words else ""
-
-
-def _years(value) -> str:
-    try:
-        v = int(value or 0)
-    except (TypeError, ValueError):
-        return ""
-    return f"mature in {v} year{'s' if v != 1 else ''}" if v else ""
+    return sum(len(f"{h} {b}".split()) for h, b in sections)
