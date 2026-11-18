@@ -216,9 +216,10 @@ class TestFoodMonthByMonth(unittest.TestCase):
             page.set_placed_plants([{"plant_id": i} for i in ids])
             page.refresh()
             for m in (6, 7):
-                text = page._months[m - 1][1].text()
+                import re
+                text = re.sub(r"<[^>]+>", "", page._months[m - 1][1].text())
                 if out[m]:
-                    self.assertIn("Flowers:</b> " + ", ".join(out[m][:4]),
+                    self.assertIn("Flowers: " + ", ".join(out[m][:4]),
                                   text)
                 else:
                     self.assertNotIn("Flowers:", text)

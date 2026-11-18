@@ -153,6 +153,23 @@ class TheOverviewPage(unittest.TestCase):
             yard_overview_flow.run_action(self.win, "advanced:over_time")
         on.assert_called_once_with(self.win, True)
 
+    def test_a_plant_named_on_the_year_or_planted_opens_its_page(self):
+        """V3.55, the owner: click a plant "and be brought to the read out of
+        that plant", from Through the year and from Planted."""
+        fly = self.win.species_flyout
+        pid = self.win._placed_plants[0]["plant_id"]
+        fly.hide()
+        self.win.analysis_panel._food.plant_requested.emit(pid)
+        self._app.processEvents()
+        self.assertTrue(fly.isVisible())
+        self.assertEqual(int(fly.page._row["id"]), pid)
+        fly.hide()
+        self.win.on_this_design.species_focus_requested.emit(pid)
+        self._app.processEvents()
+        self.assertTrue(fly.isVisible())
+        self.assertEqual(int(fly.page._row["id"]), pid)
+        fly.hide()
+
     def test_the_flowers_and_food_links_open_the_year_and_leave_the_mode(self):
         """V3.55: Through the year is in the simple app, so its two doors
         turn no switch (they turned the Advanced tools on to reach Food)."""

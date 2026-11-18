@@ -56,6 +56,22 @@ def focus_species(main, plant_id: int) -> None:
     main.statusBar().showMessage(
         f"{name}: {len(recs)} on the map — selected (Delete removes them; "
         "Esc / map click clears)", 4000)
+    # And its page, so the list leads to what the plant is (V3.55, the owner:
+    # "clicking the individual plant ... brought to the read out").
+    open_plant(main, plant_id)
+
+
+def open_plant(main, plant_id: int) -> None:
+    """The plant's page over the map, as a click on it there opens it, from a
+    name on Design › Through the year or a row on Planted (V3.55). Not while
+    placing, when the plant list is a palette and no page opens (V2.99)."""
+    from src.placement_bar_flow import PLACING_MODES
+    fly = getattr(main, "species_flyout", None)
+    if fly is None or getattr(main, "_current_mode", "none") in PLACING_MODES:
+        return
+    placed = sum(1 for p in getattr(main, "_placed_plants", []) or []
+                 if p.get("plant_id") == plant_id)
+    fly.show_plant({"id": int(plant_id)}, placed=placed)
 
 
 def select_species(main, plant_id: int) -> None:

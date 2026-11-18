@@ -143,8 +143,9 @@ class TestFoodPage(unittest.TestCase):
         self.assertEqual(len(page._months), 12)
         # Chokecherry fruits in August: a harvest for people, with its part,
         # after the flowers and the fruit and in its own line.
-        august = page._months[7][1].text()
-        self.assertIn("To harvest:</b> Chokecherry", august)
+        import re
+        august = re.sub(r"<[^>]+>", "", page._months[7][1].text())
+        self.assertIn("To harvest: Chokecherry", august)
         self.assertLess(august.index("Fruit:"), august.index("To harvest:"))
         self.assertLess(august.index("To harvest:"), august.index("Look:"))
         self.assertTrue(page._months[7][0].text().startswith("August"))
@@ -189,7 +190,9 @@ class TestFoodPage(unittest.TestCase):
 
     def test_the_milkweed_serves_the_monarch(self):
         page = self._page()
-        self.assertIn("Monarch (Showy Milkweed)", page._depends.text())
+        import re
+        self.assertIn("Monarch (Showy Milkweed)",
+                      re.sub(r"<[^>]+>", "", page._depends.text()))
         self.assertIn("chickadees", page._caterpillars.text())
         self.assertNotIn("keystone", page._caterpillars.text().lower())
 
@@ -199,6 +202,54 @@ class TestFoodPage(unittest.TestCase):
                          "Place plants to see their year, and who they feed.")
         self.assertFalse(any(b.isEnabled() for b, _t in page._months))
         self.assertIn("Place plants", page._caterpillars.text())
+
+    def _busy_page(self):
+        """A design with more than four plants in flower in one month."""
+        names = ("Fireweed", "Giant Hyssop", "Wild Bergamot", "Showy Milkweed",
+                 "Wild Raspberry", "Wild Vetch", "Smooth Aster", "Chokecherry")
+        page = self._page(ids=[self.rows[n]["id"] for n in names])
+        month = next(m for m in page._year["months"] if len(m["flowering"]) > 4)
+        return page, month
+
+    def test_plus_n_shows_the_whole_list_and_fewer_folds_it(self):
+        """V3.55, the owner: "I want to be able to click the +# button to see
+        the full list of plants"."""
+        page, month = self._busy_page()
+        m, names = month["month"], month["flowering"]
+        text = page._months[m - 1][1].text()
+        self.assertIn(f"href='more:{m}:flowers'", text)
+        self.assertNotIn(names[-1], text)
+        page._on_link(f"more:{m}:flowers")
+        text = page._months[m - 1][1].text()
+        for name in names:
+            self.assertIn(name, text)
+        self.assertIn(f"href='less:{m}:flowers'", text)
+        page._on_link(f"less:{m}:flowers")
+        self.assertNotIn(names[-1], page._months[m - 1][1].text())
+
+    def test_a_plant_name_opens_its_page(self):
+        """The owner: "click the individual plant and be brought to the read
+        out of that plant"."""
+        import re
+        page, month = self._busy_page()
+        asked = []
+        page.plant_requested.connect(asked.append)
+        text = page._months[month["month"] - 1][1].text()
+        pid = int(re.search(r"href='plant:(\d+)'", text).group(1))
+        page._on_link(f"plant:{pid}")
+        self.assertEqual(asked, [pid])
+        # The caterpillar line and the depends line name plants as links too.
+        self.assertIn("href='plant:", page._caterpillars.text())
+        self.assertIn("href='plant:", page._depends.text())
+
+    def test_an_animal_name_looks_it_up(self):
+        import re
+        page, month = self._busy_page()
+        text = "".join(t.text() for _b, t in page._months)
+        fid = int(re.search(r"href='animal:(\d+)'", text).group(1))
+        page._on_link(f"animal:{fid}")
+        self.assertTrue(page._lookup.isVisibleTo(page))
+        self.assertEqual(page._animal.currentData()["fid"], fid)
 
     def test_the_page_says_little(self):
         """The owner: "The Tab is still too verbose. No one will read all
@@ -253,7 +304,8 @@ class TestPlantedSaysWhatEatsIt(unittest.TestCase):
         panel.set_plants_counts({cherry: 3})
         name, line = panel._plants_list.item(0).text().split("\n")
         self.assertEqual(name, "Chokecherry  ×3")
-        self.assertRegex(line, r"^food for \d+ kinds?: .* · flowers .* · fruit ")
+        # When first, then what eats it (V3.55, the owner).
+        self.assertRegex(line, r"^flowers .* · fruit .* · food for \d+ kinds?: ")
 
     def test_the_rows_wrap_inside_the_list(self):
         """Qt measured the wrap without the item padding, and the first build
@@ -292,7 +344,8 @@ class TestPlantedSaysWhatEatsIt(unittest.TestCase):
         first, line = text.split("\n")
         self.assertTrue(first.startswith("Edge  — 1 instance, 2 members"))
         n = sum(1 for a in animals_fed(ids) if a["food"])
-        self.assertTrue(line.startswith(f"food for {n} kind"), line)
+        self.assertTrue(line.startswith("flowers "), line)
+        self.assertIn(f" · food for {n} kind", line)
 
 
 if __name__ == "__main__":

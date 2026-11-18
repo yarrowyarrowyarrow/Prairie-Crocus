@@ -1027,6 +1027,9 @@ class MainWindow(QMainWindow):
             lambda pid: _drf.substitute_species(self, pid))
         self.on_this_design.community_focus_requested.connect(
             lambda name: _drf.focus_community(self, name))
+        # A plant named on Through the year opens its page (V3.55).
+        self.analysis_panel._food.plant_requested.connect(
+            lambda pid: _drf.open_plant(self, pid))
         # Address search → drop pin on map (the bridge then notifies us
         # back via site_pin_placed and the usual fetch flow runs).
         self.site_panel.address_resolved.connect(self._on_address_resolved)

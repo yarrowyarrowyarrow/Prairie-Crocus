@@ -102,6 +102,10 @@ def short_credit(attribution: str, licence: str) -> str:
     return f"© {m.group(1).strip()}, {lic}" if lic else f"© {m.group(1).strip()}"
 
 
+#: A name that opens something: underlined, in the text's own light green.
+_LINK = "color: #e8f5e9; text-decoration: underline;"
+
+
 def _esc(text: str) -> str:
     return (str(text).replace("&", "&amp;").replace("<", "&lt;")
             .replace(">", "&gt;"))
@@ -114,6 +118,9 @@ class FoodPage(QScrollArea):
 
     map_overlay_requested = pyqtSignal(dict)   # {"bee": label, "styles": {pid: fit}}
     map_overlay_cleared = pyqtSignal()
+    #: A plant's name was clicked: its page opens over the map (V3.55, the
+    #: owner: "click the individual plant and be brought to the read out").
+    plant_requested = pyqtSignal(int)
 
     def __init__(self, warm_images=None, parent=None):
         super().__init__(parent)
@@ -129,6 +136,8 @@ class FoodPage(QScrollArea):
         self._fed: list = []
         self._catalogue = None       # the catalogue's animals, read once
         self._opened: set = set()    # the months a person opened or closed
+        self._expanded: set = set()  # (month, list) shown whole after "+N"
+        self._ids: dict = {}         # plant name -> id, for the links
         self._now = datetime.now().month
         # Until a person picks one, the look-up shows the animal the design
         # feeds most; after, it keeps theirs while the design changes.
@@ -165,6 +174,7 @@ class FoodPage(QScrollArea):
             text.setAlignment(Qt.AlignmentFlag.AlignTop)
             text.setStyleSheet(_BODY_STYLE)
             text.setVisible(False)
+            self._linked(text, f"{year_of.MONTHS[m - 1]} in detail")
             button.toggled.connect(
                 lambda on, m=m: self._on_month_toggled(m, on))
             layout.addWidget(button)
@@ -183,6 +193,7 @@ class FoodPage(QScrollArea):
         self._caterpillars.setStyleSheet(
             "color: #cfe3f0; font-size: 12px; padding: 8px; "
             "background: #12202a; border: 1px solid #1e4a5a; border-radius: 4px;")
+        self._linked(self._caterpillars, SECTIONS[1])
         layout.addWidget(self._caterpillars)
 
         # ── Animals that depend on a few plants ─────────────────────────────
@@ -191,6 +202,7 @@ class FoodPage(QScrollArea):
         self._depends.setWordWrap(True)
         self._depends.setTextFormat(Qt.TextFormat.RichText)
         self._depends.setStyleSheet(_BODY_STYLE)
+        self._linked(self._depends, SECTIONS[2])
         layout.addWidget(self._depends)
 
         # ── Look up any animal, folded (the owner: "be more concise") ───────
@@ -281,6 +293,76 @@ class FoodPage(QScrollArea):
 
     # ── Building blocks ──────────────────────────────────────────────────────
 
+    def _linked(self, label: QLabel, name: str) -> None:
+        """A label whose names are links, by mouse and by keyboard; a label
+        the keyboard reaches is a control, so it carries a name."""
+        label.setTextInteractionFlags(
+            Qt.TextInteractionFlag.LinksAccessibleByMouse
+            | Qt.TextInteractionFlag.LinksAccessibleByKeyboard)
+        label.setOpenExternalLinks(False)
+        label.setAccessibleName(name)
+        label.linkActivated.connect(self._on_link)
+
+    def _on_link(self, href: str) -> None:
+        """``plant:<id>`` opens the plant's page, ``animal:<id>`` looks the
+        animal up below, ``more:<month>:<list>`` / ``less:…`` show a month's
+        list whole or short again."""
+        kind, _, arg = (href or "").partition(":")
+        if kind == "plant" and arg.isdigit():
+            self.plant_requested.emit(int(arg))
+        elif kind == "animal" and arg.isdigit():
+            self._look_up(int(arg))
+        elif kind in ("more", "less"):
+            m, _, which = arg.partition(":")
+            key = (int(m), which)
+            (self._expanded.add if kind == "more"
+             else self._expanded.discard)(key)
+            if self._year:
+                self._months[key[0] - 1][1].setText(
+                    self._month_html(self._year["months"][key[0] - 1]))
+
+    def _look_up(self, fid: int) -> None:
+        """Open *Look up any animal* on this animal."""
+        if not self._lookup_btn.isChecked():
+            self._lookup_btn.setChecked(True)
+        self._user_chose = True
+        if self._find.text():
+            self._find.clear()
+        for i in range(self._animal.count()):
+            data = self._animal.itemData(i)
+            if data and data.get("fid") == fid:
+                self._animal.setCurrentIndex(i)
+                break
+        self.ensureWidgetVisible(self._animal)
+
+    def _pid(self, name: str):
+        """The id of the plant called ``name``: the design's first, then the
+        catalogue's (a plant that would serve an animal), remembered."""
+        if name not in self._ids:
+            try:
+                from src.db.plants import get_connection
+                conn = get_connection()
+                try:
+                    row = conn.execute("SELECT id FROM plants WHERE "
+                                       "common_name = ?", (name,)).fetchone()
+                finally:
+                    conn.close()
+                self._ids[name] = row[0] if row else None
+            except Exception:                              # noqa: BLE001
+                self._ids[name] = None
+        return self._ids[name]
+
+    def _plant(self, name: str) -> str:
+        pid = self._pid(name)
+        if not pid:
+            return _esc(name)
+        return f"<a href='plant:{pid}' style='{_LINK}'>{_esc(name)}</a>"
+
+    @staticmethod
+    def _animal_link(name: str, fid) -> str:
+        return (f"<a href='animal:{int(fid)}' style='{_LINK}'>{_esc(name)}</a>"
+                if fid else _esc(name))
+
     @staticmethod
     def _heading(text: str) -> QLabel:
         label = QLabel(text)
@@ -370,6 +452,11 @@ class FoodPage(QScrollArea):
         except Exception:                                  # noqa: BLE001
             data = None
         self._year = data
+        try:
+            self._ids = {r["common_name"]: pid for pid, r in
+                         feeds._plant_rows(self._plant_ids, None).items()}
+        except Exception:                                  # noqa: BLE001
+            self._ids = {}
         self._photos = self._visitor_photos(data)
         self._flowering = (year_of.flowering_line(data["months"])
                            if data else "")
@@ -390,7 +477,7 @@ class FoodPage(QScrollArea):
             button.setAccessibleName(button.text())
             button.setStyleSheet(_GAP_STYLE if month["gap"] else _MONTH_STYLE)
             button.setEnabled(True)
-            text.setText(self._month_html(month, self._photos))
+            text.setText(self._month_html(month))
             if not self._opened:
                 self._open(m, m == ahead)
         self._near_note.setText(
@@ -456,49 +543,60 @@ class FoodPage(QScrollArea):
             self._warm(want)
         return out
 
-    @staticmethod
-    def _visitor_html(v: dict, photos: dict) -> str:
-        """One line of who is eating here, with the animal's photograph and
-        its credit where it has one (a credit is the licence's condition)."""
-        path, credit = photos.get(v.get("fauna_id"), ("", ""))
+    def _visitor_html(self, v: dict) -> str:
+        """One line of who is eating here, the animal and the plant each a
+        link, with the animal's photograph and its credit where it has one (a
+        credit is the licence's condition)."""
+        path, credit = self._photos.get(v.get("fauna_id"), ("", ""))
+        what = v["line"][len(v["name"]) + 2:]
+        rest = what[:len(what) - len(v["plant"])]
+        line = (self._animal_link(v["name"], v.get("fauna_id")) + ": "
+                + _esc(rest) + self._plant(v["plant"]))
         if not path:
-            return (f"<div style='padding:0 0 0 10px;'>• "
-                    f"{_esc(v['line'])}</div>")
+            return f"<div style='padding:0 0 0 10px;'>• {line}</div>"
         from PyQt6.QtCore import QUrl
         src = QUrl.fromLocalFile(path).toString()
         return (f"<table cellspacing='0' cellpadding='2' style='margin-left:8px;'>"
                 f"<tr><td valign='top'><img src='{src}' width='44' height='33'>"
-                f"</td><td valign='top'>{_esc(v['line'])}<br>"
+                f"</td><td valign='top'>{line}<br>"
                 f"<span style='color:#90a4ae;'>{_esc(credit)}</span></td></tr>"
                 f"</table>")
 
-    @staticmethod
-    def _month_html(month: dict, photos: dict = None) -> str:
+    def _month_html(self, month: dict) -> str:
         def row(colour, label, body):
             return (f"<div style='padding:1px 0;'><b style='color:{colour}'>"
                     f"{label}</b> {body}</div>")
+        m = month["month"]
 
-        def few(names):
-            """Four names, then how many more (the owner: "no one will read
-            all that")."""
+        def few(names, which):
+            """Four names, each a link to its plant, then "+N" (the owner:
+            "no one will read all that"), which shows the rest; "fewer"
+            folds them again."""
             names = list(names)
-            more = f" +{len(names) - 4}" if len(names) > 4 else ""
-            return _esc(", ".join(names[:4])) + more
+            whole = (m, which) in self._expanded
+            shown = names if whole else names[:4]
+            text = ", ".join(self._plant(n) for n in shown)
+            if len(names) > 4:
+                text += (f" <a href='less:{m}:{which}' style='{_LINK}'>fewer"
+                         f"</a>" if whole else
+                         f" <a href='more:{m}:{which}' style='{_LINK}'>"
+                         f"+{len(names) - 4}</a>")
+            return text
         parts = []
         if month["flowering"]:
-            parts.append(row(_FLOWER, "Flowers:", few(month["flowering"])))
+            parts.append(row(_FLOWER, "Flowers:",
+                             few(month["flowering"], "flowers")))
         if month["fruit"]:
-            parts.append(row(_FRUIT, "Fruit:", few(month["fruit"])))
+            parts.append(row(_FRUIT, "Fruit:", few(month["fruit"], "fruit")))
         if month["harvest"]:
-            parts.append(row(_PEOPLE, "To harvest:",
-                             few(name for name, _part in month["harvest"])))
+            parts.append(row(_PEOPLE, "To harvest:", few(
+                (name for name, _part in month["harvest"]), "harvest")))
         if month["gap"]:
             parts.append("<div style='color:#ef9a9a; padding:1px 0;'>Nothing "
                          "in flower.</div>")
         if month["visitors"]:
             parts.append(row(_WHO, "Eating here:", "") + "".join(
-                FoodPage._visitor_html(v, photos or {})
-                for v in month["visitors"]))
+                self._visitor_html(v) for v in month["visitors"]))
         if month["look"]:
             parts.append(row(_LOOK, "Look:", _esc(month["look"])))
         if month["jobs"]:
@@ -518,8 +616,10 @@ class FoodPage(QScrollArea):
         except Exception:                                  # noqa: BLE001
             c = None
         if c is not None:
-            self._caterpillars.setText(
-                f"<b>{_esc(c['headline'])}</b><br>{_esc(c['line'])}")
+            line = _esc(c["line"])
+            for name in sorted(c["plants"], key=len, reverse=True):
+                line = line.replace(_esc(name), self._plant(name), 1)
+            self._caterpillars.setText(f"<b>{_esc(c['headline'])}</b><br>{line}")
             self._caterpillars.setToolTip(
                 f"{year_of.CATERPILLAR_WHY} A rough estimate from the "
                 f"caterpillars recorded on each plant. Sources: "
@@ -528,15 +628,18 @@ class FoodPage(QScrollArea):
             d = year_of.depends(self._plant_ids, records=records)
         except Exception:                                  # noqa: BLE001
             d = {"served": [], "missing": []}
+        def entry(r, join, plants):
+            return (self._animal_link(r["name"], r.get("fauna_id")) + " ("
+                    + join.join(self._plant(p) for p in plants) + ")")
         rows = []
         if d["served"]:
-            rows.append("<b>Fed here:</b> " + _esc(
-                ", ".join(r["line"] for r in d["served"])))
+            rows.append("<b>Fed here:</b> " + ", ".join(
+                entry(r, ", ", r["plants"]) for r in d["served"]))
         else:
             rows.append("<i>None is fed here yet.</i>")
         if d["missing"]:
-            rows.append("<b>Could add:</b> " + _esc(
-                ", ".join(r["line"] for r in d["missing"])))
+            rows.append("<b>Could add:</b> " + ", ".join(
+                entry(r, " or ", r["plants"][:2]) for r in d["missing"]))
         self._depends.setToolTip(
             "Only animals the records say depend on a few plants; most "
             "animals have many.")
@@ -898,7 +1001,7 @@ class FoodPage(QScrollArea):
         if self._year:
             self._photos = self._visitor_photos(self._year)
             for month, (_b, text) in zip(self._year["months"], self._months):
-                text.setText(self._month_html(month, self._photos))
+                text.setText(self._month_html(month))
 
     def _render_photo(self):
         row = self._animal_row()

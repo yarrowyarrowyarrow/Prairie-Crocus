@@ -419,13 +419,19 @@ def together(plant_ids: Iterable[int], *,
 
 
 def eaters_line(food: dict) -> str:
-    """'food for 12 kinds: 5 bees, 4 butterflies and moths, 3 birds · flowers
-    Jul–Aug · fruit Sep'. Food, as recorded, not "feeds": the records say an
+    """'flowers Jul–Aug · fruit Sep · food for 12 kinds: 5 bees, 4
+    butterflies and moths, 3 birds'; the months first since V3.55 (the
+    owner: when it flowers and fruits is "more useful than seeing the number
+    of species they provide for"). Food, as recorded, not "feeds": the records say an
     animal was seen eating it somewhere in two provinces (V3.20, OV-5). A plant with nothing recorded says so ("no animal recorded"),
     which is a gap in the data more often than a fact about the plant (P9)."""
     counts = food.get("animals") or {}
     total = sum(counts.values())
     parts = []
+    if food.get("bloom"):
+        parts.append(f"flowers {span(food['bloom'])}")
+    if food.get("fruit"):
+        parts.append(f"fruit {span(food['fruit'])}")
     if total:
         groups = ", ".join(group_words(t, counts[t])
                            for t, _one, _plural in GROUPS if counts.get(t))
@@ -433,10 +439,6 @@ def eaters_line(food: dict) -> str:
                      f"{groups}")
     else:
         parts.append("no animal recorded")
-    if food.get("bloom"):
-        parts.append(f"flowers {span(food['bloom'])}")
-    if food.get("fruit"):
-        parts.append(f"fruit {span(food['fruit'])}")
     return " · ".join(parts)
 
 

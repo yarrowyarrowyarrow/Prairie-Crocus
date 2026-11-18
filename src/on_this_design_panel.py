@@ -233,7 +233,7 @@ class OnThisDesignPanel(QWidget):
                 total += count
             self._plants_count_label.setText(
                 f"{total} plant{'s' if total != 1 else ''} placed"
-                f" ({len(counts)} species) · click a row to find it"
+                f" ({len(counts)} species) · click a row to see it"
             )
         except Exception:
             self._plants_count_label.setText(
