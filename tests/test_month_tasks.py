@@ -302,7 +302,7 @@ class TheWindowsStatusBar(unittest.TestCase):
             names = {p["common_name"] for p in win._placed_plants}
             line = win._sb_tasks.text()
             self.assertTrue(line.startswith("To do in "), line)
-            words = [w for w, _s in month_tasks.JOBS]
+            words = [said for _key, said in month_tasks.JOBS]
             for part in line.split(": ", 1)[1].split(" · "):
                 job = next(w for w in words if part.startswith(w + " "))
                 listed = part[len(job) + 1:].split(" and ")[0].split(", ")

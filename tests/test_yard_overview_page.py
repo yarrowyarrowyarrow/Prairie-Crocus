@@ -83,6 +83,20 @@ class TheOverviewPage(unittest.TestCase):
         yard_overview_flow.fill(self.win)
         self._app.processEvents()
 
+    def _take_out(self, unwanted):
+        """Lift the example's plants ``unwanted(row, placed)`` names, so an item has
+        something to say. The example has been the owner's lot since V3.54
+        and is well planted: the old one's gaps (no October flower, a third
+        covered, no mown strip) were what these buttons were tested on."""
+        from src.db.plants import get_plant
+        keys = [(p["plant_id"], p["lat"], p["lng"])
+                for p in self.win._placed_plants
+                if unwanted(get_plant(p["plant_id"]) or {}, p)]
+        self.win._store.remove_plants_batch(keys)
+        self.win._sync_planning_panel()
+        self._show()
+        return len(keys)
+
     def _press(self, key):
         self.win.overview_page.buttons[key].click()
         self._app.processEvents()
@@ -208,6 +222,13 @@ class TheOverviewPage(unittest.TestCase):
 
     def test_fill_the_gaps_is_one_undo_step(self):
         from src import yard_overview, yard_overview_dialogs
+        # The front bed left unplanted, as a person might leave one.
+        from src.geometry import point_in_ring
+        bed = next(f for f in self.win._project["features"]
+                   if (f.get("properties") or {}).get("label") == "Front bed")
+        ring = bed["geometry"]["coordinates"][0]
+        self.assertGreater(self._take_out(
+            lambda _r, p: point_in_ring(p["lat"], p["lng"], ring)), 50)
         before = len(self.win._placed_plants)
         plan = yard_overview.fill_plan(self.win._project)
         self.assertGreater(len(plan["records"]), 20)   # 39 on V3.54's example

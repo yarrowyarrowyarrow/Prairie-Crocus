@@ -336,6 +336,14 @@ def _fillers(project: dict, get_plant, place: str) -> list:
                 or (row.get("plant_type") == "wildflower"
                     and tall <= FILLER_MAX_HEIGHT_M)):
             own.append(row)
+    # The widest of them, as Plan My Yard's own fill chooses (V3.29's
+    # MIN_SPREAD_M): until V3.54 this took the two most numerous whatever
+    # their size, and on the example's lot that was a strawberry and a violet,
+    # 20 cm across at 60 cm apart, so a bare bed filled came back to 59%.
+    from src.plan_cover import MIN_SPREAD_M
+    wide = [r for r in own if canopy_m(r) >= MIN_SPREAD_M]
+    if len(wide) >= 2:
+        return wide[:2]
     if own:
         return own[:2]
     from src import native_here, plant_priority, zoning
