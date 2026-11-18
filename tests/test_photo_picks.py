@@ -373,5 +373,47 @@ class TheWebsiteGallery(unittest.TestCase):
         self.assertNotIn("photo-strip", one)
 
 
+class TheNativesPhotographs(unittest.TestCase):
+    """V3.55: the 3D references became the natives' photographs. Every
+    native shows several, and the shipped files are what the script makes."""
+
+    def test_every_native_has_its_photographs(self):
+        from src import native_here
+        with open(os.path.join(ROOT, "data", "plant_photos.json"),
+                  encoding="utf-8") as f:
+            rows = json.load(f)
+        count = {}
+        for r in rows:
+            count[r["scientific_name"]] = count.get(r["scientific_name"], 0) + 1
+        short = sorted(s for s in native_here.native_names()
+                       if not count.get(s))
+        self.assertEqual(short, [], "natives with no photograph")
+        # Most have the six the picking page allows; Vasey's Rush has the two
+        # iNaturalist holds under a licence that may ship.
+        self.assertGreater(sum(1 for n in count.values() if n == 6), 200)
+
+    def test_the_shipped_photographs_are_what_the_script_makes(self):
+        import picks_from_model_review as from_review
+        payload = from_review.build()
+        with open(os.path.join(ROOT, "data", "plants_master.json"),
+                  encoding="utf-8") as f:
+            master = json.load(f)
+        self.assertEqual(pp.validate(payload["answers"],
+                                     (r["scientific_name"] for r in master)),
+                         [])
+        with open(os.path.join(ROOT, "data", "plant_photos.json"),
+                  encoding="utf-8") as f:
+            shipped = json.load(f)
+        photos = [r for r in shipped
+                  if r["scientific_name"] not in payload["answers"]]
+        pp.apply(payload["answers"], master, photos)
+        self.assertEqual(photos, shipped)
+
+    def test_a_tree_with_no_showy_flower_leads_with_the_whole_plant(self):
+        import picks_from_model_review as from_review
+        lead = from_review.build()["answers"]["Betula papyrifera"]["picks"][0]
+        self.assertEqual(lead["slot"], "habit")
+
+
 if __name__ == "__main__":
     unittest.main()

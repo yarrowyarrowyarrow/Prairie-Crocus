@@ -559,7 +559,11 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # 24 retired (named for other regions, or mostly plants from elsewhere), 30
 # given Edmonton natives for the plants not native here, and each laid out by
 # src/community_layout.py, drifts by kind instead of one plant of each species. A person's own communities are kept.
-_SCHEMA_VERSION = 102
+# v103 (V3.61): no DDL. The Edmonton natives' photographs (six for most)
+# folded in on V3.55 after V3.56 had branched from it, so V3.56 to V3.60
+# shipped without them; brought back here. Also numbered past both v102s
+# (V3.55's photographs and V3.59's communities claimed the same number).
+_SCHEMA_VERSION = 103
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
