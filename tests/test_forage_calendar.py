@@ -203,8 +203,9 @@ class TestFoodMonthByMonth(unittest.TestCase):
         cls.rows = {r["common_name"]: r for r in api.query_plants()}
 
     def _june_and_july(self, names):
-        """Design › Food's month by month (V3.08; Planning › Wildlife until
-        then): the pollinators' blooms in June and July, and the gap line."""
+        """Design › Through the year's month by month (Food V3.08–V3.54;
+        Planning › Wildlife until then): the pollinators' blooms in June and
+        July, and the page's opening line."""
         from src.food_page import FoodPage
         from src.what_it_feeds import month_by_month
         ids = [self.rows[n]["id"] for n in names]
@@ -215,16 +216,18 @@ class TestFoodMonthByMonth(unittest.TestCase):
             page.set_placed_plants([{"plant_id": i} for i in ids])
             page.refresh()
             for m in (6, 7):
-                blooms = page._tree.topLevelItem(m - 1).child(0)
-                self.assertEqual([blooms.child(i).text(1)
-                                  for i in range(blooms.childCount())],
-                                 out[m] or ["—"])
-            return out, page._gap_label.text()
+                text = page._months[m - 1][1].text()
+                if out[m]:
+                    self.assertIn("In flower:</b> " + ", ".join(out[m]), text)
+                else:
+                    self.assertNotIn("In flower:", text)
+                    self.assertIn("Nothing in flower", text)
+            return out, page._summary_line.text()
         finally:
             page.close()
 
     def test_no_grass_is_listed_as_a_pollinator_bloom(self):
-        months, gaps = self._june_and_july(
+        months, opening = self._june_and_july(
             ["Prairie Crocus", "Smooth Aster", "Rough Fescue",
              "Blue Grama Grass"])
         for m, names in months.items():
@@ -232,7 +235,7 @@ class TestFoodMonthByMonth(unittest.TestCase):
                 self.assertNotIn("Rough Fescue", names)
                 self.assertNotIn("Blue Grama Grass", names)
         # So June and July show as the gap they are for a bee.
-        self.assertIn("Nectar gaps in the growing season: Jun, Jul.", gaps)
+        self.assertIn("Nothing in flower in June or July.", opening)
 
 
 if __name__ == "__main__":

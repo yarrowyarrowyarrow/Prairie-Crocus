@@ -77,7 +77,7 @@ added; trust the source over this list).
 | `src/accessible_names.py` | Names the scroll areas and tab widgets no panel builds, after their tab (V3.02) |
 | `src/target_size.py` | Every control at least 24 px, by one app-wide filter that only ever raises a minimum (V3.03) |
 | `src/indicator_style.py` | A checkbox's box and a radio button's ring drawn where they can be seen, the platform style otherwise (V3.03) |
-| `src/on_this_design_panel.py` | What is on the design: Species + Communities (Design › Planted) and Stats (Design › Report card) |
+| `src/on_this_design_panel.py` | What is on the design: Species + Communities (Design › Planted); its Stats page, the Report card, was retired in V3.55 |
 | `src/placement_controls.py` | Shared placement-controls widget used by the Plants tab and the Plant |
 | `src/polyculture_panel.py` | (no module docstring) |
 | `src/structure_panel.py` | Placement › Structures: browse and place habitat structures |
@@ -89,10 +89,10 @@ added; trust the source over this list).
 | `src/shape_tool.py` | Draw › Shape: areas, lawn-conversion zones and hedge/fence/windbreak lines in one form under a Draw-row button (V3.07) |
 | `src/map_settings_flow.py` | View › Map Settings: the zoom step, saved and sent on every map load (V3.07) |
 | `src/site_panel.py` | Side-panel tab for the property pin and auto-filled site data |
-| `src/analysis_panel.py` | The Design tab's widget (its strip: Report card, Planted, Habitat, Food, Over time, Water) and the Site tab's Sun & Shade and Wind pages, which it builds and runs |
+| `src/analysis_panel.py` | The Design tab's widget (its strip: Overview, Through the year, Planted, Habitat, Over time, Water) and the Site tab's Sun & Shade and Wind pages, which it builds and runs |
 | `src/planning_panel.py` | Builds and runs the pages Planning had: Over time's year by year and hours, Design › Water, the journal on Site › Notes; hidden itself since V3.08 |
 | `src/wind_rose_widget.py` | a small QPainter wind-rose (V1.67) |
-| `src/phenology_widget.py` | the "what's happening now" dashboard UI (F51) |
+| `src/food_page.py` + `src/through_the_year.py` | Design › Through the year: the year month by month, who is eating here, caterpillars to birds, animals that depend on a few plants, any animal looked up (F270, V3.55) |
 | `src/learn_panel.py` | the Learn side tab: Field Study / Lessons (V2.25); still builds Present, which is Share › Present since V3.08 |
 | `src/docent_widget.py` | the docent / presentation-mode UI (F52) |
 | `src/field_study_widget.py` | the Field Study quiz runner UI (F48) |

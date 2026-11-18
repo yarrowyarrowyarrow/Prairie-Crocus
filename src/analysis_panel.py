@@ -989,6 +989,7 @@ class AnalysisPanel(QWidget):
         # asks, after what the number means and what would raise it.
         self._breakdown_toggle = QToolButton()
         self._breakdown_toggle.setText("What the score is made of")
+        self._breakdown_toggle.setAccessibleName("What the score is made of")
         self._breakdown_toggle.setCheckable(True)
         self._breakdown_toggle.setAutoRaise(True)
         self._breakdown_toggle.setToolButtonStyle(

@@ -139,6 +139,8 @@ class FoodPage(QScrollArea):
             button.setToolButtonStyle(
                 Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
             button.setArrowType(Qt.ArrowType.RightArrow)
+            button.setText(year_of.MONTHS[m - 1])
+            button.setAccessibleName(year_of.MONTHS[m - 1])
             button.setSizePolicy(QSizePolicy.Policy.Expanding,
                                  QSizePolicy.Policy.Fixed)
             button.setStyleSheet(_MONTH_STYLE)
@@ -337,6 +339,7 @@ class FoodPage(QScrollArea):
             name = year_of.MONTHS[m - 1]
             if data is None:
                 button.setText(name)
+                button.setAccessibleName(name)
                 button.setStyleSheet(_MONTH_STYLE)
                 text.setText("")
                 button.setEnabled(False)

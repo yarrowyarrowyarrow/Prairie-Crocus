@@ -91,7 +91,8 @@ class ThePage(unittest.TestCase):
         if site_config is not None:
             panel.set_site_config(site_config)
         panel._calc_water()
-        return panel._water_results.text()
+        # The weekly rule leads the page since V3.55, above the table.
+        return panel._water_answer.text() + panel._water_results.text()
 
     def test_wildflowers_and_grasses_have_rows(self):
         text = self._page()
@@ -106,10 +107,13 @@ class ThePage(unittest.TestCase):
 
     def test_the_sites_rainfall_changes_the_rain_line(self):
         edmonton = self._page()
-        self.assertIn("340 mm May–Sep, Edmonton City Centre A normal", edmonton)
+        # The source has its own line since V3.55 (it ended in ")))").
+        self.assertIn("340 mm May–Sep<br>", edmonton)
+        self.assertIn("Edmonton City Centre A normal", edmonton)
         site = self._page({"rainfall": {"monthly_mm": [10.0] * 12,
                                         "source": "ERA5-Land"}})
-        self.assertIn("50 mm May–Sep, this site's normals (ERA5-Land)", site)
+        self.assertIn("50 mm May–Sep<br>", site)
+        self.assertIn("this site's normals (ERA5-Land)", site)
         self.assertNotIn("City Centre A normal", site)
 
 
