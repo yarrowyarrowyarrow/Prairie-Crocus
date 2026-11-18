@@ -552,13 +552,17 @@ class TestExcludedTaxaStayExcluded(unittest.TestCase):
                 if variation["name"] != "Tall Prairie Meadow":
                     continue
                 members = {m[0] for m in variation["members"]}
-                self.assertIn("Maximilian Sunflower", members)
+                # Maximilian Sunflower is not native around Edmonton: the
+                # V3.59 rework put Stiff Sunflower in its place, prose too.
+                self.assertNotIn("Maximilian Sunflower", members)
+                self.assertIn("Stiff Sunflower (Rhombic-leaved Sunflower)",
+                              members)
                 self.assertIn("Nuttall's Sunflower", members)
                 self.assertNotIn("Giant Sunflower", members)
                 self.assertNotIn("Giant sunflower",
                                  variation["description"])
-                self.assertIn("Maximilian sunflower",
-                              variation["description"])
+                self.assertNotIn("Maximilian", variation["description"])
+                self.assertIn("Stiff sunflower", variation["description"])
                 return
         self.fail("Tall Prairie Meadow not found")
 

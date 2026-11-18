@@ -416,12 +416,14 @@ def get_library_index() -> dict:
             "modified":      c["modified"] or "",
             "children":      [],
             "member_count":  len(ms),
+            # Kinds, since a seeded community plants drifts (V3.59).
+            "species_count": len({m.get("plant_id") for m in ms}),
             "member_ids":    [m.get("plant_id") for m in ms],
             "native_pct":    native_pct,
             "fauna_count":   fauna_by_cid.get(cid, 0),
-            "members_brief": [(m.get("common_name") or "",
-                               _normalize_role(m.get("role")) or "")
-                              for m in ms],
+            "members_brief": list(dict.fromkeys(
+                (m.get("common_name") or "",
+                 _normalize_role(m.get("role")) or "") for m in ms)),
             "search_blob":   " ".join(blob).lower(),
             "not_around":    {key: sorted({m.get("common_name") or ""
                                            for m in ms
@@ -1043,34 +1045,8 @@ _PATTERN_TEXT = {
                   "covers every guild role: nutrient accumulation, pest deterrence, "
                   "nitrogen fixing, and pollination.",
         "solution": "Therefore: keep the cherry and fill every support role with "
-                    "natives (yarrow, nodding onion, silvery lupine, and wild "
+                    "natives (yarrow, nodding onion, Canada milk vetch, and wild "
                     "bergamot) for a guild that is functional and fully local.",
-    },
-    "Bur Oak Community": {
-        "problem": "A big shade tree planted into lawn is decades of slow growth over "
-                   "sterile turf, when it could be the spine of a whole habitat.",
-        "context": "A large yard or acreage with space for a long-lived canopy tree, "
-                   "modelled on the aspen parkland's natural oak savanna.",
-        "forces": "An oak is a 200-year investment and a keystone for caterpillars "
-                  "and acorn-eaters; the dappled light beneath it can grow a rich, "
-                  "layered community instead of grass.",
-        "solution": "Therefore: plant bur oak as the canopy and build the savanna "
-                    "beneath it: a nut-bearing hazelnut understory, nitrogen-fixing "
-                    "clovers in the dappled light, a nutrient accumulator, a "
-                    "blazingstar pollinator, and an evergreen groundcover under the "
-                    "spread.",
-    },
-    "Edible Savanna": {
-        "problem": "An oak guild can lean harder into food if the understory is chosen "
-                   "for the kitchen as well as for wildlife.",
-        "context": "A bur oak savanna on a site where you want acorns plus berries "
-                   "and a long pollinator season.",
-        "forces": "Food production and habitat value usually reinforce each other, "
-                  "since native fruit shrubs feed both people and birds, so the "
-                  "trade-off is gentle.",
-        "solution": "Therefore: keep the oak and nitrogen fixer but swap in saskatoon "
-                    "and gooseberry for fruit and a late goldenrod for end-of-season "
-                    "nectar.",
     },
     # ── Pollinator & wildflower communities ──────────────────────────────────
     "Prairie Pollinator Garden": {
@@ -1094,7 +1070,7 @@ _PATTERN_TEXT = {
         "forces": "Height brings presence and seed for birds but can flop or crowd "
                   "neighbours; sunflowers and tall grasses need full sun and space.",
         "solution": "Therefore: anchor with a giant sunflower for birds, layer in "
-                    "Maximilian sunflower, black-eyed Susan, and beardtongue for a "
+                    "Stiff sunflower, black-eyed Susan, and beardtongue for a "
                     "mid-to-late display, add early flax for mason bees, and let a tall "
                     "grass hold it together.",
     },
@@ -1107,7 +1083,7 @@ _PATTERN_TEXT = {
                   "Hardy native perennials give both and come back every year, "
                   "tolerating dry summers once rooted.",
         "solution": "Therefore: ring a wild-bergamot centre with yarrow, mint, hyssop, "
-                    "valerian, and self-heal, a circle of aromatic Zone-3 perennials "
+                    "and wild chives, a circle of aromatic Zone-3 perennials "
                     "that feeds bees and the teapot alike.",
     },
     "Native Prairie Aromatics": {
@@ -1172,18 +1148,6 @@ _PATTERN_TEXT = {
                     "bergamot in July, blazingstar in late summer, goldenrod and aster "
                     "to frost.",
     },
-    "Late-Season Pollinator Refuge": {
-        "problem": "Late summer and fall are when nectar runs out, right when migrating "
-                   "monarchs and queen bumble bees need fuel the most.",
-        "context": "A sunny area added to cover the Aug–Oct gap the forage calendar "
-                   "most often shows red.",
-        "forces": "Most gardens peak in midsummer and fade; the insects that overwinter "
-                  "or migrate depend on the last flowers standing, many of which are "
-                  "also keystones.",
-        "solution": "Therefore: mass late bloomers (goldenrods, asters, blazingstars, "
-                    "Maximilian sunflower, fireweed, and a late milkweed) for a fall "
-                    "refuelling station that doubles your keystone count.",
-    },
     # ── Habitat-structure & ecoregion communities ────────────────────────────
     "Aspen Parkland Edge": {
         "problem": "Single-layer plantings (just shrubs, or just flowers) leave most "
@@ -1196,18 +1160,6 @@ _PATTERN_TEXT = {
         "solution": "Therefore: stack every canonical layer: aspen overstory, "
                     "chokecherry understory, saskatoon shrub layer, goldenrod and aster "
                     "herbs, and a strawberry groundcover.",
-    },
-    "Mixedgrass Prairie Patch": {
-        "problem": "Dry, open, sun-baked ground defeats most ornamental plantings and "
-                   "bakes lawns brown by July.",
-        "context": "A hot, dry, low-water site in southern or central Alberta where "
-                   "you want resilient native cover and habitat.",
-        "forces": "These sites punish thirsty plants; native bunchgrasses and prairie "
-                  "forbs thrive on neglect, hold soil, and give ground-nesting bees "
-                  "and birds the stems and bare earth they need.",
-        "solution": "Therefore: weave native bunchgrasses (fescue, June grass, little "
-                    "bluestem) through succession-blooming forbs from crocus to "
-                    "blazingstar, with a clover for nitrogen and yarrow to bind it.",
     },
     "Boreal Shade Community": {
         "problem": "The ground beneath existing spruce, poplar, or birch is dry, "
@@ -1535,7 +1487,7 @@ EXAMPLE_POLYCULTURES = [
                        "Great for Zone 2-4 native habitat plantings.",
         "members": [
             ("Saskatoon Berry",          "overstory",       0,    0),
-            ("Silvery Lupine",           "nitrogen_fixer",  1.0,  0.5),
+            ("Canada Milk Vetch",           "nitrogen_fixer",  1.0,  0.5),
             ("Boreal Yarrow",                   "soil_builder",   -0.8,  0.8),
             ("Wild Strawberry",          "groundcover",     0.5, -0.8),
             ("Wild Chives",              "pest_deterrent", -0.5, -0.6),
@@ -1548,7 +1500,7 @@ EXAMPLE_POLYCULTURES = [
                                "Adds more berry-producing understory shrubs.",
                 "members": [
                     ("Saskatoon Berry",   "overstory",       0,    0),
-                    ("Silvery Lupine",    "nitrogen_fixer",  1.0,  0.5),
+                    ("Canada Milk Vetch",    "nitrogen_fixer",  1.0,  0.5),
                     ("Wild Gooseberry",   "understory",     -0.8,  0.8),
                     ("Wild Strawberry",   "groundcover",     0.5, -0.8),
                     ("Wild Red Currant",  "understory",     -0.5, -0.6),
@@ -1558,29 +1510,6 @@ EXAMPLE_POLYCULTURES = [
         ],
     },
     # ── Saskatchewan Moist/Mixed Grassland communities (V2.16) ────────────────────
-    {
-        "name": "Moist Mixed Grassland Pollinator Patch",
-        "description": "A treeless, drought-hardy native forb patch for the "
-                       "Saskatchewan Moist Mixed Grassland (Regina, Lumsden, "
-                       "Saskatoon) and the dry Mixed Grassland. Purple prairie "
-                       "clover anchors the patch and fixes nitrogen; woolly "
-                       "groundsel and tufted fleabane open the season, scarlet "
-                       "globemallow and bastard toadflax carry mid-summer, and "
-                       "white prairie aster and stiff goldenrod close it with a "
-                       "late nectar surge that fuels migrating monarchs and "
-                       "native bees. Zone 3, full sun, low water — a lawn-to-"
-                       "habitat conversion that thrives on heavy Regina clay.",
-        "members": [
-            # (common_name, role, offset_x, offset_y)
-            ("Purple Prairie Clover", "nitrogen_fixer",  0,    0),
-            ("Scarlet Globemallow",   "groundcover",     1.0,  0.4),
-            ("Woolly Groundsel",      "pollinator",     -1.0,  0.5),
-            ("Tufted Fleabane",       "groundcover",     0.6, -0.9),
-            ("Bastard Toadflax",      "groundcover",    -0.8, -0.7),
-            ("White Prairie Aster",   "pollinator",      1.2, -0.4),
-            ("Stiff Goldenrod",       "pollinator",     -1.2, -0.2),
-        ],
-    },
     # ── Edmonton-specific polycultures designed for Zone 3-4 ──────────────────────
     {
         # Named for a cultivated sour cherry until V2.80. Pin cherry is the
@@ -1607,53 +1536,16 @@ EXAMPLE_POLYCULTURES = [
                 "name": "Native Understory",
                 "description": "Pin cherry community variant using exclusively native prairie plants. "
                                "Yarrow is a native nutrient accumulator and pollinator attractor; "
-                               "nodding onion provides allium-family pest deterrence; silvery lupine "
+                               "nodding onion provides allium-family pest deterrence; Canada milk vetch "
                                "fixes nitrogen in dappled light; wild bergamot draws native bumble bees.",
                 "members": [
                     ("Pin Cherry",                "overstory",       0,    0),
                     ("Boreal Yarrow",                    "soil_builder",    1.8,  0),
                     ("Nodding Onion",             "pest_deterrent", -1.0,  1.2),
-                    ("Silvery Lupine",            "nitrogen_fixer",  0,    2.0),
+                    ("Canada Milk Vetch",            "nitrogen_fixer",  0,    2.0),
                     ("Wild Bergamot",  "pollinator",     -1.5, -1.0),
                     ("Wild Strawberry",           "groundcover",     1.0, -1.5),
                     ("Wild Bergamot",             "pollinator",      0,   -1.3),
-                ],
-            },
-        ],
-    },
-    {
-        "name": "Bur Oak Community",
-        "description": "Large shade-tree polyculture modelled on natural oak savanna ecosystems of the "
-                       "aspen parkland. Bur oak provides a long-lived canopy with edible acorns. "
-                       "Beaked hazelnut is a native understory shrub that naturally co-occurs with "
-                       "oak and produces edible nuts. Silvery lupine and white prairie clover fix "
-                       "nitrogen in the dappled light. Stinging nettle accumulates nutrients from "
-                       "deep soil layers. Dotted blazingstar is a premier pollinator magnet for "
-                       "native bumble bees. Kinnikinnick forms an evergreen groundcover that "
-                       "suppresses weeds under the spreading canopy.",
-        "members": [
-            ("Bur Oak",                   "overstory",       0,    0),
-            ("Beaked Hazelnut",           "understory",      3.0,  1.5),
-            ("Silvery Lupine",            "nitrogen_fixer", -2.0,  2.5),
-            ("Stinging Nettle",           "soil_builder",    2.5, -1.5),
-            ("Dotted Blazingstar",        "pollinator",     -2.5, -2.0),
-            ("Bearberry",                 "groundcover",     1.5, -2.5),
-            ("White Prairie Clover",      "nitrogen_fixer", -1.0,  3.0),
-        ],
-        "variations": [
-            {
-                "name": "Edible Savanna",
-                "description": "Bur oak community variant emphasizing food production. Saskatoon berry "
-                               "and wild gooseberry replace hazelnut for more fruit. Canada goldenrod "
-                               "provides late-season pollinator support.",
-                "members": [
-                    ("Bur Oak",                   "overstory",       0,    0),
-                    ("Saskatoon Berry",           "understory",      3.0,  1.5),
-                    ("Wild Gooseberry",           "understory",     -2.5,  1.0),
-                    ("Silvery Lupine",            "nitrogen_fixer", -2.0,  2.5),
-                    ("Boreal Yarrow",                    "soil_builder",    2.5, -1.5),
-                    ("Canada Goldenrod",          "pollinator",     -2.5, -2.0),
-                    ("Wild Strawberry",           "groundcover",     1.5, -2.5),
                 ],
             },
         ],
@@ -1672,7 +1564,7 @@ EXAMPLE_POLYCULTURES = [
             ("Wild Bergamot",  "pollinator",          0,    0),
             ("Blanketflower",             "pollinator",          0.8,  0.5),
             ("Purple Prairie Clover",     "nitrogen_fixer",     -0.7,  0.6),
-            ("Canada Goldenrod",          "pollinator",          0.5, -0.8),
+            ("Late Goldenrod",          "pollinator",          0.5, -0.8),
             ("Smooth Aster",              "pollinator",         -0.8, -0.5),
             ("Prairie Crocus",            "pollinator",          0,    0.9),
             ("Rough Fescue",              "other",              -0.5, -0.9),
@@ -1690,19 +1582,19 @@ EXAMPLE_POLYCULTURES = [
                 # prose names a plant its member list no longer contains is
                 # the drift V2.74 went looking for.
                 "description": "Taller prairie pollinator variant featuring sunflowers and "
-                               "penstemons. Maximilian sunflower anchors the centre, providing "
+                               "penstemons. Stiff sunflower anchors the centre, providing "
                                "seeds for birds well into autumn. Nuttall's sunflower, meadow "
-                               "blazingstar, and smooth blue beardtongue create a dramatic "
+                               "blazingstar, and slender blue beardtongue create a dramatic "
                                "mid-to-late summer display. "
                                "Wild blue flax adds early blue blooms that attract mason bees.",
                 "members": [
-                    ("Maximilian Sunflower",      "pollinator",          0,    0),
+                    ("Stiff Sunflower (Rhombic-leaved Sunflower)",      "pollinator",          0,    0),
                     ("Nuttall's Sunflower",       "pollinator",          0.8,  0.5),
                     ("Meadow Blazingstar",        "pollinator",         -0.7,  0.6),
-                    ("Smooth Blue Beardtongue",   "pollinator",          0.5, -0.8),
+                    ("Slender Blue Beardtongue",   "pollinator",          0.5, -0.8),
                     ("Wild Blue Flax",            "pollinator",         -0.8, -0.5),
                     ("Purple Prairie Clover",     "nitrogen_fixer",      0,    0.9),
-                    ("Switchgrass",               "other",              -0.5, -0.9),
+                    ("Canada Wild Rye",               "other",              -0.5, -0.9),
                 ],
             },
         ],
@@ -1752,9 +1644,9 @@ EXAMPLE_POLYCULTURES = [
         # had always been six species with one of them planted twice under two
         # names. V2.80 consolidated the rows, which made the duplication
         # visible.
-        "description": "A circle of six hardy native perennials with strong aromatics and "
+        "description": "A circle of five hardy native perennials with strong aromatics and "
                        "pollinator value. Wild bergamot anchors the centre as a magnet for native "
-                       "bumble bees; yarrow, wild mint, giant hyssop, valerian, and self-heal fill "
+                       "bumble bees; yarrow, wild mint, giant hyssop and wild chives fill "
                        "the surround. All species are Zone 3 proven in Alberta gardens and tolerate "
                        "dry summers once established.",
         "members": [
@@ -1762,8 +1654,7 @@ EXAMPLE_POLYCULTURES = [
             ("Boreal Yarrow",             "soil_builder",    0.8,  0.5),
             ("Wild Mint",                 "pest_deterrent", -0.7,  0.7),
             ("Giant Hyssop",              "pollinator",      0.5, -0.8),
-            ("Sitka Valerian",            "other",          -0.8, -0.3),
-            ("Self-heal",                 "other",           0.3,  0.9),
+            ("Wild Chives",            "other",          -0.8, -0.3),
         ],
         "variations": [
             {
@@ -1799,7 +1690,7 @@ EXAMPLE_POLYCULTURES = [
                        "pollinator plants to create a productive living fence. Saskatoon berry and "
                        "chokecherry form the tall backbone spaced 2-3m apart. Haskap fills the "
                        "mid layer at 1m spacing. Prickly wild rose and wild raspberry provide thorny "
-                       "security at the base. Silvery lupine fixes nitrogen between shrubs. Use "
+                       "security at the base. Canada milk vetch fixes nitrogen between shrubs. Use "
                        "offset_y as distance along the hedge line.",
         "members": [
             ("Saskatoon Berry",           "overstory",       0,    0),
@@ -1807,21 +1698,21 @@ EXAMPLE_POLYCULTURES = [
             ("Wild Gooseberry",           "understory",      0,    1.5),
             ("Wild Raspberry",            "understory",      0.8,  0.8),
             ("Prickly Wild Rose",         "other",           0.8,  2.2),
-            ("Silvery Lupine",            "nitrogen_fixer",  0.5,  3.8),
-            ("Canada Goldenrod",          "pollinator",     -0.5,  1.0),
+            ("Canada Milk Vetch",            "nitrogen_fixer",  0.5,  3.8),
+            ("Late Goldenrod",          "pollinator",     -0.5,  1.0),
         ],
         "variations": [
             {
                 "name": "Wildlife Corridor Hedge",
                 "description": "Native berry hedge variant optimized for bird and pollinator "
-                               "habitat. Highbush cranberry and black hawthorn provide fall and "
+                               "habitat. Highbush cranberry and round-leaved hawthorn provide fall and "
                                "winter bird food. Western snowberry adds winter interest and food "
                                "for waxwings. Silver buffaloberry fixes nitrogen while producing "
                                "tart edible fruit. Silverberry (wolf willow) provides a "
                                "silver-leaved windbreak at the base.",
                 "members": [
                     ("Highbush Cranberry",        "overstory",              0,    0),
-                    ("Black Hawthorn",            "understory",          0,    3.0),
+                    ("Round-leaved Hawthorn",            "understory",          0,    3.0),
                     ("Silver Buffaloberry",       "nitrogen_fixer",      0,    1.5),
                     ("Western Snowberry",         "understory",          0.8,  0.8),
                     ("Silverberry",               "windbreak",           0.8,  2.2),
@@ -1844,9 +1735,9 @@ EXAMPLE_POLYCULTURES = [
             ("Pussy Willow",               "shrub_layer",     2.5,   1.2),
             ("Sandbar Willow",             "shrub_layer",    -2.2,   1.5),
             ("Pin Cherry",                 "understory",      2.0,  -2.0),
-            ("Canada Goldenrod",           "herbaceous",     -1.5,  -1.8),
+            ("Late Goldenrod",           "herbaceous",     -1.5,  -1.8),
             ("Smooth Aster",               "herbaceous",      1.0,  -1.0),
-            ("Maximilian Sunflower",       "pollinator",      0.0,  -2.5),
+            ("Stiff Sunflower (Rhombic-leaved Sunflower)",       "pollinator",      0.0,  -2.5),
         ],
     },
     {
@@ -1860,10 +1751,9 @@ EXAMPLE_POLYCULTURES = [
         "members": [
             ("Pussy Willow",               "shrub_layer",     0,     0),
             ("Sandbar Willow",             "shrub_layer",     2.5,   1.5),
-            ("Showy Milkweed",             "herbaceous",     -2.0,   1.0),
             ("Oval-leaf Milkweed",         "herbaceous",      1.5,  -1.5),
             ("Smooth Aster",               "herbaceous",     -1.5,  -1.0),
-            ("Eastern Red Columbine",      "herbaceous",      1.0,   1.8),
+            ("Blue Columbine",      "herbaceous",      1.0,   1.8),
             ("Early Blue Violet",          "groundcover",    -1.0,  -2.0),
         ],
     },
@@ -1899,8 +1789,8 @@ EXAMPLE_POLYCULTURES = [
             ("Wild Strawberry",            "groundcover",    -1.0,   1.2),
             ("Golden Bean",                "nitrogen_fixer",  1.8,  -1.0),
             ("Wild Bergamot",   "pollinator",     -1.5,  -0.5),
-            ("Dotted Blazingstar",         "pollinator",      0.5,  -1.8),
-            ("Canada Goldenrod",           "pollinator",     -2.0,   0.5),
+            ("Meadow Blazingstar",         "pollinator",      0.5,  -1.8),
+            ("Late Goldenrod",           "pollinator",     -2.0,   0.5),
             ("Smooth Aster",               "pollinator",      2.0,   1.8),
         ],
     },
@@ -1933,26 +1823,9 @@ EXAMPLE_POLYCULTURES = [
             ("Chokecherry",                "understory",      3.0,   1.5),
             ("Saskatoon Berry",            "shrub_layer",    -2.5,   1.5),
             ("Beaked Hazelnut",            "shrub_layer",     2.0,  -2.0),
-            ("Canada Goldenrod",           "herbaceous",     -2.0,  -1.5),
+            ("Late Goldenrod",           "herbaceous",     -2.0,  -1.5),
             ("Smooth Aster",               "herbaceous",      1.0,  -2.5),
             ("Wild Strawberry",            "groundcover",     0.0,   2.5),
-        ],
-    },
-    {
-        "name": "Mixedgrass Prairie Patch",
-        "description": "Pairs native bunchgrasses (nesting material for ground-nesting bees and "
-                       "songbirds) with prairie forbs that bloom in succession from spring crocus "
-                       "to late-summer blazingstar. Designed for dry, open sites in southern and "
-                       "central Alberta. Boosts the Habitat Value layers score (grasses → "
-                       "herbaceous), bloom continuity, and the nesting-material structural metric.",
-        "members": [
-            ("Rough Fescue",               "herbaceous",      0,     0),
-            ("June Grass",                 "herbaceous",      1.5,   1.0),
-            ("Little Bluestem",            "herbaceous",     -1.5,   1.2),
-            ("Prairie Crocus",             "herbaceous",      0.8,  -1.0),
-            ("Dotted Blazingstar",         "pollinator",     -1.0,  -1.2),
-            ("Purple Prairie Clover",      "nitrogen_fixer",  1.2,  -1.8),
-            ("Boreal Yarrow",                     "soil_builder",   -1.5,  -0.5),
         ],
     },
     {
@@ -1973,35 +1846,18 @@ EXAMPLE_POLYCULTURES = [
         ],
     },
     {
-        "name": "Late-Season Pollinator Refuge",
-        "description": "Targets the Aug–Oct nectar-gap months that the Wildlife Forage calendar "
-                       "most often flags as red. All members bloom late-summer through first frost "
-                       "and most are keystone species (goldenrods, asters, sunflowers), so this "
-                       "community lifts both bloom-continuity and keystone-species scores at once. "
-                       "Critical fuel for migrating monarchs and hibernating queen bumble bees.",
-        "members": [
-            ("Canada Goldenrod",           "pollinator",      0,     0),
-            ("Smooth Aster",               "pollinator",      1.5,   1.0),
-            ("Dotted Blazingstar",         "pollinator",     -1.5,   1.2),
-            ("Meadow Blazingstar",         "pollinator",      1.2,  -1.5),
-            ("Maximilian Sunflower",       "pollinator",     -1.0,  -1.8),
-            ("Fireweed",                   "pollinator",      2.0,  -0.5),
-            ("Showy Milkweed",             "herbaceous",     -2.0,  -0.5),
-        ],
-    },
-    {
         "name": "Riparian Willow Thicket",
         "description": "Streamside / wet-edge community built around the willow guild — pussy willow "
                        "and sandbar willow are both Tallamy keystones AND host plants AND bird food, "
                        "so this single community lifts all three categories at once. Red osier dogwood "
-                       "adds winter colour and bird food. Showy milkweed and fireweed bring "
+                       "adds winter colour and bird food. Oval-leaf milkweed and fireweed bring "
                        "summer-long bloom and additional caterpillar hosting.",
         "members": [
             ("Pussy Willow",               "overstory",       0,     0),
             ("Sandbar Willow",             "shrub_layer",     2.5,   1.5),
             ("Red Osier Dogwood",          "shrub_layer",    -2.0,   1.5),
             ("Highbush Cranberry",         "shrub_layer",     2.0,  -2.0),
-            ("Showy Milkweed",             "herbaceous",     -1.5,  -1.5),
+            ("Oval-leaf Milkweed",             "herbaceous",     -1.5,  -1.5),
             ("Fireweed",                   "herbaceous",      1.0,  -1.0),
             ("Wild Strawberry",            "groundcover",     0.0,   2.5),
         ],
@@ -2032,14 +1888,14 @@ EXAMPLE_POLYCULTURES = [
         "description": "A residential-scale sunny meadow for a back corner. Little "
                        "bluestem and sheep fescue form the grass matrix; prairie "
                        "coneflower, blanketflower and wild bergamot bring layered "
-                       "bloom; silvery lupine fixes nitrogen and wild strawberry "
+                       "bloom; Canada milk vetch fixes nitrogen and wild strawberry "
                        "knits the ground layer.",
         "members": [
-            ("Little Bluestem",    "matrix_grass",    0,    0),
+            ("Canada Wild Rye",    "matrix_grass",    0,    0),
             ("Rocky Mountain Fescue", "matrix_grass",    1.2,  0.8),
             ("Prairie Coneflower", "pollinator",     -1.0,  0.8),
             ("Blanketflower",      "pollinator",      1.0, -0.8),
-            ("Silvery Lupine",     "nitrogen_fixer", -1.1, -0.7),
+            ("Canada Milk Vetch",     "nitrogen_fixer", -1.1, -0.7),
             ("Wild Strawberry",    "groundcover",     0.2,  1.3),
         ],
     },
@@ -2066,14 +1922,14 @@ EXAMPLE_POLYCULTURES = [
         "description": 'A dense aspen-parkland shrub thicket of native currants and small '
                        'fruit that feeds songbirds from midsummer into fall. Black '
                        'hawthorn anchors a thorny, nest-friendly backbone while the '
-                       "currants, thimbleberry and blueberry stagger ripe fruit; Woods' "
+                       "currants, wild raspberry and blueberry stagger ripe fruit; Woods' "
                        'rose holds the thorny edge.',
         "members": [
-            ('Black Hawthorn', 'shrub_layer', 0.0, 0.0),
-            ('Golden Currant (Buffalo Currant)', 'shrub_layer', 1.5, 0.0),
+            ("Round-leaved Hawthorn", 'shrub_layer', 0.0, 0.0),
+            ("Wild Gooseberry", 'shrub_layer', 1.5, 0.0),
             ('Northern Black Currant', 'shrub_layer', 1.1, 1.8),
             ('Bristly Black Currant', 'shrub_layer', -0.7, 1.3),
-            ('Thimbleberry', 'shrub_layer', -2.1, 0.0),
+            ("Wild Raspberry", 'shrub_layer', -2.1, 0.0),
             ('Velvet-leaf Blueberry', 'shrub_layer', -0.8, -1.3),
             ("Woods' Rose", 'shrub_layer', 1.1, -1.8),
         ],
@@ -2120,9 +1976,9 @@ EXAMPLE_POLYCULTURES = [
                        'height and bird seed; paintbrush, evening primrose, harebell and '
                        'golden alexanders carry colour and pollen across the season.',
         "members": [
-            ('Maximilian Sunflower', 'pollinator', 0.0, 0.0),
-            ('Jerusalem Artichoke', 'pollinator', 1.5, 0.0),
-            ('Common Paintbrush', 'pollinator', 1.5, 1.5),
+            ("Stiff Sunflower (Rhombic-leaved Sunflower)", 'pollinator', 0.0, 0.0),
+            ("Nuttall's Sunflower", 'pollinator', 1.5, 0.0),
+            ("Boreal Yarrow", 'pollinator', 1.5, 1.5),
             ('Evening Primrose', 'pollinator', 0.0, 1.5),
             ('Harebell', 'pollinator', -1.5, 1.5),
             ('Blue-eyed Grass', 'pollinator', -1.5, 0.0),
@@ -2133,15 +1989,15 @@ EXAMPLE_POLYCULTURES = [
     },
     {
         "name": 'Parkland Conifer Edge',
-        "description": 'An evergreen parkland shelter edge mixing fir, juniper and '
-                       'silver-leaved shrubs for year-round cover and windbreak. Fragrant '
-                       'sumac and shrubby cinquefoil hold a long-blooming, erosion-proof '
+        "description": 'An evergreen parkland shelter edge mixing white spruce, juniper and '
+                       'silver-leaved shrubs for year-round cover and windbreak. Northern '
+                       'black currant and shrubby cinquefoil hold a long-blooming, erosion-proof '
                        'skirt; silverberry fixes nitrogen on the dry margin.',
         "members": [
-            ('Balsam Fir', 'overstory', 0.0, 0.0),
+            ("White Spruce", 'overstory', 0.0, 0.0),
             ('Common Juniper', 'shrub_layer', 1.5, 0.0),
             ('Creeping Juniper', 'groundcover', 1.1, 1.8),
-            ('Fragrant Sumac', 'shrub_layer', -0.7, 1.3),
+            ("Northern Black Currant", 'shrub_layer', -0.7, 1.3),
             ('Meadowsweet', 'shrub_layer', -2.1, 0.0),
             ('Shrubby Cinquefoil', 'shrub_layer', -0.8, -1.3),
             ('Silverberry', 'shrub_layer', 1.1, -1.8),
@@ -2151,15 +2007,15 @@ EXAMPLE_POLYCULTURES = [
         "name": 'Moist Parkland Hollow',
         "description": 'A damp parkland hollow under balsam poplar where moisture-loving '
                        'forbs thrive. Joe-Pye weed and shooting star draw long-tongued '
-                       'bees; horsetail and spring beauty fill the spring ground layer '
+                       'bees; horsetail and palmate-leaved coltsfoot fill the spring ground layer '
                        'before the canopy leafs out.',
         "members": [
             ('Balsam Poplar', 'overstory', 0.0, 0.0),
             ('Joe-Pye Weed', 'pollinator', 1.5, 0.0),
             ('Saline Shooting Star', 'pollinator', 1.1, 1.8),
-            ('Showy Fleabane', 'pollinator', -0.7, 1.3),
+            ("Smooth Fleabane (Streamside Fleabane)", 'pollinator', -0.7, 1.3),
             ('Blue Columbine', 'pollinator', -2.1, 0.0),
-            ('Spring Beauty', 'herbaceous', -0.8, -1.3),
+            ("Palmate-leaved Coltsfoot", 'herbaceous', -0.8, -1.3),
             ('Common Horsetail', 'soil_builder', 1.1, -1.8),
         ],
     },
@@ -2187,7 +2043,7 @@ EXAMPLE_POLYCULTURES = [
                        'shade and needle duff.',
         "members": [
             ('Jack Pine', 'overstory', 0.0, 0.0),
-            ('Low Bilberry', 'shrub_layer', 1.5, 0.0),
+            ("Velvet-leaf Blueberry", 'shrub_layer', 1.5, 0.0),
             ('Skunk Currant', 'shrub_layer', 1.3, 1.6),
             ('Dwarf Raspberry', 'groundcover', -0.3, 1.5),
             ('Pink Pyrola', 'groundcover', -1.9, 0.9),
@@ -2216,16 +2072,16 @@ EXAMPLE_POLYCULTURES = [
     {
         "name": 'Boreal Bog Edge',
         "description": 'A black-spruce bog margin of evergreen ericads and acid-tolerant '
-                       'berries. Labrador tea, bog blueberry and bog cranberry form a '
+                       'berries. Labrador tea, velvet-leaf blueberry and bog cranberry form a '
                        'spongy, pollinator-rich mat over peat; all tolerate saturated, '
                        'acidic ground.',
         "members": [
             ('Black Spruce', 'overstory', 0.0, 0.0),
             ('Tamarack', 'understory', 1.5, 0.0),
-            ('Bog Blueberry', 'shrub_layer', 1.1, 1.8),
+            ("Velvet-leaf Blueberry", 'shrub_layer', 1.1, 1.8),
             ('Labrador Tea', 'shrub_layer', -0.7, 1.3),
             ('Bog Cranberry', 'groundcover', -2.1, 0.0),
-            ('Dwarf Birch', 'shrub_layer', -0.8, -1.3),
+            ("Northern Black Currant", 'shrub_layer', -0.8, -1.3),
             ('Marsh Cinquefoil', 'pollinator', 1.1, -1.8),
         ],
     },
@@ -2242,278 +2098,41 @@ EXAMPLE_POLYCULTURES = [
             ('Scarlet Butterfly Plant', 'pollinator', -0.7, 1.3),
             ("Three Flowered Avens (Prairie Smoke, Old Man's Whiskers)", 'pollinator', -2.1, 0.0),
             ('Slender Blue Beardtongue', 'pollinator', -0.8, -1.3),
-            ('Fuzzy-tongue Penstemon', 'pollinator', 1.1, -1.8),
-        ],
-    },
-    {
-        "name": 'Prairie Legume Nitrogen Bank',
-        "description": 'A guild of native legumes that quietly build soil nitrogen on poor '
-                       'prairie ground while feeding specialist bees. Milkvetches, ground '
-                       'plum, prairie turnip and sweetvetch root deep and fix nitrogen '
-                       'between bunchgrasses.',
-        "members": [
-            ('Ascending Milkvetch', 'nitrogen_fixer', 0.0, 0.0),
-            ("Drummond's Milkvetch", 'nitrogen_fixer', 1.5, 0.0),
-            ('Missouri Milkvetch', 'nitrogen_fixer', 1.1, 1.8),
-            ('Ground Plum', 'nitrogen_fixer', -0.7, 1.3),
-            ('Prairie Turnip', 'nitrogen_fixer', -2.1, 0.0),
-            ('Sulphur Hedysarum', 'nitrogen_fixer', -0.8, -1.3),
-            ('Showy Locoweed', 'pollinator', 1.1, -1.8),
-        ],
-    },
-    {
-        "name": 'Prairie Cactus & Succulent Garden',
-        "description": 'A xeric mixedgrass community for the hottest, driest, sandiest '
-                       'corner. Prickly pears, ball cactus and yucca store water through '
-                       'drought; winterfat and yellowbells add silver foliage and early '
-                       'colour where little else survives.',
-        "members": [
-            ('Plains Prickly Pear Cactus', 'groundcover', 0.0, 0.0),
-            ('Brittle Prickly-pear', 'groundcover', 1.5, 0.0),
-            ('Ball Cactus', 'herbaceous', 1.1, 1.8),
-            ('Soapweed Yucca', 'shrub_layer', -0.7, 1.3),
-            ('Winterfat', 'shrub_layer', -2.1, 0.0),
-            ('Yellowbells', 'pollinator', -0.8, -1.3),
-            ('Low Townsendia', 'pollinator', 1.1, -1.8),
-        ],
-    },
-    {
-        "name": 'Mixedgrass Late Aster & Goldenrod',
-        "description": 'A late-summer mixedgrass community of keystone asters and '
-                       'goldenrods that anchor the prairie pollinator and bird-seed web '
-                       'into October. Several host specialist butterflies; thistle adds '
-                       'deep nectar for large bees.',
-        "members": [
-            ('Elegant Goldenrod', 'pollinator', 0.0, 0.0),
-            ('Tall Goldenrod', 'pollinator', 1.5, 0.0),
-            ('Hairy Golden Aster', 'pollinator', 1.1, 1.8),
-            ('Hoary Aster', 'pollinator', -0.7, 1.3),
-            ('Many-flowered Aster (Tufted White Prairie Aster)', 'pollinator', -2.1, 0.0),
-            ('Western Meadow Aster', 'pollinator', -0.8, -1.3),
-            ('Prairie Thistle', 'pollinator', 1.1, -1.8),
-            # V3.05 (F199): native by VASCAN, and in no community until now.
-            ('Stiff Sunflower (Rhombic-leaved Sunflower)', 'pollinator', -2.2, 1.5),
+            ("Lilac Penstemon", 'pollinator', 1.1, -1.8),
         ],
     },
     {
         "name": 'Prairie Spring Ephemerals',
         "description": 'The first prairie flush — low spring bloomers that feed emerging '
                        'queen bees before the grasses close in. Buttercup, anemone, '
-                       'puccoon and onion open early; crowfoot violet hosts fritillary '
+                       'arnica and wild chives open early; western Canada violet hosts fritillary '
                        'caterpillars.',
         "members": [
             ('Prairie Buttercup', 'pollinator', 0.0, 0.0),
             ('Cut-leaved Anemone', 'pollinator', 1.5, 0.0),
-            ('Yellow Puccoon', 'pollinator', 1.1, 1.8),
+            ("Meadow Arnica", 'pollinator', 1.1, 1.8),
             ('Long-fruited Anemone', 'pollinator', -0.7, 1.3),
-            ('Crowfoot Violet', 'pollinator', -2.1, 0.0),
-            ('Prairie Onion (Textile Onion)', 'pollinator', -0.8, -1.3),
+            ("Western Canada Violet", 'pollinator', -2.1, 0.0),
+            ("Wild Chives", 'pollinator', -0.8, -1.3),
             ('Pale Agoseris', 'pollinator', 1.1, -1.8),
         ],
     },
     {
-        "name": 'Prairie Pollinator Showcase',
-        "description": 'A showy mixedgrass border of large-flowered natives bred by '
-                       'evolution for pollinators. Purple coneflower, penstemon, geranium '
-                       'and evening primrose offer deep nectar and abundant pollen across '
-                       'midsummer.',
-        "members": [
-            ('Purple Coneflower', 'pollinator', 0.0, 0.0),
-            ('Lilac Penstemon', 'pollinator', 1.5, 0.0),
-            ('Sticky Purple Geranium', 'pollinator', 1.1, 1.8),
-            ('White Evening Primrose', 'pollinator', -0.7, 1.3),
-            ('Yellow Paintbrush', 'pollinator', -2.1, 0.0),
-            ('Prairie Sagewort', 'pollinator', -0.8, -1.3),
-            ('Common Alumroot', 'pollinator', 1.1, -1.8),
-        ],
-    },
-    {
-        "name": 'Sagebrush Steppe',
-        "description": 'A silver-grey sagebrush steppe for dry, open ground — the larval '
-                       'home of the prairie swallowtail, which specializes on Artemisia. '
-                       'Rabbitbrush and broomweed add late nectar; prairie rose and the '
-                       'sages give cover and aromatic foliage.',
-        "members": [
-            ('Big Sagebrush', 'shrub_layer', 0.0, 0.0),
-            ('Silver Sagebrush', 'shrub_layer', 1.5, 0.0),
-            ('Plains Wormwood', 'soil_builder', 0.6, 2.0),
-            ('Rabbitbrush', 'shrub_layer', -1.2, 0.9),
-            ('Broomweed', 'shrub_layer', -1.7, -1.2),
-            ('Prairie Rose', 'shrub_layer', 0.5, -1.4),
-        ],
-    },
-    {
         "name": 'Prairie Grassland Forbs',
-        "description": 'A classic mixedgrass forb mix to interplant among bunchgrasses, '
-                       'from spring iris and balsamroot to cinquefoils, pussytoes and '
-                       'meadow-rue. Twin arnica and blue iris lift the display; the '
+        "description": 'A classic prairie forb mix to interplant among bunchgrasses, '
+                       'from purple avens and Philadelphia fleabane to cinquefoils, pussytoes and '
+                       'meadow-rue. Meadow arnica and purple avens lift the display; the '
                        'pussytoes host painted-lady caterpillars.',
         "members": [
-            ('Western Blue Iris', 'pollinator', 0.0, 0.0),
-            ('Balsamroot', 'pollinator', 1.5, 0.0),
-            ('Woolly Cinquefoil', 'pollinator', 1.5, 1.5),
+            ("Purple Avens (Water Avens)", 'pollinator', 0.0, 0.0),
+            ("Philadelphia Fleabane", 'pollinator', 1.5, 0.0),
+            ("Slender Cinquefoil (Graceful Cinquefoil)", 'pollinator', 1.5, 1.5),
             ('Tall Cinquefoil', 'pollinator', 0.0, 1.5),
             ('Field Pussytoes', 'groundcover', -1.5, 1.5),
             ('Small-leaved Everlasting (Small-leaved Pussytoes)', 'groundcover', -1.5, 0.0),
             ('Veiny Meadow-Rue', 'pollinator', -1.5, -1.5),
-            ('Twin Arnica', 'pollinator', -0.0, -1.5),
+            ("Meadow Arnica", 'pollinator', -0.0, -1.5),
             ("Three Flowered Avens (Prairie Smoke, Old Man's Whiskers)", 'pollinator', 1.5, -1.5),
-        ],
-    },
-    {
-        "name": 'Prairie Dry Edge Misc',
-        "description": 'A tough, self-seeding fringe for prairie path edges and disturbed '
-                       'dry ground. Nightshade, clematis vine and the cinquefoils colonise '
-                       'quickly; owl clover and yellow rattle are hemiparasites that keep '
-                       'aggressive grasses in check.',
-        "members": [
-            ('Cut-leaved Nightshade', 'herbaceous', 0.0, 0.0),
-            ('Wild Clematis', 'vine', 1.5, 0.0),
-            ('Prairie Cinquefoil', 'pollinator', 1.1, 1.8),
-            ('Yellow Owl Clover', 'pollinator', -0.7, 1.3),
-            ('Yellow Rattle', 'pollinator', -2.1, 0.0),
-            ('Saline Shooting Star', 'pollinator', -0.8, -1.3),
-            ('Lance-leaved Stonecrop', 'groundcover', 1.1, -1.8),
-        ],
-    },
-    {
-        "name": 'Montane Rock Garden',
-        "description": 'A jewel-box subalpine rock garden of cushion and mat plants for a '
-                       'sunny, sharply drained slope. Moss campion, rock jasmine and draba '
-                       'hug the stone; forget-me-not and townsendia bring alpine blue and '
-                       'white.',
-        "members": [
-            ('Alpine Rock Jasmine', 'pollinator', 0.0, 0.0),
-            ('Moss Campion', 'herbaceous', 1.5, 0.0),
-            ('Cushion Umbrella Plant', 'pollinator', 1.1, 1.8),
-            ('Golden Draba', 'pollinator', -0.7, 1.3),
-            ('Yellowstone Draba', 'pollinator', -2.1, 0.0),
-            ('Alpine Forget-me-not', 'pollinator', -0.8, -1.3),
-            ("Parry's Townsendia", 'pollinator', 1.1, -1.8),
-        ],
-    },
-    {
-        "name": 'Subalpine Wildflower Meadow',
-        "description": 'A high-country meadow of aster, harebell and penstemon for cool, '
-                       'bright sites. Rocky Mountain beeplant and the penstemons are '
-                       'magnets for bumble bees and hummingbirds; white camas adds early '
-                       'structure.',
-        "members": [
-            ('Alpine Aster', 'pollinator', 0.0, 0.0),
-            ('Alaska Harebell', 'pollinator', 1.5, 0.0),
-            ("Lyall's Penstemon", 'pollinator', 1.3, 1.6),
-            ('Alberta Penstemon', 'pollinator', -0.3, 1.5),
-            ('Mountain Death Camas (White Camas)', 'pollinator', -1.9, 0.9),
-            ('Scorpion Weed', 'pollinator', -1.4, -0.7),
-            ('Rocky Mountain Beeplant', 'nitrogen_fixer', -0.5, -2.0),
-            ('Sticky Goldenrod', 'pollinator', 0.9, -1.2),
-        ],
-    },
-    {
-        "name": 'Montane Lupine Slope',
-        "description": 'A nitrogen-building montane slope where lupines, locoweeds and '
-                       'sweetvetches fix nitrogen and feed specialist bees. Mountain avens '
-                       'add a low, nodulating mat; the whole guild stabilises thin '
-                       'foothill soils.',
-        "members": [
-            ('Silky Lupine', 'nitrogen_fixer', 0.0, 0.0),
-            ('Late Yellow Oxytropis', 'nitrogen_fixer', 1.5, 0.0),
-            ('Alpine Hedysarum (Bear Root)', 'nitrogen_fixer', 1.3, 1.6),
-            ('White Mountain Avens', 'groundcover', -1.9, 0.9),
-            ('Yellow Mountain Avens', 'groundcover', -1.4, -0.7),
-            ("MacKenzie's Hedysarum", 'nitrogen_fixer', -0.5, -2.0),
-            ('Boreal Oxytropis', 'nitrogen_fixer', 0.9, -1.2),
-        ],
-    },
-    {
-        "name": 'Montane Shade Forest Floor',
-        "description": 'A lodgepole-pine forest floor of arnicas and woodland forbs for '
-                       'cool shade. Heart-leaved and spear-leaved arnica light the duff '
-                       'yellow; baneberry and corydalis add fruit and early bloom; '
-                       "Jacob's-ladder draws bees.",
-        "members": [
-            ('Lodgepole Pine', 'overstory', 0.0, 0.0),
-            ('Heart-leaved Arnica', 'pollinator', 1.5, 0.0),
-            ('Spear-leaved Arnica', 'pollinator', 1.3, 1.6),
-            ('Pink Corydalis', 'pollinator', -0.3, 1.5),
-            ('Red Baneberry', 'herbaceous', -1.9, 0.9),
-            ('Western Meadowrue', 'pollinator', -1.4, -0.7),
-            ("Showy Jacob's-ladder", 'pollinator', -0.5, -2.0),
-            ('Bronze Bells', 'pollinator', 0.9, -1.2),
-        ],
-    },
-    {
-        "name": 'Foothills Fescue Wildflowers',
-        "description": 'A fescue-foothills wildflower mix for dry, sunny grassland '
-                       'transitions. Yellow flax, agoseris and meadow arnica carry colour; '
-                       'the oxytropis and locoweed fix nitrogen; sticky goldenrod is a '
-                       'keystone late bloomer.',
-        "members": [
-            ('Yellow Flax', 'pollinator', 0.0, 0.0),
-            ('Pale Agoseris', 'pollinator', 1.5, 0.0),
-            ('Meadow Arnica', 'pollinator', 1.5, 1.5),
-            ('Early Yellow Oxytropis', 'nitrogen_fixer', 0.0, 1.5),
-            ('Yellow-flowered Locoweed', 'nitrogen_fixer', -1.5, 1.5),
-            ('Common Twinpod', 'pollinator', -1.5, 0.0),
-            ('Sticky Goldenrod', 'pollinator', -1.5, -1.5),
-            ('Moss Phlox', 'groundcover', -0.0, -1.5),
-            ('Butte Primrose', 'pollinator', 1.5, -1.5),
-        ],
-    },
-    {
-        "name": 'Montane Scree Buckwheat & Beardtongue',
-        "description": 'A scree-and-ledge community of buckwheats, beardtongues and '
-                       'stonecrops for the harshest alpine drainage. Umbrella and yellow '
-                       'buckwheat feed specialist bees and host blues; sibbaldia and '
-                       'pussytoes hold the gravel.',
-        "members": [
-            ('Umbrella Buckwheat', 'pollinator', 0.0, 0.0),
-            ('Yellow Buckwheat', 'pollinator', 1.5, 0.0),
-            ('Rocky-Ledge Beardtongue', 'pollinator', 1.1, 1.8),
-            ('Creeping Sibbaldia', 'groundcover', -0.7, 1.3),
-            ('Little-leaved Alumroot', 'pollinator', -2.1, 0.0),
-            ('Showy Pussytoes', 'pollinator', -0.8, -1.3),
-            ('Roseroot', 'herbaceous', 1.1, -1.8),
-            # V3.05 (F199): native by VASCAN, and in no community until now.
-            ('Round-leaved Alumroot', 'pollinator', -2.2, 1.5),
-        ],
-    },
-    {
-        "name": 'Montane Woodland Beauty',
-        "description": 'An ornamental montane woodland edge under Douglas fir. Oregon '
-                       'grape and spirea give evergreen structure; the columbines and '
-                       'glacier lily bring jewel colour and hummingbird nectar to dappled '
-                       'shade.',
-        "members": [
-            ('Douglas Fir', 'overstory', 0.0, 0.0),
-            ('Creeping Oregon Grape', 'shrub_layer', 1.5, 0.0),
-            ('Birch-leaved Spirea', 'shrub_layer', 1.5, 1.5),
-            ('Red Columbine', 'pollinator', 0.0, 1.5),
-            ('Yellow Columbine', 'pollinator', -1.5, 1.5),
-            ('Glacier Lily', 'pollinator', -1.5, 0.0),
-            ('Hairy Arnica', 'pollinator', -1.5, -1.5),
-            ('Desert Shooting Star', 'pollinator', -0.0, -1.5),
-            ('Western Mountain Ash', 'shrub_layer', 1.5, -1.5),
-            # V3.05 (F199): native by VASCAN, and in no community until now.
-            ('False Box (Mountain Boxwood)', 'shrub_layer', 0.6, -2.9),
-        ],
-    },
-    {
-        "name": 'Montane Meadow Cicely & Pussytoes',
-        "description": 'A subalpine meadow ground layer of cicely, bistort and pussytoes '
-                       'that feeds early bees and hosts painted-lady caterpillars. Boreal '
-                       'yarrow and wood betony stitch the matrix; woodland strawberry adds '
-                       'fruit.',
-        "members": [
-            ('Mountain Sweet Cicely', 'soil_builder', 0.0, 0.0),
-            ('Alpine Bistort', 'herbaceous', 1.5, 0.0),
-            ('Wood Betony (Bracted Lousewort)', 'pollinator', 1.5, 1.5),
-            ('Pink Pussytoes', 'groundcover', 0.0, 1.5),
-            ('Littleleaf Pussytoes', 'groundcover', -1.5, 1.5),
-            ('Boreal Yarrow', 'pollinator', -1.5, 0.0),
-            ('Woodland Strawberry', 'groundcover', -1.5, -1.5),
-            ('Sitka Valerian', 'pollinator', -0.0, -1.5),
-            ('Yellow Angelica', 'pollinator', 1.5, -1.5),
         ],
     },
     {
@@ -2526,7 +2145,7 @@ EXAMPLE_POLYCULTURES = [
             ("Bebb's Willow", 'overstory', 0.0, 0.0),
             ('Narrow-leaf Willow', 'shrub_layer', 1.5, 0.0),
             ('Basket Willow', 'shrub_layer', 1.1, 1.8),
-            ('Short-capsuled Willow', 'shrub_layer', -0.7, 1.3),
+            ("Sandbar Willow", 'shrub_layer', -0.7, 1.3),
             ('Green Alder', 'shrub_layer', -2.1, 0.0),
             ('Thinleaf Alder', 'shrub_layer', -0.8, -1.3),
             ('Water Birch', 'understory', 1.1, -1.8),
@@ -2541,29 +2160,29 @@ EXAMPLE_POLYCULTURES = [
         "members": [
             ('Wild Black Currant', 'shrub_layer', 0.0, 0.0),
             ('Bracted Honeysuckle', 'shrub_layer', 1.5, 0.0),
-            ('Douglas Maple', 'shrub_layer', 1.5, 1.5),
-            ('Alder-leaved Buckthorn', 'shrub_layer', 0.0, 1.5),
+            ("Sandbar Willow", 'shrub_layer', 1.5, 1.5),
+            ("Northern Black Currant", 'shrub_layer', 0.0, 1.5),
             ('American Brooklime', 'herbaceous', -1.5, 1.5),
             ('Palmate-leaved Coltsfoot', 'soil_builder', -1.5, 0.0),
-            ('Trailing Raspberry', 'groundcover', -1.5, -1.5),
+            ("Dwarf Raspberry", 'groundcover', -1.5, -1.5),
             ('Ostrich Fern', 'other', -0.0, -1.5),
             ('Stinging Nettle', 'nitrogen_fixer', 1.5, -1.5),
         ],
     },
     {
-        "name": 'Wet Meadow Aster & Monkeyflower',
-        "description": 'A wet-meadow community of moisture-loving keystone asters and '
-                       'monkeyflowers. The swamp and willow asters host specialist '
-                       'butterflies and carry late nectar; monkeyflowers light the wet '
-                       'ground yellow and pink.',
+        "name": 'Wet Meadow Asters',
+        "description": 'A wet-meadow community of moisture-loving asters, all native '
+                       'around Edmonton. The swamp and willow asters host specialist '
+                       'butterflies and carry late nectar into the autumn, when little '
+                       'else is in flower.',
+        # "Wet Meadow Aster & Monkeyflower" until V3.59: neither monkeyflower
+        # is native around Edmonton, so both went and the name with them.
         "members": [
             ('Marsh Aster', 'pollinator', 0.0, 0.0),
             ('Purple-stemmed Tall Aster (Swamp Aster)', 'pollinator', 1.5, 0.0),
             ('Western Willow Aster', 'pollinator', 1.1, 1.8),
             ('Willow Aster', 'pollinator', -0.7, 1.3),
             ('Greater Northern Aster', 'pollinator', -2.1, 0.0),
-            ('Yellow Monkey Flower', 'pollinator', -0.8, -1.3),
-            ('Square-stem Monkeyflower', 'pollinator', 1.1, -1.8),
             # V3.05 (F199): native by VASCAN, and in no community until now.
             ('Flat-topped White Aster', 'pollinator', -2.2, 1.5),
         ],
@@ -2580,7 +2199,6 @@ EXAMPLE_POLYCULTURES = [
             ('Marsh Skullcap', 'pollinator', 1.3, 1.6),
             ('Purple Avens (Water Avens)', 'pollinator', -0.3, 1.5),
             ('Fringed Loosestrife', 'pollinator', -1.9, 0.9),
-            ('False Dragonhead (Western Obedient Plant)', 'pollinator', -1.4, -0.7),
             ('Marsh Violet', 'groundcover', -0.5, -2.0),
             ("Ledingham's False Dragonhead", 'pollinator', 0.9, -1.2),
         ],
@@ -2592,7 +2210,7 @@ EXAMPLE_POLYCULTURES = [
                        "bur-reed give structure above water; submergents and mare's-tail "
                        'clean it below.',
         "members": [
-            ('Broad-leaved Arrowhead', 'other', 0.0, 0.0),
+            ("Broad-leaved Water-plantain", 'other', 0.0, 0.0),
             ('Arum-leaved Arrowhead', 'other', 1.5, 0.0),
             ('Yellow Pond-lily', 'other', 1.5, 1.5),
             ('Buckbean', 'other', 0.0, 1.5),
@@ -2610,7 +2228,6 @@ EXAMPLE_POLYCULTURES = [
                        'oxygenate and feed waterfowl; duckweed and floating marigold shade '
                        'out algae.',
         "members": [
-            ('Canada Waterweed', 'other', 0.0, 0.0),
             ('Spiked Water-milfoil', 'other', 1.5, 0.0),
             ('Sago Pondweed', 'other', 1.3, 1.6),
             ('Common Bladderwort', 'other', -0.3, 1.5),
@@ -2618,26 +2235,6 @@ EXAMPLE_POLYCULTURES = [
             ('Swamp Horsetail', 'other', -1.4, -0.7),
             ('Broad-leaved Water-plantain', 'other', -0.5, -2.0),
             ('Ivy-leaved Duckweed', 'other', 0.9, -1.2),
-        ],
-    },
-    {
-        "name": 'Subalpine Streamside',
-        "description": 'A cool mountain streamside of spirea, larkspur and mimulus for '
-                       'moist, bright banks. Meadowsweet and mountain hollyhock feed '
-                       'bumble bees; river beauty and sneezeweed carry late bloom; a '
-                       'clematis vine scrambles the edge.',
-        "members": [
-            ('Meadowsweet', 'shrub_layer', 0.0, 0.0),
-            ('Tall Larkspur', 'pollinator', 1.5, 0.0),
-            ('Mountain Hollyhock', 'pollinator', 1.7, 1.2),
-            ('River Beauty', 'pollinator', 0.5, 1.4),
-            ('Sneezeweed', 'pollinator', -0.6, 2.0),
-            ("Tall Jacob's Ladder", 'pollinator', -1.2, 0.9),
-            ('Tall Lungwort (Blue Bells)', 'pollinator', -2.1, 0.0),
-            ('Blue Clematis', 'vine', -1.2, -0.9),
-            ('Leafy Aster', 'pollinator', -0.6, -2.0),
-            ('Pink Monkey Flower', 'pollinator', 0.5, -1.4),
-            ('Yellow Beardtongue', 'pollinator', 1.7, -1.2),
         ],
     },
     {
@@ -2663,9 +2260,8 @@ EXAMPLE_POLYCULTURES = [
                        'shade.',
         "members": [
             ('Early Blue Violet', 'groundcover', 0.0, 0.0),
-            ('Crowfoot Violet', 'pollinator', 1.5, 0.0),
             ('Western Canada Violet', 'pollinator', 0.6, 2.0),
-            ('Round-leaved Yellow Violet', 'pollinator', -1.2, 0.9),
+            ("Wild Bergamot", 'pollinator', -1.2, 0.9),
             ('Marsh Violet', 'groundcover', -1.7, -1.2),
             ('Woodland Strawberry', 'groundcover', 0.5, -1.4),
         ],
@@ -2676,61 +2272,6 @@ EXAMPLE_POLYCULTURES = [
     # saskatoon, hawthorn or mountain-ash, and the hawthorn thicket no juniper:
     # juniper is the alternate host of the Gymnosporangium rusts that spot
     # their fruit (F169).
-    {
-        "name": 'Prairie River Cottonwood Grove',
-        "description": 'The floodplain woodland of southern prairie rivers: plains '
-                       'cottonwood over peach-leaved willow and Manitoba maple, with '
-                       'dogwood and snowberry in the shrub layer and wild licorice '
-                       'fixing nitrogen on the sandbar edge. Poplars and willows are '
-                       'keystone hosts for caterpillars. It needs a water table the '
-                       'trees can reach, and room: plant it on acreage or a riverside '
-                       'lot, well away from buildings and sewer lines.',
-        "members": [
-            ('Plains Cottonwood', 'overstory', 0.0, 0.0),
-            ('Peach-leaved Willow', 'understory', 4.0, 2.0),
-            ('Manitoba Maple (Box Elder)', 'understory', -4.0, 2.0),
-            ('Red Osier Dogwood', 'shrub_layer', 2.5, -2.5),
-            ('Western Snowberry', 'shrub_layer', -2.5, -2.5),
-            ('Wild Licorice', 'nitrogen_fixer', 0.0, 3.5),
-            ('Canada Wild Rye', 'herbaceous', 0.0, -4.0),
-        ],
-        "variations": [
-            {
-                "name": 'Southwest Alberta River Grove',
-                "description": 'The Oldman River version: narrowleaf cottonwood '
-                               'over peach-leaved willow and water birch, the '
-                               'cottonwood of the southwestern Alberta foothills '
-                               'rivers.',
-                "members": [
-                    ('Narrowleaf Cottonwood', 'overstory', 0.0, 0.0),
-                    ('Peach-leaved Willow', 'understory', 4.0, 2.0),
-                    ('Water Birch', 'understory', -4.0, 2.0),
-                    ('Red Osier Dogwood', 'shrub_layer', 2.5, -2.5),
-                    ('Western Snowberry', 'shrub_layer', -2.5, -2.5),
-                    ('Wild Licorice', 'nitrogen_fixer', 0.0, 3.5),
-                    ('Canada Wild Rye', 'herbaceous', 0.0, -4.0),
-                ],
-            },
-            {
-                "name": 'Saskatchewan Valley Elm Grove',
-                "description": 'The elm and maple woodland of southeastern '
-                               'Saskatchewan river valleys. American elm is '
-                               'native only in Saskatchewan here, so this '
-                               'version is offered only there. Dutch elm '
-                               'disease is present, and Saskatchewan bans elm '
-                               'pruning from April through August.',
-                "members": [
-                    ('American Elm', 'overstory', 0.0, 0.0),
-                    ('Manitoba Maple (Box Elder)', 'understory', 4.0, 2.0),
-                    ('Peach-leaved Willow', 'understory', -4.0, 2.0),
-                    ('Red Osier Dogwood', 'shrub_layer', 2.5, -2.5),
-                    ('Western Snowberry', 'shrub_layer', -2.5, -2.5),
-                    ('Wild Licorice', 'nitrogen_fixer', 0.0, 3.5),
-                    ('Canada Wild Rye', 'herbaceous', 0.0, -4.0),
-                ],
-            },
-        ],
-    },
     {
         "name": 'Coulee Hawthorn Thicket',
         "description": 'The thorny shrub thicket of prairie coulees and aspen '
@@ -2746,25 +2287,6 @@ EXAMPLE_POLYCULTURES = [
             ('Silver Buffaloberry', 'nitrogen_fixer', 3.0, -1.5),
             ('Golden Bean', 'pollinator', -2.0, -1.5),
             ('Smooth Aster', 'pollinator', 1.0, 2.5),
-        ],
-    },
-    {
-        "name": 'Dry Foothills Juniper Slope',
-        "description": 'An evergreen dry slope from the southwestern Alberta '
-                       'foothills: Rocky Mountain juniper over silverberry and '
-                       'shrubby cinquefoil, with rough fescue and prairie smoke '
-                       'between. Waxwings and thrushes take the juniper\'s blue '
-                       'cones through winter. It deliberately has no saskatoon, '
-                       'hawthorn or mountain-ash: juniper carries the rusts that '
-                       'spot their fruit.',
-        "members": [
-            ('Rocky Mountain Juniper', 'overstory', 0.0, 0.0),
-            ('Silverberry', 'nitrogen_fixer', 2.5, 1.0),
-            ('Shrubby Cinquefoil', 'shrub_layer', -2.5, 1.0),
-            ('Creeping Juniper', 'groundcover', 1.5, -2.0),
-            ('Rough Fescue', 'herbaceous', -1.5, -2.0),
-            ("Three Flowered Avens (Prairie Smoke, Old Man's Whiskers)",
-             'pollinator', 0.0, 2.5),
         ],
     },
     # ── Communities of the Edmonton region (F221, V3.12) ─────────────────────
@@ -3040,10 +2562,28 @@ def seed_example_polycultures():
             solution=poly_def.get("solution") or text.get("solution"),
             origin="seed",
         )
-        for common_name, role, ox, oy in poly_def["members"]:
-            plant = _get_plant_by_name(common_name)
-            if plant:
-                add_polyculture_member(poly_id, plant["id"], role, ox, oy)
+        # Laid out by rule since V3.59 (src/community_layout.py): drifts by
+        # kind, nothing out of sight, largest first. The offsets typed beside
+        # each member are no longer read: they put one plant of each species
+        # under a tree whose circle hid most of them.
+        from src.community_layout import lay_out           # noqa: PLC0415
+        laid = lay_out([(n, role) for n, role, _x, _y in poly_def["members"]])
+        conn = get_connection()                  # one write a community
+        try:
+            for m in laid:
+                layer, functions = _role_to_layer_functions(
+                    _normalize_role(m["role"]))
+                conn.execute(
+                    "INSERT INTO polyculture_members (polyculture_id, plant_id, "
+                    "role, layer, functions, offset_x, offset_y, notes) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, '')",
+                    (poly_id, m["plant_id"],
+                     m["role"] or _derive_role(layer, functions or []), layer,
+                     json.dumps(list(functions or [])), m["offset_x"],
+                     m["offset_y"]))
+            conn.commit()
+        finally:
+            conn.close()
         return poly_id
 
     for polyculture_def in EXAMPLE_POLYCULTURES:

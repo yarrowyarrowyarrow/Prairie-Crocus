@@ -37,8 +37,8 @@ MAP_LETTERS: tuple = (
     ("S", "structures", "Go to Placement: Structures"),
     # D since V3.07, when Analysis became Design (it was A).
     ("D", "design", "Go to Design"),
-    # T went with the Planning tab, whose pages joined Design and Site in
-    # V3.08; Share has no letter of its own.
+    ("R", "turn", "Turn the community you are placing 45°"),   # V3.59
+    # T went with the Planning tab (V3.08); Share has no letter of its own.
 )
 
 #: The letters for tools behind View → Advanced tools (V3.21, MD-5): in the

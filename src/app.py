@@ -49,7 +49,7 @@ from src.controllers.map_events import MapEventRouter
 from src.controllers.generation import GenerationController
 from src.controllers.area_fill_controller import AreaFillController
 from src.project_store import ProjectStore
-from src import accessible_names, data_sources_flow, feedback_flow, keyboard_help
+from src import accessible_names, community_turn, data_sources_flow, feedback_flow, keyboard_help
 from src import indicator_style, target_size
 from src import month_tasks, onboarding_flow, start_flow
 from src.yard_overview import bed_area_m2
@@ -2358,6 +2358,7 @@ class MainWindow(QMainWindow):
             "communities": lambda: show(self.polyculture_panel),
             "structures": lambda: show(self.structure_panel),
             "design": lambda: show(self.analysis_panel),
+            "turn": lambda: community_turn.turn_pending(self),
         }.get(keyboard_help.letter_action(event))
         if act is not None:
             act()

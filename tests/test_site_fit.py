@@ -262,11 +262,20 @@ class TestTheYard(unittest.TestCase):
                 conn.commit()
 
     def test_the_bur_oak_community_is_not_offered_in_alberta(self):
+        """The seeded Bur Oak Community was retired in V3.59; a person's own
+        community holding Saskatchewan's oak is still kept out."""
+        from src.db import polycultures as P
+        oak = P._get_plant_by_name("Bur Oak")
+        rose = P._get_plant_by_name("Prickly Wild Rose")
+        cid = P.create_polyculture("Test oak corner", "", oak["id"])
+        self.addCleanup(P.delete_polyculture, cid)
+        P.add_polyculture_member(cid, oak["id"], "overstory", 0.0, 0.0)
+        P.add_polyculture_member(cid, rose["id"], "shrub_layer", 3.0, 0.0)
         comms = _api.list_polycultures()
         fit = llm._communities_for_site(
             comms, {"native_province": "AB"}, 216.0)
-        self.assertNotIn("Bur Oak Community", {c.get("name") for c in fit})
-        self.assertIn("Bur Oak Community", {c.get("name") for c in comms})
+        self.assertNotIn("Test oak corner", {c.get("name") for c in fit})
+        self.assertIn("Test oak corner", {c.get("name") for c in comms})
 
 
 if __name__ == "__main__":

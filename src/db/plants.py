@@ -555,7 +555,11 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # `head_length_cm`, `head_width_cm`, `head_count`, `head_color`,
 # `head_attitude`), and a reseed for the grasses, sedges, rushes and
 # grass-like water plants read (F268). Drawn by src/grass_habit.py.
-_SCHEMA_VERSION = 101
+# v102 (V3.59): no DDL. The seeded communities are the Edmonton region's:
+# 24 retired (named for other regions, or mostly plants from elsewhere), 30
+# given Edmonton natives for the plants not native here, and each laid out by
+# src/community_layout.py, drifts by kind instead of one plant of each species. A person's own communities are kept.
+_SCHEMA_VERSION = 102
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the

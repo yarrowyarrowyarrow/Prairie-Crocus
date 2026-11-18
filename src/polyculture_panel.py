@@ -56,7 +56,9 @@ def community_facts(entry: dict) -> str:
     V3.05). Unknown sun or moisture is left out rather than printed as
     "Unknown"."""
     n = int(entry.get("member_count") or 0)
-    parts = [f"{n} plant{'s' if n != 1 else ''}"]
+    kinds = int(entry.get("species_count") or n)
+    parts = [f"{n} plant{'s' if n != 1 else ''}"
+             + (f" of {kinds} kinds" if 1 < kinds < n else "")]
     facets = entry.get("facets") or {}
     from src.community_filters import facts_word
     for key in ("sun", "moisture"):
@@ -1734,8 +1736,8 @@ class PolyculturePanel(QWidget):
         roles_summary = ", ".join(
             f"{name} ({(role or '').replace('_', ' ')})"
             for name, role in entry["members_brief"][:5])
-        if entry["member_count"] > 5:
-            roles_summary += f", +{entry['member_count'] - 5} more"
+        if len(entry["members_brief"]) > 5:
+            roles_summary += f", +{len(entry['members_brief']) - 5} more"
         return (f"{entry['name']}\n{(entry['description'] or '')[:120]}"
                 f"\n\nMembers: {roles_summary}")
 

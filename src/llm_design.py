@@ -513,8 +513,10 @@ def _community_digest(limit: int = 14) -> str:
         members = []
         try:
             full = get_polyculture_by_id(c["id"]) if c.get("id") else None
-            members = [m.get("common_name") for m in (full or {}).get("members", [])
-                       if m.get("common_name")][:4]
+            # Each kind once: a seeded community plants drifts (V3.59).
+            members = list(dict.fromkeys(
+                m.get("common_name") for m in (full or {}).get("members", [])
+                if m.get("common_name")))[:4]
         except Exception:  # noqa: BLE001
             members = []
         line = f"- {name}"

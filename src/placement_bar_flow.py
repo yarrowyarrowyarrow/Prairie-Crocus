@@ -37,6 +37,8 @@ def install(main) -> None:
     bar.add_page("plants", main.plant_panel.placement_controls(),
                  accessory=main.plant_panel.placement_accessory())
     bar.add_page("communities", main.polyculture_panel.placement_controls())
+    from src import community_turn          # Turn 45° on the page (V3.59)
+    community_turn.install(main)
     bar.done_requested.connect(main._cancel_draw)
     bar.undo_requested.connect(lambda: main._do_undo())
     main.plant_panel.placed_counts_changed.connect(
