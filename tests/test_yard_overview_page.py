@@ -87,17 +87,21 @@ class TheOverviewPage(unittest.TestCase):
         self.win.overview_page.buttons[key].click()
         self._app.processEvents()
 
-    def test_first_and_current_and_the_report_card_waits(self):
+    def test_first_then_the_year_then_planted(self):
+        """V3.55 (F270): the simple app's Design tab is Overview, Through the
+        year, Planted; the Report card is retired."""
         tabs = self.win.analysis_panel._tabs
         self.assertIs(tabs.widget(0), self.win.overview_page)
         self.assertEqual(tabs.tabText(0), "Overview")
-        stats = self.win.on_this_design._stats_page
-        self.assertFalse(tabs.isTabVisible(tabs.indexOf(stats)))
+        self.assertIs(tabs.widget(1), self.win.analysis_panel._food)
+        self.assertEqual(tabs.tabText(1), "Through the year")
+        self.assertTrue(tabs.isTabVisible(1))
+        self.assertFalse(hasattr(self.win.on_this_design, "_stats_page"))
 
     def test_six_cards_and_no_sideways_scroll(self):
         page = self.win.overview_page
         self.assertEqual(sorted(page.cards), sorted(
-            ["food", "flowers", "native", "cover", "street", "cost"]))
+            ["flowers", "food", "native", "cover", "street", "cost"]))
         self.assertEqual(page.horizontalScrollBar().maximum(), 0)
         # Fonts differ by machine (CI's DejaVu is wider): no card may need
         # more than the panel's narrowest width, 320 px less the margins.
@@ -106,23 +110,34 @@ class TheOverviewPage(unittest.TestCase):
         for card in page.cards.values():
             self.assertIn(", ", card.accessibleName())
 
-    def test_the_cost_agrees_with_the_report_card(self):
-        """§4 rule 5: one number, one source."""
-        from src.sourcing import format_cost
-        cost = self.win.on_this_design._cost_breakdown["plants"]
+    def test_the_cost_agrees_with_the_buy_list(self):
+        """§4 rule 5: one number, one source (the Report card said it too
+        until V3.55)."""
+        from src.project_store import ProjectStore
+        from src.sourcing import estimate_cost, format_cost
+        cost = estimate_cost(ProjectStore(self.win._project).placed_plants)
         line = next(it for it in __import__(
             "src.yard_overview_items", fromlist=["x"]).overview(
                 self.win._project) if it.key == "cost").lines[0]
         self.assertIn(format_cost(*cost), line)
 
     def test_find_an_october_flower_sets_the_filter(self):
-        self._press("flowers")
+        # The example has flowered into October since V3.54, so its card has
+        # no gap to fill; the action a gap gives is run as its button would.
+        from src import yard_overview_flow
+        yard_overview_flow.run_action(self.win, "plants:blooms_in=10")
+        self._app.processEvents()
         picker = self.win.plant_panel.picker
         self.assertEqual(picker.combos["bloom_months"].checked_keys(), ["10"])
         picker.set_facet("bloom_months", [])
 
     def test_draw_a_mown_strip_opens_shape_on_lawn(self):
-        self._press("street")
+        # The example has all four signs of care since V3.54, so its card has
+        # no step; the action a missing mown strip gives is run as its button
+        # would.
+        from src import yard_overview_flow
+        yard_overview_flow.run_action(self.win, "shape:Lawn Area")
+        self._app.processEvents()
         tool = self.win.toolbar.shape_tool
         self.assertEqual(tool._type.currentText(), "Lawn Area")
         self.win.toolbar._shape_btn.menu().close()
@@ -132,11 +147,27 @@ class TheOverviewPage(unittest.TestCase):
             self._press("cost")
         export.assert_called_once()
 
-    def test_more_detail_turns_advanced_on_and_shows_food(self):
+    def test_more_detail_turns_advanced_on_and_shows_the_hours(self):
         from src import advanced_tools_flow, yard_overview_flow
         with mock.patch.object(advanced_tools_flow, "set_and_apply") as on:
-            yard_overview_flow.run_action(self.win, "advanced:food")
+            yard_overview_flow.run_action(self.win, "advanced:over_time")
         on.assert_called_once_with(self.win, True)
+
+    def test_the_flowers_and_food_links_open_the_year_and_leave_the_mode(self):
+        """V3.55: Through the year is in the simple app, so its two doors
+        turn no switch (they turned the Advanced tools on to reach Food)."""
+        from src import advanced_tools_flow
+        for key in ("flowers", "food"):
+            card = next(it for it in __import__(
+                "src.yard_overview_items", fromlist=["x"]).overview(
+                    self.win._project) if it.key == key)
+            self.assertIn("page:year", (card.target,) + tuple(card.more))
+        with mock.patch.object(advanced_tools_flow, "set_and_apply") as on:
+            self._press("food")
+        on.assert_not_called()
+        self.assertIs(self.win.analysis_panel._tabs.currentWidget(),
+                      self.win.analysis_panel._food)
+        self._show()
 
     def test_see_it_in_3d_opens_the_preview_from_the_street(self):
         """The owner's M2 and D1 (V3.44). U21: three Overview buttons switched
@@ -162,13 +193,17 @@ class TheOverviewPage(unittest.TestCase):
         from src import yard_overview, yard_overview_dialogs
         before = len(self.win._placed_plants)
         plan = yard_overview.fill_plan(self.win._project)
-        self.assertGreater(len(plan["records"]), 50)
+        self.assertGreater(len(plan["records"]), 20)   # 39 on V3.54's example
 
         def plant(dialog):
             dialog.buttons["plant"].click()
             return 1
+        # The example is about three quarters covered since V3.54, so its card
+        # has no step; the action a thin cover gives is run as its button would.
+        from src import yard_overview_flow
         with mock.patch.object(yard_overview_dialogs, "_exec", plant):
-            self._press("cover")
+            yard_overview_flow.run_action(self.win, "fill_gaps")
+            self._app.processEvents()
         self.assertEqual(len(self.win._placed_plants),
                          before + len(plan["records"]))
         # The plan's acceptance: the item turns Looks good (70%, O3).

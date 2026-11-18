@@ -6,10 +6,11 @@ Builds:
   A4: Wind / Windbreak effect     } V3.07 (src/side_panel_layout.py moves them)
   H1: Habitat Value Score (Tallamy-style composite scoring of native habitat quality)
   F51: This Month (phenology), the first section of Design › Over time (V3.08)
-  Food: src/food_page.py, the Bees page and the Wildlife and Harvest
-        calendars as one (V3.08)
-The Design tab's other pages (Report card, Planted, Over time, Water) are built
-by other panels and put in this strip by src/side_panel_layout.py.
+  Through the year: src/food_page.py, the Bees page, the Wildlife and Harvest
+        calendars (V3.08) and This Month (V3.55) as one; Food until V3.55
+The Design tab's other pages (Overview, Planted, Over time, Water) are built
+by other panels and put in this strip by src/side_panel_layout.py. The Report
+card was retired in V3.55 (F270).
 
 (The Sector, Season and Forage tabs were retired in V2.25: sun and wind cover
 the sector wedges' job, the season tile filter added no design value, and the
@@ -25,7 +26,7 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QComboBox, QSpinBox,
     QFormLayout, QSlider, QCheckBox,
-    QGroupBox, QFrame, QDial, QScrollArea,
+    QGroupBox, QFrame, QDial, QScrollArea, QToolButton,
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QThreadPool, QRunnable, QTimer
 from PyQt6.QtGui import QPixmap
@@ -121,7 +122,8 @@ class AnalysisPanel(QWidget):
         # generator there).
         self._build_wind_tab()
         self._build_habitat_tab()
-        self._build_phenology_tab()
+        # This Month went to Design › Through the year in V3.55 (F270): one
+        # calendar, not two.
         # Field Study / Lessons / Present moved to the top-level Learn tab
         # (src/learn_panel.py, V2.25) — teaching tools, not analysis.
         self._build_food_tab()
@@ -516,6 +518,9 @@ class AnalysisPanel(QWidget):
             return
         self._sun_lat, self._sun_lng = lat, lng
         self._reclamp_time_to_date()
+        # Through the year names the animals recorded near the pin (V3.55).
+        self._food.set_site(lat, lng)
+        self._live.poke()
         # The Wind tab's empty state asked for a pin that was already down
         # (V3.05 audit); say what is actually missing. Since V3.07 the rose
         # comes with the pin's site data (src/wind_flow.py).
@@ -881,21 +886,6 @@ class AnalysisPanel(QWidget):
     #  F51 — Phenology "what's happening now" dashboard
     # ═════════════════════════════════════════════════════════════════════════
 
-    def _build_phenology_tab(self):
-        from src.phenology_widget import PhenologyWidget
-        page = QScrollArea()
-        page.setWidgetResizable(True)
-        page.setFrameShape(QFrame.Shape.NoFrame)
-        # Design-aware: reads the live placed-plant list so "this month" is the
-        # user's own design.
-        self._phenology = PhenologyWidget(
-            plants_provider=lambda: self._placed_plants)
-        page.setWidget(self._phenology)
-        # Design › Over time takes the dashboard since V3.08
-        # (src/side_panel_layout.py), first of its three sections.
-        self._phenology_page = page
-        self._tabs.addTab(page, "This Month")
-
     # ═════════════════════════════════════════════════════════════════════════
     #  H1 — Habitat Value Score
     # ═════════════════════════════════════════════════════════════════════════
@@ -914,8 +904,8 @@ class AnalysisPanel(QWidget):
         layout.setSpacing(8)
 
         info = QLabel(
-            "How much habitat the design provides, out of 100; what the score "
-            "is made of is below it."
+            "How much habitat the design provides, out of 100, and what would "
+            "raise it. Who it feeds, month by month, is on Through the year."
         )
         info.setWordWrap(True)
         info.setStyleSheet("color: #90a4ae; font-size: 12px;")
@@ -941,6 +931,24 @@ class AnalysisPanel(QWidget):
             "background: #1a2a1a; border: 1px solid #2e4a2e; border-radius: 4px;"
         )
         layout.addWidget(self._lawn_counterfactual_label)
+
+        # What would raise it (V3.55): the Report card's "Where to grow next"
+        # (V2.13), moved here when the Report card was retired (F270), so the
+        # score reads as a to-do list, not a verdict.
+        raise_head = QLabel("What would raise it")
+        raise_head.setStyleSheet(
+            "color: #a5d6a7; font-size: 12px; font-weight: bold; padding: 4px 0 2px 0;")
+        layout.addWidget(raise_head)
+        self._raise_text = QLabel("")
+        self._raise_text.setWordWrap(True)
+        self._raise_text.setTextFormat(Qt.TextFormat.RichText)
+        self._raise_text.setStyleSheet(
+            "color: #c8e6c9; font-size: 12px; padding: 8px; "
+            "background: #1a2a1a; border: 1px solid #2e4a2e; border-radius: 4px;")
+        layout.addWidget(self._raise_text)
+
+        # ── How sure are we? (F13 + F14) — the confidence block ───────────
+        self._build_confidence_block(layout)
 
         # Species galleries (F11 / I1) — photos that make the value tangible.
         # "Species doing the work" = the plants (keystone / host / bird-food
@@ -977,7 +985,19 @@ class AnalysisPanel(QWidget):
          self._fauna_gallery_row) = _gallery_strip("Species supported")
         self.galleryImageReady.connect(self._on_gallery_image_ready)
 
-        # Breakdown
+        # Breakdown, folded (V3.55): the detail behind the number, for whoever
+        # asks, after what the number means and what would raise it.
+        self._breakdown_toggle = QToolButton()
+        self._breakdown_toggle.setText("What the score is made of")
+        self._breakdown_toggle.setCheckable(True)
+        self._breakdown_toggle.setAutoRaise(True)
+        self._breakdown_toggle.setToolButtonStyle(
+            Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        self._breakdown_toggle.setArrowType(Qt.ArrowType.RightArrow)
+        self._breakdown_toggle.setStyleSheet(
+            "QToolButton { color: #a5d6a7; font-size: 12px; font-weight: bold; "
+            "border: none; padding: 4px 0; }")
+        layout.addWidget(self._breakdown_toggle)
         self._habitat_breakdown = QLabel("")
         self._habitat_breakdown.setWordWrap(True)
         self._habitat_breakdown.setStyleSheet(
@@ -986,11 +1006,15 @@ class AnalysisPanel(QWidget):
             "font-family: 'Consolas', 'Courier New', monospace;"
         )
         self._habitat_breakdown.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self._habitat_breakdown.setMinimumHeight(220)
+        self._habitat_breakdown.setVisible(False)
         layout.addWidget(self._habitat_breakdown)
 
-        # ── How sure are we? (F13 + F14) — the confidence block ───────────
-        self._build_confidence_block(layout)
+        def _fold(on: bool):
+            self._habitat_breakdown.setVisible(on)
+            self._breakdown_toggle.setArrowType(
+                Qt.ArrowType.DownArrow if on else Qt.ArrowType.RightArrow)
+        self._breakdown_toggle.toggled.connect(_fold)
+
 
         # ── Relationship web (F5) — the design drawn as a living network ───
         self._build_relationship_web_block(layout)
@@ -1021,21 +1045,6 @@ class AnalysisPanel(QWidget):
             "color: #ffe0b2; font-size: 12px; padding: 8px; "
             "background: #241a12; border: 1px solid #5a3a1e; border-radius: 4px;")
         layout.addWidget(self._pull_result)
-
-        # ── Feed-a-chickadee provisioning scenario (F47) ──────────────────────
-        chickadee_label = QLabel("Feed a chickadee brood")
-        chickadee_label.setStyleSheet(
-            "color: #a5d6a7; font-size: 12px; font-weight: bold; padding: 6px 0 2px 0;")
-        layout.addWidget(chickadee_label)
-
-        self._chickadee_result = QLabel(
-            "One clutch of chickadees needs 6,000–9,000 caterpillars to fledge. "
-            "Place plants to see whether your host plants could feed a brood.")
-        self._chickadee_result.setWordWrap(True)
-        self._chickadee_result.setStyleSheet(
-            "color: #cfe3f0; font-size: 12px; padding: 8px; "
-            "background: #12202a; border: 1px solid #1e4a5a; border-radius: 4px;")
-        layout.addWidget(self._chickadee_result)
 
         # Reference link
         # R37 (V3.20, OV-11): the finding is about caterpillars, not
@@ -1242,20 +1251,10 @@ class AnalysisPanel(QWidget):
         self._web_summary.setVisible(True)
         self.relationship_overlay_requested.emit(graph)
 
-    def show_habitat_tab(self):
-        """Raise the Habitat Value page (the report card's habitat-value
-        deep-link, V2.13), by the page and not its place in the strip, which
-        V3.07 changed."""
-        from src.keyboard_help import show_panel
-        show_panel(self._habitat_page)
-
-    # ═════════════════════════════════════════════════════════════════════════
-    #  Food — who the design feeds (V3.08; the Bees page, F37, generalised)
-    # ═════════════════════════════════════════════════════════════════════════
-
     def _build_food_tab(self):
-        """Design › Food (src/food_page.py): the owner's "what it feeds" page,
-        the Bees page and Planning's Wildlife and Harvest calendars in one. It
+        """Design › Through the year (src/food_page.py): the owner's "what it
+        feeds" page, the Bees page, Planning's Wildlife and Harvest calendars
+        and, since V3.55, This Month, in one; called Food until V3.55. It
         borrows this panel's photo warmer, and its map view rides the Bees
         page's two signals, which app.py already sends to the map."""
         from src.food_page import FoodPage
@@ -1263,7 +1262,7 @@ class AnalysisPanel(QWidget):
         self._food.map_overlay_requested.connect(self.bee_map_overlay_requested)
         self._food.map_overlay_cleared.connect(self.bee_map_overlay_cleared)
         self.galleryImageReady.connect(self._food.on_image_ready)
-        self._tabs.addTab(self._food, "Food")
+        self._tabs.addTab(self._food, "Through the year")
 
     # ── Pull-a-plant impact simulator (F46) ───────────────────────────────
 
@@ -1349,42 +1348,11 @@ class AnalysisPanel(QWidget):
             f"</span>{lost_line}")
         self._pull_result.setVisible(True)
 
-    # ── Feed-a-chickadee provisioning scenario (F47) ──────────────────────
-
-    def _update_chickadee_scenario(self):
-        """Refresh the chickadee-brood provisioning story from the live design."""
-        label = getattr(self, "_chickadee_result", None)
-        if label is None:
-            return
-        try:
-            from src.chickadee_scenario import chickadee_provision
-            r = chickadee_provision(self._placed_plants or [])
-        except Exception:      # noqa: BLE001 — never let the scenario break the tab
-            return
-        colors = {"clears": "#a5d6a7", "partway": "#ffe0b2",
-                  "short": "#ffab91", "none": "#cfe3f0"}
-        c = colors.get(r["status"], "#cfe3f0")
-        body = f"<span style='color:{c}'>{r['verdict']}</span>"
-        if r["host_plants"]:
-            body += (f"<br><span style='color:#9fbccf; font-size:12px'>"
-                     f"Capacity ≈ {r['caterpillars_low']:,}–"
-                     f"{r['caterpillars_high']:,} caterpillars from "
-                     f"{r['n_host_species']} host species.</span>")
-        label.setText(body)
-
-    # Structure ids that contribute to habitat value — re-exported from
-    # src/habitat_score.py (where the scoring maths lives now) so the
-    # tips builder below and the score stay in lock-step.
-    from src.habitat_score import HABITAT_STRUCTURE_IDS as _HABITAT_STRUCTURE_IDS
-
     def set_placed_plants(self, plants: list[dict]):
         """Update the list of placed plants (from app.py)."""
         self._placed_plants = plants
         # Food fills itself when it is on screen (the LiveRefresh poke below).
         self._food.set_placed_plants(plants)
-        # Phenology dashboard likewise reads the live design.
-        if hasattr(self, "_phenology"):
-            self._phenology.refresh()
         # The relationship web is a view of the design, so it follows every
         # edit — placing a keystone shrub should visibly grow the network (F5).
         self._refresh_relationship_web()
@@ -1485,6 +1453,21 @@ class AnalysisPanel(QWidget):
         lbl.setText(html)
         lbl.setVisible(True)
 
+    def _render_raise(self, result) -> None:
+        """What would raise the score (``habitat_score.habitat_nudges``): the
+        biggest gaps as ranged, actionable suggestions (P6/P9)."""
+        try:
+            from src.habitat_score import habitat_nudges
+            nudges = habitat_nudges(result, limit=3)
+        except Exception:                                  # noqa: BLE001
+            nudges = []
+        if not nudges:
+            self._raise_text.setText(
+                "This design already covers the habitat basics.")
+            return
+        self._raise_text.setText("".join(
+            f"<div style='padding:1px 0;'>• {nd['text']}</div>" for nd in nudges))
+
     def _calc_habitat_score(self):
         # Scoring maths moved to src/habitat_score.py (Chunk 6) so the
         # headless scripting API and this panel share one implementation.
@@ -1507,6 +1490,7 @@ class AnalysisPanel(QWidget):
         if result is None:
             self._habitat_score_label.setText("—")
             self._habitat_breakdown.setText("Place some plants and structures first.")
+            self._raise_text.setText("Place some plants and structures first.")
             self._lawn_counterfactual_label.setVisible(False)
             return
 
@@ -1534,7 +1518,7 @@ class AnalysisPanel(QWidget):
         self._last_habitat_result = result
         self._render_lawn_counterfactual(result)
         self._populate_pull_combo()
-        self._update_chickadee_scenario()
+        self._render_raise(result)
 
         # Species photos that make the value tangible (F11 / I1): the plants
         # doing the work and the fauna they support.
@@ -1560,7 +1544,9 @@ class AnalysisPanel(QWidget):
             *self._layer_lines(result),
             "",
             f"Habitat structures {len(result.habitat_struct_types):4d}     {result.score_structs:4.1f} / 10",
-            f"  ({', '.join(result.habitat_struct_types) or '—'})",
+            "  (" + (", ".join(t.replace("_", " ")
+                               for t in result.habitat_struct_types) or "—")
+            + ")",
             "",
             f"Bloom continuity   {len(result.bloom_months)}/7 mo   {result.score_bloom:4.1f} / 20",
             "",
@@ -1571,7 +1557,7 @@ class AnalysisPanel(QWidget):
             # across all taxa (schema v20 expansion).
             f"Lepidoptera supported  {result.n_lepidoptera_supported:4d}    (larval-host species)",
         ]
-        # Food edges only, as Design › Food and the Report card count them
+        # Food edges only, as Through the year and the Overview count them
         # (V3.20, OV-5); "supported" claimed more than the records say.
         try:
             from src.what_it_feeds import food_counts, group_words
@@ -1611,10 +1597,13 @@ class AnalysisPanel(QWidget):
             _scored = int(food_web.get("species_scored") or 0)
             _known = int(food_web.get("species_with_records") or 0)
             if _scored and _known < _scored:
+                _rest = _scored - _known
                 lines.append(
                     f"  Wildlife records exist for {_known} of your {_scored} "
-                    f"species — the other {_scored - _known} are not known to "
-                    f"support nothing, they are simply not recorded yet.")
+                    f"species. Nothing is recorded yet for the other {_rest}"
+                    f"{'' if _rest == 1 else ' together'}: a gap in the "
+                    f"records, not a sign {'it feeds' if _rest == 1 else 'they feed'} "
+                    f"nothing.")
         if result.gap_months:
             month_names = ["Jan","Feb","Mar","Apr","May","Jun",
                            "Jul","Aug","Sep","Oct","Nov","Dec"]

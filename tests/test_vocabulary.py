@@ -56,6 +56,8 @@ SIMPLE_MODULES = (
     "scene3d_named_groups.py", "scene3d_stops.py", "scene3d_creatures.py",
     # V3.46 (F263): what the 3D preview says about the season and the years.
     "scene_season.py", "scene_timeline.py",
+    # V3.55 (F270): Design › Through the year is in the simple app.
+    "food_page.py", "through_the_year.py",
 )
 
 #: Today's uses, ``{(module, word): count}``: WD-2 to WD-6 take these out.

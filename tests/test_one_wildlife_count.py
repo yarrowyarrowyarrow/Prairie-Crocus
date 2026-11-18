@@ -66,11 +66,12 @@ class ThreePagesOneNumber(unittest.TestCase):
         self.assertIsNotNone(found, text[:300])
         return int(found.group(1))
 
-    def test_report_card_habitat_and_food_agree(self):
+    def test_the_year_habitat_and_the_overview_agree(self):
+        """The Report card was the third page until V3.55 (F270); the
+        Overview says the number now."""
         from src.analysis_panel import AnalysisPanel
         from src.food_page import FoodPage
-        from src.habitat_score import compute_habitat_score
-        from src.on_this_design_panel import OnThisDesignPanel
+        from src.what_it_feeds import food_counts, food_words
 
         food = FoodPage()
         self.addCleanup(food.close)
@@ -78,11 +79,8 @@ class ThreePagesOneNumber(unittest.TestCase):
         food.refresh()
         on_food = self._number(food._summary_line.text())
 
-        card = OnThisDesignPanel()
-        self.addCleanup(card.close)
-        card.set_design_data(self.placed)
-        card.set_habitat_value(compute_habitat_score(self.placed, []))
-        on_card = self._number(card._value_block_html())
+        on_overview = self._number(food_words(food_counts(
+            {p["plant_id"] for p in self.placed})))
 
         habitat = AnalysisPanel()
         self.addCleanup(habitat.close)
@@ -90,7 +88,7 @@ class ThreePagesOneNumber(unittest.TestCase):
         habitat._calc_habitat_score()
         on_habitat = self._number(habitat._habitat_breakdown.text())
 
-        self.assertEqual((on_card, on_habitat), (on_food, on_food))
+        self.assertEqual((on_overview, on_habitat), (on_food, on_food))
         self.assertGreater(on_food, 0)
 
 

@@ -165,16 +165,3 @@ def browse_communities(main, eco_keys) -> None:
     from src.keyboard_help import show_panel
     show_panel(main.polyculture_panel)
     main.polyculture_panel.set_habitat_filter(list(eco_keys or []))
-
-
-def open_habitat_analysis(main) -> None:
-    """The report card's 'Habitat value ›' deep-link → Design › Habitat."""
-    main.analysis_panel.show_habitat_tab()
-
-
-def open_buying(main) -> None:
-    """The report card's 'Estimated cost ›' deep-link → Share › Export, where
-    the buy list is exported and Where to buy sits (V3.08; it opened the
-    Planning tab, which had no page about cost)."""
-    from src.keyboard_help import show_panel
-    show_panel(main.share_panel.export_page)

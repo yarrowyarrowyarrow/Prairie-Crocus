@@ -1049,8 +1049,8 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertEqual(self._labels(win._placement_tabs),
                          ["Plants", "Communities", "Structures"])
         self.assertEqual(self._labels(win.analysis_panel._tabs),
-                         ["Overview", "Report card", "Planted", "Habitat", "Food",
-                          "Over time", "Water"])
+                         ["Overview", "Through the year", "Planted",
+                          "Habitat", "Over time", "Water"])
         self.assertEqual(self._labels(win.on_this_design._tabs),
                          ["Species", "Communities"])
         self.assertEqual(self._labels(win.share_panel._tabs),
@@ -1063,8 +1063,9 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertIs(win.analysis_panel._tabs.widget(0),
                       win.overview_page)                       # V3.27, OV-2
         self.assertIs(win.analysis_panel._tabs.widget(1),
-                      win.on_this_design._stats_page)
-        self.assertIs(win.analysis_panel._tabs.widget(6),
+                      win.analysis_panel._food)               # V3.55, F270
+        self.assertIs(win.analysis_panel._tabs.widget(2), win.on_this_design)
+        self.assertIs(win.analysis_panel._tabs.widget(5),
                       win.planning_panel._water_page)
         self.assertIs(win.share_panel._tabs.widget(0),
                       win.learn_panel._present_page)
@@ -1073,14 +1074,13 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertIsNone(win.planning_panel._tabs)
         self.assertFalse(win.planning_panel.isVisibleTo(win))
 
-    def test_over_time_reads_this_month_then_the_years_then_the_hours(self):
+    def test_over_time_reads_the_years_then_the_hours(self):
         from src.side_panel_layout import OVER_TIME
         win = self._win
         page = win.analysis_panel._over_time_page
         self.assertEqual(tuple(page.sections), OVER_TIME)
         self.assertEqual(list(page.sections.values()),
-                         [win.analysis_panel._phenology,
-                          win.planning_panel._timeline_page,
+                         [win.planning_panel._timeline_page,
                           win.planning_panel._maint_page])
         lay = page.widget().layout()
         at = [lay.indexOf(w) for w in page.sections.values()]
@@ -1183,16 +1183,6 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertGreater(tree.topLevelItemCount(), 20)
         self.assertEqual(cut_cells(tree, columns=(0, 1)), [])
 
-    def test_the_cost_link_opens_where_the_buy_list_is(self):
-        from PyQt6.QtCore import QUrl
-        win = self._win
-        self.addCleanup(win._side_tabs.setCurrentIndex,
-                        win._side_tabs.currentIndex())
-        win.on_this_design._on_stats_anchor(QUrl("sap:buy"))
-        self.assertIs(win._side_tabs.currentWidget(), win.share_panel)
-        self.assertIs(win.share_panel._tabs.currentWidget(),
-                      win.share_panel.export_page)
-
     def test_a_jump_opens_its_page_from_anywhere(self):
         """Every jump goes by the page, through every level it is in: three
         lookups that went by a page's index would have opened the wrong one."""
@@ -1203,10 +1193,10 @@ class TestMainWindowSmoke(unittest.TestCase):
             self.addCleanup(tabs.setCurrentIndex, tabs.currentIndex())
         show_panel(win.analysis_panel._wind_page)          # Site › Wind
         self.assertIs(win._side_tabs.currentWidget(), win.site_panel)
-        win.analysis_panel.show_habitat_tab()               # the report card's link
+        show_panel(win.analysis_panel._food)               # the Overview's link
         self.assertIs(win._side_tabs.currentWidget(), win.analysis_panel)
         self.assertIs(win.analysis_panel._tabs.currentWidget(),
-                      win.analysis_panel._habitat_page)
+                      win.analysis_panel._food)
         win.site_panel.focus_address_search()               # the pin step
         self.assertIs(win._side_tabs.currentWidget(), win.site_panel)
         self.assertIs(win.site_panel._tabs.currentWidget(),
@@ -1224,7 +1214,7 @@ class TestMainWindowSmoke(unittest.TestCase):
         panel.set_placed_plants([])
         panel._live.fill_now()
         self.assertEqual(food._summary_line.text(),
-                         "Place plants to see who they feed.")
+                         "Place plants to see their year, and who they feed.")
         show_panel(panel._habitat_page)
         food._summary_line.setText("")
         panel.set_placed_plants([])

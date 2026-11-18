@@ -6,10 +6,10 @@ Design principle P6 — see docs/DESIGN_PHILOSOPHY.md.
 
 The Design tab had six pages and two thousand words, two habitat scores for one
 design and no line saying how much of the bed would be planted. The overview
-answers the questions a homeowner brings, always in this order (O7): who it
-feeds, when it flowers, whether the plants belong here, how full it will be,
-how it will look from the street, and what it will take. Each item has a status
-word, a few lines and one action.
+answers the questions a homeowner brings, always in this order (O7, amended by
+the owner in V3.55): when it flowers, who it feeds, whether the plants belong
+here, how full it will be, how it will look from the street, and what it will
+take. Each item has a status word, a few lines and one action.
 
 **One number, one source** (§4 rule 5): every figure is computed by the function
 the advanced page and the PDF use (``what_it_feeds``, ``design_native``,
@@ -17,7 +17,11 @@ the advanced page and the PDF use (``what_it_feeds``, ``design_native``,
 ``yard_overview``), never restated here. **No score** (O1): the 0–100 number
 stays on the advanced pages. **Records, not claims** (O4, P9): "recorded as
 food for", with the fixed caveat, and an animal is named only by an English
-name (WD-7). No bylaw sentence (O5): a pack may carry ``overview.street_rule``
+name (WD-7). Since V3.55 (F270) the food item names a few animals rather than
+counting them by group, says whether the plants grow enough caterpillars for a
+nest of chickadees, and has no "few birds" flag, which the catalogue's 104
+fruit and seed records set off for nearly every design (the owner: "drop the
+flag"). No bylaw sentence (O5): a pack may carry ``overview.street_rule``
 and Edmonton's does not.
 
 Qt-free. ``overview(project)`` returns :class:`Item` rows; the page, the PDF and
@@ -40,8 +44,9 @@ CAVEAT = ("Records from across Alberta and Saskatchewan: what visits depends "
           "on what lives nearby.")
 FILL_LINE = ("Weeds move into bare ground: fill the gaps, or keep them "
              "mulched while the plants spread.")
-#: How many birds that eat a design's seed or fruit is enough (§5 item 1).
-FEW_BIRDS = 3
+#: The page the flowers and food items open: Design › Through the year, in
+#: the simple app since V3.55 (it had turned the Advanced tools on).
+YEAR = "page:year"
 
 MONTHS = ("January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December")
@@ -179,41 +184,34 @@ def example_animal(animals: list, familiar: tuple = (), records=None) -> str:
 
 
 def item_food(d: Design) -> Item:
+    """A few animals by name (``through_the_year.named_animals``: recorded
+    eating these plants and, inside a pack, recorded near the yard), the one
+    count, and the caterpillars (``through_the_year.caterpillars``). Worth a
+    look when nothing is recorded eating the plants, or the caterpillars are
+    short of a nest."""
+    from src import fauna_fit, through_the_year
     from src import what_it_feeds as w
-    animals = w.animals_fed(d.ids)
+    title = "Food for wildlife"
     counts = w.food_counts(d.ids)
-    bees, leps, birds = (counts.get(t, 0) for t in ("bee", "lepidoptera",
-                                                    "bird"))
-    fruit_birds = sum(
-        1 for a in animals if a["taxon"] == "bird" and any(
-            k in ("fruit_food", "seed_food")
-            for ks in a["plants"].values() for k in ks))
-    groups = [g for g in (
-        _kinds(bees, "kind of bee", "kinds of bee") if bees else "",
-        f"{leps} of butterfly and moth" if leps else "",
-        f"{birds} of bird" if birds else "") if g]
-    from src import fauna_fit, region
-    pack = region.for_site(d.site) or region.default()
-    name = example_animal(animals, tuple(
-        (pack.overview or {}).get("familiar_animals") or ()),
-        fauna_fit.for_point(d.site.get("latitude"), d.site.get("longitude")))
-    if groups:
-        line = f"Recorded as food for {_and(groups)}"
-        line += f", such as the {name}." if name else "."
-    else:
-        line = "No animal is recorded eating these plants yet."
-    lines = [line]
-    look = fruit_birds < FEW_BIRDS
-    if look and groups:
-        lines.append(f"Few birds: only {_kinds(fruit_birds, 'kind eats', 'kinds eat')}"
-                     " its seeds or berries.")
+    if not counts:
+        return Item("food", title, LOOK,
+                    ["No animal is recorded eating these plants yet.", CAVEAT],
+                    "Find a plant for caterpillars", "plants:caterpillars")
+    records = fauna_fit.for_point(d.site.get("latitude"),
+                                  d.site.get("longitude"))
+    names = through_the_year.named_animals(d.placed, records=records)
+    lines = []
+    if names:
+        lines.append(f"Recorded eating these plants: {_and(names)}, and more.")
+    lines.append(f"In all, {w.food_words(counts)}.")
+    nest = through_the_year.caterpillars(d.placed)
+    lines.append(nest["headline"])
     lines.append(CAVEAT)
-    if look:
-        return Item("food", "Food for wildlife", LOOK, lines,
-                    "Add a berry shrub", "plants:berry_shrub",
-                    ("See who it feeds", "advanced:food"))
-    return Item("food", "Food for wildlife", GOOD, lines,
-                "See who it feeds ▸", "advanced:food")
+    if nest["status"] in ("none", "short"):
+        return Item("food", title, LOOK, lines,
+                    "Find a plant for caterpillars", "plants:caterpillars",
+                    ("See who it feeds", YEAR))
+    return Item("food", title, GOOD, lines, "See who it feeds ▸", YEAR)
 
 
 # ── 2. Flowers through the season ───────────────────────────────────────────
@@ -248,9 +246,9 @@ def item_flowers(d: Design) -> Item:
         return Item("flowers", "Flowers through the season", LOOK, [line],
                     f"Find {article} {month} flower",
                     f"plants:blooms_in={gaps[0]}",
-                    ("See what flowers when", "advanced:food"), strip)
+                    ("See what flowers when", YEAR), strip)
     return Item("flowers", "Flowers through the season", GOOD, [line],
-                "See what flowers when ▸", "advanced:food", strip=strip)
+                "See what flowers when ▸", YEAR, strip=strip)
 
 
 # ── 3. Right plants for here ────────────────────────────────────────────────
@@ -401,7 +399,7 @@ def item_cost(d: Design) -> Item:
                 ("See the hours", "advanced:over_time"))
 
 
-BUILDERS = (item_food, item_flowers, item_native, item_cover, item_street,
+BUILDERS = (item_flowers, item_food, item_native, item_cover, item_street,
             item_cost)
 
 

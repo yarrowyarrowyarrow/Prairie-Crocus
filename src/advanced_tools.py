@@ -37,9 +37,9 @@ NAME = "Advanced tools"
 ADVANCED_PAGES: tuple = (
     "site_panel.slope_page",          # §5 rank 2: contours, slope, water flow
     "analysis_panel._wind_page",      # rank 3: wind, shelter, snow catch
-    "on_this_design._stats_page",     # the Report card: Overview instead
     "analysis_panel._habitat_page",   # rank 1: the Design tab in depth
-    "analysis_panel._food",
+    # Through the year (analysis_panel._food) is in the simple app since
+    # V3.55 (F270, the owner: "yes"); the Report card is retired.
     "analysis_panel._over_time_page",
     "planning_panel._water_page",
     "learn_panel._present_page",      # rank 7: Share's narrated tour

@@ -177,9 +177,10 @@ class TheSixItems(unittest.TestCase):
         cls.by_key = {it.key: it for it in cls.items}
 
     def test_the_fixed_order_and_a_status_word_each(self):
-        """O7, and §4 rule 7."""
+        """O7 as the owner amended it in V3.55 (the seasons first), and §4
+        rule 7."""
         self.assertEqual([it.key for it in self.items],
-                         ["food", "flowers", "native", "cover", "street",
+                         ["flowers", "food", "native", "cover", "street",
                           "cost"])
         for it in self.items:
             self.assertIn(it.status_word, ("Looks good", "Worth a look",
@@ -205,10 +206,11 @@ class TheSixItems(unittest.TestCase):
         placed = ProjectStore(self.example).placed_plants
         ids = {p["plant_id"] for p in placed}
         counts = w.food_counts(ids)
-        food = self.by_key["food"].lines[0]
-        self.assertIn(f"food for {counts['bee']} kinds of bee", food)
-        self.assertIn(f"{counts['lepidoptera']} of butterfly and moth", food)
-        self.assertIn(f"{counts['bird']} of bird", food)
+        self.assertIn(f"In all, {w.food_words(counts)}.",
+                      self.by_key["food"].lines)
+        from src import through_the_year as ty
+        self.assertIn(ty.caterpillars(placed)["headline"],
+                      self.by_key["food"].lines)
         lo, hi = sourcing.estimate_cost(placed)
         self.assertIn(sourcing.format_cost(lo, hi),
                       self.by_key["cost"].lines[0])
@@ -226,9 +228,19 @@ class TheSixItems(unittest.TestCase):
         owner's chosen lot since V3.54, planned by Plan My Yard front and back
         (docs/plans/V3.54-the-example-lot.md); the old one read "about a
         third" covered, a Cedar Waxwing and no October flower."""
-        self.assertIn("such as the American Goldfinch",
-                      self.by_key["food"].lines[0])
-        self.assertIn(yi.CAVEAT, self.by_key["food"].lines)
+        # V3.55: named animals, not counts by group, and no "few birds"
+        # flag, which the catalogue's thin bird records raised on nearly
+        # every design, this one included (the owner: "drop the flag").
+        food = self.by_key["food"]
+        self.assertTrue(food.lines[0].startswith("Recorded eating these "
+                                                 "plants: "), food.lines[0])
+        self.assertIn("Monarch", food.lines[0])
+        self.assertNotIn("Few birds", " ".join(food.lines))
+        self.assertEqual(food.status, yi.GOOD)
+        self.assertIn("Enough caterpillars to raise a nest of chickadees.",
+                      food.lines)
+        self.assertEqual(food.target, yi.YEAR)
+        self.assertIn(yi.CAVEAT, food.lines)
         self.assertEqual(self.by_key["flowers"].status, yi.GOOD)
         self.assertIn("about three quarters", self.by_key["cover"].lines[0])
         self.assertEqual(self.by_key["street"].status, yi.GOOD)

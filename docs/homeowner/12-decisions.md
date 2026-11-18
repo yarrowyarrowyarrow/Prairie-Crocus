@@ -145,7 +145,7 @@ new decisions:
 | O4 | Wildlife wording | Group counts "recorded as food for…" with the fixed caveat; named animals only. Plus a list of about 30 familiar Edmonton animals (F249) | **Counts with the caveat; make the list** | 10 | **Recommended** |
 | O5 | The bylaw sentence on the overview | Read Bylaw 14600 and approve 06 §5.3's sentence; change it; drop it | **Read it, then approve or change**; never say a bed is exempt | 10 | **Drop the sentence** |
 | O6 | The care calendar's four bands as the only hours anywhere, retiring "Year 3+" | Yes; no | **Yes** | 3 | **Recommended** |
-| O7 | The order of the six items | Wildlife, flowers, right plants, how full, from the street, what it will take; or lead with cost and work | **The first order** | 10 | **Recommended** |
+| O7 | The order of the six items | Wildlife, flowers, right plants, how full, from the street, what it will take; or lead with cost and work | **The first order** | 10 | **Recommended**  **Amended V3.55** (F270): flowers first, then wildlife, the owner's answer to the Design tab's review. |
 
 ### 2.6 Plan My Yard (Y, part 07)
 
