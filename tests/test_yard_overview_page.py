@@ -83,6 +83,20 @@ class TheOverviewPage(unittest.TestCase):
         yard_overview_flow.fill(self.win)
         self._app.processEvents()
 
+    def _take_out(self, unwanted):
+        """Lift the example's plants ``unwanted(row, placed)`` names, so an item has
+        something to say. The example has been the owner's lot since V3.54
+        and is well planted: the old one's gaps (no October flower, a third
+        covered, no mown strip) were what these buttons were tested on."""
+        from src.db.plants import get_plant
+        keys = [(p["plant_id"], p["lat"], p["lng"])
+                for p in self.win._placed_plants
+                if unwanted(get_plant(p["plant_id"]) or {}, p)]
+        self.win._store.remove_plants_batch(keys)
+        self.win._sync_planning_panel()
+        self._show()
+        return len(keys)
+
     def _press(self, key):
         self.win.overview_page.buttons[key].click()
         self._app.processEvents()
@@ -116,13 +130,28 @@ class TheOverviewPage(unittest.TestCase):
         self.assertIn(format_cost(*cost), line)
 
     def test_find_an_october_flower_sets_the_filter(self):
+        from src.habitat_score import parse_month_range
+        self.assertTrue(self._take_out(
+            lambda r, _p: 10 in parse_month_range(r.get("bloom_period")
+                                                  or "")))
+        self.assertEqual(self.win.overview_page.buttons["flowers"].text(),
+                         "Find an October flower")
         self._press("flowers")
         picker = self.win.plant_panel.picker
         self.assertEqual(picker.combos["bloom_months"].checked_keys(), ["10"])
         picker.set_facet("bloom_months", [])
 
     def test_draw_a_mown_strip_opens_shape_on_lawn(self):
-        self._press("street")
+        from src import cues_to_care
+
+        class Cue:                 # no sign of care: the item has a step
+            def __init__(self, key):
+                self.key, self.present = key, False
+        from src import yard_overview_items as yi
+        cues = [Cue(k) for k in yi._CUES]
+        with mock.patch.object(cues_to_care, "assess", lambda *a, **k: cues):
+            self._show()
+            self._press("street")
         tool = self.win.toolbar.shape_tool
         self.assertEqual(tool._type.currentText(), "Lawn Area")
         self.win.toolbar._shape_btn.menu().close()
@@ -160,6 +189,13 @@ class TheOverviewPage(unittest.TestCase):
 
     def test_fill_the_gaps_is_one_undo_step(self):
         from src import yard_overview, yard_overview_dialogs
+        # The front bed left unplanted, as a person might leave one.
+        from src.geometry import point_in_ring
+        bed = next(f for f in self.win._project["features"]
+                   if (f.get("properties") or {}).get("label") == "Front bed")
+        ring = bed["geometry"]["coordinates"][0]
+        self.assertGreater(self._take_out(
+            lambda _r, p: point_in_ring(p["lat"], p["lng"], ring)), 50)
         before = len(self.win._placed_plants)
         plan = yard_overview.fill_plan(self.win._project)
         self.assertGreater(len(plan["records"]), 50)
