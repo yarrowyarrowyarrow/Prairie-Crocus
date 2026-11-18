@@ -118,8 +118,7 @@ class TheYear(unittest.TestCase):
     def test_the_milkweed_serves_the_monarch_from_the_documented_records(self):
         d = ty.depends({p["plant_id"] for p in self.placed}, records=_Records())
         lines = [r["line"] for r in d["served"]]
-        self.assertIn("Monarch: its caterpillars depend on a few plants, and "
-                      "your Showy Milkweed is one.", lines)
+        self.assertIn("Monarch (Showy Milkweed)", lines)
         self.assertLessEqual(len(d["missing"]), 2)
         for r in d["served"] + d["missing"]:
             self.assertNotIn("spp", r["name"])
@@ -134,7 +133,7 @@ class TheYear(unittest.TestCase):
         d = ty.depends([], records=_Records())
         self.assertEqual(d["served"], [])
         for r in d["missing"]:
-            self.assertIn("such as", r["line"])
+            self.assertRegex(r["line"], r"^[^()]+ \(.+\)$")
 
     def _sci(self, name):
         conn = _plants.get_connection()
@@ -168,14 +167,9 @@ class Caterpillars(unittest.TestCase):
     def test_short_names_the_plants_that_feed_the_most(self):
         self.assertIn("Willow, aspen", self._say(5)["line"])
 
-
-class PlainJobs(unittest.TestCase):
-
-    def test_a_shouted_line_and_a_pointer_elsewhere(self):
-        self.assertEqual(
-            ty._plain("LEAVE THE STEMS STANDING. Do not tidy. See the "
-                      "overwintering note."),
-            "Leave the stems standing. Do not tidy.")
+    def test_a_line_each(self):
+        said = self._say(40, 2)
+        self.assertEqual(said["line"], "Mostly on your Pussy Willow.")
 
 
 if __name__ == "__main__":

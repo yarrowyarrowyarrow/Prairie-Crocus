@@ -200,10 +200,9 @@ def item_food(d: Design) -> Item:
     records = fauna_fit.for_point(d.site.get("latitude"),
                                   d.site.get("longitude"))
     names = through_the_year.named_animals(d.placed, records=records)
-    lines = []
-    if names:
-        lines.append(f"Recorded eating these plants: {_and(names)}, and more.")
-    lines.append(f"In all, {w.food_words(counts)}.")
+    words = w.food_words(counts)
+    lines = [f"{words[0].upper()}{words[1:]}"
+             + (f", among them the {_and(names)}." if names else ".")]
     nest = through_the_year.caterpillars(d.placed)
     lines.append(nest["headline"])
     lines.append(CAVEAT)

@@ -218,9 +218,10 @@ class TestFoodMonthByMonth(unittest.TestCase):
             for m in (6, 7):
                 text = page._months[m - 1][1].text()
                 if out[m]:
-                    self.assertIn("In flower:</b> " + ", ".join(out[m]), text)
+                    self.assertIn("Flowers:</b> " + ", ".join(out[m][:4]),
+                                  text)
                 else:
-                    self.assertNotIn("In flower:", text)
+                    self.assertNotIn("Flowers:", text)
                     self.assertIn("Nothing in flower", text)
             return out, page._summary_line.text()
         finally:

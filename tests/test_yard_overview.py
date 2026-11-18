@@ -206,8 +206,8 @@ class TheSixItems(unittest.TestCase):
         placed = ProjectStore(self.example).placed_plants
         ids = {p["plant_id"] for p in placed}
         counts = w.food_counts(ids)
-        self.assertIn(f"In all, {w.food_words(counts)}.",
-                      self.by_key["food"].lines)
+        self.assertTrue(self.by_key["food"].lines[0].startswith(
+            "Recorded as food for " + w.food_words(counts).split(" for ")[1]))
         from src import through_the_year as ty
         self.assertIn(ty.caterpillars(placed)["headline"],
                       self.by_key["food"].lines)
@@ -232,12 +232,12 @@ class TheSixItems(unittest.TestCase):
         # flag, which the catalogue's thin bird records raised on nearly
         # every design, this one included (the owner: "drop the flag").
         food = self.by_key["food"]
-        self.assertTrue(food.lines[0].startswith("Recorded eating these "
-                                                 "plants: "), food.lines[0])
+        self.assertRegex(food.lines[0], r"^Recorded as food for \d+ kinds of "
+                                        r"wildlife, among them the ")
         self.assertIn("Monarch", food.lines[0])
         self.assertNotIn("Few birds", " ".join(food.lines))
         self.assertEqual(food.status, yi.GOOD)
-        self.assertIn("Enough caterpillars to raise a nest of chickadees.",
+        self.assertIn("Enough caterpillars for a nest of chickadees.",
                       food.lines)
         self.assertEqual(food.target, yi.YEAR)
         self.assertIn(yi.CAVEAT, food.lines)

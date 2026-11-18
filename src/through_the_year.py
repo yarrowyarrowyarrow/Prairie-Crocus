@@ -44,9 +44,9 @@ MONTHS = ("January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December")
 
 #: How many animals a month names.
-PER_MONTH = 4
+PER_MONTH = 3
 #: How many jobs a month lists.
-JOBS = 3
+JOBS = 2
 
 #: Which record makes the better line, first first: a caterpillar on the plant
 #: or a bird at its fruit says more than one more bee at a flower.
@@ -57,7 +57,7 @@ _KIND_RANK = {"larval_host": 0, "fruit_food": 1, "seed_food": 2,
 _GROUP_ORDER = ("lepidoptera", "bird", "bee", "other_insect", "mammal")
 
 #: What a month's "who is eating here" rests on, inside a pack and outside.
-NEAR_WORDS = "Recorded eating these plants, and recorded near your yard."
+NEAR_WORDS = "Recorded eating these plants, and recorded near you."
 FAR_WORDS = "Recorded eating these plants in Alberta and Saskatchewan."
 
 
@@ -88,21 +88,22 @@ def _familiar(records, animal: dict) -> bool:
 
 
 def line(name: str, kind: str, taxon: str, plant: str) -> str:
-    """'Monarch: caterpillars on your Oval-leaf Milkweed'."""
+    """'Monarch: caterpillars on Oval-leaf Milkweed' (V3.55's owner: "be
+    more concise")."""
     if kind == "larval_host" and taxon == "lepidoptera":
-        what = f"caterpillars on your {plant}"
+        what = f"caterpillars on {plant}"
     elif kind == "larval_host" and taxon != "bee":
-        what = f"young on your {plant}"
+        what = f"young on {plant}"
     elif kind in ("pollen", "larval_host"):
-        what = f"pollen from your {plant}"
+        what = f"pollen from {plant}"
     elif kind == "nectar":
-        what = f"nectar from your {plant}"
+        what = f"nectar from {plant}"
     elif kind == "fruit_food":
-        what = f"fruit of your {plant}"
+        what = f"fruit of {plant}"
     elif kind == "seed_food":
-        what = f"seed of your {plant}"
+        what = f"seed of {plant}"
     else:
-        what = f"at your {plant}"
+        what = plant
     return f"{name}: {what}"
 
 
@@ -278,7 +279,6 @@ def year(placed_plants, *, records=None,
     from the planting calendar, and the first summer's (harvest is not a job
     here: it is its own line)."""
     from src import phenology
-    from src.maintenance_calendar import first_year_task
     counts = _counts(placed_plants)
     ids = sorted(counts)
     base = feeds.month_by_month(ids, connect=connect)
@@ -303,10 +303,9 @@ def year(placed_plants, *, records=None,
                 if words not in seen:
                     seen.add(words)
                     jobs.append(words)
+            # The first year's care is the printed care plan's (the owner:
+            # "no one will read all that"); the month keeps its own jobs.
             jobs = jobs[:JOBS]
-            first = _plain(first_year_task(m))
-            if first:
-                jobs.append(f"In the first year: {first}")
         months.append({
             "month": m, "name": MONTHS[m - 1],
             "flowering": slot["pollinators"], "fruit": slot["birds"],
@@ -318,8 +317,7 @@ def year(placed_plants, *, records=None,
             "gaps": [x["month"] for x in months if x["gap"]]}
 
 
-WINTER_LOOK = ("Walk the yard after a snowfall: the stems left standing catch "
-               "it, and shelter insects through the winter.")
+WINTER_LOOK = "Leave the stems standing: they shelter insects all winter."
 
 
 def _look(slot: dict, before: dict, pheno: dict, who: list) -> str:
@@ -328,46 +326,26 @@ def _look(slot: dict, before: dict, pheno: dict, who: list) -> str:
     to a plant in flower, else the first green, else the standing stems."""
     new = [n for n in slot["pollinators"] if n not in before["pollinators"]]
     if new:
-        return (f"Look for the first flowers on your {new[0]}, and note the "
-                f"date: is it early or late this year?")
+        return f"First flowers on the {new[0]}: note the date."
     fruit = [n for n in slot["birds"] if n not in before["birds"]]
     if fruit:
-        return (f"Look for the first fruit on your {fruit[0]}, and whether "
-                f"anything has found it yet.")
+        return f"First fruit on the {fruit[0]}: who finds it?"
     at_flowers = [v for v in who if v["kind"] in ("nectar", "pollen")
                   and v["plant"] in slot["pollinators"]]
     if at_flowers:
-        return (f"Watch your {at_flowers[0]['plant']} on a warm afternoon and "
-                f"see who comes to its flowers.")
+        return f"Watch who visits the {at_flowers[0]['plant']}."
     if pheno.get("waking"):
-        return (f"Look for the first green on your {pheno['waking'][0]}, and "
-                f"note the date.")
+        return f"First green on the {pheno['waking'][0]}: note the date."
     if slot["pollinators"]:
-        return f"See what is still in flower on your {slot['pollinators'][0]}."
+        return f"See what is still in flower."
     return WINTER_LOOK
-
-
-def _plain(text: str) -> str:
-    """The care calendar's first-year line as this page says it: a shouted
-    sentence in sentence case, and no pointer to the PDF's overwintering note,
-    which is not on this page."""
-    import re
-    out = []
-    for s in re.split(r"(?<=[.!?])\s+", (text or "").strip()):
-        if not s or s.startswith("See the "):
-            continue
-        letters = [c for c in s if c.isalpha()]
-        if letters and all(c.isupper() for c in letters):
-            s = s[0] + s[1:].lower()
-        out.append(s)
-    return " ".join(out)
 
 
 # ── Caterpillars to birds ───────────────────────────────────────────────────
 
 CATERPILLAR_WHY = ("Most garden birds raise their young on caterpillars, not "
-                   "on berries or seed: a pair of chickadees feeds one nest "
-                   "6,000 to 9,000 of them.")
+                   "on berries or seed: a nest of chickadees takes 6,000 to "
+                   "9,000.")
 CATERPILLAR_SOURCE = "Tallamy & Shropshire 2009; Narango, Tallamy & Shropshire 2020"
 
 
@@ -382,17 +360,16 @@ def caterpillars(placed_plants, **inject) -> dict:
             ", ".join(names[:-1]) + " and " + names[-1] if names else "")
     status = r["status"]
     more = (f"{_KEYSTONE_SUGGESTIONS[0].upper()}{_KEYSTONE_SUGGESTIONS[1:]} "
-            f"feed the most caterpillars here.")
+            f"feed the most.")
     if status == "clears":
-        headline = "Enough caterpillars to raise a nest of chickadees."
-        text = f"By a rough count, your {tops} grow more than one nest needs."
+        headline = "Enough caterpillars for a nest of chickadees."
+        text = f"Mostly on your {tops}."
     elif status == "partway":
         headline = "About enough caterpillars for a nest of chickadees."
-        text = (f"By a rough count, your {tops} grow about what one nest "
-                f"needs. {more}")
+        text = f"Mostly on your {tops}. {more}"
     elif status == "short":
         headline = "Not yet enough caterpillars for a nest of chickadees."
-        text = f"By a rough count, your {tops} grow too few yet. {more}"
+        text = more
     else:
         headline = "No caterpillars recorded on these plants yet."
         text = more
@@ -457,15 +434,12 @@ def depends(plant_ids: Iterable[int], *, records=None, missing: int = 2,
         if a["here"]:
             here = sorted(set(a["here"]))
             row["plants"] = here
-            one = here[0] if len(here) == 1 else ", ".join(here)
-            row["line"] = (f"{a['name']}: {words}, and your {one} "
-                           f"{'is one' if len(here) == 1 else 'are among them'}.")
+            row["line"] = f"{a['name']} ({', '.join(here)})"
             served.append(row)
         else:
             others = sorted(set(a["other"]))
             row["plants"] = others
-            row["line"] = (f"{a['name']}: {words}, such as "
-                           f"{_or(others[:3])}.")
+            row["line"] = f"{a['name']} ({_or(others[:2])})"
             wanting.append(row)
 
     def order(r):

@@ -68,7 +68,7 @@ class TestFoodPage(unittest.TestCase):
         top = animals_fed(self.ids)[0]
         self.assertEqual(page._animal.currentData()["fid"], top["fauna_id"])
         self.assertIn("Fed by your design", page._animal.itemText(0))
-        self.assertIn("Your plants are recorded as food for", page._summary_line.text())
+        self.assertIn("Recorded as food for", page._summary_line.text())
 
     def test_any_animal_not_only_bees(self):
         page = self._page()
@@ -123,17 +123,20 @@ class TestFoodPage(unittest.TestCase):
         from src.food_page import SECTIONS
         page = self._page()
         layout = page.widget().layout()
-        from PyQt6.QtWidgets import QLabel
         widgets = [layout.itemAt(i).widget() for i in range(layout.count())]
         heads = [w.text() for w in widgets
-                 if isinstance(w, QLabel) and w.text() in SECTIONS]
+                 if hasattr(w, "text") and w.text() in SECTIONS]
         self.assertEqual(heads, list(SECTIONS))
 
         def at(widget):
             return layout.indexOf(widget)
         self.assertLess(at(page._months[-1][0]), at(page._caterpillars))
         self.assertLess(at(page._caterpillars), at(page._depends))
-        self.assertLess(at(page._depends), at(page._animal))
+        self.assertLess(at(page._depends), at(page._lookup))
+        # The look-up waits behind its heading (the owner: "be more concise").
+        self.assertFalse(page._lookup.isVisibleTo(page))
+        page._lookup_btn.click()
+        self.assertTrue(page._lookup.isVisibleTo(page))
 
     def test_each_month_keeps_people_apart_and_last(self):
         page = self._page()
@@ -141,12 +144,9 @@ class TestFoodPage(unittest.TestCase):
         # Chokecherry fruits in August: a harvest for people, with its part,
         # after the flowers and the fruit and in its own line.
         august = page._months[7][1].text()
-        self.assertIn("For you to harvest:", august)
-        self.assertIn("Chokecherry (fruit)", august)
-        self.assertLess(august.index("In fruit:"),
-                        august.index("For you to harvest:"))
-        self.assertLess(august.index("For you to harvest:"),
-                        august.index("Go and look:"))
+        self.assertIn("To harvest:</b> Chokecherry", august)
+        self.assertLess(august.index("Fruit:"), august.index("To harvest:"))
+        self.assertLess(august.index("To harvest:"), august.index("Look:"))
         self.assertTrue(page._months[7][0].text().startswith("August"))
 
     def test_this_month_is_open_and_the_rest_wait(self):
@@ -155,16 +155,17 @@ class TestFoodPage(unittest.TestCase):
         opened = [m for m, (button, text) in enumerate(page._months, 1)
                   if button.isChecked()]
         ahead = ty.next_active(ty.year(page._placed)["months"], page._now)
-        self.assertEqual(opened, sorted({page._now, ahead}))
-        # A quiet month opens the first one ahead with something in it.
+        self.assertEqual(opened, [ahead])
+        # A quiet month opens the first one ahead with something in it
+        # instead, one month only.
         page._now = 1
         page._opened.clear()
         page.refresh()
         opened = [m for m, (button, text) in enumerate(page._months, 1)
                   if button.isChecked()]
-        self.assertEqual(opened[0], 1)
-        self.assertEqual(len(opened), 2)
-        self.assertTrue(page._months[opened[1] - 1][1].text())
+        self.assertEqual(len(opened), 1)
+        self.assertGreater(opened[0], 1)
+        self.assertIn("Flowers:", page._months[opened[0] - 1][1].text())
         page.refresh()
         self.assertIn("(this month)", page._months[0][0].text())
         # A month a person opens stays open, and this month stays as they
@@ -182,14 +183,13 @@ class TestFoodPage(unittest.TestCase):
     def test_who_is_eating_here_names_one_species_by_its_english_name(self):
         page = self._page()
         july = page._months[6][1].text()
-        self.assertIn("Who is eating here:", july)
+        self.assertIn("Eating here:", july)
         self.assertNotIn("spp", july)
         self.assertIn("recorded", page._near_note.text())
 
     def test_the_milkweed_serves_the_monarch(self):
         page = self._page()
-        self.assertIn("Monarch: its caterpillars depend on a few plants, and "
-                      "your Showy Milkweed is one.", page._depends.text())
+        self.assertIn("Monarch (Showy Milkweed)", page._depends.text())
         self.assertIn("chickadees", page._caterpillars.text())
         self.assertNotIn("keystone", page._caterpillars.text().lower())
 
@@ -199,6 +199,23 @@ class TestFoodPage(unittest.TestCase):
                          "Place plants to see their year, and who they feed.")
         self.assertFalse(any(b.isEnabled() for b, _t in page._months))
         self.assertIn("Place plants", page._caterpillars.text())
+
+    def test_the_page_says_little(self):
+        """The owner: "The Tab is still too verbose. No one will read all
+        that." What shows on arrival, July open, was about 755 words; it is
+        held under 300."""
+        import re
+        from PyQt6.QtWidgets import QAbstractButton, QLabel
+        page = self._page()
+        page._now = 7
+        page._opened.clear()
+        page.refresh()
+        body = page.widget()
+        words = 0
+        for w in body.findChildren((QLabel, QAbstractButton)):
+            if w.isVisibleTo(body):
+                words += len(re.sub(r"<[^>]+>", " ", w.text()).split())
+        self.assertLess(words, 300)
 
     def test_the_map_shows_the_plants_that_feed_it(self):
         page = self._page()
