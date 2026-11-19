@@ -156,6 +156,8 @@ re-diagnose:
 | `fatal: a branch is expected, got tag 'V2.78'` | a local tag of that name exists. Run the `git tag -d` cleanup above. |
 | `* tag V2.78 -> FETCH_HEAD` then `Successfully rebased` | **the silent one.** `git pull origin V2.78` took the tag, and your branch is now at the tag's commit — behind the branch, with pushed work missing and no error. Recover with the refspec fetch above plus `git switch -C V2.78 origin/V2.78`. |
 
+**Cut the next branch from the server's tip of the last one (V3.61).** A session's copy of a V-branch can be behind the server: another session may have pushed to it since. V3.56 was cut from a V3.55 that stopped before V3.55's photograph fold, so five releases shipped without the photographs, and V3.55 had lost V3.54's last two commits the same way. Before cutting, fetch the last branch by the refspec below and check `git merge-base --is-ancestor origin/<last> HEAD`; if it says no, merge or cherry-pick what is missing first. A test failure that "was already there" on a new branch is worth that check.
+
 **Never use `git pull` for a V-branch.** Always the two-line refspec fetch, then
 `git switch`. The tag/branch collision means `pull` has no safe form here for
 any release up to V2.79.

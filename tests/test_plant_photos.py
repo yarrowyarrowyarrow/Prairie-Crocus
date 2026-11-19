@@ -345,5 +345,25 @@ class TestCoverageReport(unittest.TestCase):
         self.assertTrue(any("attribution" in e for e in errors))
 
 
+class TestTheShippedPhotographs(unittest.TestCase):
+    """V3.61: V3.55 folded in six photographs for most Edmonton natives after
+    V3.56 had been branched from it, so V3.56 to V3.60 shipped the two-row file
+    and the owner's plant pages went back to one photo, or none. The suite was
+    green throughout, because nothing said how many there should be."""
+
+    def test_every_edmonton_native_has_photographs_and_most_have_six(self):
+        from src import native_here
+        rows = json.load(open(os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "data", "plant_photos.json"), encoding="utf-8"))
+        per: dict = {}
+        for r in rows:
+            per[r["scientific_name"]] = per.get(r["scientific_name"], 0) + 1
+        local = native_here.native_names("edmonton")
+        self.assertEqual([s for s in sorted(local) if not per.get(s)], [])
+        six = sum(1 for s in local if per.get(s, 0) >= 6)
+        self.assertGreaterEqual(six, 0.9 * len(local))
+
+
 if __name__ == "__main__":
     unittest.main()
