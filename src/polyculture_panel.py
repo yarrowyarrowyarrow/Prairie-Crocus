@@ -1738,7 +1738,8 @@ class PolyculturePanel(QWidget):
             for name, role in entry["members_brief"][:5])
         if len(entry["members_brief"]) > 5:
             roles_summary += f", +{len(entry['members_brief']) - 5} more"
-        return (f"{entry['name']}\n{(entry['description'] or '')[:120]}"
+        return (f"{entry['name']}\n{community_facts(entry)}"
+                f"\n{(entry['description'] or '')[:120]}"
                 f"\n\nMembers: {roles_summary}")
 
     def _make_community_item(self, index, cid, passinfo, filtering):
@@ -1746,7 +1747,11 @@ class PolyculturePanel(QWidget):
         variations nested. When the parent only got in because a variation
         matched, just the matching variations are shown (and expanded)."""
         entry = index[cid]
-        item = QTreeWidgetItem([entry["name"], community_facts(entry)])
+        # Names only since V3.60 (the owner: the facts beside the names were
+        # "not very useful/necessary for selecting them"); they stay on the
+        # community's page and in the tooltip, and sun is a filter. The empty
+        # second column takes a few pixels (two_line_rows.fit).
+        item = QTreeWidgetItem([entry["name"], ""])
         item.setData(0, Qt.ItemDataRole.UserRole, cid)
         item.setToolTip(0, self._community_tooltip(entry))
         item.setForeground(1, QColor(_FACTS_GREY))
@@ -1758,8 +1763,7 @@ class PolyculturePanel(QWidget):
             child_ids = [k for k in child_ids
                          if not index[k]["not_around"].get(near)]
         for kid in child_ids:
-            child_item = QTreeWidgetItem([index[kid]["name"],
-                                          community_facts(index[kid])])
+            child_item = QTreeWidgetItem([index[kid]["name"], ""])
             child_item.setForeground(1, QColor(_FACTS_GREY))
             child_item.setData(0, Qt.ItemDataRole.UserRole, kid)
             child_item.setToolTip(0, self._community_tooltip(index[kid]))
@@ -1880,11 +1884,13 @@ class PolyculturePanel(QWidget):
     def _on_list_choose(self, index):
         """A finished click or an arrow key onto a community. While this panel
         is placing, the list is a palette: what you choose is placed next."""
+        # A click is looking, in both states since V3.60: while placing, the
+        # owner clicked other communities and saw nothing, because a click
+        # only changed what the next map click would place (the V2.99
+        # palette). Now it opens the page, and placing stops
+        # (community_flyout); Enter or a double-click places.
         _item, pid = self._community_at(index)
-        if self._armed and pid is not None and (
-                self._armed_mix or pid != self._armed_community_id):
-            self._place_community(pid)
-        elif not self._armed and pid is not None:
+        if pid is not None:
             self.page_requested.emit(int(pid))
 
     #: Set by ``community_flyout.wire``: a chosen community is shown on its

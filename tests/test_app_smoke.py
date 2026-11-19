@@ -1164,6 +1164,38 @@ class TestMainWindowSmoke(unittest.TestCase):
         win.polyculture_panel.armedChanged.emit({"armed": True})
         self.assertTrue(fly.isHidden())
 
+    def test_a_click_after_placing_opens_the_page_and_stops_placing(self):
+        """V3.60, the owner: "No page opens". After Place the map stays ready
+        to place more, and a click in the list had only changed what the
+        next map click would place, with no page and nothing said."""
+        from PyQt6.QtCore import Qt
+        from PyQt6.QtTest import QTest
+        from src.keyboard_help import show_panel
+        win = self._win
+        fly = win.species_flyout
+        self.addCleanup(fly.hide)
+        self.addCleanup(win._cancel_draw)
+        win.resize(1366, 768)
+        win.show()
+        show_panel(win.polyculture_panel)
+        self._app.processEvents()
+        panel = win.polyculture_panel
+        tree = panel.polyculture_tree
+        first, other = tree.topLevelItem(0), tree.topLevelItem(2)
+        panel.place_by_id(first.data(0, Qt.ItemDataRole.UserRole))
+        self._app.processEvents()
+        self.assertEqual(win._current_mode, "polyculture")
+        QTest.mouseClick(tree.viewport(), Qt.MouseButton.LeftButton,
+                         Qt.KeyboardModifier.NoModifier,
+                         tree.visualItemRect(other).center())
+        for _ in range(6):
+            self._app.processEvents()
+        self.assertEqual(win._current_mode, "none")
+        self.assertFalse(panel._armed)
+        self.assertTrue(fly.showing_community())
+        self.assertEqual(fly.community.shown_id(),
+                         other.data(0, Qt.ItemDataRole.UserRole))
+
     def test_no_community_name_is_cut_at_a_laptops_width(self):
         """V3.19 (QF-10, R21): at 1366 px Placement › Communities cut every
         name to about twelve characters ("Boreal Conifer…", "Boreal

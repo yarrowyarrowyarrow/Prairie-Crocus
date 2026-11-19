@@ -554,14 +554,22 @@ class TestCommunityPanelArming(unittest.TestCase):
         self.assertEqual(placed[-1]["pattern"]["kind"], "grid",
                          "double-click placed Single whatever the bar said")
 
-    def test_while_placing_choosing_another_community_switches_to_it(self):
+    def test_choosing_never_arms_the_map(self):
+        """Choosing is looking, idle or placing (V3.60): it asks for the
+        page, and the window stops the placing (community_flyout). Enter or
+        a double-click places."""
         panel = self._panel()
-        placed = []
+        placed, pages = [], []
         panel.placePolycultureRequested.connect(placed.append)
+        panel.page_requested.connect(pages.append)
         panel._on_list_choose(self._index(panel, 1))
         self.assertEqual(placed, [], "choosing while idle armed the map")
         panel._place_community(self._id(0))
+        n = len(placed)
         panel._on_list_choose(self._index(panel, 2))
+        self.assertEqual(len(placed), n, "choosing while placing re-aimed it")
+        self.assertEqual(pages[-1], self._id(2))
+        panel._on_list_place(self._index(panel, 2))
         self.assertEqual(placed[-1]["id"], self._id(2))
 
     def test_place_mix_arms_the_mix_and_single_sets_it_aside(self):

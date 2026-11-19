@@ -58,8 +58,11 @@ class TestTheRowSaysWhatItIs(unittest.TestCase):
         rows = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
         rows = [r for r in rows if r.data(0, 0x0100) is not None]   # UserRole
         self.assertGreater(len(rows), 20)
+        # Since V3.60 a row is its name: the facts moved to the tooltip and
+        # the page (the owner: not useful "for selecting them").
         for r in rows:
-            self.assertRegex(r.text(1), r"^\d+ plants?")
+            self.assertEqual(r.text(1), "")
+            self.assertRegex(r.toolTip(0).split("\n")[1], r"^\d+ plants?")
 
 
 @unittest.skipUnless(_HAVE_QT, "PyQt6 not installed in this env")

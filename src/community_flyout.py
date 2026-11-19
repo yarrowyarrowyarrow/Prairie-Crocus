@@ -118,8 +118,12 @@ def _on_community_requested(main, polyculture_id: int) -> None:
     from src.db import polycultures
     from src.placement_bar_flow import PLACING_MODES
     fly = getattr(main, "species_flyout", None)
-    if fly is None or getattr(main, "_current_mode", "none") in PLACING_MODES:
+    if fly is None:
         return
+    if getattr(main, "_current_mode", "none") in PLACING_MODES:
+        # A click in the list is looking (V3.60): it ends the placing it
+        # would otherwise have silently re-aimed, and shows the page.
+        main._cancel_draw()
     row = polycultures.get_polyculture_by_id(int(polyculture_id))
     if row:
         fly.show_community(row)
