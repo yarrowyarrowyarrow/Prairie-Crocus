@@ -83,6 +83,46 @@ function _wdEnvelope(form, t) {
   return t < t0 ? low + (1 - low) * Math.pow(t / t0, 0.7) : dome(t0);
 }
 
+// A shrub's crown as read off its photographs (V3.63, src/shrub_habit.py
+// CROWNS; a test holds the two equal). The form says how the stems grow; the
+// crown is the outline from across a yard, which until V3.63 was one vase for
+// twenty of the 34 native shrubs. `clear` is the share of the height that is
+// bare stem below the lowest leafy branch (a chokecherry's, a hawthorn's).
+const WOODY_CROWNS = ['vase', 'rounded', 'mound', 'spreading', 'upright', 'irregular', 'mat'];
+function _wdCrownEnvelope(crown, t, clear) {
+  if (t < clear * 0.98) return 0;
+  const u = clear > 0 ? Math.min(1, (t - clear) / Math.max(0.05, 1 - clear)) : t;
+  const dome = (u0) => Math.sqrt(Math.max(0, 1 - Math.pow((u - u0) / (1 - u0), 2)));
+  switch (crown) {
+    case 'vase':                       // narrow at the foot, widest high up
+      return u < 0.72 ? 0.22 + 0.78 * Math.pow(u / 0.72, 0.85) : dome(0.72);
+    case 'rounded': {                  // a ball sitting on a short foot
+      const s = Math.sqrt(Math.max(0, 1 - Math.pow(2 * u - 1, 2)));
+      return u < 0.5 ? Math.max(0.42, s) : s;
+    }
+    case 'mound':                      // widest on the ground, low and domed
+      return Math.sqrt(Math.max(0, 1 - Math.pow(u, 1.7)));
+    case 'spreading':                  // broad, arching out from a narrower base
+      return u < 0.55 ? 0.5 + 0.5 * Math.pow(u / 0.55, 0.6) : dome(0.55);
+    case 'upright':                    // straight-sided, flat-topped
+      return u < 0.82 ? 0.72 + 0.28 * Math.pow(u / 0.82, 0.4) : dome(0.82);
+    case 'irregular':                  // open, with lobes and gaps
+      return Math.max(0.15, Math.pow(Math.sin(Math.PI * Math.min(1, u * 0.9 + 0.06)), 0.55)
+        * (0.86 + 0.14 * Math.sin(u * 17.0)));
+    case 'mat': return Math.sqrt(Math.max(0, 1 - u * u));
+    default: return 1;
+  }
+}
+// Which way a branch turns, by crown: [toward the sky, away from the middle].
+const _WD_CROWN_BIAS = { vase: [0.45, 0.25], rounded: [0.25, 0.3], mound: [0.1, 0.4],
+                         spreading: [0.12, 0.5], upright: [0.55, 0.05],
+                         irregular: [0.2, 0.35], mat: [0.05, 0.5] };
+// Where a clump's stems end, by crown: [how far out, as a share of the
+// radius; how much lower the outermost end than the middle one].
+const _WD_CROWN_STEM = { vase: [0.85, 0.35], rounded: [0.7, 0.4], mound: [0.85, 0.62],
+                         spreading: [0.95, 0.5], upright: [0.42, 0.15],
+                         irregular: [0.85, 0.5], mat: [0.95, 0.8] };
+
 // ── a leafy shoot's outline ─────────────────────────────────────────────────
 
 // Leaves a spray holds, by how narrow the leaf is: a willow shoot the length
@@ -257,7 +297,9 @@ function _woodyPlan(d, quality) {
   // Sprays that cover it at life size: each fills `cover` of its card, and is
   // seen at an angle.
   const need = WOODY_COVER * area / (spray.w * L * spray.h * L * spray.cover * 0.6);
+  const crown = WOODY_CROWNS.indexOf(d.crown) >= 0 ? d.crown : '';
   const P = { H, R, L, shape, form: d.form, budget, area, need, spray, gain: 1, cards: 0, tier,
+              crown, clear: crown ? _wdClamp(d.clear || 0, 0, 0.6) : 0,
               // A young shrub has sent up fewer of its stems.
               stems: _wdClamp(Math.round((d.stems || 1) * (0.4 + 0.6 * tier)), 1, WOODY_STEMS_MAX) };
   _woodyCards(P, budget * 0.62);
@@ -329,7 +371,8 @@ function _wdChild(G, p, tg, len, r, quota, psi) {
 function _woodyStems(G) {
   const P = G.P, rng = G.rng, { H, R } = P, N = P.stems;
   const r0 = _wdClamp(WOODY_PIPE * Math.sqrt(R * H / N), 0.0015, 0.07);
-  const rb = Math.min(R * _WD_BASE[P.form], P.form === 'clump' ? 0.05 * Math.sqrt(N * H) : R);
+  const rb = Math.min(R * _WD_BASE[P.form], P.form === 'clump' ? 0.05 * Math.sqrt(N * H) : R)
+    * (P.clear > 0.12 ? 0.5 : 1);
   const rot = rng() * 6.283, quota = P.shoots / N;
   const kids = _wdClamp(Math.round(Math.sqrt(quota * 1.5)), 2, 9);
   // A branch off a stem: longer where fewer stems share the crown.
@@ -359,9 +402,17 @@ function _woodyStems(G) {
       };
       clear = 0.08;
     } else {                                      // a vase: the outer stems lean out
-      const tipR = R * 0.8 * Math.pow(fr, 0.8), tipY = H * (0.97 - 0.42 * Math.pow(fr, 1.5)) * jit;
+      // A crown that was read says how far out and how low the outer stems end.
+      const cs = _WD_CROWN_STEM[P.crown] || [0.8, 0.42];
+      const tipR = R * cs[0] * Math.pow(fr, 0.8), tipY = H * (0.97 - cs[1] * Math.pow(fr, 1.5)) * jit;
       at = (t) => [base[0] + (dx * tipR - base[0]) * Math.pow(t, 1.7), tipY * t,
                    base[2] + (dz * tipR - base[2]) * Math.pow(t, 1.7)];
+    }
+    // Bare below the lowest leafy branch where the crown says so (V3.63).
+    // `clear` is a share of the HEIGHT; a leaning stem reaches it further along.
+    if (P.clear > 0) {
+      const share = P.clear * H / Math.max(0.01, at(1)[1]);
+      clear = Math.max(clear, Math.min(0.85, share * (0.9 + 0.2 * rng())));
     }
     const pts = [0, 0.3, 0.6, 0.85, 1].map(at), tip = pts[4];
     const rs = r0 * (0.85 + 0.3 * rng());
@@ -466,7 +517,8 @@ function woodyKeyFor(p) {
   const d = p && p.drawn;
   if (STYLISED || !d || d.body !== 'woody' || WOODY_FORMS.indexOf(d.form) < 0) return null;
   return ['woody', p.genus || '', p.species || '', d.form, d.mature_h, d.mature_w, d.stems,
-          d.leaf_m, d.leaf_shape, d.arrangement, _woodyTier(d)].join('|');
+          d.leaf_m, d.leaf_shape, d.arrangement, d.crown || '', d.clear || 0,
+          _woodyTier(d)].join('|');
 }
 
 function _wdGeometry(B, sy, sxz) {
@@ -491,6 +543,10 @@ function buildWoodyGeo(p, v) {
               rng: mulberry32(hashPid((p.genus || '') + (p.species || '') + d.form) + 131 * v),
               // A branch thinner than this is a strip, and no strip is narrower than `twig`.
               tube: Math.max(0.004, P.H * 0.0022), twig: P.H * 0.0026 };
+  if (P.crown) {                                  // its own outline (V3.63)
+    G.env = (t) => _wdCrownEnvelope(P.crown, t, P.clear);
+    G.bias = _WD_CROWN_BIAS[P.crown];
+  }
   _woodyStems(G);
   // The leaves get what the stems left of the budget.
   _woodyCards(P, Math.max(200, P.budget - G.S.idx.length / 3));

@@ -563,7 +563,12 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # folded in on V3.55 after V3.56 had branched from it, so V3.56 to V3.60
 # shipped without them; brought back here. Also numbered past both v102s
 # (V3.55's photographs and V3.59's communities claimed the same number).
-_SCHEMA_VERSION = 103
+# v104 (V3.63): `plants.fruit_held_until`, and a reseed for the 34 native
+# shrubs read again off their photographs: a leaf colour and a leaf surface
+# each, a crown outline (`crown_shape` in the shrubs' own words, with
+# `crown_clear`), the months their fruit stays on the bare twigs, and the
+# fruit colours the photographs contradicted (black currants drawn red).
+_SCHEMA_VERSION = 104
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
@@ -992,6 +997,16 @@ def _migrate_to_v99(conn: sqlite3.Connection):
     """
     try:
         conn.execute("ALTER TABLE plants ADD COLUMN woody_stems INTEGER")
+    except sqlite3.OperationalError:
+        pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v104(conn: sqlite3.Connection):
+    """How long a plant's fruit stays on its twigs (V3.63). Additive and
+    idempotent; empty on every row until the reseed this version forces."""
+    try:
+        conn.execute("ALTER TABLE plants ADD COLUMN fruit_held_until INTEGER")
     except sqlite3.OperationalError:
         pass                              # column already present
     conn.commit()
@@ -2147,6 +2162,7 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             p.get("head_count"),
             p.get("head_color", ""),
             p.get("head_attitude", ""),
+            p.get("fruit_held_until"),
         ))
 
     conn.executemany(
@@ -2178,11 +2194,11 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             native_provinces_source, stem_leaf_nodes, woody_stems,
             crown_shape, crown_clear, limb_habit, leaf_color,
             blade_width_mm, blade_habit, head_length_cm, head_width_cm,
-            head_count, head_color, head_attitude)
+            head_count, head_color, head_attitude, fruit_held_until)
            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-                   ?,?,?,?,?,?,?,?)""",
+                   ?,?,?,?,?,?,?,?,?)""",
         plant_rows,
     )
     conn.commit()
@@ -2337,6 +2353,9 @@ def init_db() -> None:
 
         if current_version < 101:
             _migrate_to_v101(conn)
+
+        if current_version < 104:
+            _migrate_to_v104(conn)
 
         # Add parent_id to polycultures if missing
         try:

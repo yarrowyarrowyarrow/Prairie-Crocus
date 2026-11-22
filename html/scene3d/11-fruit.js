@@ -197,12 +197,16 @@ function fruitFormOf(p) {
 }
 
 function buildFruit(plants, month, terrain) {
-  const byForm = {};
+  const byForm = {}, carded = [];
   for (const p of plants || []) {
     if (!p.fruit_color) continue;
     if ((p.opacity ?? 1) < 0.25) continue;
-    const fs = p.fruit_start || 0, fe = p.fruit_end || 0;
-    if (!fs || month < fs || month > fe) continue;     // not in fruit this month
+    // A shrub or tree with its own body carries its fruit as cards, and into
+    // the winter where that was read (15d-woodyfruit.js, V3.63).
+    if (window.woodyFruitApplies && woodyFruitApplies(p)) { carded.push(p); continue; }
+    // In its season, or still held after it (15d-woodyfruit.js fruitInSeason).
+    if (window.fruitInSeason ? !fruitInSeason(p, month)
+        : (!p.fruit_start || month < p.fruit_start || month > p.fruit_end)) continue;
     const form = fruitFormOf(p);
     (byForm[form] || (byForm[form] = [])).push(p);
   }
@@ -245,4 +249,5 @@ function buildFruit(plants, month, terrain) {
     }), 72);
     plantsGroup.add(new THREE.Points(geo, mat));
   }
+  if (carded.length && window.buildWoodyFruit) buildWoodyFruit(carded, month, terrain);
 }

@@ -159,6 +159,12 @@ GROWTH_FORMS      = {"erect", "ferny", "rosette", "clump", "grassy", "mat",
 # the open: its outline and which way its main limbs go.
 CROWN_SHAPES      = ("conical", "spire", "oval", "rounded", "irregular")
 LIMB_HABITS       = ("ascending", "spreading", "drooping")
+# A shrub's crown (V3.63), read off photographs of grown plants: the outline
+# from across a yard, which is what tells a saskatoon's vase from a
+# snowberry's mound when the leaves cannot be told apart. Its own words, not
+# a tree's: a shrub has no spire and a tree no mound.
+SHRUB_CROWN_SHAPES = ("vase", "rounded", "mound", "spreading", "upright",
+                      "irregular", "mat")
 # A grass's, sedge's or rush's blades and seed head (schema v101, V3.51), read
 # off a photograph: how the blades are held (`none`: leafless stems, a rush's
 # or a bulrush's) and how the head is (`side`: from the stem's side below its
@@ -529,7 +535,8 @@ def validate_plant(
 
     # The crown (schema v100): two words from their vocabularies and the
     # share of the height that is bare trunk.
-    for field, vocab in (("crown_shape", CROWN_SHAPES), ("limb_habit", LIMB_HABITS)):
+    shapes = SHRUB_CROWN_SHAPES if record.get("plant_type") == "shrub" else CROWN_SHAPES
+    for field, vocab in (("crown_shape", shapes), ("limb_habit", LIMB_HABITS)):
         val = (record.get(field) or "").strip()
         if val and val not in vocab:
             err(f"{field}={val!r} is not one of {', '.join(vocab)}")
@@ -539,6 +546,16 @@ def validate_plant(
             err(f"crown_clear={clear!r} is not a number")
         elif not 0.0 <= clear <= 0.8:
             err(f"crown_clear={clear} out of range 0–0.8")
+
+    # fruit_held_until (schema v104, V3.63): the last month a plant's fruit
+    # is still on its bare twigs after its fruiting season (a snowberry's
+    # into March). Empty: the fruit goes with the season.
+    held = record.get("fruit_held_until")
+    if held not in (None, ""):
+        if isinstance(held, bool) or not isinstance(held, int) or not 1 <= held <= 12:
+            err(f"fruit_held_until={held!r} is not a month 1–12")
+        elif not (record.get("fruit_color") or "").strip():
+            err("fruit_held_until is set but the plant records no fruit_color")
 
     # The leaf colour and a graminoid's blades and seed head (schema v101).
     for field in ("leaf_color", "head_color"):

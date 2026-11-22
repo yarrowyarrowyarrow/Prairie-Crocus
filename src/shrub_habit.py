@@ -36,6 +36,15 @@ and the wildflowers (V3.48) are. The form comes from the recorded woody habit:
 A habit not listed (``decurrent``, ``excurrent``, ``rosette``) is a tree's or
 another module's, and the shrub keeps the body it had.
 
+**The crown's outline (V3.63)** is read too, in a shrub's own words
+(``crown_shape``: ``CROWNS``), with ``crown_clear`` where a big shrub stands on
+a short bare trunk (chokecherry, hawthorn). The form says how the stems grow;
+the crown says what the whole shrub looks like from across a yard, which is
+what tells a saskatoon's vase from a snowberry's rounded bush and a highbush
+cranberry's broad spread when the leaves are too small to see. Until V3.63
+twenty of the 34 natives were one ``clump`` outline. A shrub with no crown
+read keeps its form's outline.
+
 What nothing records is derived in the viewer chunk and said there: how thick
 a stem is (from the stem count and the crown they share), where the side
 branches leave, and how many leaves a shoot holds. A grown shrub carries tens
@@ -47,6 +56,7 @@ from __future__ import annotations
 
 from typing import Optional
 
+from src.data_quality import SHRUB_CROWN_SHAPES
 from src.herb_habit import is_read
 
 BODY = "woody"
@@ -54,6 +64,10 @@ BODY = "woody"
 #: The forms the viewer builds (``03d-woody.js`` ``WOODY_FORMS``; a test holds
 #: the two equal).
 FORMS = ("clump", "thicket", "arching", "mat")
+
+#: The crown outlines the viewer draws (``03d-woody.js`` ``WOODY_CROWNS``; a
+#: test holds the two equal). The vocabulary is ``data_quality``'s.
+CROWNS = SHRUB_CROWN_SHAPES
 
 #: The plant types this body is for. A tree keeps its crown.
 TYPES = ("shrub",)
@@ -84,6 +98,7 @@ def drawn_block(plant: dict, form: str) -> dict:
     builds one body a species and places it for each plant."""
     h = float(plant.get("height_m") or 0.0)
     c = float(plant.get("canopy_m") or 0.0)
+    crown = (plant.get("crown_shape") or "").lower()
     return {
         "body": BODY, "form": form,
         "x": plant.get("x"), "y": plant.get("y"),
@@ -96,6 +111,10 @@ def drawn_block(plant: dict, form: str) -> dict:
         "leaf_m": round(float(plant["leaf_size_cm"]) / 100.0, 4),
         "leaf_shape": (plant.get("leaf_shape") or "").lower(),
         "arrangement": (plant.get("leaf_arrangement") or "").lower(),
+        # Its outline, and how much of its height is bare stem below the
+        # lowest leafy branch (V3.63). Empty: the form's own outline.
+        "crown": crown if crown in CROWNS else "",
+        "clear": round(float(plant.get("crown_clear") or 0.0), 3) if crown in CROWNS else 0.0,
     }
 
 

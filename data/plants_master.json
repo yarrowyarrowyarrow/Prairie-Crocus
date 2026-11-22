@@ -1367,7 +1367,11 @@
     "flower_colours": "cream,yellow",
     "woody_stems": 20,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 663620816, 663661233, 507066984, 411112552, 526477911, 679451313, 671262858, 500300175 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 663620816, 663661233, 507066984, 411112552, 526477911, 679451313, 671262858, 500300175 (read V3.63)",
+    "leaf_color": "#7a9a62",
+    "leaf_surface": "glaucous",
+    "crown_shape": "vase",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Beaked Hazelnut",
@@ -1428,7 +1432,11 @@
     "flower_colours": "",
     "woody_stems": 15,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 286698202, 74471206, 479499721, 261285789, 172129973, 677169477, 141313270, 624415599 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 286698202, 74471206, 479499721, 261285789, 172129973, 677169477, 141313270, 624415599 (read V3.63)",
+    "leaf_color": "#5f9a3c",
+    "leaf_surface": "matte",
+    "crown_shape": "vase",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Beaked Sedge",
@@ -2999,7 +3007,7 @@
     "image_license": "cc-by",
     "flower_color": "#d6453a",
     "flower_form": "trumpet",
-    "fruit_color": "#c1271d",
+    "fruit_color": "#1c1a22",
     "native_provinces": "AB,SK",
     "leaf_shape": "elliptic",
     "leaf_size_cm": 10.0,
@@ -3027,7 +3035,11 @@
     "flower_colours": "red,yellow",
     "woody_stems": 10,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 106729239, 181757474, 172128465, 450890650, 675754741, 552603563, 718294007, 249312756 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 106729239, 181757474, 172128465, 450890650, 675754741, 552603563, 718294007, 249312756 (read V3.63)",
+    "leaf_color": "#4a7c36",
+    "leaf_surface": "glossy",
+    "crown_shape": "rounded",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Bristly Black Currant",
@@ -3076,7 +3088,7 @@
     "image_license": "cc0",
     "flower_color": "#7f9a52",
     "flower_form": "cluster",
-    "fruit_color": "#9a1f1f",
+    "fruit_color": "#1c1a22",
     "native_provinces": "AB,SK",
     "leaf_shape": "palmately_lobed",
     "leaf_size_cm": 4.5,
@@ -3105,7 +3117,10 @@
     "woody_stems": 6,
     "leaf_surface": "glossy",
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 409488652, 235574084, 723397809, 437486572, 470807140, 394835602, 175218206, 202297709 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 409488652, 235574084, 723397809, 437486572, 470807140, 394835602, 175218206, 202297709 (read V3.63)",
+    "leaf_color": "#4f8a3e",
+    "crown_shape": "mound",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Brittle Prickly-pear",
@@ -3857,7 +3872,10 @@
     "flower_colours": "",
     "woody_stems": 8,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 547802641, 99300348, 490388759, 354191546, 340752022, 590280377, 707895218, 115112382 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 547802641, 99300348, 490388759, 354191546, 340752022, 590280377, 707895218, 115112382 (read V3.63)",
+    "leaf_color": "#6f845a",
+    "crown_shape": "irregular",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Canada Goldenrod",
@@ -4333,7 +4351,12 @@
     "flower_colours": "white,cream",
     "woody_stems": 12,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 382754909, 555457196, 103673578, 332919099, 256995118, 242815848, 326333560, 429186404 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 382754909, 555457196, 103673578, 332919099, 256995118, 242815848, 326333560, 429186404 (read V3.63)",
+    "leaf_color": "#3f6e32",
+    "leaf_surface": "glossy",
+    "crown_shape": "rounded",
+    "crown_clear": 0.25,
+    "fruit_held_until": 11
   },
   {
     "common_name": "Common Alumroot",
@@ -4590,7 +4613,14 @@
     "flower_colours": "",
     "woody_stems": 10,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 630293233, 112059387, 93082546, 599899827, 185421444, 250494100, 9389026, 111614425 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 630293233, 112059387, 93082546, 599899827, 185421444, 250494100, 9389026, 111614425 (read V3.63)",
+    "fruit_form": "berry",
+    "fruit_color": "#4a5a7a",
+    "leaf_color": "#74876a",
+    "leaf_surface": "glaucous",
+    "crown_shape": "mound",
+    "crown_clear": 0.0,
+    "fruit_held_until": 4
   },
   {
     "common_name": "Common Mare's-tail",
@@ -4793,7 +4823,12 @@
     "flower_colours": "pink,white",
     "woody_stems": 20,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 148965971, 436546401, 619629103, 113240756, 607201059, 624415681, 702501346, 76909250 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 148965971, 436546401, 619629103, 113240756, 607201059, 624415681, 702501346, 76909250 (read V3.63)",
+    "leaf_color": "#6a8f62",
+    "leaf_surface": "matte",
+    "crown_shape": "rounded",
+    "crown_clear": 0.0,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Common Tall Manna Grass",
@@ -8530,10 +8565,13 @@
     "woody_stems": 10,
     "leaf_surface": "glossy",
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 238615062, 241564592, 504508395, 479458308, 335626577, 432018056, 200187838, 691785143 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 238615062, 241564592, 504508395, 479458308, 335626577, 432018056, 200187838, 691785143 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/238615062/medium.jpeg",
     "image_attribution": "no rights reserved, uploaded by darylnolan",
-    "image_license": "cc0"
+    "image_license": "cc0",
+    "leaf_color": "#5f8f3a",
+    "crown_shape": "spreading",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Oval-leaf Milkweed",
@@ -9313,7 +9351,12 @@
     "flower_colours": "",
     "woody_stems": 10,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 51178525, 428325926, 58344451, 252165656, 677454238, 86398322, 208033299, 517977602 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 51178525, 428325926, 58344451, 252165656, 677454238, 86398322, 208033299, 517977602 (read V3.63)",
+    "leaf_color": "#5a8f3e",
+    "leaf_surface": "matte",
+    "crown_shape": "spreading",
+    "crown_clear": 0.05,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Hoary Aster",
@@ -10037,10 +10080,13 @@
     "flower_colours": "white,cream",
     "woody_stems": 12,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 235560151, 317482399, 14124095, 253556757, 601875105, 628340896, 86883924, 200675 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 235560151, 317482399, 14124095, 253556757, 601875105, 628340896, 86883924, 200675 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/44570815/medium.jpeg",
     "image_attribution": "no rights reserved, uploaded by agbelliveau",
-    "image_license": "cc0"
+    "image_license": "cc0",
+    "leaf_color": "#4f6a36",
+    "crown_shape": "mound",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Lakeshore Sedge",
@@ -11134,7 +11180,12 @@
     "flower_colours": "",
     "woody_stems": 6,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 41787174, 176338197, 61976739, 258275838, 354194520, 519982527, 510640660, 216041631 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 41787174, 176338197, 61976739, 258275838, 354194520, 519982527, 510640660, 216041631 (read V3.63)",
+    "leaf_color": "#5f9a40",
+    "leaf_surface": "matte",
+    "crown_shape": "irregular",
+    "crown_clear": 0.05,
+    "fruit_held_until": 1
   },
   {
     "common_name": "Lyall's Penstemon",
@@ -12126,7 +12177,11 @@
     "merged_on": "2026-09-12",
     "woody_stems": 20,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 529052459, 214150481, 52047556, 252165738, 185128732, 517753399, 520340253, 284460546 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 529052459, 214150481, 52047556, 252165738, 185128732, 517753399, 520340253, 284460546 (read V3.63)",
+    "leaf_color": "#6a9a42",
+    "leaf_surface": "matte",
+    "crown_shape": "upright",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Missouri Milkvetch",
@@ -12649,7 +12704,10 @@
     "flower_colours": "",
     "woody_stems": 30,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 141053539, 386250539, 208284941, 357216792, 330215248, 48447, 449239797, 332014891 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 141053539, 386250539, 208284941, 357216792, 330215248, 48447, 449239797, 332014891 (read V3.63)",
+    "leaf_color": "#8a9a7a",
+    "crown_shape": "upright",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Narrow-leaved Hawkweed",
@@ -13134,10 +13192,14 @@
     "flower_colours": "",
     "woody_stems": 8,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 384256004, 88124329, 657010898, 291027407, 608518292, 509010053, 386160328, 286793047 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 384256004, 88124329, 657010898, 291027407, 608518292, 509010053, 386160328, 286793047 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/509010053/medium.jpg",
     "image_attribution": "no rights reserved, uploaded by kallummcdonald",
-    "image_license": "cc0"
+    "image_license": "cc0",
+    "leaf_color": "#5a8f42",
+    "leaf_surface": "matte",
+    "crown_shape": "rounded",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Northern Gentian",
@@ -15495,7 +15557,12 @@
     "flower_colours": "",
     "woody_stems": 6,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 20623605, 439571840, 398505607, 31541121, 1355924, 308943704, 23389677, 443425184 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 20623605, 439571840, 398505607, 31541121, 1355924, 308943704, 23389677, 443425184 (read V3.63)",
+    "leaf_color": "#6a8a56",
+    "leaf_surface": "matte",
+    "crown_shape": "mound",
+    "crown_clear": 0.0,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Prairie Sage",
@@ -15899,7 +15966,12 @@
     "flower_colours": "",
     "woody_stems": 15,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 416346067, 573613747, 334178706, 617351335, 451965850, 511773154, 22872022, 675787297 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 416346067, 573613747, 334178706, 617351335, 451965850, 511773154, 22872022, 675787297 (read V3.63)",
+    "leaf_color": "#5a8f42",
+    "leaf_surface": "matte",
+    "crown_shape": "rounded",
+    "crown_clear": 0.05,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Purple Avens (Water Avens)",
@@ -16444,7 +16516,11 @@
     "flower_colours": "",
     "woody_stems": 8,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 45959867, 387166551, 277479875, 245558131, 49108731, 567193919, 739023944, 521136629 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 45959867, 387166551, 277479875, 245558131, 49108731, 567193919, 739023944, 521136629 (read V3.63)",
+    "leaf_color": "#4f7a42",
+    "leaf_surface": "glossy",
+    "crown_shape": "vase",
+    "crown_clear": 0.15
   },
   {
     "common_name": "Rabbitbrush",
@@ -16941,7 +17017,10 @@
     "flower_colours": "",
     "woody_stems": 25,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 48219792, 548737684, 616508806, 611148120, 261120989, 617348929, 304934784, 561155284 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 48219792, 548737684, 616508806, 611148120, 261120989, 617348929, 304934784, 561155284 (read V3.63)",
+    "leaf_color": "#4f8044",
+    "crown_shape": "spreading",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Richardson's Needlegrass",
@@ -18156,7 +18235,7 @@
     "fall_color": "#cbbb50",
     "branching": "suckering",
     "bark_texture": "smooth",
-    "leaf_surface": "glaucous",
+    "leaf_surface": "matte",
     "flower_arch": "spike",
     "flower_symmetry": "radial",
     "petal_shape": "narrow",
@@ -18175,7 +18254,10 @@
     "flower_colours": "",
     "woody_stems": 30,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 20840881, 421805777, 629429128, 350418658, 1689270, 666933329, 136871189, 386198914 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 20840881, 421805777, 629429128, 350418658, 1689270, 666933329, 136871189, 386198914 (read V3.63)",
+    "leaf_color": "#7d9a5a",
+    "crown_shape": "upright",
+    "crown_clear": 0.05
   },
   {
     "common_name": "Sandberg Bluegrass",
@@ -18372,7 +18454,11 @@
     "flower_colours": "",
     "woody_stems": 18,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 507075410, 41709210, 552933810, 183960155, 595528162, 317629478, 41709204, 41709199 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 507075410, 41709210, 552933810, 183960155, 595528162, 317629478, 41709204, 41709199 (read V3.63)",
+    "leaf_color": "#5f8a54",
+    "leaf_surface": "matte",
+    "crown_shape": "vase",
+    "crown_clear": 0.1
   },
   {
     "common_name": "Scarlet Butterfly Plant",
@@ -19198,10 +19284,14 @@
     "flower_colours": "",
     "woody_stems": 20,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 102915988, 235572426, 59750605, 373766261, 348172800, 167642720, 18913095, 279891653 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 102915988, 235572426, 59750605, 373766261, 348172800, 167642720, 18913095, 279891653 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/86982931/medium.jpg",
     "image_attribution": "(c) Eric Lamb, some rights reserved (CC BY)",
-    "image_license": "cc-by"
+    "image_license": "cc-by",
+    "leaf_color": "#6f8a5e",
+    "leaf_surface": "pubescent",
+    "crown_shape": "mound",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Sideoats Grama",
@@ -19393,7 +19483,11 @@
     "flower_colours": "",
     "woody_stems": 5,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 115121265, 233820146, 449918340, 372481888, 592011248, 118601348, 99666902, 9801114 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 115121265, 233820146, 449918340, 372481888, 592011248, 118601348, 99666902, 9801114 (read V3.63)",
+    "leaf_color": "#9aa38c",
+    "crown_shape": "irregular",
+    "crown_clear": 0.15,
+    "fruit_held_until": 12
   },
   {
     "common_name": "Silver Sagebrush",
@@ -19528,7 +19622,13 @@
     "flower_colours": "",
     "woody_stems": 12,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 176680359, 511773331, 619955397, 117211969, 345424582, 286774448, 282977633, 397099785 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 176680359, 511773331, 619955397, 117211969, 345424582, 286774448, 282977633, 397099785 (read V3.63)",
+    "fruit_form": "berry",
+    "fruit_color": "#b5b6a4",
+    "leaf_color": "#a8ae9c",
+    "crown_shape": "upright",
+    "crown_clear": 0.1,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Silverweed",
@@ -19811,10 +19911,14 @@
     "flower_colours": "white,cream",
     "woody_stems": 6,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 503050101, 503125913, 588553352, 174210605, 94250005, 72393627, 504628779, 470807015 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 503050101, 503125913, 588553352, 174210605, 94250005, 72393627, 504628779, 470807015 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/503050101/medium.jpg",
     "image_attribution": "no rights reserved, uploaded by kallummcdonald",
-    "image_license": "cc0"
+    "image_license": "cc0",
+    "leaf_color": "#5f9a42",
+    "leaf_surface": "matte",
+    "crown_shape": "mat",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Slender Blue Beardtongue",
@@ -22727,7 +22831,11 @@
     "flower_colours": "brown,green",
     "woody_stems": 6,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 116710866, 476570226, 261286028, 64166976, 236075066, 209379408, 542369972, 163616406 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 116710866, 476570226, 261286028, 64166976, 236075066, 209379408, 542369972, 163616406 (read V3.63)",
+    "leaf_color": "#4f7a3a",
+    "leaf_surface": "matte",
+    "crown_shape": "vase",
+    "crown_clear": 0.2
   },
   {
     "common_name": "Three-square Rush",
@@ -23698,7 +23806,7 @@
     "branching": "multi_stem",
     "fruit_form": "berry",
     "bark_texture": "smooth",
-    "leaf_surface": "pubescent",
+    "leaf_surface": "matte",
     "flower_arch": "raceme",
     "flower_symmetry": "radial",
     "petal_shape": "oval",
@@ -23717,7 +23825,10 @@
     "flower_colours": "",
     "woody_stems": 15,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 419037188, 473424791, 53528990, 343819828, 471928087, 518511112, 411756020, 180371 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 419037188, 473424791, 53528990, 343819828, 471928087, 518511112, 411756020, 180371 (read V3.63)",
+    "leaf_color": "#5f8f44",
+    "crown_shape": "mound",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Water Arum (Wild Calla)",
@@ -24627,7 +24738,12 @@
     "flower_colours": "white,pink",
     "woody_stems": 20,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 748383152, 509274716, 211137301, 118601485, 356419905, 428326155, 421943652, 82982314 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 748383152, 509274716, 211137301, 118601485, 356419905, 428326155, 421943652, 82982314 (read V3.63)",
+    "leaf_color": "#6f8a64",
+    "leaf_surface": "matte",
+    "crown_shape": "upright",
+    "crown_clear": 0.0,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Western Wheatgrass",
@@ -25432,7 +25548,7 @@
     "sourcing_notes": "Estimate (shrub default); AB retail as of 2026",
     "flower_color": "#f2c11e",
     "flower_form": "cluster",
-    "fruit_color": "#9a1f1f",
+    "fruit_color": "#1c1a22",
     "native_provinces": "AB,SK",
     "leaf_shape": "palmately_lobed",
     "leaf_size_cm": 6.0,
@@ -25460,10 +25576,14 @@
     "flower_colours": "",
     "woody_stems": 8,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 206927814, 392670896, 333581107, 663101311, 348404254, 167260226, 388762004, 75076769 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 206927814, 392670896, 333581107, 663101311, 348404254, 167260226, 388762004, 75076769 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/388762004/medium.jpg",
     "image_attribution": "no rights reserved, uploaded by kallummcdonald",
-    "image_license": "cc0"
+    "image_license": "cc0",
+    "leaf_color": "#6a9a42",
+    "leaf_surface": "matte",
+    "crown_shape": "rounded",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Wild Blue Flax",
@@ -25721,7 +25841,7 @@
     "sourcing_notes": "Estimate (shrub default); AB retail as of 2026",
     "flower_color": "#f2f2ea",
     "flower_form": "cluster",
-    "fruit_color": "#9a1f1f",
+    "fruit_color": "#3e2236",
     "native_provinces": "AB,SK",
     "leaf_shape": "palmately_lobed",
     "leaf_size_cm": 3.0,
@@ -25749,10 +25869,14 @@
     "flower_colours": "white,pink",
     "woody_stems": 8,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 138411693, 234970244, 703047920, 606789337, 79158528, 375391623, 278539604, 470802301 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 138411693, 234970244, 703047920, 606789337, 79158528, 375391623, 278539604, 470802301 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/375391623/medium.jpeg",
     "image_attribution": "(c) wandering_shr00m, some rights reserved (CC BY)",
-    "image_license": "cc-by"
+    "image_license": "cc-by",
+    "leaf_color": "#4f8a3a",
+    "leaf_surface": "glossy",
+    "crown_shape": "mound",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Wild Licorice",
@@ -26054,7 +26178,11 @@
     "flower_colours": "",
     "woody_stems": 10,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 169310354, 298342059, 415639096, 705280151, 415934796, 306919869, 44299574, 44296934 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 169310354, 298342059, 415639096, 705280151, 415934796, 306919869, 44299574, 44296934 (read V3.63)",
+    "leaf_color": "#6a9a44",
+    "leaf_surface": "matte",
+    "crown_shape": "spreading",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Wild Red Currant",
@@ -26102,7 +26230,7 @@
     "image_license": "cc-by",
     "flower_color": "#e58fb0",
     "flower_form": "cluster",
-    "fruit_color": "#9a1f1f",
+    "fruit_color": "#c8202a",
     "native_provinces": "AB,SK",
     "leaf_shape": "palmately_lobed",
     "leaf_size_cm": 7.0,
@@ -26130,7 +26258,11 @@
     "flower_colours": "pink,red",
     "woody_stems": 5,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 130965309, 509262554, 8770860, 39464963, 509263898, 207915111, 3681448, 202870644 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 130965309, 509262554, 8770860, 39464963, 509263898, 207915111, 3681448, 202870644 (read V3.63)",
+    "leaf_color": "#5f9a40",
+    "leaf_surface": "matte",
+    "crown_shape": "mat",
+    "crown_clear": 0.0
   },
   {
     "common_name": "Wild Sarsaparilla",
@@ -26752,7 +26884,12 @@
     "flower_colours": "",
     "woody_stems": 15,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 210895098, 51899346, 40080674, 474196270, 474196655, 662101560, 578675782, 4560367 (read V3.49)"
+    "leaf_data_citation": "iNaturalist photographs 210895098, 51899346, 40080674, 474196270, 474196655, 662101560, 578675782, 4560367 (read V3.63)",
+    "leaf_color": "#5f8a4e",
+    "leaf_surface": "matte",
+    "crown_shape": "upright",
+    "crown_clear": 0.05,
+    "fruit_held_until": 3
   },
   {
     "common_name": "Woolly Cinquefoil",
@@ -28699,10 +28836,15 @@
     "flower_colours": "",
     "woody_stems": 4,
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 284601787, 231059946, 448299812, 349489216, 78850199, 283908153, 509452467, 505508166 (read V3.49)",
+    "leaf_data_citation": "iNaturalist photographs 284601787, 231059946, 448299812, 349489216, 78850199, 283908153, 509452467, 505508166 (read V3.63)",
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/509452467/medium.jpg",
     "image_attribution": "no rights reserved, uploaded by kallummcdonald",
-    "image_license": "cc0"
+    "image_license": "cc0",
+    "leaf_color": "#4a8436",
+    "leaf_surface": "glossy",
+    "crown_shape": "rounded",
+    "crown_clear": 0.25,
+    "fruit_held_until": 11
   },
   {
     "hardiness_zone_min": "3",

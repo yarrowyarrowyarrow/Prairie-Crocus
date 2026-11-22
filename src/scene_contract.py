@@ -334,7 +334,10 @@ def _fruit_window(plant: dict) -> dict:
     Only fleshy-fruited species carry a ``fruit_color`` (curated), so dry-fruited
     plants (acorns, cones, catkins) never grow berries even if they 'fruit'."""
     fs, fe = _bloom_months(plant.get("fruit_period"))
-    return {"fruit_start": fs, "fruit_end": fe}
+    # The last month the fruit is still on the bare twigs (schema v104, V3.63):
+    # 0 when it goes with the season.
+    held = int(plant.get("fruit_held_until") or 0) if fs else 0
+    return {"fruit_start": fs, "fruit_end": fe, "fruit_held_until": held}
 
 
 def _boundary_ring(project: dict) -> Optional[list]:

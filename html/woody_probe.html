@@ -97,6 +97,25 @@ function blooms(w) {
   return { cards, florets };
 }
 
+function fruits(w) {
+  // A shrub's fruit as cut-out bunches (15d-woodyfruit.js, V3.63), and any
+  // fruit still drawn as points (11-fruit.js).
+  const cards = [];
+  let points = 0;
+  w.eval('plantsGroup').traverse((o) => {
+    if (o.isPoints && o.material && o.material.map) points += o.geometry.attributes.position.count;
+    if (!o.isInstancedMesh || o.userData.part !== 'fruit_card') return;
+    const m = new w.THREE.Matrix4(), p = new w.THREE.Vector3(), q = new w.THREE.Quaternion(),
+      s = new w.THREE.Vector3(), c = new w.THREE.Color();
+    o.getMatrixAt(0, m); m.decompose(p, q, s);
+    if (o.instanceColor) o.getColorAt(0, c);
+    cards.push({ count: o.count, form: o.userData.fruitForm, name: o.userData.pick[0],
+                 size: s.y, colour: '#' + c.getHexString(), cut: o.material.alphaTest > 0,
+                 shadow: o.castShadow });
+  });
+  return { cards, points };
+}
+
 function vines(w) {
   // A read vine's leafy shoots (22b-vineleaves.js): one mesh a vine.
   const out = [];
@@ -125,7 +144,7 @@ async function run(w, job) {
     w.permaSetScene(sc);
     await until(() => w.permaModelsReady(), 60000);
     await sleep(400);
-    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), blooms: blooms(w), vines: vines(w),
+    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), blooms: blooms(w), fruits: fruits(w), vines: vines(w),
                          budget: w.eval('WOODY_BUDGET'), gain_max: w.eval('WOODY_GAIN_MAX') };
   }
   // A cluster's size at life size, for the flowers the tests name.

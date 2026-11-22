@@ -185,11 +185,20 @@ class TheCatalogue(unittest.TestCase):
         self.assertGreaterEqual(len(native), 15)
         self.assertEqual([r["common_name"] for r in native if not tree_habit.form_for(r)], [])
 
-    def test_crown_numbers_are_a_reading_of_a_tree(self):
+    def test_crown_numbers_are_a_reading_of_a_tree_or_a_shrub(self):
+        # A tree's crown since V3.50; a shrub's outline since V3.63, in its own
+        # words. Either way it is read off photographs, never a guess, and a
+        # limb habit is a tree's alone.
+        from src import data_quality
         for r in self.rows:
             if r.get("crown_shape") or r.get("limb_habit") or r.get("crown_clear") is not None:
-                self.assertEqual(r["plant_type"], "tree", r["scientific_name"])
+                self.assertIn(r["plant_type"], ("tree", "shrub"), r["scientific_name"])
                 self.assertTrue(herb_habit.is_read(r), r["scientific_name"])
+                words = (data_quality.SHRUB_CROWN_SHAPES if r["plant_type"] == "shrub"
+                         else data_quality.CROWN_SHAPES)
+                self.assertIn(r.get("crown_shape"), words, r["scientific_name"])
+                if r["plant_type"] == "shrub":
+                    self.assertFalse(r.get("limb_habit"), r["scientific_name"])
 
 
 class TheReadingTool(unittest.TestCase):

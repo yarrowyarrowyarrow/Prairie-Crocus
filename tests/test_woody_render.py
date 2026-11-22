@@ -112,6 +112,18 @@ SCENES["rose"] = _scene("Test Rose", branching="suckering", mature_height_m="1.5
                         petal_shape="notched", flower_color="#e58fb0",
                         leaf_data_source="photo", woody_stems=15)
 
+# V3.63: a snowberry in fruit, in January holding it, and in January with
+# nothing read about winter; and the same shrub in two crowns.
+_SNOW = dict(_READ, fruit_color="#eff0ea", fruit_form="berry",
+             fruit_period="September–October")
+SCENES["fruit"] = _scene("Test Snowberry", month=9, **_SNOW)
+SCENES["held"] = _scene("Test Snowberry", month=1, fruit_held_until=3, **_SNOW)
+SCENES["gone"] = _scene("Test Snowberry", month=1, **_SNOW)
+SCENES["herb_fruit"] = _scene("Test Snowberry", month=9, **dict(_SNOW, leaf_data_source=""))
+SCENES["vase"] = _scene("Test Vase", crown_shape="vase", crown_clear=0.0, **_READ)
+SCENES["mound"] = _scene("Test Mound", crown_shape="mound", crown_clear=0.0, **_READ)
+SCENES["trunk"] = _scene("Test Trunk", crown_shape="rounded", crown_clear=0.3, **_READ)
+
 #: Flowers the cluster sizes are asked for: architecture, one flower's width
 #: in metres, flowers in a cluster.
 CLUSTERS = {"chokecherry": ("raceme", 0.012, 30), "dogwood": ("cyme", 0.006, 60),
@@ -416,6 +428,64 @@ class TheShrubInTheRealViewer(unittest.TestCase):
             self.assertTrue(0.02 <= row["cover"] <= 0.8, f"{label}: cover {row['cover']}")
             self.assertTrue(0.9 <= row["top"] <= 1.001, f"{label}: top {row['top']}")
             self.assertTrue(row["key"], label)
+
+
+    # ── its crown (V3.63) ────────────────────────────────────────────────────
+
+    def _reach(self, name, lo, hi):
+        """How far out the leaves reach between `lo` and `hi` tenths of the way
+        up, as a share of how far they reach at their widest."""
+        prof = self._leaves(name)["profile"]
+        widest = max(r[1] for r in prof) or 1
+        return max(prof[i][1] for i in range(lo, hi)) / widest
+
+    def test_the_crown_that_was_read_is_the_outline_drawn(self):
+        self.assertEqual(self._leaves("vase")["plan"]["crown"], "vase")
+        self.assertEqual(self._leaves("read")["plan"]["crown"], "")
+        # A mound is widest near the ground, a vase narrow there.
+        self.assertGreater(self._reach("mound", 0, 3), self._reach("vase", 0, 3) + 0.15)
+        self.assertGreater(self._reach("vase", 6, 9), 0.85)
+
+    def test_a_shrub_on_a_bare_foot_is_bare_there(self):
+        """Its leaves start where its first branch leaves the stems, less
+        what a card droops: nothing in the lowest tenth."""
+        trunk, read = self._leaves("trunk"), self._leaves("read")
+        self.assertEqual(trunk["profile"][0], [0, 0])
+        self.assertGreater(trunk["bottom"], read["bottom"] + 0.06)
+
+    # ── its fruit (V3.63, 15d-woodyfruit.js) ─────────────────────────────────
+
+    def _fruit(self, name):
+        return self.got["scenes"][name]["fruits"]
+
+    def test_in_fruit_it_carries_bunches_as_cards_and_no_points(self):
+        f = self._fruit("fruit")
+        self.assertEqual(f["points"], 0, "a shrub's fruit went back to the points")
+        self.assertEqual(len(f["cards"]), 1)
+        card = f["cards"][0]
+        self.assertEqual(card["form"], "berry")
+        self.assertGreaterEqual(card["count"], 40)
+        self.assertTrue(card["cut"])
+        self.assertFalse(card["shadow"])
+        # A bunch is drawn larger than life by a stated amount, never past it.
+        self.assertGreaterEqual(card["size"], 0.035 * 1.4 * 0.79)
+        self.assertLessEqual(card["size"], 0.035 * 1.8 * 1.21)
+
+    def test_it_holds_its_fruit_into_winter_where_that_was_read(self):
+        held, on = self._fruit("held")["cards"], self._fruit("fruit")["cards"]
+        self.assertEqual(len(held), 1, "the snowberry dropped its fruit in January")
+        self.assertLess(held[0]["count"], on[0]["count"], "birds take some")
+        # Pale fruit stays pale on the snow.
+        self.assertEqual(held[0]["colour"], on[0]["colour"])
+
+    def test_without_a_winter_reading_the_fruit_goes_with_its_season(self):
+        self.assertEqual(self._fruit("gone")["cards"], [])
+        self.assertEqual(self._fruit("gone")["points"], 0)
+
+    def test_an_estimated_shrub_keeps_its_fruit_points(self):
+        f = self._fruit("herb_fruit")
+        self.assertEqual(f["cards"], [])
+        self.assertGreater(f["points"], 0)
 
 
 class TheProbeIsNotShipped(unittest.TestCase):

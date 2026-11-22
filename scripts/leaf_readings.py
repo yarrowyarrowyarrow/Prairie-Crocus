@@ -54,6 +54,16 @@ Only form, size and count are read. Nothing about what a plant is used for
 belongs here (P12), and a flower's colour is the owner's answer (V3.34): this
 tool refuses ``flower_color``.
 
+A shrub read again (V3.63) adds its leaf colour and surface, its crown in a
+shrub's own words (``crown_shape``: vase, rounded, mound, spreading, upright,
+irregular, mat; ``crown_clear`` where it stands on a short bare trunk) and
+``fruit_held_until``, the last month its fruit is still on the bare twigs,
+read off a winter photograph::
+
+    {"Symphoricarpos albus": {"leaf_color": "#6a8f62", "leaf_surface": "matte",
+                              "crown_shape": "rounded", "crown_clear": 0.0,
+                              "fruit_held_until": 3}}
+
 A changed row needs a schema bump to reach an installed copy.
 """
 
@@ -75,7 +85,7 @@ from src import (grass_habit, herb_habit, native_here, photo_picks, shrub_habit,
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.51"
+READ_IN = "V3.63"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -104,6 +114,8 @@ NUMBERS = {
     "stem_leaf_nodes": (1, 80),
     "flowering_stems": (1, 300),
     "woody_stems": (1, 60),
+    # V3.63: the last month a shrub's fruit is still on its bare twigs.
+    "fruit_held_until": (1, 12),
     "crown_clear": (0.0, 0.8),
     "mature_height_m": (0.02, 30.0),
     "petal_count": (0, 60),
@@ -115,7 +127,7 @@ NUMBERS = {
     "head_width_cm": (0.1, 60.0),
     "head_count": (1, 60),
 }
-WHOLE = ("stem_leaf_nodes", "flowering_stems", "woody_stems", "petal_count",
+WHOLE = ("stem_leaf_nodes", "flowering_stems", "woody_stems", "fruit_held_until", "petal_count",
          "florets_per_head", "head_count")
 FLAGS = ("basal_rosette",)
 FIELDS = tuple(WORDS) + tuple(NUMBERS) + FLAGS + COLOURS
@@ -202,7 +214,13 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
         for field, value in reading.items():
             if field not in FIELDS:
                 out.append(f"{sci}: {field} is not a field this tool reads")
-            elif field in WORDS and value not in WORDS[field]:
+            elif field == "crown_shape" and value not in (
+                    dq.SHRUB_CROWN_SHAPES if row.get("plant_type") == "shrub"
+                    else dq.CROWN_SHAPES):
+                # A shrub's crown in its own words (V3.63), a tree's in its.
+                out.append(f"{sci}: crown_shape {value!r} is not a "
+                           f"{row.get('plant_type')}'s crown")
+            elif field in WORDS and field != "crown_shape" and value not in WORDS[field]:
                 out.append(f"{sci}: {field} {value!r} is not in the vocabulary")
             elif field in NUMBERS:
                 lo, hi = NUMBERS[field]

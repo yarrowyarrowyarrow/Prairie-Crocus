@@ -60,7 +60,9 @@ feature, skim where it sits in that philosophy. The sources of truth:
   (`scripts/model_review.py summary`); the plan ranks what to fix next. **Then read
   [V3.62](docs/plans/V3.62-the-models-read-again.md)**: all 250 re-read after the rebuilds (V3.48's
   reading kept under `earlier`, `model_review.py compare`), the ranking of what is still wrong, and
-  why the shrubs look alike.
+  why the shrubs look alike; [V3.63](docs/plans/V3.63-shrubs-you-can-tell-apart.md) did the shrubs'
+  leaf colours, crown outlines (`SHRUB_CROWN_SHAPES`) and fruit as cards held into winter
+  (`html/scene3d/15d-woodyfruit.js`, `fruit_held_until`).
   [V3.49](docs/plans/V3.49-shrubs-from-their-own-stems.md) did the shrubs and
   [V3.50](docs/plans/V3.50-trees-and-vines-from-their-photographs.md) the trees and vines,
   [V3.51](docs/plans/V3.51-grasses-sedges-and-rushes-by-their-heads.md) the grasses, sedges and rushes;

@@ -253,6 +253,12 @@ CREATE TABLE IF NOT EXISTS plants (
     -- gives the plant's type or genus. Not a flower colour: those are the
     -- owner's answers (flower_colour_source). Covered by the leaf pair.
     leaf_color TEXT DEFAULT '',
+    -- The last month a plant's fruit is still on its twigs after its fruiting
+    -- season (schema v104, V3.63), 1-12: a snowberry's white berries and a
+    -- highbush cranberry's red bunches into March, a rose's hips through the
+    -- winter. Read off winter photographs. NULL: the fruit goes with
+    -- fruit_period. Drawn on the bare twigs by the 3D viewer.
+    fruit_held_until INTEGER,
     -- A grass's, sedge's or rush's blades and seed head, read off its
     -- photographs (schema v101, V3.51). `blade_width_mm` is a blade's width
     -- (a leafless rush records none), `blade_habit` how the blades are held
