@@ -57,7 +57,10 @@ feature, skim where it sits in that philosophy. The sources of truth:
   [V3.48](docs/plans/V3.48-models-against-photographs.md) first: all 250 Edmonton natives were read
   against their iNaturalist reference photographs, and what each sheet showed (the photographs to
   use, a score, the faults) is in `data/fetched/model_review.json`
-  (`scripts/model_review.py summary`); the plan ranks what to fix next.
+  (`scripts/model_review.py summary`); the plan ranks what to fix next. **Then read
+  [V3.62](docs/plans/V3.62-the-models-read-again.md)**: all 250 re-read after the rebuilds (V3.48's
+  reading kept under `earlier`, `model_review.py compare`), the ranking of what is still wrong, and
+  why the shrubs look alike.
   [V3.49](docs/plans/V3.49-shrubs-from-their-own-stems.md) did the shrubs and
   [V3.50](docs/plans/V3.50-trees-and-vines-from-their-photographs.md) the trees and vines,
   [V3.51](docs/plans/V3.51-grasses-sedges-and-rushes-by-their-heads.md) the grasses, sedges and rushes;
