@@ -27,7 +27,9 @@
 // * a dense cluster on a wildflower is carried as one cut-out card on its stem
 //   tip, the card a shrub's flower cluster has been since V3.49
 //   (15c-woodybloom.js): a column of flowers for a spike or a raceme, a cone
-//   for a goldenrod's panicle (denseClusterApplies).
+//   for a goldenrod's panicle, a flat top for a yarrow's or an everlasting's
+//   corymb (denseClusterApplies). A plant with no stem tip to carry it (a
+//   water plant's own body) keeps its florets.
 //
 // Every number above is a stated estimate: nothing records how far out a head
 // turns, how many heads a cluster holds, or how small a head may be drawn.
@@ -43,7 +45,7 @@ const HEAD_TILT = [0.5, 0.95];
 const HEADS_PER_CLUSTER = { unbranched: 1, branched_above: 3, branched_throughout: 4 };
 // A cluster is dense, and drawn as one card, from this many florets.
 const DENSE_FLORETS = 15;
-const DENSE_ARCHES = { spike: 1, raceme: 1, panicle: 1 };
+const DENSE_ARCHES = { spike: 1, raceme: 1, panicle: 1, corymb: 1 };
 
 // How much larger than life a flower is drawn: a tree's or shrub's by its crown
 // (15b-anchors.js), a wildflower's head by HEAD_MIN_M.

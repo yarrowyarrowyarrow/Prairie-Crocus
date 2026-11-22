@@ -199,7 +199,7 @@ function woodyBloomCards(p) {
 }
 
 function buildWoodyBlooms(plants, month, terrain) {
-  const groups = new Map();
+  const groups = new Map(), back = [];
   const _c = new THREE.Color(), X = new THREE.Vector3(), Y = new THREE.Vector3(), Z = new THREE.Vector3();
   for (const p of plants) {
     const arch = FLORET_ARCHITECTURES.indexOf(p.flower_arch) >= 0 ? p.flower_arch : 'cyme';
@@ -214,6 +214,10 @@ function buildWoodyBlooms(plants, month, terrain) {
     const reach = natural * (tree ? woodyBloomGain(p) : Math.min(WOODY_BLOOM_GAIN_MAX, woodyBloomGain(p)));
     const mk = _wbMask(arch, petals, d / natural);
     const anchors = bloomAnchors(p, WOODY_BLOOM_MAX, month);     // 15b-anchors.js
+    // A wildflower whose body offers no tip to carry a card keeps its florets.
+    if ((!anchors || !anchors.length) && window.denseClusterApplies && denseClusterApplies(p)) {
+      back.push(p); continue;
+    }
     if (!anchors || !anchors.length) continue;
     const key = mk.key + (_WB_LONG[arch] ? '|x' : '|o');
     let gr = groups.get(key);
@@ -225,8 +229,11 @@ function buildWoodyBlooms(plants, month, terrain) {
     const n = Math.min(anchors.length, woodyBloomCards(p));
     for (let k = 0; k < n; k++) {
       const q = anchors[(k * 7 + seed) % anchors.length];
-      gr.items.push({ x: q.x, y: q.y, z: q.z, nx: q.nx, nz: q.nz, size: reach * (0.85 + 0.3 * rnd()),
-                      lean: 0.25 + 0.5 * rnd(), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
+      // A stem tip says no way out (15b-anchors.js): out from the plant's middle.
+      let nx = q.nx, nz = q.nz;
+      if (!nx && !nz) { const a = Math.atan2(q.z + p.y, q.x - p.x) + (rnd() - 0.5) * 0.6; nx = Math.cos(a); nz = Math.sin(a); }
+      gr.items.push({ x: q.x, y: q.y, z: q.z, nx, nz, size: reach * (0.85 + 0.3 * rnd()),
+                      lean: (0.25 + 0.5 * rnd()) * (q.top ? 0.35 : 1), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
                       // A poplar's, an aspen's or a birch's catkins hang (src/tree_habit.py).
                       hang: !!(p.drawn && p.drawn.catkins_hang) && petals < 3 && arch === 'spike',
                       out: tree ? 0.6 : 0.35, top: !!q.top,
@@ -266,6 +273,7 @@ function buildWoodyBlooms(plants, month, terrain) {
     mesh.userData.clusterSizes = gr.items.map(it => it.size);
     plantsGroup.add(mesh);
   }
+  if (back.length && window.buildFlorets) buildFlorets(back, month, terrain);
 }
 
 window.woodyBloomApplies = woodyBloomApplies;

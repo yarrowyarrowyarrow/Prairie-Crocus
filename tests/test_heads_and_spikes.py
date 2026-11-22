@@ -169,8 +169,16 @@ class TheRulesInNode(unittest.TestCase):
             "denseClusterApplies({plant_type: 'wildflower', flower_arch: 'head', florets_per_head: 90})",
             "denseClusterApplies({plant_type: 'shrub', flower_arch: 'raceme', florets_per_head: 30})",
             "denseClusterApplies({plant_type: 'grass', flower_arch: 'panicle', florets_per_head: 60,"
-            " inflorescence_form: 'open_panicle'})"]) + "]")
-        self.assertEqual(got, [True, False, False, False, False])
+            " inflorescence_form: 'open_panicle'})",
+            "denseClusterApplies({plant_type: 'wildflower', flower_arch: 'corymb', florets_per_head: 60})"]) + "]")
+        self.assertEqual(got, [True, False, False, False, False, True])
+
+    def test_a_cluster_with_no_tip_to_carry_it_keeps_its_florets(self):
+        """A water plant's body has no stem tips: before V3.64's fix its
+        flowers vanished (broad-leaved water-plantain, water arum)."""
+        bloom = _js("15c-woodybloom.js")
+        self.assertIn("back.push(p); continue;", bloom)
+        self.assertIn("buildFlorets(back, month, terrain)", bloom)
 
 
 if __name__ == "__main__":
