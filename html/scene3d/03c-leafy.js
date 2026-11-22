@@ -565,7 +565,7 @@ function _leafyMat(B, P, bloom, rng, C) {
   }
   // The leafy shoots: as many as cover the mat, on what the budget leaves.
   const sp = _wdSpray(P.shape, P.perNode);                            // 03d-woody.js
-  const card = sp.w * sp.h * L * L * sp.cover;
+  const card = sp.w * sp.h * L * L * (sp.leafCover || sp.cover);
   let n = Math.ceil(MAT_COVER * Math.PI * R * R / Math.max(1e-6, card));
   const room = Math.max(60, Math.floor((P.budget - B.idx.length / 3) / 2));
   const gain = n > room ? Math.min(MAT_GAIN_MAX, Math.sqrt(n / room)) : 1;

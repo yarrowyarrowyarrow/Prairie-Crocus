@@ -258,11 +258,19 @@ function _wdSpray(shape, perNode) {
         g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -st); g.stroke();
         g.translate(0, -st);
         _wdPaintLeaf(g, shape, len * (0.62 + 0.3 * rnd()));
-      } else _wdPaintLeaf(g, shape, len * (0.8 + 0.22 * rnd()) * (facing ? 0.55 : 1));
+      } else _wdPaintLeaf(g, shape, len * (0.8 + 0.22 * rnd()) * (facing ? 0.75 : 1));
       g.restore();
     }
   }
-  sp = Object.assign(woodyMask(key, cv), { w: wide, h: H / len, leaves: K, cluster });
+  // A pair facing the eye is drawn short but is as much leaf as any other:
+  // `leafCover` is the share of the card its leaves would fill laid flat, which
+  // is what decides how many cards a crown needs (`cover`, what is painted,
+  // keeps the smaller copies honest).
+  const facingPairs = !needle && per === 2 ? Math.floor(nodes / 2) : 0;
+  const painted = (nodes - facingPairs + facingPairs * 0.5625) / nodes;
+  const mk = woodyMask(key, cv);
+  sp = Object.assign(mk, { w: wide, h: H / len, leaves: K, cluster,
+                           leafCover: Math.min(1, mk.cover / painted) });
   _WD_SPRAYS.set(key, sp);
   return sp;
 }
@@ -304,7 +312,7 @@ function _woodyPlan(d, quality) {
   const area = d.form === 'mat' ? Math.PI * R * R * 1.3 : Math.PI * R * (R + 2 * H) * 0.7;
   // Sprays that cover it at life size: each fills `cover` of its card, and is
   // seen at an angle.
-  const need = WOODY_COVER * area / (spray.w * L * spray.h * L * spray.cover * 0.6);
+  const need = WOODY_COVER * area / (spray.w * L * spray.h * L * spray.leafCover * 0.6);
   const crown = WOODY_CROWNS.indexOf(d.crown) >= 0 ? d.crown : '';
   const P = { H, R, L, shape, form: d.form, budget, area, need, spray, gain: 1, cards: 0, tier,
               crown, clear: crown ? _wdClamp(d.clear || 0, 0, 0.6) : 0,

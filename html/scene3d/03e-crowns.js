@@ -191,7 +191,7 @@ function _crownPlan(d, quality) {
     area += 2 * Math.PI * R * crownEnvelope(d.form, t, d.clear) * H / 24;
   }
   area = area * 0.8 + Math.PI * R * R * 0.4;
-  const need = WOODY_COVER * area / (spray.w * L * spray.h * L * spray.cover * 0.6);
+  const need = WOODY_COVER * area / (spray.w * L * spray.h * L * (spray.leafCover || spray.cover) * 0.6);
   const P = { H, R, L, shape: d.leaf_shape, form: d.form, budget, area, need, spray, tier,
               gain: 1, cards: 0, base: d.clear, faceUp: CROWN_FACE_UP[kind], trunks: Math.max(1, Math.min(12, d.trunks || 1)),
               limbs: LIMB_HABITS.indexOf(d.limbs) >= 0 ? d.limbs : 'spreading', needles };
