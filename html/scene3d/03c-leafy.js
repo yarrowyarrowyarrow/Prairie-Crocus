@@ -655,8 +655,9 @@ function buildLeafyGeo(p, v) {
 function leafyCardsMesh(arch, total, surf) {
   const cg = arch.userData && arch.userData.cards;
   if (!cg) return null;
-  const mesh = instancedMesh(cg, total, surfaceMaterial(MAT_PRESETS.herbLeaf, surf, true, arch.userData.cut));
-  mesh.customDepthMaterial = arch.userData.cut.depth;
+  const cut = arch.userData.cut;
+  const mesh = instancedMesh(cg, total, surfaceMaterial(MAT_PRESETS.herbLeaf, surf, true, cut));
+  mesh.customDepthMaterial = cut.depth;
   mesh.userData.part = 'mat_cards';
   return mesh;
 }
