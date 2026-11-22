@@ -68,7 +68,14 @@ async function run(w, job) {
     w.permaSetScene(sc);
     await until(() => w.permaModelsReady(), 60000);
     await sleep(400);
-    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc),
+    // A mat's leafy shoots, a mesh beside its body (V3.65).
+    const cards = [];
+    w.eval('plantsGroup').traverse((o) => {
+      if (o.isInstancedMesh && o.userData.part === 'mat_cards')
+        cards.push({ count: o.count, triangles: o.geometry.index.count / 3,
+                     cut: !!(o.material && o.material.alphaMap || o.customDepthMaterial) });
+    });
+    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), cards,
                          budget: w.eval('LEAFY_BUDGET') };
   }
   // Every form with every outline, built off the scene.
@@ -94,6 +101,29 @@ async function run(w, job) {
         } catch (e) { row.error = String(e && e.message || e); }
         res.matrix.push(row);
       }
+    }
+  }
+  // A mat of leafy shoots, with every outline (V3.65): its leaves are cards.
+  res.mats = [];
+  for (const shape of job.shapes || []) {
+    for (const arrangement of ['alternate', 'opposite', 'whorled']) {
+      const p = { genus: 'Testus', species: shape, bloom_start: 0,
+                  drawn: { body: 'leafy', form: 'mat', habit: 'mat', mature_h: 0.12, mature_w: 0.6,
+                           stems: 8, nodes: 0, leaf_m: 0.015, leaf_shape: shape, arrangement,
+                           branching: 'branched_throughout', basal: false } };
+      const row = { shape, arrangement };
+      try {
+        const g = w.buildLeafyGeo(p, 0), cg = g.userData.cards;
+        let bad = 0;
+        for (const geo of [g, cg]) {
+          const a = geo ? geo.attributes.position.array : [];
+          for (let i = 0; i < a.length; i++) if (!Number.isFinite(a[i])) bad++;
+        }
+        cg.computeBoundingBox();
+        Object.assign(row, { cards: g.userData.leafy.cards, triangles: g.userData.leafy.triangles,
+                             bad, card_top: cg.boundingBox.max.y, uv: !!cg.attributes.uv });
+      } catch (e) { row.error = String(e && e.message || e); }
+      res.mats.push(row);
     }
   }
   return res;

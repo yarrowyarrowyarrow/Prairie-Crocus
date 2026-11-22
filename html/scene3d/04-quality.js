@@ -623,6 +623,7 @@ function buildHerbLayer(list, month, year, terrain) {
     const total = places.reduce((s, pl) => s + pl.length, 0);
     const mesh = instancedMesh(arch, total,
       surfaceMaterial(MAT_PRESETS.herbLeaf, surf, true));
+    const cards = window.leafyCardsMesh && leafyCardsMesh(arch, total, surf);   // a mat (V3.65)
     const names = new Array(total), ids = new Array(total);
     let idx = 0;
     items.forEach((p, ii) => {
@@ -635,6 +636,7 @@ function buildHerbLayer(list, month, year, terrain) {
         const rotY = rotY0 + (k ? pl.dx : 0);
         const gy = terrainHeightAt(x, wy, terrain);
         setInst2(mesh, idx, x, gy, -wy, c * m, h * m, c * m, rotY, col);
+        if (cards) setInst2(cards, idx, x, gy, -wy, c * m, h * m, c * m, rotY, col);
         if (!k && window.noteBloomBody) noteBloomBody(p, arch, x, gy, -wy, c * m, h * m, rotY);
         names[idx] = p.common_name || '';
         ids[idx] = p.plant_id;
@@ -644,6 +646,7 @@ function buildHerbLayer(list, month, year, terrain) {
     mesh.userData.pick = names;
     mesh.userData.pickId = ids;
     plantsGroup.add(mesh);
+    if (cards) { cards.userData.pick = names; cards.userData.pickId = ids; plantsGroup.add(cards); }
   }
 }
 

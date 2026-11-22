@@ -571,7 +571,11 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # v105 (V3.64): no DDL. A reseed for the leaf colours of the 169 natives that
 # had none (the wildflowers, groundcovers, herbs, trees, vines, water plants,
 # horsetails and the fern), read off their reference photographs.
-_SCHEMA_VERSION = 105
+# v106 (V3.65): no DDL. A reseed for the flower clusters of 40 wildflowers,
+# their length and width read off photographs into head_length_cm and
+# head_width_cm (until then a graminoid's seed head only): the viewer draws a
+# dense spike, panicle or flat top at that size.
+_SCHEMA_VERSION = 106
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the

@@ -64,7 +64,9 @@ feature, skim where it sits in that philosophy. The sources of truth:
   leaf colours, crown outlines (`SHRUB_CROWN_SHAPES`) and fruit as cards held into winter
   (`html/scene3d/15d-woodyfruit.js`, `fruit_held_until`); [V3.64](docs/plans/V3.64-leaves-heads-and-spikes.md)
   gave every native a leaf colour, drew daisy heads at least 3 cm and facing out, and dense spikes
-  as cards (`html/scene3d/15e-heads.js`).
+  as cards (`html/scene3d/15e-heads.js`); [V3.65](docs/plans/V3.65-mats-vines-and-big-leaves.md)
+  drew the mats as leafy shoots (no plate), big ternate leaves divided twice, opposite leaves as
+  turning pairs, and 40 wildflowers' clusters at the size read (`head_length_cm` on a wildflower).
   [V3.49](docs/plans/V3.49-shrubs-from-their-own-stems.md) did the shrubs and
   [V3.50](docs/plans/V3.50-trees-and-vines-from-their-photographs.md) the trees and vines,
   [V3.51](docs/plans/V3.51-grasses-sedges-and-rushes-by-their-heads.md) the grasses, sedges and rushes;

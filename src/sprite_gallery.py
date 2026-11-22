@@ -249,6 +249,12 @@ def _flower_specimen(p):
 #: currant, spirea) did not make the short peavines and vetch any easier to
 #: see from the gallery's distance.
 VINE_HOST = "Cornus sericea"
+#: The shrub a herbaceous vine scrambles over instead (V3.65): the peavines
+#: and the vetch are a metre of soft stems that photographs show through grass
+#: and low shrubs, and on a 3 m dogwood in flower they were a few sprays lost
+#: in it. Western Snowberry, 1 m: its small blue-green leaves and tiny pink
+#: flowers set off the vines' fresh green leaflets and their racemes.
+VINE_HOST_LOW = "Symphoricarpos occidentalis"
 
 #: Unit (east, north) toward the right-hand edge of the shrub as the gallery's
 #: camera sees it. frameCamera (html/scene3d/01-core.js) puts the camera 0.9 r
@@ -262,8 +268,10 @@ _VINE_SIDE = (1.1 / math.hypot(0.9, 1.1), 0.9 / math.hypot(0.9, 1.1))
 def _vine_scene(plant, pid, name, i, when=None):
     """A vine climbing the gallery's host shrub, and a second copy of it in the
     open with nothing to climb. None if the host is not in the seed data."""
+    soft = (plant.get("deciduous_evergreen") or "").lower() == "herbaceous"
+    want = VINE_HOST_LOW if soft else VINE_HOST
     host_row = next((r for r in _seed_rows()
-                     if (r.get("scientific_name") or "") == VINE_HOST), None)
+                     if (r.get("scientific_name") or "") == want), None)
     if host_row is None:
         return None
     host = _species_specimen(host_row)

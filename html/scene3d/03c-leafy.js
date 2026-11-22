@@ -43,6 +43,9 @@ const FORKS = { branched_above: [0.56, 0.64, 0.72],
 const _LONG_STALKED = { cordate: 1, reniform: 1, orbicular: 1, palmately_lobed: 1,
                         trifoliate: 1, compound_palmate: 1, ternate: 1, sagittate: 1 };
 const STALK_BASAL = 1.2, STALK_STEM = 0.3;
+// A ternate leaf this long is divided twice, and its stalks droop by about this
+// much (a share of straight down mixed in), both estimates (V3.65).
+const TERNATE_TWICE_M = 0.1, TERNATE_DROOP = 0.3;
 const _stalkAtGround = (shape) => (_LONG_STALKED[shape] ? STALK_BASAL : 0);
 // Where along its length a simple leaf is widest: the one cross-section a
 // leaf drawn as a kite keeps.
@@ -188,14 +191,38 @@ function _lbLeaf(B, A, T, S, L, shape, lod, droop, shade) {
       return;
     }
     case 'ternate': {                  // a columbine's: three stalks of three leaflets
-      for (const a of [0, 0.95, -0.95]) {
-        const cs = Math.cos(a), sn = Math.sin(a), d = _lbMix(T, S, cs, sn);
-        const end = _lbAdd(A, d, L * 0.42);
-        _lbBlade(B, A, d, _lbMix(T, S, -sn, cs), L * 0.42, Math.max(0.0014, L * 0.016),
-                 'linear', 1, 0, shade * 0.9);
-        if (!lod) { part(a, end, L * 0.42, 0.8, 'obovate'); continue; }
-        for (const b of [0, 0.9, -0.9]) part(a + b, end, L * 0.36, 0.75, 'obovate');
-      }
+      // A big one (a meadow-rue's, a baneberry's, a sarsaparilla's, from
+      // TERNATE_TWICE_M) divides in threes and in threes again, each stalk
+      // drooping, so the leaf is a dome of small leaflets and not one flat
+      // plate of nine (V3.65). How far each stalk droops is an estimate.
+      // No two stalks droop alike and no two leaflets face the same way: all
+      // level, a big leaf was a disc seen edge on.
+      const big = L >= TERNATE_TWICE_M, twice = lod && big;
+      let k = Math.abs(A[0] * 7919 + A[1] * 104729 + A[2] * 1299709) % 1000;
+      const rnd = () => ((k = (k * 9301 + 49297) % 233280) / 233280);
+      const tern = (A0, D, Sd, len, again) => {
+        for (const a of [0, 0.95, -0.95]) {
+          const cs = Math.cos(a), sn = Math.sin(a);
+          const fall = big ? TERNATE_DROOP * (0.3 + 1.4 * rnd()) : 0;
+          const d = _lbUnit(_lbAdd(_lbMix(D, Sd, cs, sn), [0, -1, 0], fall));
+          const sd = _lbUnit(_lbMix(Sd, D, cs, -sn));
+          const end = _lbAdd(A0, d, len * 0.42);
+          _lbBlade(B, A0, d, sd, len * 0.42, Math.max(0.0014, L * 0.016), 'linear', 1, 0, shade * 0.9);
+          if (again) { tern(end, d, sd, len * 0.5, false); continue; }
+          if (!lod) { part2(d, sd, 0, end, len * 0.42, 0.8); continue; }
+          for (const b of [0, 0.9, -0.9]) part2(d, sd, b, end, len * 0.36, 0.75);
+        }
+      };
+      const part2 = (D, Sd, b, at0, len, ratio) => {
+        const cs = Math.cos(b), sn = Math.sin(b), Tl = _lbMix(D, Sd, cs, sn);
+        let Sl = _lbMix(D, Sd, -sn, cs);
+        if (big) {                     // rolled about its own midrib
+          const r = (rnd() - 0.5) * 1.6, up = _lbUnit(_lbCross(Tl, Sl));
+          Sl = _lbUnit(_lbMix(Sl, up, Math.cos(r), Math.sin(r)));
+        }
+        _lbBlade(B, at0, Tl, Sl, len, len * ratio, 'obovate', 1, 0, shade * (big ? 0.88 + 0.24 * rnd() : 1));
+      };
+      tern(A, T, S, L, twice);
       return;
     }
     default:
@@ -206,12 +233,13 @@ function _lbLeaf(B, A, T, S, L, shape, lod, droop, shade) {
 // What one leaf of `shape` costs at `lod`, in triangles: counted off a leaf
 // actually built, so the budget cannot drift from the builder.
 const _LEAF_COST = new Map();
-function leafyLeafCost(shape, lod) {
-  const key = shape + '|' + lod;
+function leafyLeafCost(shape, lod, L) {
+  const big = shape === 'ternate' && (L == null || L >= TERNATE_TWICE_M);   // divided twice
+  const key = shape + '|' + lod + (big ? '|big' : '');
   let c = _LEAF_COST.get(key);
   if (c == null) {
     const B = _lbNew();
-    _lbLeaf(B, [0, 0, 0], [0, 1, 0], [1, 0, 0], 1, shape, lod, 0, 1);
+    _lbLeaf(B, [0, 0, 0], [0, 1, 0], [1, 0, 0], big ? 1 : 0.05, shape, lod, 0, 1);
     c = B.idx.length / 3;
     _LEAF_COST.set(key, c);
   }
@@ -298,7 +326,7 @@ function _leafyPlan(d, bloom, budget) {
     || shape === 'palmately_lobed' ? L * 0.9 : leafWidthFor(shape, L);
   const perNode = d.arrangement === 'opposite' ? 2 : (d.arrangement === 'whorled' ? WHORL : 1);
   const gap = L * (INTERNODE[d.arrangement] || INTERNODE.alternate);
-  const P = { H, R, L, W, shape, perNode, form: d.form, stems: Math.max(1, d.stems),
+  const P = { H, R, L, W, shape, perNode, form: d.form, stems: Math.max(1, d.stems), budget,
               nodes: 0, basal: 0, groups: 1, lod: 2, branching: d.branching,
               habit: d.habit, forkLeaves: 2 };
   const leafy = d.form === 'stems' || d.form === 'colony';
@@ -327,11 +355,11 @@ function _leafyPlan(d, bloom, budget) {
   const stemTris = (leafy ? 12 : 12) + (bloom.rays ? 10 : 0);
   const tips = leafy ? (FORKS[P.branching] || []).length + 1 : 1;
   const cost = () => {
-    const leaf = leafyLeafCost(shape, P.lod) + (_LONG_STALKED[shape] ? 2 : 0);
+    const leaf = leafyLeafCost(shape, P.lod, L) + (_LONG_STALKED[shape] ? 2 : 0);
     let n = P.stems * (stemTris * (1 + (tips - 1) * 0.6) + (tips - 1) * P.forkLeaves * leaf);
     if (leafy) n += P.stems * P.nodes * perNode * leaf
       + (d.form === 'colony' ? 2 * P.stems : 1) * (P.basal ? 1 : 0) * Math.max(1, d.form === 'colony' ? 1 : P.basal) * leaf;
-    else if (P.shoots) n += 36 + P.shoots * (2 + P.nodes * Math.min(2, perNode) * leaf);
+    else if (P.shoots) n += P.shoots * 2;                 // leaves as cards (_leafyMat)
     else n += (d.form === 'mat' ? 36 : 0) + P.groups * P.basal * leaf;
     return n;
   };
@@ -378,8 +406,9 @@ function _leafyStems(B, P, bloom, rng) {
     if (P.basal && colony)
       for (let k = 0; k < 2; k++)
         _lbSet(B, [bx, 0.004, bz], a + 2 + k * 2.6 + rng(), 0.9, L, P.shape, P.lod, rng, 0.52);
-    // Leaves from just above the ground to under the flowers.
-    const y0 = (P.basal ? 0.14 : 0.07) * hi;
+    // Leaves from just above the ground to under the flowers; a big leaf
+    // from higher, or it lies on the ground (V3.65, an estimate).
+    const y0 = Math.max(P.basal ? 0.14 : 0.07, Math.min(0.4, 0.6 * L / hi)) * hi;
     const y1 = Math.max(y0 + 0.01, hi - Math.min(bloom.top, hi * 0.35) - 0.005);
     const whorlAt = P.perNode >= WHORL && colony;      // one whorl, at the top
     const nodes = whorlAt ? 1 : P.nodes;
@@ -500,34 +529,59 @@ function _leafyTufts(B, P, bloom, rng) {
                 Math.min(P.R * 0.4, P.H * 0.12) * rng(), bloom, rng);
 }
 
-// A mat of leafy shoots: short sprigs set all over a low mound and pointing
-// outward, the outer ones past its edge, so the leaves that are drawn lie over
-// the whole of it and not along a few spokes.
-function _leafyMat(B, P, bloom, rng) {
+// A mat of leafy shoots (V3.65). Until V3.65 a solid mound stood in for the
+// leaves no budget could draw one by one, and every mat read as a green plate
+// with sprigs round its edge (bog cranberry, bearberry, twinflower, bedstraw,
+// brooklime, field chickweed). Now its leaves are cut-out cards of its own
+// leafy shoots (03d-woody.js _wdSpray), as a shrub's are, lying nearly flat
+// over the ground along trailing runners and heaped a little over the root,
+// with the ground showing where a mat is thin. `C` takes the cards.
+// What nothing records, and is a stated estimate: how much of its ground a
+// mat covers (MAT_COVER, overlaps counted), how far larger than life its
+// shoots may be drawn to cover it on the budget (MAT_GAIN_MAX), and how deep
+// it lies.
+const MAT_COVER = 1.1;
+const MAT_GAIN_MAX = 2.5;
+function _leafyMat(B, P, bloom, rng, C) {
   const { R, L, H } = P, rot = rng() * 6.283, ends = [];
-  const thick = Math.max(0.008, Math.min(H * 0.35, L * 1.5, 0.05));
-  _leafyUnderlay(B, R * 0.9, thick, rng);
+  // As deep as a few leaves are long, and never more than 40% of its height,
+  // which is mostly its flower stalks (also an estimate).
+  const thick = Math.max(0.008, Math.min(H * 0.4, L * 3, 0.06));
+  const lift = (f) => 0.0015 + thick * Math.max(0, 1 - f * f) * 0.8;   // the outer runners on the ground
+  // The runners: thin stems from the root outward, lying on the mat.
   for (let i = 0; i < P.shoots; i++) {
     const f = Math.sqrt((i + 0.5) / P.shoots), a0 = rot + i * 2.39996;
     const sx = Math.cos(a0) * R * 0.85 * f, sz = Math.sin(a0) * R * 0.85 * f;
-    // On the mound's surface: level to 0.6 of its radius, then down to the ground.
-    const sy = 0.004 + thick * (f < 0.63 ? 1 - 0.3 * f : Math.max(0, 0.81 * (1 - (f - 0.63) / 0.43)));
-    const a = a0 + (rng() - 0.5) * 2.0, len = P.sprig * (0.7 + 0.6 * rng());
-    const at = (t) => [sx + Math.cos(a) * len * t, sy + thick * 0.5 * t, sz + Math.sin(a) * len * t];
+    const a = a0 + (rng() - 0.5) * 1.2, len = P.sprig * (0.7 + 0.6 * rng());
+    const at = (t) => [sx + Math.cos(a) * len * t, lift(f) + thick * 0.2 * t, sz + Math.sin(a) * len * t];
     const T = _lbUnit(_lbAdd(at(1), at(0), -1));
-    _lbBlade(B, at(0), T, _lbUnit(_lbCross(T, [0, 1, 0])), len, 0.0025, 'linear', 1, 0, 0.5);
+    _lbBlade(B, at(0), T, _lbUnit(_lbCross(T, [0, 1, 0])), len, 0.0025, 'linear', 1, 0, 0.42);
     ends.push(at(1));
-    for (let j = 0; j < P.nodes; j++) {
-      const p0 = at((j + 0.5) / P.nodes);
-      for (const side of (P.perNode > 1 ? [1.2, -1.2] : [j % 2 ? 1.2 : -1.2]))
-        _lbSet(B, p0, a + side + (rng() - 0.5) * 0.5, 0.25 + rng() * 0.4, L, P.shape, P.lod,
-               rng, 0.52 + 0.26 * rng(), 0);
-    }
   }
   for (let i = 0; i < P.stems; i++) {
     const e = ends[(i * 7) % ends.length];
     _leafyStalk(B, P, [e[0], e[1], e[2]], (H - e[1]) * (i ? 0.8 + 0.2 * rng() : 1), 0.01, bloom, rng);
   }
+  // The leafy shoots: as many as cover the mat, on what the budget leaves.
+  const sp = _wdSpray(P.shape, P.perNode);                            // 03d-woody.js
+  const card = sp.w * sp.h * L * L * sp.cover;
+  let n = Math.ceil(MAT_COVER * Math.PI * R * R / Math.max(1e-6, card));
+  const room = Math.max(60, Math.floor((P.budget - B.idx.length / 3) / 2));
+  const gain = n > room ? Math.min(MAT_GAIN_MAX, Math.sqrt(n / room)) : 1;
+  n = Math.min(room, Math.ceil(n / (gain * gain)));
+  const w = sp.w * L * gain, h = sp.h * L * gain;
+  for (let i = 0; i < n; i++) {
+    const f = Math.sqrt((i + 0.5) / n), a0 = rot + i * 2.39996 + (rng() - 0.5) * 0.3;
+    const r = Math.max(0, R - h * 0.6) * f;
+    const at = [Math.cos(a0) * r, lift(f) + rng() * thick * 0.3, Math.sin(a0) * r];
+    // Outward along a runner, a little up, a little either way.
+    const a = a0 + (rng() - 0.5) * 1.6, up = 0.12 + 0.3 * rng() * (1 - f);
+    const T = _lbUnit([Math.cos(a), up, Math.sin(a)]);
+    const S = _lbUnit(_lbCross([0, 1, 0], T)), k = 0.85 + 0.3 * rng();
+    _wdCard(C, _lbAdd(at, T, -h * 0.25 * k), T, S, w * k, h * k, 0.6 + 0.32 * rng());
+  }
+  C.cut = sp;
+  C.gain = gain;
 }
 
 // ── the body ────────────────────────────────────────────────────────────────
@@ -549,10 +603,10 @@ function buildLeafyGeo(p, v) {
   const d = p.drawn, bloom = _leafyBloom(p, d.mature_h);
   const P = _leafyPlan(d, bloom, LEAFY_BUDGET[Math.max(1, Math.min(2, QUALITY))]);
   const rng = mulberry32(hashPid((p.genus || '') + (p.species || '') + d.form) + 131 * v);
-  const B = _lbNew();
+  const B = _lbNew(), C = Object.assign(_lbNew(), { uv: [] });
   if (P.form === 'stems' || P.form === 'colony') _leafyStems(B, P, bloom, rng);
   else if (P.form === 'tuft') _leafyTufts(B, P, bloom, rng);
-  else if (P.form === 'mat' && P.shoots) _leafyMat(B, P, bloom, rng);
+  else if (P.form === 'mat' && P.shoots) _leafyMat(B, P, bloom, rng, C);
   else _leafyRosettes(B, P, bloom, rng);
   // Into the unit frame, keeping the proportions it was built at.
   let top = 0, half = 0;
@@ -561,6 +615,10 @@ function buildLeafyGeo(p, v) {
     half = Math.max(half, Math.abs(B.pos[i]), Math.abs(B.pos[i + 2]));
   }
   for (const t of B.tips) top = Math.max(top, t[1]);
+  for (let i = 0; i < C.pos.length; i += 3) {
+    top = Math.max(top, C.pos[i + 1]);
+    half = Math.max(half, Math.abs(C.pos[i]), Math.abs(C.pos[i + 2]));
+  }
   const s = 1 / Math.max(1e-3, top);
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(B.pos.map(x => x * s), 3));
@@ -575,9 +633,33 @@ function buildLeafyGeo(p, v) {
   // Where the flowers go: the stem tips, tallest first (15b-anchors.js).
   g.userData.tips = B.tips.map(t => ({ x: t[0] * s, y: t[1] * s, z: t[2] * s }))
     .sort((a, b) => b.y - a.y);
-  g.userData.leafy = { triangles: B.idx.length / 3, plan: P };
+  g.userData.leafy = { triangles: (B.idx.length + C.idx.length) / 3, plan: P,
+                       cards: C.idx.length / 6, gain: C.gain || 1 };
+  // A mat's leafy shoots: one more mesh in the same frame, cut to its leaves.
+  if (C.idx.length) {
+    const cg = new THREE.BufferGeometry();
+    cg.setAttribute('position', new THREE.Float32BufferAttribute(C.pos.map(x => x * s), 3));
+    cg.setAttribute('color', new THREE.Float32BufferAttribute(C.col, 3));
+    cg.setAttribute('uv', new THREE.Float32BufferAttribute(C.uv, 2));
+    cg.setIndex(C.idx);
+    cg.computeVertexNormals();
+    g.userData.cards = cg;
+    g.userData.cut = C.cut;
+  }
   return g;
 }
 
+// The instanced mesh of a mat's leafy shoots for `total` plants of `arch`, or
+// null (04-quality.js buildHerbLayer places it as it places the body).
+function leafyCardsMesh(arch, total, surf) {
+  const cg = arch.userData && arch.userData.cards;
+  if (!cg) return null;
+  const mesh = instancedMesh(cg, total, surfaceMaterial(MAT_PRESETS.herbLeaf, surf, true, arch.userData.cut));
+  mesh.customDepthMaterial = arch.userData.cut.depth;
+  mesh.userData.part = 'mat_cards';
+  return mesh;
+}
+
 window.leafyKeyFor = leafyKeyFor;
+window.leafyCardsMesh = leafyCardsMesh;
 window.buildLeafyGeo = buildLeafyGeo;

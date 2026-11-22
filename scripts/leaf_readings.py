@@ -85,7 +85,7 @@ from src import (grass_habit, herb_habit, native_here, photo_picks, shrub_habit,
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.64"
+READ_IN = "V3.65"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -108,6 +108,10 @@ WORDS = {
 #: A colour, '#rrggbb': a species' leaves and a graminoid's head (V3.51).
 #: Never a flower's, which is the owner's answer.
 COLOURS = ("leaf_color", "head_color")
+#: The length and width of one flower cluster (V3.65): on a grass its seed
+#: head, on a wildflower one spike, raceme, panicle or flat top, which the
+#: viewer draws as one card at that size (15c-woodybloom.js).
+CLUSTER = ("head_length_cm", "head_width_cm")
 #: A number, with the range a reading may fall in.
 NUMBERS = {
     "leaf_size_cm": (0.2, 80.0),
@@ -246,8 +250,13 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
                        f"must stay 0")
         # A leaf colour alone (V3.64) is a reading of its own: a water plant
         # or a horsetail whose habit nobody read still has a colour.
-        colour_only = set(reading) <= set(COLOURS)
-        for field in (() if colour_only else needed(row)):
+        # So is a flower cluster's size (V3.65): it says nothing of the habit.
+        alone = set(reading) <= set(COLOURS) | set(CLUSTER)
+        if set(reading) & set(CLUSTER) and alone \
+                and row.get("plant_type") not in herb_habit.TYPES:
+            out.append(f"{sci}: a cluster's size alone is read for a wildflower, herb or "
+                       f"groundcover; a grass's head is read with its blades")
+        for field in (() if alone else needed(row)):
             if not merged.get(field):
                 out.append(f"{sci}: {field} is not recorded and was not read")
         if not citation(sci, review):
@@ -275,10 +284,12 @@ def apply(batch: dict, rows: list, review: dict) -> int:
                 value = int(value)
             row[field] = value
         cite = citation(sci, review)
-        if set(reading) <= set(COLOURS):
-            # A colour alone says nothing of the leaf's size or the habit: the
+        if set(reading) <= set(COLOURS) | set(CLUSTER):
+            # A colour or a cluster's size alone says nothing of the leaf's size or the habit: the
             # pair stays as it was, so an unread plant keeps its shared body
             # (P9) and a read one keeps the citation of the sitting that read it.
+            # Nor does a cluster's size say its flowers' numbers were read: the
+            # flower pair stays too (V3.65), and the plan lists what was read.
             changed += row != before
             continue
         row["leaf_data_source"] = "photo"

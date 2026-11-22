@@ -210,6 +210,23 @@ class TheBodyInTheRealViewer(unittest.TestCase):
             self.assertGreater(r["tips"], 0, where)
             self.assertAlmostEqual(r["top"], 1.0, delta=0.02, msg=where)
 
+    def test_a_mat_is_leafy_shoots_and_not_a_plate(self):
+        """V3.65: until then a solid mound stood in for a mat's leaves, and
+        every mat read as a green plate with sprigs round its edge."""
+        cards = self.got["scenes"]["mat"]["cards"]
+        self.assertEqual(len(cards), 1, "the mat's leafy shoots were not drawn")
+        self.assertTrue(cards[0]["cut"], "a card not cut to its leaves is a plate again")
+        self.assertGreater(cards[0]["triangles"], 120)
+        self.assertEqual(len(self.got["mats"]), len(data_quality.LEAF_SHAPES) * 3)
+        for r in self.got["mats"]:
+            where = f"mat / {r['shape']} / {r['arrangement']}"
+            self.assertNotIn("error", r, f"{where}: {r.get('error')}")
+            self.assertEqual(r["bad"], 0, where)
+            self.assertTrue(r["uv"], where)
+            self.assertGreaterEqual(r["cards"], 60, where)
+            self.assertLessEqual(r["triangles"], 1800 * 1.12, where)
+            self.assertLess(r["card_top"], 0.75, f"{where}: the leaves stand, not lie")
+
     def test_two_species_do_not_share_a_body_they_should_not(self):
         keys = {(r["form"], r["shape"], r["arrangement"]): r["key"] for r in self.got["matrix"]}
         self.assertEqual(len(set(keys.values())), len(keys))

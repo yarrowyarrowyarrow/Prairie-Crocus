@@ -615,7 +615,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/304308057/medium.jpeg",
     "image_attribution": "(c) mfeaver, some rights reserved (CC BY)",
     "image_license": "cc-by",
-    "leaf_color": "#6d964d"
+    "leaf_color": "#6d964d",
+    "head_length_cm": 12.0,
+    "head_width_cm": 4.0
   },
   {
     "common_name": "Alpine Rock Jasmine",
@@ -962,7 +964,9 @@
     "stem_leaf_nodes": 8,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 526467990, 548414113, 46567309, 413291960, 20983424, 302391236, 398509332, 8145709 (read V3.48)",
-    "leaf_color": "#84987a"
+    "leaf_color": "#84987a",
+    "head_length_cm": 4.0,
+    "head_width_cm": 3.5
   },
   {
     "common_name": "Awned Sedge",
@@ -2900,7 +2904,9 @@
     "stem_leaf_nodes": 9,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 178166465, 298381693, 214441910, 586855591, 583479294, 594533140, 742029447, 77485559 (read V3.48)",
-    "leaf_color": "#76946a"
+    "leaf_color": "#76946a",
+    "head_length_cm": 3.0,
+    "head_width_cm": 7.0
   },
   {
     "common_name": "Boreal Oxytropis",
@@ -4041,7 +4047,9 @@
     "stem_leaf_nodes": 10,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 86882633, 14189968, 47082274, 427010539, 149578969, 417087429, 303961904, 22584465 (read V3.48)",
-    "leaf_color": "#77975d"
+    "leaf_color": "#77975d",
+    "head_length_cm": 10.0,
+    "head_width_cm": 3.5
   },
   {
     "common_name": "Canada Rice Grass",
@@ -4450,7 +4458,9 @@
     "flower_colours": "red,purple,green",
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 83191413, 478232128, 84558522, 21821448, 25752132, 379879353, 20073995, 398504967 (read V3.48)",
-    "leaf_color": "#6f935b"
+    "leaf_color": "#6f935b",
+    "head_length_cm": 15.0,
+    "head_width_cm": 3.0
   },
   {
     "common_name": "Common Bladderwort",
@@ -6603,7 +6613,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47120870/medium.jpeg",
     "image_attribution": "(c) Alison Northup, some rights reserved (CC BY)",
     "image_license": "cc-by",
-    "leaf_color": "#6d964e"
+    "leaf_color": "#6d964e",
+    "head_length_cm": 15.0,
+    "head_width_cm": 6.0
   },
   {
     "common_name": "Evening Primrose",
@@ -6676,7 +6688,9 @@
     "stem_leaf_nodes": 35,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 203609342, 298191576, 107211885, 180270999, 111149825, 675542473, 23196963, 18474153 (read V3.48)",
-    "leaf_color": "#619048"
+    "leaf_color": "#619048",
+    "head_length_cm": 15.0,
+    "head_width_cm": 8.0
   },
   {
     "common_name": "False Box (Mountain Boxwood)",
@@ -6824,7 +6838,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/217516224/medium.jpg",
     "image_attribution": "(c) Zoe O., some rights reserved (CC BY)",
     "image_license": "cc-by",
-    "leaf_color": "#639934"
+    "leaf_color": "#639934",
+    "head_length_cm": 8.0,
+    "head_width_cm": 3.0
   },
   {
     "common_name": "False Dragonhead (Western Obedient Plant)",
@@ -6971,7 +6987,9 @@
     "stem_leaf_nodes": 9,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 206722958, 280519953, 327252795, 615025924, 232653302, 573612809, 531803747, 689939500 (read V3.48)",
-    "leaf_color": "#679742"
+    "leaf_color": "#679742",
+    "head_length_cm": 8.0,
+    "head_width_cm": 5.0
   },
   {
     "common_name": "Field Chickweed",
@@ -7186,7 +7204,9 @@
     "stem_leaf_nodes": 50,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 298707644, 303634457, 574105373, 210958064, 296173225, 556061720, 709949866, 580637725 (read V3.48)",
-    "leaf_color": "#6c9352"
+    "leaf_color": "#6c9352",
+    "head_length_cm": 25.0,
+    "head_width_cm": 8.0
   },
   {
     "common_name": "Flat-topped Goldenrod",
@@ -7258,7 +7278,9 @@
     "stem_leaf_nodes": 35,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 86090727, 152013449, 319323222, 88422940, 294881381, 10148349, 674748, 427680918 (read V3.48)",
-    "leaf_color": "#63963b"
+    "leaf_color": "#63963b",
+    "head_length_cm": 5.0,
+    "head_width_cm": 12.0
   },
   {
     "common_name": "Flat-topped White Aster",
@@ -7331,7 +7353,9 @@
     "stem_leaf_nodes": 30,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 10345070, 54540667, 404539247, 545010656, 585650669, 395913955, 308687263, 543103738 (read V3.48)",
-    "leaf_color": "#6c9451"
+    "leaf_color": "#6c9451",
+    "head_length_cm": 8.0,
+    "head_width_cm": 15.0
   },
   {
     "common_name": "Floating Marsh-marigold",
@@ -7940,7 +7964,9 @@
     "stem_leaf_nodes": 9,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 295805876, 417901162, 441114479, 136942199, 211115026, 380674822, 354283847, 416802903 (read V3.48)",
-    "leaf_color": "#719558"
+    "leaf_color": "#719558",
+    "head_length_cm": 8.0,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Giant Wild Rye",
@@ -8135,7 +8161,9 @@
     "stem_leaf_nodes": 5,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 703114, 381572822, 510816924, 439255897, 533121131, 25665964, 390142235, 25665962 (read V3.48)",
-    "leaf_color": "#82987a"
+    "leaf_color": "#82987a",
+    "head_length_cm": 8.0,
+    "head_width_cm": 4.0
   },
   {
     "common_name": "Golden Currant (Buffalo Currant)",
@@ -9550,7 +9578,9 @@
     "flower_colours": "",
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 312015599, 717431165, 553511371, 45548406, 141338340, 146606775, 410754713, 151292456 (read V3.48)",
-    "leaf_color": "#6a9450"
+    "leaf_color": "#6a9450",
+    "head_length_cm": 8.0,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Hooker's Oat Grass",
@@ -9931,7 +9961,9 @@
     "stem_leaf_nodes": 7,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 250898204, 310074313, 424002947, 688002358, 441727665, 462219760, 424593258, 4378650 (read V3.48)",
-    "leaf_color": "#5f8f3e"
+    "leaf_color": "#5f8f3e",
+    "head_length_cm": 10.0,
+    "head_width_cm": 18.0
   },
   {
     "common_name": "June Grass",
@@ -10413,7 +10445,9 @@
     "stem_leaf_nodes": 40,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 269342918, 264551707, 9567301, 382324258, 51594321, 23435358, 240059362, 11572598 (read V3.48)",
-    "leaf_color": "#6e9a45"
+    "leaf_color": "#6e9a45",
+    "head_length_cm": 25.0,
+    "head_width_cm": 15.0
   },
   {
     "common_name": "Late Yellow Oxytropis",
@@ -13194,7 +13228,9 @@
     "stem_leaf_nodes": 10,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 208048192, 20324707, 45491957, 280074055, 317408691, 142627055, 686750169, 248634153 (read V3.48)",
-    "leaf_color": "#66914c"
+    "leaf_color": "#66914c",
+    "head_length_cm": 12.0,
+    "head_width_cm": 6.0
   },
   {
     "common_name": "Northern Black Currant",
@@ -13419,7 +13455,9 @@
     "stem_leaf_nodes": 8,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 4015650, 235572741, 519309350, 75980923, 364142329, 6758898, 395104970, 407254050 (read V3.48)",
-    "leaf_color": "#8a9a80"
+    "leaf_color": "#8a9a80",
+    "head_length_cm": 8.0,
+    "head_width_cm": 5.0
   },
   {
     "common_name": "Northern Wheat Grass",
@@ -14070,7 +14108,9 @@
     "stem_leaf_nodes": 25,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 563447020, 571662723, 100899075, 211141029, 511904537, 319485555, 22863111, 318372851 (read V3.48)",
-    "leaf_color": "#90a088"
+    "leaf_color": "#90a088",
+    "head_length_cm": 4.0,
+    "head_width_cm": 8.0
   },
   {
     "common_name": "Philadelphia Fleabane",
@@ -14712,7 +14752,9 @@
     "stem_leaf_nodes": 20,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 255000411, 567473288, 311311309, 354610291, 484936271, 195101100, 531280024, 62121020 (read V3.48)",
-    "leaf_color": "#8a9a84"
+    "leaf_color": "#8a9a84",
+    "head_length_cm": 20.0,
+    "head_width_cm": 4.0
   },
   {
     "common_name": "Porcupine Grass",
@@ -15502,7 +15544,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/414172335/medium.jpeg",
     "image_attribution": "no rights reserved, uploaded by Owen McElroy",
     "image_license": "cc0",
-    "leaf_color": "#6f8f52"
+    "leaf_color": "#6f8f52",
+    "head_length_cm": 10.0,
+    "head_width_cm": 6.0
   },
   {
     "common_name": "Prairie Onion (Textile Onion)",
@@ -15792,7 +15836,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/49104813/medium.jpeg",
     "image_attribution": "(c) mfeaver, some rights reserved (CC BY)",
     "image_license": "cc-by",
-    "leaf_color": "#b0b8a8"
+    "leaf_color": "#b0b8a8",
+    "head_length_cm": 15.0,
+    "head_width_cm": 3.0
   },
   {
     "common_name": "Prairie Thistle",
@@ -16418,7 +16464,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/301703994/medium.jpeg",
     "image_attribution": "no rights reserved, uploaded by ellyne",
     "image_license": "cc0",
-    "leaf_color": "#72965a"
+    "leaf_color": "#72965a",
+    "head_length_cm": 4.0,
+    "head_width_cm": 1.5
   },
   {
     "common_name": "Purple Reed Grass",
@@ -16901,7 +16949,9 @@
     "stem_leaf_nodes": 3,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 696856166, 392667941, 47314517, 732572175, 211148792, 510067653, 404222685 (read V3.48)",
-    "leaf_color": "#5a8a3e"
+    "leaf_color": "#5a8a3e",
+    "head_length_cm": 4.0,
+    "head_width_cm": 3.5
   },
   {
     "common_name": "Red Columbine",
@@ -17370,7 +17420,9 @@
     "stem_leaf_nodes": 8,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 700411698, 304595072, 404130152, 509271032, 719198838, 167608963, 416367507, 412749418 (read V3.48)",
-    "leaf_color": "#67924d"
+    "leaf_color": "#67924d",
+    "head_length_cm": 20.0,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Rocky Mountain Beeplant",
@@ -18638,7 +18690,9 @@
     "stem_leaf_nodes": 25,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 205059, 350279188, 195453089, 530974437, 511772173, 205056, 296305789, 291547809 (read V3.48)",
-    "leaf_color": "#8a9a86"
+    "leaf_color": "#8a9a86",
+    "head_length_cm": 10.0,
+    "head_width_cm": 4.0
   },
   {
     "common_name": "Scorpion Weed",
@@ -21663,7 +21717,9 @@
     "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/540554632/medium.jpg",
     "image_attribution": "no rights reserved, uploaded by kallummcdonald",
     "image_license": "cc0",
-    "leaf_color": "#5f8a46"
+    "leaf_color": "#5f8a46",
+    "head_length_cm": 12.0,
+    "head_width_cm": 3.0
   },
   {
     "common_name": "Sticky Purple Geranium",
@@ -21804,7 +21860,9 @@
     "stem_leaf_nodes": 18,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 85761521, 84916841, 46391003, 441445007, 86049844, 145744824, 220516823, 710934 (read V3.48)",
-    "leaf_color": "#7a9474"
+    "leaf_color": "#7a9474",
+    "head_length_cm": 6.0,
+    "head_width_cm": 12.0
   },
   {
     "common_name": "Stiff Sunflower (Rhombic-leaved Sunflower)",
@@ -22136,7 +22194,9 @@
     "flower_colours": "",
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 306561775, 135415693, 302518857, 71056052, 342768632, 300006401, 71056102, 50130712 (read V3.48)",
-    "leaf_color": "#78985d"
+    "leaf_color": "#78985d",
+    "head_length_cm": 2.5,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Sweetgrass",
@@ -22406,7 +22466,9 @@
     "stem_leaf_nodes": 40,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 726676851, 161401409, 94620977, 210698286, 41356724, 228310937, 228310907, 707863752 (read V3.48)",
-    "leaf_color": "#7a9f4f"
+    "leaf_color": "#7a9f4f",
+    "head_length_cm": 25.0,
+    "head_width_cm": 18.0
   },
   {
     "common_name": "Tall Jacob's Ladder",
@@ -22692,7 +22754,9 @@
     "stem_leaf_nodes": 6,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 512521267, 295805632, 24581378, 505495529, 497223416, 449172131, 8731384, 404145716 (read V3.48)",
-    "leaf_color": "#6a8f74"
+    "leaf_color": "#6a8f74",
+    "head_length_cm": 30.0,
+    "head_width_cm": 20.0
   },
   {
     "common_name": "Tall Showy Yarrow",
@@ -22767,7 +22831,9 @@
     "stem_leaf_nodes": 25,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 153650482, 166377083, 415607150, 131819780, 139664015, 210805493, 93565998, 166377089 (read V3.48)",
-    "leaf_color": "#6f9455"
+    "leaf_color": "#6f9455",
+    "head_length_cm": 4.0,
+    "head_width_cm": 8.0
   },
   {
     "common_name": "Tamarack",
@@ -23889,7 +23955,9 @@
     "stem_leaf_nodes": 3,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 393529164, 47584467, 547158660, 208340487, 86176896, 42795318, 41886503, 201700853 (read V3.48)",
-    "leaf_color": "#6a907a"
+    "leaf_color": "#6a907a",
+    "head_length_cm": 15.0,
+    "head_width_cm": 6.0
   },
   {
     "common_name": "Velvet-leaf Blueberry",
@@ -24324,7 +24392,9 @@
     "stem_leaf_nodes": 8,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 128464962, 312010909, 210613789, 293819687, 520950055, 421984854, 22494714, 307088766 (read V3.48)",
-    "leaf_color": "#739a50"
+    "leaf_color": "#739a50",
+    "head_length_cm": 4.0,
+    "head_width_cm": 1.8
   },
   {
     "common_name": "Western Blue Iris",
@@ -24666,7 +24736,9 @@
     "stem_leaf_nodes": 5,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 78150035, 20694603, 143424423, 211638728, 399677241, 116959220, 284067991, 530809177 (read V3.48)",
-    "leaf_color": "#6a9a4e"
+    "leaf_color": "#6a9a4e",
+    "head_length_cm": 15.0,
+    "head_width_cm": 10.0
   },
   {
     "common_name": "Western Mountain Ash",
@@ -26103,7 +26175,9 @@
     "stem_leaf_nodes": 10,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 624097315, 85693157, 615315117, 85694067, 10090324, 528483063, 41373, 529102583 (read V3.48)",
-    "leaf_color": "#6f9060"
+    "leaf_color": "#6f9060",
+    "head_length_cm": 5.0,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Wild Lily-of-the-valley",
@@ -26182,7 +26256,9 @@
     "stem_leaf_nodes": 2,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 18241902, 689878705, 396803938, 726692596, 507080708, 509066341, 80647980, 398851966 (read V3.48)",
-    "leaf_color": "#628f4c"
+    "leaf_color": "#628f4c",
+    "head_length_cm": 4.0,
+    "head_width_cm": 1.5
   },
   {
     "common_name": "Wild Mint",
@@ -27883,7 +27959,9 @@
     "stem_leaf_nodes": 30,
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 429618, 112181586, 703033585, 412066522, 404421286, 429619, 298369088, 416813927 (read V3.48)",
-    "leaf_color": "#8a9a56"
+    "leaf_color": "#8a9a56",
+    "head_length_cm": 8.0,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Yellow Paintbrush",
@@ -28234,7 +28312,9 @@
     "leaf_surface": "pubescent",
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 539684979, 726234275, 42309559, 1956610, 451331296, 424038175, 86446839, 78226855 (read V3.48)",
-    "leaf_color": "#8a9a84"
+    "leaf_color": "#8a9a84",
+    "head_length_cm": 6.0,
+    "head_width_cm": 2.5
   },
   {
     "common_name": "Yellowbells",

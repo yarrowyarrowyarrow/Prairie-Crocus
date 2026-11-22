@@ -210,6 +210,12 @@ function _wdMip(src, w, h, cover) {
 // singly are a short shoot of a few, each on its stalk and no two alike in
 // size or angle: nine in two even rows read as one feather-shaped leaf, and
 // crowded round a point they ran together into one lobed one.
+//
+// Leaves in pairs turn a quarter at each node (V3.65), as a dogwood's, a
+// honeysuckle's or a cranberry's do: every other pair faces the eye and is
+// drawn short, close in to the shoot. Drawn all flat, two even rows of pairs
+// read as one pinnate leaf, and a dogwood could not be told from the peavine
+// climbing it.
 const WOODY_CUT = 0.4;
 const _WD_SPRAYS = new Map();
 function _wdSpray(shape, perNode) {
@@ -240,7 +246,9 @@ function _wdSpray(shape, perNode) {
     for (let m = 0; m < per; m++) {
       const side = per > 1 ? (m ? 1 : -1) : (j % 2 ? 1 : -1);
       // How far a leaf stands off the shoot; the last one continues it.
-      const off = cluster ? 1.15 - 0.45 * t + (rnd() - 0.5) * 0.35 : 0.75 + rnd() * 0.3;
+      const facing = !needle && per === 2 && j % 2 === 1;          // decussate (V3.65)
+      const off = cluster ? 1.15 - 0.45 * t + (rnd() - 0.5) * 0.35
+        : (facing ? 0.22 + rnd() * 0.16 : 0.75 + rnd() * 0.3);
       const a = last && per === 1 ? (rnd() - 0.5) * 0.3 : side * off;
       g.save();
       g.translate(W / 2, H - y); g.rotate(a);
@@ -250,7 +258,7 @@ function _wdSpray(shape, perNode) {
         g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -st); g.stroke();
         g.translate(0, -st);
         _wdPaintLeaf(g, shape, len * (0.62 + 0.3 * rnd()));
-      } else _wdPaintLeaf(g, shape, len * (0.8 + 0.22 * rnd()));
+      } else _wdPaintLeaf(g, shape, len * (0.8 + 0.22 * rnd()) * (facing ? 0.55 : 1));
       g.restore();
     }
   }

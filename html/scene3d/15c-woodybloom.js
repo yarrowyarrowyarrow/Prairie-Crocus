@@ -44,6 +44,21 @@ const _WB_LONG = { raceme: 1, spike: 1, panicle: 1, whorl: 1 };
 
 // A cluster's length (or width, for a flat-topped one), in metres at life
 // size, from one flower's width `d` and the flowers `n` it holds.
+// Where a cluster's size was read off photographs (head_length_cm and
+// head_width_cm on a wildflower, V3.65), the card is drawn to it: the share of
+// the card's width and height the mask's flowers fill (_wbMask), so the
+// painted cluster, not the card, is the size read.
+function _wbFill(arch, petals, sh) {
+  if (arch === 'raceme' || (arch === 'spike' && petals >= 3))
+    return [Math.min(1, 2 * Math.min(0.2, sh * 0.55) + sh), Math.min(1, 0.84 + sh)];
+  if (arch === 'spike') return [Math.min(1, 2 * Math.max(0.1, Math.min(0.2, sh * 1.6))), 0.92];
+  if (arch === 'panicle') return [Math.min(1, 0.77 + sh), Math.min(1, 0.9 + sh)];
+  if (arch === 'corymb' || arch === 'umbel') return [Math.min(1, 0.88 + sh), Math.min(1, 0.52 + sh)];
+  if (arch === 'whorl') return [Math.min(1, 0.7 + sh), Math.min(1, 0.66 + sh)];
+  return [Math.min(1, 0.84 + sh), Math.min(1, 0.8 + sh)];
+}
+function _wbShare(share) { return Math.max(0.06, Math.min(1, Math.round(share * 16) / 16)); }
+
 function woodyClusterSize(arch, d, n) {
   if (arch === 'solitary' || arch === 'head') return d;
   if (_WB_LONG[arch]) return Math.max(d * 2.2, d * Math.pow(n, 0.8) * 0.55);
@@ -79,7 +94,7 @@ function _wbFlower(g, x, y, r, petals, spin) {
 // {key, map, test, cover}, one for each cluster that differs, kept for the session.
 const _WB_MASKS = new Map();
 function _wbMask(arch, petals, share) {
-  const sh = Math.max(0.06, Math.min(1, Math.round(share * 16) / 16));
+  const sh = _wbShare(share);
   const key = arch + '|' + Math.min(12, petals) + '|' + sh;
   let mk = _WB_MASKS.get(key);
   if (mk) return mk;
@@ -91,8 +106,10 @@ function _wbMask(arch, petals, share) {
   const rnd = _lcg(23 + key.length * 131 + key.charCodeAt(0) * 7);      // 01b-surface.js
   const r = sh * W / 2;
   const put = (x, y) => _wbFlower(g, x * W, (1 - y) * W, r * (0.85 + 0.3 * rnd()), petals, rnd() * 6.283);
-  // Flowers enough to fill the outline `area` (a share of the card) about once.
-  const fill = (area) => Math.max(1, Math.min(70, Math.round(area * W * W / (3.2 * r * r))));
+  // Flowers enough to fill the outline `area` (a share of the card) about once:
+  // up to 140, so a cluster of many tiny flowers (a Joe-Pye weed's dome) is
+  // not half bare (70 until V3.65).
+  const fill = (area) => Math.max(1, Math.min(140, Math.round(area * W * W / (3.2 * r * r))));
   switch (arch) {
     case 'solitary': case 'head':
       _wbFlower(g, W / 2, W / 2, W * 0.47, petals, rnd() * 6.283);
@@ -108,8 +125,14 @@ function _wbMask(arch, petals, share) {
       }                                               // else as a raceme, closer set
     // falls through
     case 'raceme': {
+      // Open from the foot up: the flowers smaller and closer in toward the
+      // buds at the top (V3.65), where a straight column read as a bar.
       const n = fill(arch === 'spike' ? 0.34 : 0.3), off = Math.min(0.2, sh * 0.55);
-      for (let i = 0; i < n; i++) put(0.5 + (i % 2 ? off : -off) * (0.6 + 0.4 * rnd()), 0.08 + 0.84 * (i + 0.5) / n);
+      for (let i = 0; i < n; i++) {
+        const y = 0.08 + 0.84 * (i + 0.5) / n, t = 1 - 0.55 * Math.pow(y, 1.5);
+        _wbFlower(g, (0.5 + (i % 2 ? off : -off) * (0.6 + 0.4 * rnd()) * t) * W, (1 - y) * W,
+                  r * t * (0.85 + 0.3 * rnd()), petals, rnd() * 6.283);
+      }
       break;
     }
     case 'panicle':                                   // a cone, widest low down
@@ -212,7 +235,13 @@ function buildWoodyBlooms(plants, month, terrain) {
     // and over): at life size a pin cherry's are pixels at a yard's distance.
     const tree = p.drawn && p.drawn.body === 'crown';
     const reach = natural * (tree ? woodyBloomGain(p) : Math.min(WOODY_BLOOM_GAIN_MAX, woodyBloomGain(p)));
-    const mk = _wbMask(arch, petals, d / natural);
+    // A cluster whose length and width were read is drawn at them (V3.65),
+    // never taller than its share of the plant.
+    const L = p.plant_type === 'tree' || p.plant_type === 'shrub' ? 0
+      : Math.min((p.head_length_cm || 0) / 100, _REACH_OF_HEIGHT * Math.max(0.1, bodyHeightOf(p)));
+    const Wd = L ? Math.max(d, (p.head_width_cm || p.head_length_cm * 0.4) / 100) * L * 100 / p.head_length_cm : 0;
+    const mk = _wbMask(arch, petals, d / (L ? Math.max(L, Wd) : natural));
+    const fit = L ? _wbFill(arch, petals, _wbShare(d / Math.max(L, Wd))) : null;
     const anchors = bloomAnchors(p, WOODY_BLOOM_MAX, month);     // 15b-anchors.js
     // A wildflower whose body offers no tip to carry a card keeps its florets.
     if ((!anchors || !anchors.length) && window.denseClusterApplies && denseClusterApplies(p)) {
@@ -232,7 +261,9 @@ function buildWoodyBlooms(plants, month, terrain) {
       // A stem tip says no way out (15b-anchors.js): out from the plant's middle.
       let nx = q.nx, nz = q.nz;
       if (!nx && !nz) { const a = Math.atan2(q.z + p.y, q.x - p.x) + (rnd() - 0.5) * 0.6; nx = Math.cos(a); nz = Math.sin(a); }
-      gr.items.push({ x: q.x, y: q.y, z: q.z, nx, nz, size: reach * (0.85 + 0.3 * rnd()),
+      const jit = 0.85 + 0.3 * rnd();
+      const sx = fit ? Wd / fit[0] * jit : reach * jit, sy = fit ? L / fit[1] * jit : reach * jit * 1.1;
+      gr.items.push({ x: q.x, y: q.y, z: q.z, nx, nz, size: sy / 1.1, sx, sy,
                       lean: (0.25 + 0.5 * rnd()) * (q.top ? 0.35 : 1), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
                       // A poplar's, an aspen's or a birch's catkins hang (src/tree_habit.py).
                       hang: !!(p.drawn && p.drawn.catkins_hang) && petals < 3 && arch === 'spike',
@@ -257,10 +288,10 @@ function buildWoodyBlooms(plants, month, terrain) {
       m.makeBasis(X, Y, Z);
       // Its middle just past the shoot's end and a little out from the
       // shrub: a cluster stands proud of the last leaves, or it is not seen.
-      v.set(it.x + it.nx * it.size * it.out, it.y, it.z + it.nz * it.size * it.out)
-        .addScaledVector(Y, it.hang ? 0 : -it.size * (it.top ? 1.05 : 0.3));   // a stem tip's spike ends there
+      v.set(it.x + it.nx * it.sx * it.out, it.y, it.z + it.nz * it.sx * it.out)
+        .addScaledVector(Y, it.hang ? 0 : -it.sy * (it.top ? 0.955 : 0.27));   // a stem tip's spike ends there
       m.setPosition(v);
-      m.scale(v.set(it.size, it.size * 1.1, it.size));
+      m.scale(v.set(it.sx, it.sy, it.sx));
       mesh.setMatrixAt(i, m);
       mesh.setColorAt(i, c.setRGB(it.r, it.g, it.b));
       names[i] = it.name; ids[i] = it.id;

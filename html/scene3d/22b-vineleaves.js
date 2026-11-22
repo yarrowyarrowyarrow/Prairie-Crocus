@@ -18,8 +18,10 @@
 //
 // What nothing records, and is a stated estimate here: how closely the
 // shoots follow one another along a stem (VINE_SHOOT_GAP, in shoot lengths).
+// 0.55 until V3.65, when the peavines and vetch were still a few sprays lost
+// on the shrub they climb: a vine in leaf clothes the side it is on.
 
-const VINE_SHOOT_GAP = 0.55;
+const VINE_SHOOT_GAP = 0.3;
 const VINE_CARDS_MAX = 900;
 const _VINE_READ = { photo: 1, flora: 1, measured: 1 };
 
