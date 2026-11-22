@@ -282,9 +282,16 @@ class AccuracyRenderTest(unittest.TestCase):
                 return p
         self.fail(f"{name}: the probe did not report it")
 
-    def _florets(self, name):
+    def _carded(self, name):
+        """A wildflower's dense cluster is carried as one card since V3.64
+        (15e-heads.js denseClusterApplies): no florets to measure."""
+        return any(q.get("part") == "bloom_card" for q in self._measured(name)["parts"])
+
+    def _florets(self, name, part="floret"):
+        if part == "floret" and self._carded(name):
+            part = "bloom_card"
         parts = [q for q in self._measured(name)["parts"]
-                 if q.get("part") == "floret"]
+                 if q.get("part") == part]
         self.assertTrue(
             parts, f"{name}: no florets were built in month "
                    f"{self._case(name)['month']} — is that inside its bloom "
@@ -315,6 +322,8 @@ class AccuracyRenderTest(unittest.TestCase):
 
     def test_a_cluster_is_drawn_from_flowers_of_their_own_size(self):
         for name in _CLUSTERS:
+            if self._carded(name):
+                continue                 # a card, not florets (V3.64)
             dia = self._case(name)["plant"]["flower_diameter_cm"] / 100
             drawn = max(q["s_med"] for q in self._florets(name))
             with self.subTest(name):

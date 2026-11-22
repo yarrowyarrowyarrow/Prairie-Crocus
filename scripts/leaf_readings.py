@@ -85,7 +85,7 @@ from src import (grass_habit, herb_habit, native_here, photo_picks, shrub_habit,
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.63"
+READ_IN = "V3.64"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -244,7 +244,10 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
         if (reading.get("petal_count") or 0) > 0 and merged.get("petal_shape") == "tubular":
             out.append(f"{sci}: petal_count on a rayless head (petal_shape tubular) "
                        f"must stay 0")
-        for field in needed(row):
+        # A leaf colour alone (V3.64) is a reading of its own: a water plant
+        # or a horsetail whose habit nobody read still has a colour.
+        colour_only = set(reading) <= set(COLOURS)
+        for field in (() if colour_only else needed(row)):
             if not merged.get(field):
                 out.append(f"{sci}: {field} is not recorded and was not read")
         if not citation(sci, review):
@@ -272,6 +275,12 @@ def apply(batch: dict, rows: list, review: dict) -> int:
                 value = int(value)
             row[field] = value
         cite = citation(sci, review)
+        if set(reading) <= set(COLOURS):
+            # A colour alone says nothing of the leaf's size or the habit: the
+            # pair stays as it was, so an unread plant keeps its shared body
+            # (P9) and a read one keeps the citation of the sitting that read it.
+            changed += row != before
+            continue
         row["leaf_data_source"] = "photo"
         row["leaf_data_citation"] = cite
         if any(f in reading for f in FLOWER_READ):

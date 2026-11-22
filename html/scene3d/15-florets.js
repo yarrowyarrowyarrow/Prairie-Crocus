@@ -180,12 +180,12 @@ function floretPlacements(arch, count, rnd) {
   const n = Math.max(1, count);
   switch (arch) {
     case 'solitary':
-      push(0, 1, 0, 0.25 + rnd() * 0.2, rnd() * 6.28);
+      push(0, 1, 0, 0, 0);
       break;
     case 'head':
       // The florets ARE the head: one face-up flower, drawn as the floret plus
       // its disc. Anything more is invisible at the scale a head is seen.
-      push(0, 1, 0, 0.18 + rnd() * 0.18, rnd() * 6.28);
+      push(0, 1, 0, 0, 0);           // tilt and bearing: headSpray (V3.64)
       break;
     case 'raceme':
     case 'spike': {
@@ -285,32 +285,7 @@ const _BRANCH_HEADS = { unbranched: 4, branched_above: 8,
 // An inflorescence is part of a plant's recorded height, not added on top of it.
 const _REACH_OF_HEIGHT = 0.45;
 
-// `reach` is the unit frame the placements are scaled into (the whole cluster);
-// `floret` is the size each drawn floret is scaled to. They were one number
-// until V2.88: every floret in a raceme, panicle or cyme was drawn at the reach
-// of the WHOLE cluster, 4-15x its real size on 215 species (a goldenrod's 6 mm
-// florets at 9 cm), and the cluster grew upward from 70-92% of the plant, so 64
-// of them topped out more than a quarter above the plant's own height.
-function _inflorescence(p, arch, drawn, h) {
-  const dia = woodyBloomGain(p) * Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
-  // A head and a solitary flower are drawn at their TRUE diameter, and that is
-  // the point: a black-eyed Susan is 7 cm across and should read as 7 cm across
-  // from four metres away. The billboard sized every bloom off the plant's
-  // canopy instead, so a pasqueflower and a sunflower scaled with the plant
-  // rather than with the flower — which is exactly the translation-to-the-real-
-  // world this whole pass is for.
-  if (arch === 'head' || arch === 'solitary') return { reach: dia, floret: dia };
-  // The cluster's size comes from the REAL floret count, not from how many are
-  // drawn, and never exceeds a share of the plant it is on.
-  const n = Math.max(1, p.florets_per_head || drawn);
-  const natural = Math.max(dia * 2.2, dia * Math.sqrt(n) * (_ARCH_REACH[arch] || 2.0));
-  const reach = Math.max(dia, Math.min(natural, 0.55, _REACH_OF_HEIGHT * h));
-  // Each drawn floret stands in for n / drawn real ones, so it covers the area
-  // they would: a goldenrod draws 20 florets at 1.7 cm over a 26 cm plume.
-  const floret = Math.max(dia, Math.min(reach * 0.5,
-                                        dia * Math.sqrt(n / Math.max(1, drawn))));
-  return { reach, floret };
-}
+// `_inflorescence` (a cluster's reach and floret size) lives in 15e-heads.js (V3.64).
 
 // Which plants this layer can draw. Everything else goes back to the billboard.
 function floretsApply(p) {
@@ -394,8 +369,12 @@ function buildFlorets(plants, month, terrain) {
         const hy = q ? Math.max(gy + 0.02, q.y - drop) : cluster
           ? Math.max(gy + 0.1 * h, gy + h * frac * (0.86 + 0.14 * rnd()) - reach * 1.1)
           : gy + h * frac * (0.70 + 0.22 * rnd());
-        const spin0 = rnd() * Math.PI * 2;
-        const lean = (rnd() - 0.5) * 0.30;
+        // A head faces out from the plant and a counted cluster of a branched
+        // aster is a spray of heads (15e-heads.js headSpray, V3.64).
+        for (const sp of headSpray(p, b.arch, hx, hy, hz, p.x, -p.y, reach, rnd)) {
+        const spin0 = sp.spin == null ? rnd() * Math.PI * 2 : sp.spin;
+        const lean = sp.tilt == null ? (rnd() - 0.5) * 0.30 : sp.tilt;
+        const [hx, hy, hz] = [sp.x, sp.y, sp.z];
         for (const f of floretPlacements(b.arch, drawn, rnd)) {
           const sc = floret * f.scale;
           // The unit inflorescence frame is `reach` tall and `reach` across;
@@ -415,6 +394,7 @@ function buildFlorets(plants, month, terrain) {
             discNames.push(p.common_name || '');
             discIds.push(p.plant_id);
           }
+        }
         }
       }
     }

@@ -55,7 +55,8 @@ function woodyClusterSize(arch, d, n) {
 function woodyBloomApplies(p) {
   const own = (window.woodyKeyFor && woodyKeyFor(p)) || (window.crownKeyFor && crownKeyFor(p))
     || (window.vineReadFor && vineReadFor(p));
-  return !!own && !!p.flower_arch && !p.inflorescence_form;
+  return (!!own && !!p.flower_arch && !p.inflorescence_form)
+    || !!(window.denseClusterApplies && denseClusterApplies(p));   // a wildflower's spike (V3.64)
 }
 
 // One flower painted white at (x, y), `r` its radius in pixels: its petals
@@ -190,6 +191,8 @@ function _wbCardGeo(crossed) {
 // How many clusters a shrub in full flower carries this year: by the surface
 // of its crown, and never fewer than were recorded.
 function woodyBloomCards(p) {
+  // A wildflower's clusters are the ones counted on it (15e-heads.js, V3.64).
+  if (p.plant_type !== 'tree' && p.plant_type !== 'shrub' && p.plant_type !== 'vine') return Math.max(1, p.flowering_stems || 6);
   const r = Math.max(0.15, (p.canopy_m || 1) / 2), h = Math.max(0.2, bodyHeightOf(p));
   const byCrown = Math.round(Math.PI * r * (r + 2 * h) * 0.7 * WOODY_BLOOM_PER_M2);
   return Math.min(WOODY_BLOOM_MAX, Math.max(8, p.flowering_stems || 0, byCrown));
@@ -202,7 +205,9 @@ function buildWoodyBlooms(plants, month, terrain) {
     const arch = FLORET_ARCHITECTURES.indexOf(p.flower_arch) >= 0 ? p.flower_arch : 'cyme';
     const petals = Math.max(0, Math.min(60, p.petal_count == null ? 5 : p.petal_count));
     const d = Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
-    const natural = woodyClusterSize(arch, d, Math.max(1, p.florets_per_head || 1));
+    // A wildflower's spike is part of its height, never more than its share of it.
+    const natural = Math.min(woodyClusterSize(arch, d, Math.max(1, p.florets_per_head || 1)),
+      p.plant_type === 'tree' || p.plant_type === 'shrub' ? 9 : _REACH_OF_HEIGHT * Math.max(0.1, bodyHeightOf(p)));
     // A tree's clusters take the whole of 15b-anchors.js's allowance (2.5 at 6 m
     // and over): at life size a pin cherry's are pixels at a yard's distance.
     const tree = p.drawn && p.drawn.body === 'crown';
@@ -224,7 +229,7 @@ function buildWoodyBlooms(plants, month, terrain) {
                       lean: 0.25 + 0.5 * rnd(), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
                       // A poplar's, an aspen's or a birch's catkins hang (src/tree_habit.py).
                       hang: !!(p.drawn && p.drawn.catkins_hang) && petals < 3 && arch === 'spike',
-                      out: tree ? 0.6 : 0.35,
+                      out: tree ? 0.6 : 0.35, top: !!q.top,
                       name: p.common_name || '', id: p.plant_id });
     }
   }
@@ -246,7 +251,7 @@ function buildWoodyBlooms(plants, month, terrain) {
       // Its middle just past the shoot's end and a little out from the
       // shrub: a cluster stands proud of the last leaves, or it is not seen.
       v.set(it.x + it.nx * it.size * it.out, it.y, it.z + it.nz * it.size * it.out)
-        .addScaledVector(Y, it.hang ? 0 : -it.size * 0.3);      // a hanging one from its twig
+        .addScaledVector(Y, it.hang ? 0 : -it.size * (it.top ? 1.05 : 0.3));   // a stem tip's spike ends there
       m.setPosition(v);
       m.scale(v.set(it.size, it.size * 1.1, it.size));
       mesh.setMatrixAt(i, m);

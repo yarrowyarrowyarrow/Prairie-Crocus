@@ -57,6 +57,9 @@ window.SCENE3D_CHUNKS = [
   // V3.63: a shrub's or tree's fruit as cut-out bunches on its shoots, and
   // held on the bare twigs into the winter where that was read (F268).
   'scene3d/15d-woodyfruit.js',
+  // V3.64: a daisy you can see and a spike drawn as a spike: a head's least
+  // size and its facing, and a wildflower's dense clusters as cards (F268).
+  'scene3d/15e-heads.js',
   // V2.43: click-to-plant in the reference sandboxes, and the QWebChannel
   // the viewer never had. Last on purpose — its pointer handlers must
   // register after 10-inspect.js's so both see the same click.

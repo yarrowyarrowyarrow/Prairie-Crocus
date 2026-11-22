@@ -568,7 +568,10 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # each, a crown outline (`crown_shape` in the shrubs' own words, with
 # `crown_clear`), the months their fruit stays on the bare twigs, and the
 # fruit colours the photographs contradicted (black currants drawn red).
-_SCHEMA_VERSION = 104
+# v105 (V3.64): no DDL. A reseed for the leaf colours of the 169 natives that
+# had none (the wildflowers, groundcovers, herbs, trees, vines, water plants,
+# horsetails and the fern), read off their reference photographs.
+_SCHEMA_VERSION = 105
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
