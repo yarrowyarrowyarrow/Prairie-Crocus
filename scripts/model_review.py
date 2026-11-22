@@ -12,6 +12,11 @@ fruit, how well the model stands for the plant, and what is wrong with it.
     python scripts/model_review.py summary               # faults, counted
     python scripts/model_review.py todo                  # plants not yet read
     python scripts/model_review.py show "Monarda fistulosa"
+    python scripts/model_review.py compare               # this pass against the last
+
+A plant read again in a later pass keeps what the earlier pass said under
+``earlier`` (V3.62), so a re-read can be measured against it, and keeps its
+reference photographs when the new batch names none.
 
 A batch names photographs by their number on the sheet::
 
@@ -51,7 +56,10 @@ from src import photo_picks  # noqa: E402
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 MANIFEST = ROOT / "data" / "fetched" / "model_refs" / "manifest.json"
 MASTER = ROOT / "data" / "plants_master.json"
-PASS = "V3.48"
+PASS = "V3.62"
+
+#: The passes in order, oldest first.
+PASSES = ("V3.48", "V3.62")
 
 #: What a photograph can be the reference for.
 KINDS = ("habit", "flower", "leaf", "fruit", "winter", "bark")
@@ -176,7 +184,18 @@ def add(text: str) -> int:
             print("  " + e)
         return 1
     review = load()
-    review.update(records)
+    for sci, rec in records.items():
+        old = review.get(sci)
+        if old:
+            if not rec["refs"]:
+                rec["refs"] = old.get("refs") or {}
+            earlier = list(old.get("earlier") or [])
+            if old.get("read_in") != rec["read_in"]:
+                earlier.append({k: old[k] for k in ("read_in", "score", "faults", "note")
+                                if k in old})
+            if earlier:
+                rec["earlier"] = earlier
+        review[sci] = rec
     REVIEW.parent.mkdir(parents=True, exist_ok=True)
     with open(REVIEW, "w", encoding="utf-8") as f:
         json.dump(dict(sorted(review.items())), f, indent=1, ensure_ascii=False)
@@ -204,11 +223,48 @@ def summary() -> None:
         print(f"  {n:4d}  {f:14s} {FAULTS[f]}")
 
 
+def compare() -> None:
+    """This pass's scores against each plant's last earlier reading."""
+    review = load()
+    rows = {r["scientific_name"]: r for r in _load(MASTER, [])}
+    now = {s: r for s, r in review.items() if r.get("read_in") == PASS}
+    print(f"{len(now)} of {len(review)} plants read in {PASS}.")
+    by_type = collections.defaultdict(list)
+    moved = []
+    for sci, rec in now.items():
+        before = (rec.get("earlier") or [{}])[-1]
+        b, a = before.get("score"), rec.get("score")
+        t = (rows.get(sci) or {}).get("plant_type", "?")
+        by_type[t].append((b, a))
+        if b is not None:
+            moved.append((a - b, a, b, sci, (rows.get(sci) or {}).get("common_name", "")))
+    print("\nBy plant type: mean before, mean now, 7 or more before and now")
+    for t, pairs in sorted(by_type.items()):
+        bs = [b for b, _ in pairs if b is not None]
+        as_ = [a for _, a in pairs]
+        print(f"  {t:12s} {sum(bs) / max(1, len(bs)):4.1f} -> {sum(as_) / len(as_):4.1f}"
+              f"   {sum(1 for b in bs if b >= 7):3d} -> {sum(1 for a in as_ if a >= 7):3d}"
+              f"  of {len(pairs)}")
+    moved.sort()
+    print("\nFell or stood still, lowest now first:")
+    for d, a, b, sci, cn in sorted((m for m in moved if m[0] <= 0), key=lambda m: m[1])[:25]:
+        print(f"  {b:2d} -> {a:2d}  {cn} ({sci})")
+    print("\nRose most:")
+    for d, a, b, sci, cn in sorted(moved, reverse=True)[:15]:
+        print(f"  {b:2d} -> {a:2d}  {cn} ({sci})")
+    faults = collections.Counter(f for r in now.values() for f in r.get("faults") or [])
+    before = collections.Counter(f for r in now.values()
+                                 for f in ((r.get("earlier") or [{}])[-1].get("faults") or []))
+    print("\nFaults on the plants read in this pass, now and before:")
+    for f, n in faults.most_common():
+        print(f"  {n:4d}  (was {before.get(f, 0):3d})  {f}")
+
+
 def todo() -> None:
     review = load()
     manifest = _load(MANIFEST, {})
-    left = [s for s in manifest if s not in review]
-    print(f"{len(left)} of {len(manifest)} sheets not read yet.")
+    left = [s for s in manifest if (review.get(s) or {}).get("read_in") != PASS]
+    print(f"{len(left)} of {len(manifest)} sheets not read in {PASS} yet.")
     for s in left:
         print(f"  {s}  ({manifest[s].get('common_name', '')})")
 
@@ -225,13 +281,15 @@ def show(name: str) -> int:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("step", choices=("add", "summary", "todo", "show", "faults"))
+    ap.add_argument("step", choices=("add", "summary", "todo", "show", "faults", "compare"))
     ap.add_argument("name", nargs="?")
     args = ap.parse_args(argv)
     if args.step == "add":
         return add(sys.stdin.read())
     if args.step == "summary":
         summary()
+    if args.step == "compare":
+        compare()
     if args.step == "todo":
         todo()
     if args.step == "show":

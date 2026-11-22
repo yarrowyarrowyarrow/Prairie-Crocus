@@ -61,6 +61,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from src import native_here, photo_picks  # noqa: E402
 from src.http_utils import user_agent  # noqa: E402
+import model_review  # noqa: E402
 
 CANDIDATES = ROOT / "data" / "fetched" / "photo_candidates.json"
 MASTER = ROOT / "data" / "plants_master.json"
@@ -483,7 +484,12 @@ def sheets(rows: list) -> None:
     by_group: dict = {}
     for row in rows:
         rec = review.get(row["scientific_name"])
-        if rec:
+        if rec and rec.get("read_in") != model_review.PASS:
+            # An earlier pass's verdict is not printed on a sheet being read
+            # again (V3.62): the reader should not start from the old score.
+            # Its reference photographs are still framed.
+            rec = {"refs": rec.get("refs") or {}}
+        elif rec:
             rec = {**rec, "verdict": f"{rec.get('score')}/10  "
                                      + " ".join(rec.get("faults") or [])}
         sheet(row, manifest.get(row["scientific_name"]), rec)
