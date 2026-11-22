@@ -45,7 +45,7 @@ const _LONG_STALKED = { cordate: 1, reniform: 1, orbicular: 1, palmately_lobed: 
 const STALK_BASAL = 1.2, STALK_STEM = 0.3;
 // A ternate leaf this long is divided twice, and its stalks droop by about this
 // much (a share of straight down mixed in), both estimates (V3.65).
-const TERNATE_TWICE_M = 0.1, TERNATE_DROOP = 0.3;
+const TERNATE_TWICE_M = 0.1, TERNATE_DROOP = 0.15;
 const _stalkAtGround = (shape) => (_LONG_STALKED[shape] ? STALK_BASAL : 0);
 // Where along its length a simple leaf is widest: the one cross-section a
 // leaf drawn as a kite keeps.
@@ -420,7 +420,8 @@ function _leafyStems(B, P, bloom, rng) {
       const az0 = a + (P.perNode > 1 ? j * (Math.PI / P.perNode) : j * 2.39996);
       for (let k = 0; k < P.perNode; k++)
         _lbSet(B, p0, az0 + k * 6.2832 / P.perNode,
-               whorlAt ? 0.15 + rng() * 0.15 : 0.25 + 0.5 * f + (rng() - 0.5) * 0.25,
+               (whorlAt ? 0.15 + rng() * 0.15 : 0.25 + 0.5 * f + (rng() - 0.5) * 0.25)
+                 + (L >= TERNATE_TWICE_M && P.shape === 'ternate' ? 0.3 : 0),   // held up, not a skirt
                size, P.shape, P.lod, rng, 0.46 + 0.28 * f, _LONG_STALKED[P.shape] ? STALK_STEM : 0);
     }
     // Side branches, each to a tip of its own.

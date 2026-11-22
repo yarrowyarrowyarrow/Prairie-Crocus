@@ -23,10 +23,10 @@
   "score": 6,
   "faults": [
    "leaf_shape",
-   "flower_arch"
+   "sparse"
   ],
-  "note": "Photographs: leafy stems crowded with narrow, comb-toothed leaves, topped by a dense, domed cluster of white daisies with cream centres. Model: leafy stems with fine cut leaves and flat white sprays at the tips; it reads as a yarrow, but the leaves are feathery rather than comb-toothed, and the white heads are open flat sprays rather than dense domes.",
-  "read_in": "V3.62",
+  "note": "Photographs: leafy stems crowded with narrow, comb-toothed leaves, topped by a dense, domed cluster of white daisies with cream centres. Model: leafy stems with fine cut leaves and flat white sprays at the tips; it reads as a yarrow, but the leaves are feathery rather than comb-toothed, and the white heads are open flat sprays rather than dense domes. V3.65: Flat white tops at their read size; leaves still sparse.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -39,6 +39,15 @@
      "data"
     ],
     "note": "Leafy stems crowded with narrow, undivided, saw-toothed leaves 4 to 8 cm, like a comb, topped by a domed cluster of small white daisies with cream centres, each 0.8 to 1 cm with 6 to 12 short rays. It is recorded with the common yarrow's twice-cut leaf. The model is bare wires and ground ladders under a hovering white plate."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 6,
+    "faults": [
+     "leaf_shape",
+     "flower_arch"
+    ],
+    "note": "Photographs: leafy stems crowded with narrow, comb-toothed leaves, topped by a dense, domed cluster of white daisies with cream centres. Model: leafy stems with fine cut leaves and flat white sprays at the tips; it reads as a yarrow, but the leaves are feathery rather than comb-toothed, and the white heads are open flat sprays rather than dense domes."
    }
   ]
  },
@@ -64,14 +73,13 @@
     "110155411"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_arch",
    "leaf_colour",
    "sparse"
   ],
-  "note": "Photographs: leafy stems with feathery, finely cut grey-green leaves under dense flat-topped heads of small white flowers. Model: erect stems with feathery leaves and loose flat sprays of white dots on top; the shape is there, but the heads are open plates of specks rather than dense domes, and the leaves are a bright green.",
-  "read_in": "V3.62",
+  "note": "Photographs: leafy stems with feathery, finely cut grey-green leaves under dense flat-topped heads of small white flowers. Model: erect stems with feathery leaves and loose flat sprays of white dots on top; the shape is there, but the heads are open plates of specks rather than dense domes, and the leaves are a bright green. V3.65: White domes at their read size.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -83,6 +91,16 @@
      "flower_place"
     ],
     "note": "Feathery leaves cut so finely they look like green fur, at the base and all the way up the stems; each stem ends in a flat to domed white head 4 to 8 cm across of many tiny daisies. The model's flat white plate is recognisable. It hovers above the stalk tips, the stalks are bare, and the leaves are a few small ladders on the ground."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_arch",
+     "leaf_colour",
+     "sparse"
+    ],
+    "note": "Photographs: leafy stems with feathery, finely cut grey-green leaves under dense flat-topped heads of small white flowers. Model: erect stems with feathery leaves and loose flat sprays of white dots on top; the shape is there, but the heads are open plates of specks rather than dense domes, and the leaves are a bright green."
    }
   ]
  },
@@ -195,11 +213,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_arch",
-   "flower_size"
+   "sparse"
   ],
-  "note": "Photographs: an upright, branched, leafy plant with ovate toothed leaves and dense, thick, cylindrical spikes of lavender-purple flowers at every tip. Model: a leafy branched clump with many thin open strings of purple flowers; the colour and habit are right, but each spike is a thin open string instead of a dense purple club.",
-  "read_in": "V3.62",
+  "note": "Photographs: an upright, branched, leafy plant with ovate toothed leaves and dense, thick, cylindrical spikes of lavender-purple flowers at every tip. Model: a leafy branched clump with many thin open strings of purple flowers; the colour and habit are right, but each spike is a thin open string instead of a dense purple club. V3.65: Purple spikes read; the clump is thinner than in the photographs.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -210,6 +227,15 @@
      "leaf_shape"
     ],
     "note": "Square stems with opposite, toothed, pointed oval leaves, pale beneath, each stem ending in a dense, fuzzy, solid blue-violet spike 3 to 10 cm long and 2 cm thick. The model's posture, opposite leaves and spike position are right. Its spikes are open strings of small dark and lilac dots, where the plant's are solid."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 6,
+    "faults": [
+     "flower_arch",
+     "flower_size"
+    ],
+    "note": "Photographs: an upright, branched, leafy plant with ovate toothed leaves and dense, thick, cylindrical spikes of lavender-purple flowers at every tip. Model: a leafy branched clump with many thin open strings of purple flowers; the colour and habit are right, but each spike is a thin open string instead of a dense purple club."
    }
   ]
  },
@@ -669,8 +695,8 @@
    "sparse",
    "flower_size"
   ],
-  "note": "Photographs: a patch of leafy grey-green stems with narrow woolly leaves, each topped by a dense flat cluster of pearly white button heads. Model: a colony of leafy stems with grey-green narrow leaves, but only a faint haze of tiny pale specks above them; the white flower clusters that are the plant's whole look are missing. V3.64: Grey-green leaves, and white flat-topped clusters at the stem tips where there were none.",
-  "read_in": "V3.64",
+  "note": "Photographs: a patch of leafy grey-green stems with narrow woolly leaves, each topped by a dense flat cluster of pearly white button heads. Model: a colony of leafy stems with grey-green narrow leaves, but only a faint haze of tiny pale specks above them; the white flower clusters that are the plant's whole look are missing. V3.64: Grey-green leaves, and white flat-topped clusters at the stem tips where there were none. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -692,6 +718,15 @@
      "leaf_colour"
     ],
     "note": "Photographs: a patch of leafy grey-green stems with narrow woolly leaves, each topped by a dense flat cluster of pearly white button heads. Model: a colony of leafy stems with grey-green narrow leaves, but only a faint haze of tiny pale specks above them; the white flower clusters that are the plant's whole look are missing."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 6,
+    "faults": [
+     "sparse",
+     "flower_size"
+    ],
+    "note": "Photographs: a patch of leafy grey-green stems with narrow woolly leaves, each topped by a dense flat cluster of pearly white button heads. Model: a colony of leafy stems with grey-green narrow leaves, but only a faint haze of tiny pale specks above them; the white flower clusters that are the plant's whole look are missing. V3.64: Grey-green leaves, and white flat-topped clusters at the stem tips where there were none."
    }
   ]
  },
@@ -1315,15 +1350,13 @@
     "721621048"
    ]
   },
-  "score": 2,
+  "score": 5,
   "faults": [
-   "habit",
-   "dense",
    "stems",
    "fruit"
   ],
-  "note": "Photographs: a trailing evergreen mat of small glossy dark paddle-shaped leaves on red-brown stems, pink-white urn flowers in May, bright red berries from July. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no berries, nothing glossy, nothing trailing. V3.64: Leaves darker, as they are; still a plate.",
-  "read_in": "V3.64",
+  "note": "Photographs: a trailing evergreen mat of small glossy dark paddle-shaped leaves on red-brown stems, pink-white urn flowers in May, bright red berries from July. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no berries, nothing glossy, nothing trailing. V3.64: Leaves darker, as they are; still a plate. V3.65: The plate is gone: a carpet of small dark leaves; no red-brown stems, no gloss, berries not seen in the June picture.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1347,6 +1380,17 @@
      "leaf_colour"
     ],
     "note": "Photographs: a trailing evergreen mat of small glossy dark paddle-shaped leaves on red-brown stems, pink-white urn flowers in May, bright red berries from July. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no berries, nothing glossy, nothing trailing."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 2,
+    "faults": [
+     "habit",
+     "dense",
+     "stems",
+     "fruit"
+    ],
+    "note": "Photographs: a trailing evergreen mat of small glossy dark paddle-shaped leaves on red-brown stems, pink-white urn flowers in May, bright red berries from July. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no berries, nothing glossy, nothing trailing. V3.64: Leaves darker, as they are; still a plate."
    }
   ]
  },
@@ -1663,8 +1707,8 @@
    "stem_leaves",
    "sparse"
   ],
-  "note": "Photographs: a robust, leafy, upright plant with large pinnate leaves along the stems and dense cylindrical spikes of cream to greenish-white pea flowers. Model: a broom of bare stalks with white specks scattered along them over a low skirt of pinnate leaves; no leafy stems and no dense spikes. V3.64: Cream spikes at the stem tips where white specks were strung up the stems.",
-  "read_in": "V3.64",
+  "note": "Photographs: a robust, leafy, upright plant with large pinnate leaves along the stems and dense cylindrical spikes of cream to greenish-white pea flowers. Model: a broom of bare stalks with white specks scattered along them over a low skirt of pinnate leaves; no leafy stems and no dense spikes. V3.64: Cream spikes at the stem tips where white specks were strung up the stems. V3.65: Cream spikes at their read size; stems still bare.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1686,6 +1730,15 @@
      "sparse"
     ],
     "note": "Photographs: a robust, leafy, upright plant with large pinnate leaves along the stems and dense cylindrical spikes of cream to greenish-white pea flowers. Model: a broom of bare stalks with white specks scattered along them over a low skirt of pinnate leaves; no leafy stems and no dense spikes."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "stem_leaves",
+     "sparse"
+    ],
+    "note": "Photographs: a robust, leafy, upright plant with large pinnate leaves along the stems and dense cylindrical spikes of cream to greenish-white pea flowers. Model: a broom of bare stalks with white specks scattered along them over a low skirt of pinnate leaves; no leafy stems and no dense spikes. V3.64: Cream spikes at the stem tips where white specks were strung up the stems."
    }
   ]
  },
@@ -1713,11 +1766,10 @@
   "score": 5,
   "faults": [
    "habit",
-   "stem_leaves",
-   "flower_arch"
+   "stem_leaves"
   ],
-  "note": "Photographs: a low, spreading, grey-green leafy plant with dense rounded to oblong heads of purple pea flowers held just above the leaves. Model: an upright broom of bare green stalks with purple flecks scattered along them; no dense heads, few visible leaves, and too green. V3.64: Dense purple spikes now read; drawn longer than its short rounded heads.",
-  "read_in": "V3.64",
+  "note": "Photographs: a low, spreading, grey-green leafy plant with dense rounded to oblong heads of purple pea flowers held just above the leaves. Model: an upright broom of bare green stalks with purple flecks scattered along them; no dense heads, few visible leaves, and too green. V3.64: Dense purple spikes now read; drawn longer than its short rounded heads. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1741,6 +1793,16 @@
      "leaf_colour"
     ],
     "note": "Photographs: a low, spreading, grey-green leafy plant with dense rounded to oblong heads of purple pea flowers held just above the leaves. Model: an upright broom of bare green stalks with purple flecks scattered along them; no dense heads, few visible leaves, and too green."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "habit",
+     "stem_leaves",
+     "flower_arch"
+    ],
+    "note": "Photographs: a low, spreading, grey-green leafy plant with dense rounded to oblong heads of purple pea flowers held just above the leaves. Model: an upright broom of bare green stalks with purple flecks scattered along them; no dense heads, few visible leaves, and too green. V3.64: Dense purple spikes now read; drawn longer than its short rounded heads."
    }
   ]
  },
@@ -2818,14 +2880,13 @@
     "260322757"
    ]
   },
-  "score": 3,
+  "score": 4,
   "faults": [
-   "habit",
-   "dense",
-   "proportion"
+   "proportion",
+   "sparse"
   ],
-  "note": "Photographs: a low, loose mat of narrow grey-green leafy stems with many white, deeply notched five-petalled flowers held a little above it. Model: a flat dark green octagonal plate on the ground ringed by sprigs, with tall thin stalks of white flowers standing round its edge; the flowers read, the body does not.",
-  "read_in": "V3.62",
+  "note": "Photographs: a low, loose mat of narrow grey-green leafy stems with many white, deeply notched five-petalled flowers held a little above it. Model: a flat dark green octagonal plate on the ground ringed by sprigs, with tall thin stalks of white flowers standing round its edge; the flowers read, the body does not. V3.65: The plate is gone: a faint grey-green mat of leafy shoots, its flower stalks standing too tall over it.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -2836,6 +2897,16 @@
      "flower_count"
     ],
     "note": "A loose mat of slender stems with pairs of small narrow grey-green leaves 1 to 2 cm, covered in white flowers 1.5 cm across, five petals each notched halfway, on thin stalks above the leaves. The model reads as a low plant with white flowers on top, close in kind. The leaves are long stiff blades and there are far fewer flowers than a plant in bloom carries."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "habit",
+     "dense",
+     "proportion"
+    ],
+    "note": "Photographs: a low, loose mat of narrow grey-green leafy stems with many white, deeply notched five-petalled flowers held a little above it. Model: a flat dark green octagonal plate on the ground ringed by sprigs, with tall thin stalks of white flowers standing round its edge; the flowers read, the body does not."
    }
   ]
  },
@@ -2866,8 +2937,8 @@
   "faults": [
    "flower_colour"
   ],
-  "note": "Photographs: a stand of single upright leafy stems with narrow leaves, ending in a long tapering spike of four-petalled magenta flowers, then silky seed. Model: a stand of tall leafy stems with pink flowers along their upper third; reads as fireweed. The pink is paler than the magenta in the photographs (the recorded colour, which is the owner's).",
-  "read_in": "V3.62",
+  "note": "Photographs: a stand of single upright leafy stems with narrow leaves, ending in a long tapering spike of four-petalled magenta flowers, then silky seed. Model: a stand of tall leafy stems with pink flowers along their upper third; reads as fireweed. The pink is paler than the magenta in the photographs (the recorded colour, which is the owner's). V3.65: Racemes taper to their buds: spires, not bars.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -2879,6 +2950,14 @@
      "flower_place"
     ],
     "note": "A tall unbranched stem crowded with willow-like leaves, ending in a long tapering spike of magenta four-petalled flowers 2 to 3 cm, buds drooping at the tip, long red seed pods below that split into white fluff. The model's leafy stems are right in kind. Its flowers are pale pink and dark maroon squares floating round the stem, where the plant is a solid magenta spire."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 7,
+    "faults": [
+     "flower_colour"
+    ],
+    "note": "Photographs: a stand of single upright leafy stems with narrow leaves, ending in a long tapering spike of four-petalled magenta flowers, then silky seed. Model: a stand of tall leafy stems with pink flowers along their upper third; reads as fireweed. The pink is paler than the magenta in the photographs (the recorded colour, which is the owner's)."
    }
   ]
  },
@@ -3000,8 +3079,8 @@
    "leaf_shape",
    "fruit"
   ],
-  "note": "Photographs: a slender scrambling vine with three-part leaves, nodding blue-purple bells of four sepals in May, feathery silver seed heads after. Model: drawn on a host, the pair reads as one dense rounded shrub of feathery sprays with white specks; the vine cannot be told from what it climbs, and the seed heads are specks.",
-  "read_in": "V3.62",
+  "note": "Photographs: a slender scrambling vine with three-part leaves, nodding blue-purple bells of four sepals in May, feathery silver seed heads after. Model: drawn on a host, the pair reads as one dense rounded shrub of feathery sprays with white specks; the vine cannot be told from what it climbs, and the seed heads are specks. V3.65: Still on the 3 m dogwood in flower and lost in it.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -3016,6 +3095,16 @@
      "fruit"
     ],
     "note": "A slender woody vine with leaves of three pointed, heart-based leaflets 4 to 8 cm; nodding blue-violet lanterns of four long pointed sepals 4 to 6 cm; then silky feather-ball seed heads that last into winter. The model's vine is a few threads of tiny ladder leaves on the dogwood's side with flowers as specks in the air: the dogwood is all one sees. The sheet's camera frames the host, which makes a vine hard to judge."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "habit",
+     "leaf_shape",
+     "fruit"
+    ],
+    "note": "Photographs: a slender scrambling vine with three-part leaves, nodding blue-purple bells of four sepals in May, feathery silver seed heads after. Model: drawn on a host, the pair reads as one dense rounded shrub of feathery sprays with white specks; the vine cannot be told from what it climbs, and the seed heads are specks."
    }
   ]
  },
@@ -3229,8 +3318,8 @@
    "stems",
    "fruit"
   ],
-  "note": "Photographs: a spreading shrub of red stems with opposite, smooth-edged oval leaves with curved veins, flat clusters of white flowers and then white berries; bright red twigs in winter. Model: a crown of paired leaves arranged into feather-like fronds on a clump of red stems, with small white flower clusters; the red stems are there, but the opposite leaves read as pinnate fronds, the stems form a bare red cage under the crown instead of being leafy, and no white berries show in August.",
-  "read_in": "V3.62",
+  "note": "Photographs: a spreading shrub of red stems with opposite, smooth-edged oval leaves with curved veins, flat clusters of white flowers and then white berries; bright red twigs in winter. Model: a crown of paired leaves arranged into feather-like fronds on a clump of red stems, with small white flower clusters; the red stems are there, but the opposite leaves read as pinnate fronds, the stems form a bare red cage under the crown instead of being leafy, and no white berries show in August. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -3244,6 +3333,16 @@
      "fruit"
     ],
     "note": "Many slender bright red stems, opposite oval leaves with curved veins, flat white clusters 4 to 5 cm across at the branch tips, white berries. The model has the red, on trunks as thick as an arm; the leaves are big plates in tiers; the flowers are specks floating above the shrub, and the berries do not show."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "leaf_shape",
+     "stems",
+     "fruit"
+    ],
+    "note": "Photographs: a spreading shrub of red stems with opposite, smooth-edged oval leaves with curved veins, flat clusters of white flowers and then white berries; bright red twigs in winter. Model: a crown of paired leaves arranged into feather-like fronds on a clump of red stems, with small white flower clusters; the red stems are there, but the opposite leaves read as pinnate fronds, the stems form a bare red cage under the crown instead of being leafy, and no white berries show in August."
    }
   ]
  },
@@ -3421,8 +3520,8 @@
    "flower_arch",
    "leaf_size"
   ],
-  "note": "Photographs: a clump of wiry stems with small finely divided leaves, each topped by a dense thimble-shaped head with a ring of bright purple-magenta flowers and orange anthers. Model: a clump of long thin stems with loose open strings of lilac specks; the dense purple thimbles that make the plant are open strings, and the leaves are too small to show.",
-  "read_in": "V3.62",
+  "note": "Photographs: a clump of wiry stems with small finely divided leaves, each topped by a dense thimble-shaped head with a ring of bright purple-magenta flowers and orange anthers. Model: a clump of long thin stems with loose open strings of lilac specks; the dense purple thimbles that make the plant are open strings, and the leaves are too small to show. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -3433,6 +3532,15 @@
      "flower_size"
     ],
     "note": "Several slender stems with leaves of 3 to 5 thread-narrow leaflets, each stem ending in a dense thimble 1 to 5 cm long and 1 cm thick: a ring of bright magenta flowers with orange anthers climbing a grey cone. The model's slender stems and small leaves are right. Its flowers are long open strings of dark violet dots, where the plant's is one solid thimble a stem."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_arch",
+     "leaf_size"
+    ],
+    "note": "Photographs: a clump of wiry stems with small finely divided leaves, each topped by a dense thimble-shaped head with a ring of bright purple-magenta flowers and orange anthers. Model: a clump of long thin stems with loose open strings of lilac specks; the dense purple thimbles that make the plant are open strings, and the leaves are too small to show."
    }
   ]
  },
@@ -3511,10 +3619,10 @@
   "score": 5,
   "faults": [
    "flower_size",
-   "flower_arch"
+   "sparse"
   ],
-  "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse.",
-  "read_in": "V3.62",
+  "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse. V3.65: White flat tops, small.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -3525,6 +3633,15 @@
      "sparse"
     ],
     "note": "Tall leafy stems, lance leaves 8 to 15 cm, topped by a broad flat-topped cluster 10 to 30 cm across of many small white daisies with 7 to 14 rays and yellow centres. The model's leafy stems are right in kind; in August, mid-flowering, it shows no flowers at all."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_size",
+     "flower_arch"
+    ],
+    "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse."
    }
   ]
  },
@@ -4227,13 +4344,13 @@
     "10756421"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
    "stem_leaves",
    "sparse"
   ],
-  "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.64: Flat yellow tops at the stem tips.",
-  "read_in": "V3.64",
+  "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.64: Flat yellow tops at the stem tips. V3.65: Flat golden tops at the read width.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4255,6 +4372,15 @@
      "sparse"
     ],
     "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "stem_leaves",
+     "sparse"
+    ],
+    "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.64: Flat yellow tops at the stem tips."
    }
   ]
  },
@@ -4280,13 +4406,12 @@
     "435548138"
    ]
   },
-  "score": 3,
+  "score": 6,
   "faults": [
-   "no_flower",
    "sparse"
   ],
-  "note": "Photographs: tall leafy purple-spotted stems with whorls of large toothed leaves, topped by big domed clusters of dusty pink flowers. Model: a few thin stems with whorls of narrow leaves and nothing on top; the flower domes that make the plant are not drawn in its flowering month.",
-  "read_in": "V3.62",
+  "note": "Photographs: tall leafy purple-spotted stems with whorls of large toothed leaves, topped by big domed clusters of dusty pink flowers. Model: a few thin stems with whorls of narrow leaves and nothing on top; the flower domes that make the plant are not drawn in its flowering month. V3.65: Pink domes at the stem tips, which were specks.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4298,6 +4423,15 @@
      "flower_count"
     ],
     "note": "A stout purple or purple-spotted stem to 1.5 m with whorls of 4 or 5 toothed lance leaves, topped by a broad, flat to domed head 10 to 20 cm across of fuzzy pink-purple. The model's whorled leaves up a tall stem are the right kind, the best whorled body so far; in August it shows no flower at all, and the leaves are thin blades."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "no_flower",
+     "sparse"
+    ],
+    "note": "Photographs: tall leafy purple-spotted stems with whorls of large toothed leaves, topped by big domed clusters of dusty pink flowers. Model: a few thin stems with whorls of narrow leaves and nothing on top; the flower domes that make the plant are not drawn in its flowering month."
    }
   ]
  },
@@ -4576,13 +4710,12 @@
   },
   "score": 2,
   "faults": [
-   "habit",
-   "dense",
+   "proportion",
    "stems",
    "flower_arch"
   ],
-  "note": "Photographs: a low, trailing woodland plant of weak stems with whorls of five or six bright green elliptic leaves, and tiny greenish-white flowers in threes on thin stalks. Model: a flat green octagonal plate with sprigs round its edge and tall bare stalks hung with white specks; nothing of the trailing whorled stems. V3.64: Its tiny flowers now drawn as white panicles, too big for flowers in threes; still a plate.",
-  "read_in": "V3.64",
+  "note": "Photographs: a low, trailing woodland plant of weak stems with whorls of five or six bright green elliptic leaves, and tiny greenish-white flowers in threes on thin stalks. Model: a flat green octagonal plate with sprigs round its edge and tall bare stalks hung with white specks; nothing of the trailing whorled stems. V3.64: Its tiny flowers now drawn as white panicles, too big for flowers in threes; still a plate. V3.65: The plate is gone: a faint leafy mat under tall bare stalks, where the plant is low and trailing.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4606,6 +4739,17 @@
      "flower_size"
     ],
     "note": "Photographs: a low, trailing woodland plant of weak stems with whorls of five or six bright green elliptic leaves, and tiny greenish-white flowers in threes on thin stalks. Model: a flat green octagonal plate with sprigs round its edge and tall bare stalks hung with white specks; nothing of the trailing whorled stems."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 2,
+    "faults": [
+     "habit",
+     "dense",
+     "stems",
+     "flower_arch"
+    ],
+    "note": "Photographs: a low, trailing woodland plant of weak stems with whorls of five or six bright green elliptic leaves, and tiny greenish-white flowers in threes on thin stalks. Model: a flat green octagonal plate with sprigs round its edge and tall bare stalks hung with white specks; nothing of the trailing whorled stems. V3.64: Its tiny flowers now drawn as white panicles, too big for flowers in threes; still a plate."
    }
   ]
  },
@@ -4993,8 +5137,8 @@
    "stem_leaves",
    "fruit"
   ],
-  "note": "Photographs: a dense, leafy colony of stems clothed in large pinnate leaves of many narrow leaflets, with short, dense, cream flower spikes, then clusters of brown burs covered in hooked prickles. Model: three tall bare stems with a skirt of small fronds at the base and a loose spray of white specks above; neither the leafy stems, nor the dense spikes, nor the burs read. V3.64: Cream spikes at the tips where a spray of specks was.",
-  "read_in": "V3.64",
+  "note": "Photographs: a dense, leafy colony of stems clothed in large pinnate leaves of many narrow leaflets, with short, dense, cream flower spikes, then clusters of brown burs covered in hooked prickles. Model: three tall bare stems with a skirt of small fronds at the base and a loose spray of white specks above; neither the leafy stems, nor the dense spikes, nor the burs read. V3.64: Cream spikes at the tips where a spray of specks was. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5016,6 +5160,15 @@
      "fruit"
     ],
     "note": "Photographs: a dense, leafy colony of stems clothed in large pinnate leaves of many narrow leaflets, with short, dense, cream flower spikes, then clusters of brown burs covered in hooked prickles. Model: three tall bare stems with a skirt of small fronds at the base and a loose spray of white specks above; neither the leafy stems, nor the dense spikes, nor the burs read."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "stem_leaves",
+     "fruit"
+    ],
+    "note": "Photographs: a dense, leafy colony of stems clothed in large pinnate leaves of many narrow leaflets, with short, dense, cream flower spikes, then clusters of brown burs covered in hooked prickles. Model: three tall bare stems with a skirt of small fronds at the base and a loose spray of white specks above; neither the leafy stems, nor the dense spikes, nor the burs read. V3.64: Cream spikes at the tips where a spray of specks was."
    }
   ]
  },
@@ -5144,8 +5297,8 @@
    "stem_leaves",
    "flower_colour"
   ],
-  "note": "Photographs: a bushy, leafy clump of grey-green pinnate leaves with dense racemes of vivid magenta pea flowers. Model: an upright broom of bare stalks with pale pink flecks strung up them and a thin skirt of leaves at the base; no leafy bush and no dense racemes, and the pink is far paler than the magenta (the recorded colour is the owner's). V3.64: Pink racemes now read (the recorded pink, paler than the photographs' magenta).",
-  "read_in": "V3.64",
+  "note": "Photographs: a bushy, leafy clump of grey-green pinnate leaves with dense racemes of vivid magenta pea flowers. Model: an upright broom of bare stalks with pale pink flecks strung up them and a thin skirt of leaves at the base; no leafy bush and no dense racemes, and the pink is far paler than the magenta (the recorded colour is the owner's). V3.64: Pink racemes now read (the recorded pink, paler than the photographs' magenta). V3.65: Racemes a little solid, tapering.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5169,6 +5322,16 @@
      "flower_colour"
     ],
     "note": "Photographs: a bushy, leafy clump of grey-green pinnate leaves with dense racemes of vivid magenta pea flowers. Model: an upright broom of bare stalks with pale pink flecks strung up them and a thin skirt of leaves at the base; no leafy bush and no dense racemes, and the pink is far paler than the magenta (the recorded colour is the owner's)."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "habit",
+     "stem_leaves",
+     "flower_colour"
+    ],
+    "note": "Photographs: a bushy, leafy clump of grey-green pinnate leaves with dense racemes of vivid magenta pea flowers. Model: an upright broom of bare stalks with pale pink flecks strung up them and a thin skirt of leaves at the base; no leafy bush and no dense racemes, and the pink is far paler than the magenta (the recorded colour is the owner's). V3.64: Pink racemes now read (the recorded pink, paler than the photographs' magenta)."
    }
   ]
  },
@@ -5927,14 +6090,13 @@
     "22556007"
    ]
   },
-  "score": 2,
+  "score": 4,
   "faults": [
-   "habit",
    "proportion",
-   "leaf_shape"
+   "flower_count"
   ],
-  "note": "Photographs: a sprawling, climbing herb about a metre long, with pinnate leaves of a few broad oval leaflets, tendrils, and short racemes of cream pea flowers. Model: drawn over a host shrub with red stems, the pair is one dense rounded shrub of pinnate fronds with white specks; the peavine cannot be seen as a plant of its own.",
-  "read_in": "V3.62",
+  "note": "Photographs: a sprawling, climbing herb about a metre long, with pinnate leaves of a few broad oval leaflets, tendrils, and short racemes of cream pea flowers. Model: drawn over a host shrub with red stems, the pair is one dense rounded shrub of pinnate fronds with white specks; the peavine cannot be seen as a plant of its own. V3.65: On a low snowberry its leaflet sprays show over the host; the cream flowers barely.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5947,6 +6109,16 @@
      "flower_colour"
     ],
     "note": "A climbing pea with leaves of 3 to 5 pairs of broad oval blue-green leaflets ending in a tendril, large leafy stipules, and one-sided racemes of 5 to 10 creamy yellow-white pea flowers 1.5 cm. The model's vine is a wisp of tiny leaves at the dogwood's foot with grey specks above the host."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 2,
+    "faults": [
+     "habit",
+     "proportion",
+     "leaf_shape"
+    ],
+    "note": "Photographs: a sprawling, climbing herb about a metre long, with pinnate leaves of a few broad oval leaflets, tendrils, and short racemes of cream pea flowers. Model: drawn over a host shrub with red stems, the pair is one dense rounded shrub of pinnate fronds with white specks; the peavine cannot be seen as a plant of its own."
    }
   ]
  },
@@ -5972,14 +6144,12 @@
     "550424440"
    ]
   },
-  "score": 2,
+  "score": 5,
   "faults": [
-   "habit",
-   "proportion",
-   "flower_colour"
+   "proportion"
   ],
-  "note": "Photographs: a climbing or sprawling vine with pinnate leaves of several oval leaflets and dense racemes of purple pea flowers. Model: drawn on a host with red stems, the pair is one dense, rounded shrub of pinnate fronds with white specks; the peavine is lost, and its purple flowers show as white.",
-  "read_in": "V3.62",
+  "note": "Photographs: a climbing or sprawling vine with pinnate leaves of several oval leaflets and dense racemes of purple pea flowers. Model: drawn on a host with red stems, the pair is one dense, rounded shrub of pinnate fronds with white specks; the peavine is lost, and its purple flowers show as white. V3.65: On a low snowberry: darker pinnate sprays with purple racemes, plain to see.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5992,6 +6162,16 @@
      "flower_arch"
     ],
     "note": "A stout climbing pea with leaves of 4 to 6 pairs of oval, veined leaflets ending in a tendril, and dense one-sided racemes of 10 to 20 purple and pink pea flowers. The model's vine is a wisp at the dogwood's foot with flecks in the air above the host."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 2,
+    "faults": [
+     "habit",
+     "proportion",
+     "flower_colour"
+    ],
+    "note": "Photographs: a climbing or sprawling vine with pinnate leaves of several oval leaflets and dense racemes of purple pea flowers. Model: drawn on a host with red stems, the pair is one dense, rounded shrub of pinnate fronds with white specks; the peavine is lost, and its purple flowers show as white."
    }
   ]
  },
@@ -6245,14 +6425,13 @@
     "289825790"
    ]
   },
-  "score": 2,
+  "score": 5,
   "faults": [
-   "habit",
-   "dense",
-   "flower_size"
+   "flower_size",
+   "stems"
   ],
-  "note": "Photographs: a trailing carpet of thin runners with pairs of small, round, glossy leaves, and thin forked stalks each with two nodding pale pink bells. Model: a flat dark green octagonal plate on the ground with sprigs round its edge and a few stalks of pink flecks; the carpet of paired leaves and the twin bells are not there. V3.64: Little change.",
-  "read_in": "V3.64",
+  "note": "Photographs: a trailing carpet of thin runners with pairs of small, round, glossy leaves, and thin forked stalks each with two nodding pale pink bells. Model: a flat dark green octagonal plate on the ground with sprigs round its edge and a few stalks of pink flecks; the carpet of paired leaves and the twin bells are not there. V3.64: Little change. V3.65: The plate is gone: a carpet of small round leaves, pink flowers on stalks.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6275,6 +6454,16 @@
      "flower_size"
     ],
     "note": "Photographs: a trailing carpet of thin runners with pairs of small, round, glossy leaves, and thin forked stalks each with two nodding pale pink bells. Model: a flat dark green octagonal plate on the ground with sprigs round its edge and a few stalks of pink flecks; the carpet of paired leaves and the twin bells are not there."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 2,
+    "faults": [
+     "habit",
+     "dense",
+     "flower_size"
+    ],
+    "note": "Photographs: a trailing carpet of thin runners with pairs of small, round, glossy leaves, and thin forked stalks each with two nodding pale pink bells. Model: a flat dark green octagonal plate on the ground with sprigs round its edge and a few stalks of pink flecks; the carpet of paired leaves and the twin bells are not there. V3.64: Little change."
    }
   ]
  },
@@ -6353,8 +6542,8 @@
    "flower_colour",
    "leaf_shape"
   ],
-  "note": "Photographs: a twining vine scrambling over shrubs, its paired leaves fused into a round disc under each cluster of orange-red to yellow tubular flowers, then red berries. Model: drawn on a red-stemmed host, the pair is one dense shrub of feathery sprays dotted with white specks; the vine, its fused leaf discs and its orange flowers are not seen.",
-  "read_in": "V3.62",
+  "note": "Photographs: a twining vine scrambling over shrubs, its paired leaves fused into a round disc under each cluster of orange-red to yellow tubular flowers, then red berries. Model: drawn on a red-stemmed host, the pair is one dense shrub of feathery sprays dotted with white specks; the vine, its fused leaf discs and its orange flowers are not seen. V3.65: Still lost on the dogwood.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6368,6 +6557,16 @@
      "sparse"
     ],
     "note": "A twining woody vine with opposite, oval, blue-green leaves, whitish beneath; the top pair below each flower cluster is joined into one disc round the stem, which stays on the vine all winter as a papery cup. The flowers are a bunch of yellow to orange-red tubes with long stamens in that cup; then red berries in it. The model's vine is two hanging chains of small leaves with specks in the air."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "habit",
+     "flower_colour",
+     "leaf_shape"
+    ],
+    "note": "Photographs: a twining vine scrambling over shrubs, its paired leaves fused into a round disc under each cluster of orange-red to yellow tubular flowers, then red berries. Model: drawn on a red-stemmed host, the pair is one dense shrub of feathery sprays dotted with white specks; the vine, its fused leaf discs and its orange flowers are not seen."
    }
   ]
  },
@@ -6404,8 +6603,8 @@
    "flower_colour",
    "fruit"
   ],
-  "note": "Photographs: a shrub with large opposite elliptic leaves, bright green; paired yellow tubular flowers in green then red bracts; shiny black berries set in deep red bracts. Model: a rounded shrub of small paired leaves along twigs that read as pinnate fronds, with red specks; the leaves are far too small and the flowers are drawn red (the recorded colour).",
-  "read_in": "V3.62",
+  "note": "Photographs: a shrub with large opposite elliptic leaves, bright green; paired yellow tubular flowers in green then red bracts; shiny black berries set in deep red bracts. Model: a rounded shrub of small paired leaves along twigs that read as pinnate fronds, with red specks; the leaves are far too small and the flowers are drawn red (the recorded colour). V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6418,6 +6617,17 @@
      "fruit"
     ],
     "note": "An upright shrub with large pointed opposite leaves; pairs of yellow tubular flowers in the leaf axils, cupped in green bracts that turn dark red around a pair of shiny black berries. The catalogue has the flower red and the fruit red: the red is the bracts, the flowers are yellow and the berries black. The model's flowers are specks floating outside the bush."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 4,
+    "faults": [
+     "leaf_size",
+     "leaf_shape",
+     "flower_colour",
+     "fruit"
+    ],
+    "note": "Photographs: a shrub with large opposite elliptic leaves, bright green; paired yellow tubular flowers in green then red bracts; shiny black berries set in deep red bracts. Model: a rounded shrub of small paired leaves along twigs that read as pinnate fronds, with red specks; the leaves are far too small and the flowers are drawn red (the recorded colour)."
    }
   ]
  },
@@ -6500,11 +6710,10 @@
   "score": 5,
   "faults": [
    "habit",
-   "flower_size",
    "leaf_size"
   ],
-  "note": "Photographs: an arching, unbranched stem with two rows of large broad clasping leaves and a fluffy plume of tiny white flowers at the tip; red berries later. Model: two thin upright stems with small scattered leaves and tiny white dots at the top; the stems should arch, the leaves be larger and in two rows, and the plume fuller.",
-  "read_in": "V3.62",
+  "note": "Photographs: an arching, unbranched stem with two rows of large broad clasping leaves and a fluffy plume of tiny white flowers at the tip; red berries later. Model: two thin upright stems with small scattered leaves and tiny white dots at the top; the stems should arch, the leaves be larger and in two rows, and the plume fuller. V3.65: White plumes at the read size.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6518,6 +6727,16 @@
      "fruit"
     ],
     "note": "One arching, zigzag stem with 6 to 12 broad, pointed, pleated leaves in two flat rows, like a ladder, ending in a creamy plume 5 to 12 cm; then a bunch of red speckled berries at the stem tip. The model is a spiral pagoda of plates round a straight pole, the flowers a few specks to one side, the berries scattered in the air."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "habit",
+     "flower_size",
+     "leaf_size"
+    ],
+    "note": "Photographs: an arching, unbranched stem with two rows of large broad clasping leaves and a fluffy plume of tiny white flowers at the tip; red berries later. Model: two thin upright stems with small scattered leaves and tiny white dots at the top; the stems should arch, the leaves be larger and in two rows, and the plume fuller."
    }
   ]
  },
@@ -6546,11 +6765,10 @@
   },
   "score": 6,
   "faults": [
-   "sparse",
-   "flower_arch"
+   "sparse"
   ],
-  "note": "Photographs: a carpet of shoots each with one to three glossy heart-shaped leaves and a short, dense spike of tiny white star flowers, then speckled then red berries. Model: a loose colony of single stalks with a leaf or two and a few white specks, red berries in July; it reads as the plant, but the carpet is far thinner and the spike a loose scatter.",
-  "read_in": "V3.62",
+  "note": "Photographs: a carpet of shoots each with one to three glossy heart-shaped leaves and a short, dense spike of tiny white star flowers, then speckled then red berries. Model: a loose colony of single stalks with a leaf or two and a few white specks, red berries in July; it reads as the plant, but the carpet is far thinner and the spike a loose scatter. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6563,6 +6781,15 @@
      "fruit"
     ],
     "note": "A carpet of separate small stems, each with one to three glossy heart-based oval leaves and, on flowering stems, one short dense spike of tiny white four-part stars standing above them; berries speckled, then red. The model is one big stack of plates with white stars scattered in its centre and red balls on top."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 6,
+    "faults": [
+     "sparse",
+     "flower_arch"
+    ],
+    "note": "Photographs: a carpet of shoots each with one to three glossy heart-shaped leaves and a short, dense spike of tiny white star flowers, then speckled then red berries. Model: a loose colony of single stalks with a leaf or two and a few white specks, red berries in July; it reads as the plant, but the carpet is far thinner and the spike a loose scatter."
    }
   ]
  },
@@ -7082,8 +7309,8 @@
    "sparse",
    "flower_size"
   ],
-  "note": "Photographs: a robust, leafy stem with lance leaves all the way up, topped by a leafy spike of large lemon-yellow four-petalled flowers 3 to 5 cm; second-year plants branch. Model: two thin stems with small leaves and small yellow flowers spaced up the top half; it reads as the plant but too thin, with too little leaf and flowers too small.",
-  "read_in": "V3.62",
+  "note": "Photographs: a robust, leafy stem with lance leaves all the way up, topped by a leafy spike of large lemon-yellow four-petalled flowers 3 to 5 cm; second-year plants branch. Model: two thin stems with small leaves and small yellow flowers spaced up the top half; it reads as the plant but too thin, with too little leaf and flowers too small. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7094,6 +7321,15 @@
      "sparse"
     ],
     "note": "A flat rosette the first year; the second, a stout leafy stalk to 1.5 m, lance leaves all the way up, ending in a spike of four-petalled yellow flowers 3 to 5 cm that opens from the bottom; woody seed capsules stand through winter. The model is a hand-sized rosette under 1.5 m bare wires: the tall leafy stalk, which is the plant, is missing."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "sparse",
+     "flower_size"
+    ],
+    "note": "Photographs: a robust, leafy stem with lance leaves all the way up, topped by a leafy spike of large lemon-yellow four-petalled flowers 3 to 5 cm; second-year plants branch. Model: two thin stems with small leaves and small yellow flowers spaced up the top half; it reads as the plant but too thin, with too little leaf and flowers too small."
    }
   ]
  },
@@ -7122,10 +7358,10 @@
   "faults": [
    "flower_colour",
    "leaf_colour",
-   "flower_shape"
+   "flower_arch"
   ],
-  "note": "Photographs: a low, bushy clump of narrow grey-green leaves with spikes of small four-petalled flowers that open white and age to pink and scarlet, long stamens sticking out. Model: a clump of thin green stems with spikes of uniformly red flowers; the spike habit reads, but every flower is red where most open white (the recorded colour, which is the owner's), and the leaves are green, not grey.",
-  "read_in": "V3.62",
+  "note": "Photographs: a low, bushy clump of narrow grey-green leaves with spikes of small four-petalled flowers that open white and age to pink and scarlet, long stamens sticking out. Model: a clump of thin green stems with spikes of uniformly red flowers; the spike habit reads, but every flower is red where most open white (the recorded colour, which is the owner's), and the leaves are green, not grey. V3.65: Red spikes read solid (the recorded colour is the owner's).",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7138,6 +7374,16 @@
      "leaf_colour"
     ],
     "note": "A knee-high bunch of slender leafy stems, the leaves small, narrow and grey-green; a wand of flowers about 1 cm across with four white petals, turned to one side, that age pink then red, and long stamens. It is recorded with a 5 cm flower (the evening primrose's) and a 12 cm basal leaf: the model is a rosette under a club of huge red stars."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_colour",
+     "leaf_colour",
+     "flower_shape"
+    ],
+    "note": "Photographs: a low, bushy clump of narrow grey-green leaves with spikes of small four-petalled flowers that open white and age to pink and scarlet, long stamens sticking out. Model: a clump of thin green stems with spikes of uniformly red flowers; the spike habit reads, but every flower is red where most open white (the recorded colour, which is the owner's), and the leaves are green, not grey."
    }
   ]
  },
@@ -7208,8 +7454,8 @@
   "faults": [
    "stems"
   ],
-  "note": "Photographs: a small, stiff, unbranched plant with reddish stems and narrow leaves, ending in a dense, leafy, yellow-green spike of small yellow flowers among bracts. Model: two thin green stems with yellow petals strung loosely up their upper halves; the dense, bracted, yellow spike is an open string, and the reddish stems are green. V3.64: Dense yellow spikes now read.",
-  "read_in": "V3.64",
+  "note": "Photographs: a small, stiff, unbranched plant with reddish stems and narrow leaves, ending in a dense, leafy, yellow-green spike of small yellow flowers among bracts. Model: two thin green stems with yellow petals strung loosely up their upper halves; the dense, bracted, yellow spike is an open string, and the reddish stems are green. V3.64: Dense yellow spikes now read. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7229,6 +7475,14 @@
      "stems"
     ],
     "note": "Photographs: a small, stiff, unbranched plant with reddish stems and narrow leaves, ending in a dense, leafy, yellow-green spike of small yellow flowers among bracts. Model: two thin green stems with yellow petals strung loosely up their upper halves; the dense, bracted, yellow spike is an open string, and the reddish stems are green."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "stems"
+    ],
+    "note": "Photographs: a small, stiff, unbranched plant with reddish stems and narrow leaves, ending in a dense, leafy, yellow-green spike of small yellow flowers among bracts. Model: two thin green stems with yellow petals strung loosely up their upper halves; the dense, bracted, yellow spike is an open string, and the reddish stems are green. V3.64: Dense yellow spikes now read."
    }
   ]
  },
@@ -7355,8 +7609,8 @@
    "flower_colour",
    "flower_arch"
   ],
-  "note": "Photographs (several look like another, purple, species): a low tuft of silky, grey-green pinnate leaves with leafless stalks of dense, spike-like heads of cream to pale yellow pea flowers. Model: tall stalks with loose spikes of purple pea flowers over a skirt of green fronds; the colour is the recorded purple (the owner's), the heads too loose, and the leaves green, not silky grey. V3.64: Grey leaves; dense spikes in the recorded purple (the photographs show cream).",
-  "read_in": "V3.64",
+  "note": "Photographs (several look like another, purple, species): a low tuft of silky, grey-green pinnate leaves with leafless stalks of dense, spike-like heads of cream to pale yellow pea flowers. Model: tall stalks with loose spikes of purple pea flowers over a skirt of green fronds; the colour is the recorded purple (the owner's), the heads too loose, and the leaves green, not silky grey. V3.64: Grey leaves; dense spikes in the recorded purple (the photographs show cream). V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7379,6 +7633,15 @@
      "photos"
     ],
     "note": "Photographs (several look like another, purple, species): a low tuft of silky, grey-green pinnate leaves with leafless stalks of dense, spike-like heads of cream to pale yellow pea flowers. Model: tall stalks with loose spikes of purple pea flowers over a skirt of green fronds; the colour is the recorded purple (the owner's), the heads too loose, and the leaves green, not silky grey."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 4,
+    "faults": [
+     "flower_colour",
+     "flower_arch"
+    ],
+    "note": "Photographs (several look like another, purple, species): a low tuft of silky, grey-green pinnate leaves with leafless stalks of dense, spike-like heads of cream to pale yellow pea flowers. Model: tall stalks with loose spikes of purple pea flowers over a skirt of green fronds; the colour is the recorded purple (the owner's), the heads too loose, and the leaves green, not silky grey. V3.64: Grey leaves; dense spikes in the recorded purple (the photographs show cream)."
    }
   ]
  },
@@ -7529,11 +7792,10 @@
   "score": 5,
   "faults": [
    "flower_size",
-   "flower_colour",
    "habit"
   ],
-  "note": "Photographs: a colony of leafy stems with long, glossy, lance leaves, often floating on water, each stem ending in a short, dense, bright pink spike like a thimble. Model: a colony of upright leafy stems with thin, pale pink spikes on top; the plan is right, but the spikes are thin and pale where they are fat and vivid pink.",
-  "read_in": "V3.62",
+  "note": "Photographs: a colony of leafy stems with long, glossy, lance leaves, often floating on water, each stem ending in a short, dense, bright pink spike like a thimble. Model: a colony of upright leafy stems with thin, pale pink spikes on top; the plan is right, but the spikes are thin and pale where they are fat and vivid pink. V3.65: Pink thimbles at their read size, small from the sheet's distance.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7546,6 +7808,16 @@
      "habit"
     ],
     "note": "In water, glossy oblong leaves floating flat and pink clubs standing above them; on land, a leafy stem with broad lance leaves. Either way the flower is a dense, solid, bright pink egg or cylinder 2 to 4 cm tall, one at each stem tip. The model is a star of stiff blades with thin strings of dots too small to see."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_size",
+     "flower_colour",
+     "habit"
+    ],
+    "note": "Photographs: a colony of leafy stems with long, glossy, lance leaves, often floating on water, each stem ending in a short, dense, bright pink spike like a thimble. Model: a colony of upright leafy stems with thin, pale pink spikes on top; the plan is right, but the spikes are thin and pale where they are fat and vivid pink."
    }
   ]
  },
@@ -7619,11 +7891,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_arch",
    "flower_colour"
   ],
-  "note": "Photographs: upright stems with paired lance leaves and a dense, four-sided spike of pink-lilac snapdragon-like flowers at the top. Model: upright stems with paired leaves and violet flowers spaced up a long open spike; the spike is too loose and too long, and the colour bluer than the pink-lilac in the photographs.",
-  "read_in": "V3.62",
+  "note": "Photographs: upright stems with paired lance leaves and a dense, four-sided spike of pink-lilac snapdragon-like flowers at the top. Model: upright stems with paired leaves and violet flowers spaced up a long open spike; the spike is too loose and too long, and the colour bluer than the pink-lilac in the photographs. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7636,6 +7907,15 @@
      "photos"
     ],
     "note": "Square stems with opposite, toothed lance leaves, ending in a spike of pink-purple tubular two-lipped flowers 1.5 to 2.5 cm in four rows. The model is a tower of long blades with dark purple specks hidden among them. Only four photographs."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 6,
+    "faults": [
+     "flower_arch",
+     "flower_colour"
+    ],
+    "note": "Photographs: upright stems with paired lance leaves and a dense, four-sided spike of pink-lilac snapdragon-like flowers at the top. Model: upright stems with paired leaves and violet flowers spaced up a long open spike; the spike is too loose and too long, and the colour bluer than the pink-lilac in the photographs."
    }
   ]
  },
@@ -9478,8 +9758,8 @@
    "no_flower",
    "crown"
   ],
-  "note": "Photographs: a thorny, much-branched shrub of silvery grey twigs and narrow, silvery, oblong leaves in pairs; tiny yellow flowers on bare twigs in April-May, then masses of bright red berries. Model: a tall narrow crown of silver frond-like sprays on a few stems; the silver reads, but in May it is in full leaf with no flowers, in August there are no red berries visible, and the paired leaves read as feathers.",
-  "read_in": "V3.62",
+  "note": "Photographs: a thorny, much-branched shrub of silvery grey twigs and narrow, silvery, oblong leaves in pairs; tiny yellow flowers on bare twigs in April-May, then masses of bright red berries. Model: a tall narrow crown of silver frond-like sprays on a few stems; the silver reads, but in May it is in full leaf with no flowers, in August there are no red berries visible, and the paired leaves read as feathers. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -9491,6 +9771,17 @@
      "fruit"
     ],
     "note": "A thorny shrub, silvery on both sides of its narrow oblong leaves, pale grey twigs; tiny yellow flowers on bare twigs in May; masses of bright red berries along the branches. The model has the silver, which is most of the plant; the trunks are too thick and the berries do not show."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "leaf_shape",
+     "fruit",
+     "no_flower",
+     "crown"
+    ],
+    "note": "Photographs: a thorny, much-branched shrub of silvery grey twigs and narrow, silvery, oblong leaves in pairs; tiny yellow flowers on bare twigs in April-May, then masses of bright red berries. Model: a tall narrow crown of silver frond-like sprays on a few stems; the silver reads, but in May it is in full leaf with no flowers, in August there are no red berries visible, and the paired leaves read as feathers."
    }
   ]
  },
@@ -9526,8 +9817,8 @@
   "faults": [
    "leaf_shape"
   ],
-  "note": "Photographs: an open shrub with brown scurfy twigs and opposite oval leaves, dull green above and silvery with rusty dots beneath; translucent red berries in July. Model: a dense shrub of silvery white sprays of paired leaves that read as pinnate fronds; far too silver (only the undersides are), and no berries. V3.64: Dull green, no longer drawn all silver, and its red berries show in July.",
-  "read_in": "V3.64",
+  "note": "Photographs: an open shrub with brown scurfy twigs and opposite oval leaves, dull green above and silvery with rusty dots beneath; translucent red berries in July. Model: a dense shrub of silvery white sprays of paired leaves that read as pinnate fronds; far too silver (only the undersides are), and no berries. V3.64: Dull green, no longer drawn all silver, and its red berries show in July. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -9549,6 +9840,14 @@
      "fruit"
     ],
     "note": "Photographs: an open shrub with brown scurfy twigs and opposite oval leaves, dull green above and silvery with rusty dots beneath; translucent red berries in July. Model: a dense shrub of silvery white sprays of paired leaves that read as pinnate fronds; far too silver (only the undersides are), and no berries."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "leaf_shape"
+    ],
+    "note": "Photographs: an open shrub with brown scurfy twigs and opposite oval leaves, dull green above and silvery with rusty dots beneath; translucent red berries in July. Model: a dense shrub of silvery white sprays of paired leaves that read as pinnate fronds; far too silver (only the undersides are), and no berries. V3.64: Dull green, no longer drawn all silver, and its red berries show in July."
    }
   ]
  },
@@ -10056,11 +10355,10 @@
   },
   "score": 5,
   "faults": [
-   "flower_size",
    "proportion"
   ],
-  "note": "Photographs: a short plant with a few narrow leaves at the base and a stout, dense spiral spike of creamy hooded flowers. Model: a tall bare stem with a thin dotted line of white specks, and a separate tall green blade beside it; the spike should be a fat cream column, and the plant is too tall and thin.",
-  "read_in": "V3.62",
+  "note": "Photographs: a short plant with a few narrow leaves at the base and a stout, dense spiral spike of creamy hooded flowers. Model: a tall bare stem with a thin dotted line of white specks, and a separate tall green blade beside it; the spike should be a fat cream column, and the plant is too tall and thin. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10073,6 +10371,15 @@
      "flower_size"
     ],
     "note": "A few narrow leaves at the base and one stem ending in a dense, thick, cream-white spike 5 to 10 cm tall, the hooded flowers packed in three spiralling rows. The model is a tall dense tuft of grass blades with small grey dots scattered loosely in the air above it."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_size",
+     "proportion"
+    ],
+    "note": "Photographs: a short plant with a few narrow leaves at the base and a stout, dense spiral spike of creamy hooded flowers. Model: a tall bare stem with a thin dotted line of white specks, and a separate tall green blade beside it; the spike should be a fat cream column, and the plant is too tall and thin."
    }
   ]
  },
@@ -10192,8 +10499,8 @@
    "leaf_shape",
    "dense"
   ],
-  "note": "Photographs: an open shrub of thin arching twigs with small round to oval paired leaves, blue-green, small pink bells and, from late summer, clusters of round white berries that last into winter. Model: a dense upright mass of paired leaves in sprays that read as pinnate fronds, in a plain mid-green; the white berries that make the plant are not on the July picture. V3.64: Blue-green now, as it is.",
-  "read_in": "V3.64",
+  "note": "Photographs: an open shrub of thin arching twigs with small round to oval paired leaves, blue-green, small pink bells and, from late summer, clusters of round white berries that last into winter. Model: a dense upright mass of paired leaves in sprays that read as pinnate fronds, in a plain mid-green; the white berries that make the plant are not on the July picture. V3.64: Blue-green now, as it is. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10217,6 +10524,15 @@
      "fruit"
     ],
     "note": "Photographs: an open shrub of thin arching twigs with small round to oval paired leaves, blue-green, small pink bells and, from late summer, clusters of round white berries that last into winter. Model: a dense upright mass of paired leaves in sprays that read as pinnate fronds, in a plain mid-green; the white berries that make the plant are not on the July picture."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "leaf_shape",
+     "dense"
+    ],
+    "note": "Photographs: an open shrub of thin arching twigs with small round to oval paired leaves, blue-green, small pink bells and, from late summer, clusters of round white berries that last into winter. Model: a dense upright mass of paired leaves in sprays that read as pinnate fronds, in a plain mid-green; the white berries that make the plant are not on the July picture. V3.64: Blue-green now, as it is."
    }
   ]
  },
@@ -10250,8 +10566,8 @@
   "faults": [
    "leaf_shape"
   ],
-  "note": "Photographs: a low thicket of upright twigs with paired, thick, oval, grey-green leaves, small pink bells in clusters at the tips, and clusters of greenish-white berries that blacken over winter. Model: a dense dome of paired leaves arranged into feather-like fronds, plain green; in September it turns yellow with no white berries showing. It reads as a fern-leaved bush, not a snowberry, and it is the same body as common snowberry. V3.64: Grey-green now, as it is.",
-  "read_in": "V3.64",
+  "note": "Photographs: a low thicket of upright twigs with paired, thick, oval, grey-green leaves, small pink bells in clusters at the tips, and clusters of greenish-white berries that blacken over winter. Model: a dense dome of paired leaves arranged into feather-like fronds, plain green; in September it turns yellow with no white berries showing. It reads as a fern-leaved bush, not a snowberry, and it is the same body as common snowberry. V3.64: Grey-green now, as it is. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10273,6 +10589,14 @@
      "fruit"
     ],
     "note": "Photographs: a low thicket of upright twigs with paired, thick, oval, grey-green leaves, small pink bells in clusters at the tips, and clusters of greenish-white berries that blacken over winter. Model: a dense dome of paired leaves arranged into feather-like fronds, plain green; in September it turns yellow with no white berries showing. It reads as a fern-leaved bush, not a snowberry, and it is the same body as common snowberry."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "leaf_shape"
+    ],
+    "note": "Photographs: a low thicket of upright twigs with paired, thick, oval, grey-green leaves, small pink bells in clusters at the tips, and clusters of greenish-white berries that blacken over winter. Model: a dense dome of paired leaves arranged into feather-like fronds, plain green; in September it turns yellow with no white berries showing. It reads as a fern-leaved bush, not a snowberry, and it is the same body as common snowberry. V3.64: Grey-green now, as it is."
    }
   ]
  },
@@ -10858,11 +11182,10 @@
   "score": 5,
   "faults": [
    "sparse",
-   "leaf_colour",
-   "flower_size"
+   "leaf_colour"
   ],
-  "note": "Photographs: a spreading colony of leafy grey-green stems with three-part leaves, topped by short dense racemes of large bright yellow pea flowers; curled pods later. Model: thin bare stalks with a few leaves at the base and large yellow pea flowers spaced up them; the flowers and colour are right, but the stems are bare where they are leafy, and the green too bright.",
-  "read_in": "V3.62",
+  "note": "Photographs: a spreading colony of leafy grey-green stems with three-part leaves, topped by short dense racemes of large bright yellow pea flowers; curled pods later. Model: thin bare stalks with a few leaves at the base and large yellow pea flowers spaced up them; the flowers and colour are right, but the stems are bare where they are leafy, and the green too bright. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10874,6 +11197,16 @@
      "leaf_colour"
     ],
     "note": "Low patches, a hand or two high: three-part leaves of broad grey-green leaflets with big leafy stipules; a short dense raceme of bright yellow pea flowers 2 cm at the top of each stem; curled, sickle-shaped pods. The model draws long ladder leaves of a dozen leaflets where the plant has three, and its flowers are loose yellow and orange chips."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "sparse",
+     "leaf_colour",
+     "flower_size"
+    ],
+    "note": "Photographs: a spreading colony of leafy grey-green stems with three-part leaves, topped by short dense racemes of large bright yellow pea flowers; curled pods later. Model: thin bare stalks with a few leaves at the base and large yellow pea flowers spaced up them; the flowers and colour are right, but the stems are bare where they are leafy, and the green too bright."
    }
   ]
  },
@@ -11090,15 +11423,13 @@
     "345784030"
    ]
   },
-  "score": 1,
+  "score": 3,
   "faults": [
-   "habit",
-   "dense",
    "stems",
    "fruit"
   ],
-  "note": "Photographs: thread-thin trailing stems over moss with tiny pointed leaves, nodding pink shooting-star flowers on long stalks, and large dark red berries lying on the moss. Model: a flat green octagonal plate with sprigs around it and a few bare vertical stalks; nothing reads as the plant.",
-  "read_in": "V3.62",
+  "note": "Photographs: thread-thin trailing stems over moss with tiny pointed leaves, nodding pink shooting-star flowers on long stalks, and large dark red berries lying on the moss. Model: a flat green octagonal plate with sprigs around it and a few bare vertical stalks; nothing reads as the plant. V3.65: The plate is gone: a faint carpet of tiny leaves with a few pink flowers; the thread-thin red stems are not drawn.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11111,6 +11442,17 @@
      "fruit"
     ],
     "note": "Thread-thin stems trailing over moss with tiny pointed leaves 0.5 to 1 cm, dark above and white beneath; nodding pink flowers on long red stalks, four petals swept straight back from a beak, like a shooting star; a red cranberry far larger than the leaves. The model is a mound of broad angular plates with a few specks: nothing thread-like, nothing tiny."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 1,
+    "faults": [
+     "habit",
+     "dense",
+     "stems",
+     "fruit"
+    ],
+    "note": "Photographs: thread-thin trailing stems over moss with tiny pointed leaves, nodding pink shooting-star flowers on long stalks, and large dark red berries lying on the moss. Model: a flat green octagonal plate with sprigs around it and a few bare vertical stalks; nothing reads as the plant."
    }
   ]
  },
@@ -11133,15 +11475,13 @@
     "145973615"
    ]
   },
-  "score": 2,
+  "score": 4,
   "faults": [
-   "habit",
-   "dense",
-   "stems",
-   "no_flower"
+   "no_flower",
+   "stems"
   ],
-  "note": "Photographs: a sprawling, rooting herb of wet ground, glossy paired lance-ovate leaves on soft stems, loose sprays of small pale blue four-petalled flowers with dark lines. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no flowers in July, when it is in bloom.",
-  "read_in": "V3.62",
+  "note": "Photographs: a sprawling, rooting herb of wet ground, glossy paired lance-ovate leaves on soft stems, loose sprays of small pale blue four-petalled flowers with dark lines. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no flowers in July, when it is in bloom. V3.65: The plate is gone: a leafy mat of paired leaves; its blue flowers are not drawn (no cluster recorded).",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11154,6 +11494,17 @@
      "leaf_size"
     ],
     "note": "Fleshy stems sprawling through shallow water and rooting as they go, with pairs of glossy, toothed, lance-oval leaves 2 to 5 cm, and loose racemes from the leaf joints of small violet-blue flowers with four lobes and a white eye. The model is a ring of specks on the ground and three bare wires half a metre tall, the same body as Northern Bedstraw; no flower shape is recorded."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 2,
+    "faults": [
+     "habit",
+     "dense",
+     "stems",
+     "no_flower"
+    ],
+    "note": "Photographs: a sprawling, rooting herb of wet ground, glossy paired lance-ovate leaves on soft stems, loose sprays of small pale blue four-petalled flowers with dark lines. Model: a flat green octagonal plate on the ground ringed with sprigs and a few bare vertical stalks; no flowers in July, when it is in bloom."
    }
   ]
  },
@@ -11192,8 +11543,8 @@
    "crown",
    "fruit"
   ],
-  "note": "Photographs: a low, open, straggly shrub of a few stems with broad three-lobed toothed leaves, small white flower clusters in June, and a few glossy red berries from August. Model: a dense, rounded mass of three-lobed leaves on a column of stems; the leaf outline is right but the shrub is far too dense and full for this open plant, and from the side it is the same body as highbush cranberry.",
-  "read_in": "V3.62",
+  "note": "Photographs: a low, open, straggly shrub of a few stems with broad three-lobed toothed leaves, small white flower clusters in June, and a few glossy red berries from August. Model: a dense, rounded mass of three-lobed leaves on a column of stems; the leaf outline is right but the shrub is far too dense and full for this open plant, and from the side it is the same body as highbush cranberry. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11206,6 +11557,16 @@
      "fruit"
     ],
     "note": "A straggling slender shrub; opposite leaves with three shallow lobes, like a small maple leaf, red in autumn; small flat white clusters; red berries in small bunches. The model's leaves are plain plates in tiers on thick canes, the flowers float above it, and the berries it draws in August sit outside the plant."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "dense",
+     "crown",
+     "fruit"
+    ],
+    "note": "Photographs: a low, open, straggly shrub of a few stems with broad three-lobed toothed leaves, small white flower clusters in June, and a few glossy red berries from August. Model: a dense, rounded mass of three-lobed leaves on a column of stems; the leaf outline is right but the shrub is far too dense and full for this open plant, and from the side it is the same body as highbush cranberry."
    }
   ]
  },
@@ -11242,8 +11603,8 @@
    "leaf_size",
    "fruit"
   ],
-  "note": "Photographs: a broad, arching, many-stemmed shrub with three-lobed maple-like leaves, flat white lacecap flowers in June and hanging bunches of glossy red berries from August into winter. Model: a tall, narrow, upright column of small three-lobed leaves on a few thin stems; the leaf outline is right, but it is too narrow and upright, the leaves too small, and in July there are no green or red berries.",
-  "read_in": "V3.62",
+  "note": "Photographs: a broad, arching, many-stemmed shrub with three-lobed maple-like leaves, flat white lacecap flowers in June and hanging bunches of glossy red berries from August into winter. Model: a tall, narrow, upright column of small three-lobed leaves on a few thin stems; the leaf outline is right, but it is too narrow and upright, the leaves too small, and in July there are no green or red berries. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11256,6 +11617,16 @@
      "fruit"
     ],
     "note": "A tall shrub; opposite three-lobed maple-like leaves, red to purple in autumn; flat white lace-caps 8 to 10 cm across ringed with large sterile flowers; drooping bunches of bright red berries into winter. The model has plain dark plates on thick trunks, no flower in May, rust-brown rather than red leaves in September and no berries."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "crown",
+     "leaf_size",
+     "fruit"
+    ],
+    "note": "Photographs: a broad, arching, many-stemmed shrub with three-lobed maple-like leaves, flat white lacecap flowers in June and hanging bunches of glossy red berries from August into winter. Model: a tall, narrow, upright column of small three-lobed leaves on a few thin stems; the leaf outline is right, but it is too narrow and upright, the leaves too small, and in July there are no green or red berries."
    }
   ]
  },
@@ -11284,14 +11655,13 @@
     "65285432"
    ]
   },
-  "score": 2,
+  "score": 3,
   "faults": [
-   "habit",
    "proportion",
    "flower_colour"
   ],
-  "note": "Photographs: a slender, scrambling vine with pinnate leaves of small paired oval leaflets ending in tendrils, and loose racemes of a few purple-blue pea flowers, tangling through grass and shrubs. Model: drawn over a red-stemmed host, the pair is a tall dense shrub of fronds with white specks; the vetch is lost in it, and its purple flowers show white.",
-  "read_in": "V3.62",
+  "note": "Photographs: a slender, scrambling vine with pinnate leaves of small paired oval leaflets ending in tendrils, and loose racemes of a few purple-blue pea flowers, tangling through grass and shrubs. Model: drawn over a red-stemmed host, the pair is a tall dense shrub of fronds with white specks; the vetch is lost in it, and its purple flowers show white. V3.65: On a low snowberry a few darker sprays; still mostly the host.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11304,6 +11674,16 @@
      "flower_arch"
     ],
     "note": "A slender scrambling vetch with leaves of 4 to 8 pairs of narrow oval leaflets ending in a branched tendril, and loose one-sided racemes of 3 to 9 blue-purple to red-purple pea flowers 1.5 to 2 cm. It is recorded pale pink; the photographs are purple. The model's vine is a wisp at the host's foot."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 2,
+    "faults": [
+     "habit",
+     "proportion",
+     "flower_colour"
+    ],
+    "note": "Photographs: a slender, scrambling vine with pinnate leaves of small paired oval leaflets ending in tendrils, and loose racemes of a few purple-blue pea flowers, tangling through grass and shrubs. Model: drawn over a red-stemmed host, the pair is a tall dense shrub of fronds with white specks; the vetch is lost in it, and its purple flowers show white."
    }
   ]
  },

@@ -107,9 +107,11 @@ function _wbMask(arch, petals, share) {
   const r = sh * W / 2;
   const put = (x, y) => _wbFlower(g, x * W, (1 - y) * W, r * (0.85 + 0.3 * rnd()), petals, rnd() * 6.283);
   // Flowers enough to fill the outline `area` (a share of the card) about once:
-  // up to 140, so a cluster of many tiny flowers (a Joe-Pye weed's dome) is
-  // not half bare (70 until V3.65).
-  const fill = (area) => Math.max(1, Math.min(140, Math.round(area * W * W / (3.2 * r * r))));
+  // up to 140 in a flat or round cluster, so one of many tiny flowers (a
+  // Joe-Pye weed's dome) is not half bare (70 until V3.65); 70 along a spike
+  // or a panicle, where 140 made a slender agrimony spike a solid bar.
+  const most = _WB_LONG[arch] ? 70 : 140;
+  const fill = (area) => Math.max(1, Math.min(most, Math.round(area * W * W / (3.2 * r * r))));
   switch (arch) {
     case 'solitary': case 'head':
       _wbFlower(g, W / 2, W / 2, W * 0.47, petals, rnd() * 6.283);
