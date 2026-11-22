@@ -176,8 +176,8 @@
    "leaf_size",
    "fruit"
   ],
-  "note": "Photographs: a bushy, leafy plant with large compound leaves of sharply toothed leaflets held around the stems, a fluffy white raceme in May, then a cluster of glossy red (or white) berries. Model: a few giant flat leaf cutouts lying in rings on the ground and floating above stalks, with white specks and a few dark dots; the leaves are huge flat plates, not a leafy bush, and the berry cluster reads as a few specks.",
-  "read_in": "V3.62",
+  "note": "Photographs: a bushy, leafy plant with large compound leaves of sharply toothed leaflets held around the stems, a fluffy white raceme in May, then a cluster of glossy red (or white) berries. Model: a few giant flat leaf cutouts lying in rings on the ground and floating above stalks, with white specks and a few dark dots; the leaves are huge flat plates, not a leafy bush, and the berry cluster reads as a few specks. V3.65: Leaves divided twice but still drooping rings round the stems; the white racemes small.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -189,6 +189,16 @@
      "fruit"
     ],
     "note": "A bushy plant of large leaves divided two or three times into sharply toothed, lobed leaflets; a dense fluffy white ball of flowers 3 to 5 cm on a stalk above the leaves; then a tight cluster of glossy red berries on the same stalk. The model has plain oval leaflets, a tall thin column of specks, and berries scattered through the air around the plant."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "leaf_place",
+     "leaf_size",
+     "fruit"
+    ],
+    "note": "Photographs: a bushy, leafy plant with large compound leaves of sharply toothed leaflets held around the stems, a fluffy white raceme in May, then a cluster of glossy red (or white) berries. Model: a few giant flat leaf cutouts lying in rings on the ground and floating above stalks, with white specks and a few dark dots; the leaves are huge flat plates, not a leafy bush, and the berry cluster reads as a few specks."
    }
   ]
  },
@@ -308,11 +318,11 @@
   "score": 4,
   "faults": [
    "sparse",
-   "leaf_size",
-   "stem_leaves"
+   "stem_leaves",
+   "flower_arch"
   ],
-  "note": "Photographs: a leafy plant with large, coarsely toothed pinnate leaves of unequal leaflets along the stem, ending in a long slender spike of small yellow flowers, then hooked burs. Model: two thin stalks with yellow specks up their tips and a few small fronds low down; the spikes read, but the big leafy body is missing.",
-  "read_in": "V3.62",
+  "note": "Photographs: a leafy plant with large, coarsely toothed pinnate leaves of unequal leaflets along the stem, ending in a long slender spike of small yellow flowers, then hooked burs. Model: two thin stalks with yellow specks up their tips and a few small fronds low down; the spikes read, but the big leafy body is missing. V3.65: The spikes are the length read, and a narrow spike of tiny flowers is drawn as a solid bar at the read length.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -324,6 +334,16 @@
      "flower_size"
     ],
     "note": "A tall hairy stem with large leaves of 5 to 9 big, coarsely toothed leaflets and tiny ones between them, ending in a long slim wand of small bright yellow five-petalled flowers; nodding burs with hooked bristles. The model is two nearly bare stems with tiny ladder leaves and short strings of pale dots."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 4,
+    "faults": [
+     "sparse",
+     "leaf_size",
+     "stem_leaves"
+    ],
+    "note": "Photographs: a leafy plant with large, coarsely toothed pinnate leaves of unequal leaflets along the stem, ending in a long slender spike of small yellow flowers, then hooked burs. Model: two thin stalks with yellow specks up their tips and a few small fronds low down; the spikes read, but the big leafy body is missing."
    }
   ]
  },
@@ -1310,8 +1330,8 @@
    "leaf_shape",
    "no_flower"
   ],
-  "note": "Photographs: a colony of single, large, umbrella-like leaves on tall stalks, each of three parts with five broad toothed leaflets, held over the ground, with round umbels of green-white flowers on a separate stalk below the leaves, then dark purple berry balls. Model: a few huge flat ragged cards lying on the ground beside bare stalks; the leaf umbrellas and the round umbels are not drawn.",
-  "read_in": "V3.62",
+  "note": "Photographs: a colony of single, large, umbrella-like leaves on tall stalks, each of three parts with five broad toothed leaflets, held over the ground, with round umbels of green-white flowers on a separate stalk below the leaves, then dark purple berry balls. Model: a few huge flat ragged cards lying on the ground beside bare stalks; the leaf umbrellas and the round umbels are not drawn. V3.65: Leaves divided twice, still huge ragged arcs drooping to the ground; no umbrellas, no umbels.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1324,6 +1344,16 @@
      "leaf_size"
     ],
     "note": "One leaf on a tall bare stalk, held flat like an umbrella: three branches, each with 3 to 5 broad, toothed, oval leaflets 8 to 12 cm; bronze when new, yellow in autumn. Beneath it, on its own short stalk from the ground, two to seven round balls of green-white flowers, then purple-black berries. The model is an upright stem of ladder leaves, with no flower or fruit recorded."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 2,
+    "faults": [
+     "leaf_place",
+     "leaf_shape",
+     "no_flower"
+    ],
+    "note": "Photographs: a colony of single, large, umbrella-like leaves on tall stalks, each of three parts with five broad toothed leaflets, held over the ground, with round umbels of green-white flowers on a separate stalk below the leaves, then dark purple berry balls. Model: a few huge flat ragged cards lying on the ground beside bare stalks; the leaf umbrellas and the round umbels are not drawn."
    }
   ]
  },
@@ -1500,10 +1530,10 @@
   "score": 4,
   "faults": [
    "sparse",
-   "leaf_shape"
+   "flower_arch"
   ],
-  "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.64: Yellow-green panicles at the tips where there was nothing.",
-  "read_in": "V3.64",
+  "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.64: Yellow-green panicles at the tips where there was nothing. V3.65: Narrow yellow plumes at the read length, bolder than the photographs' green-yellow specks.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1526,6 +1556,15 @@
      "leaf_colour"
     ],
     "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 4,
+    "faults": [
+     "sparse",
+     "leaf_shape"
+    ],
+    "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.64: Yellow-green panicles at the tips where there was nothing."
    }
   ]
  },
@@ -1554,8 +1593,8 @@
    "habit",
    "stem_leaves"
   ],
-  "note": "Photographs: a low, dense, silvery-white cushion of finely cut feathery leaves with arching leafy stems of tiny yellow heads. Model: a sparse bundle of bare grey sticks; nothing silver, soft or cushion-like. V3.64: Silver now, and a pale plume; still a few bare stems for a cushion.",
-  "read_in": "V3.64",
+  "note": "Photographs: a low, dense, silvery-white cushion of finely cut feathery leaves with arching leafy stems of tiny yellow heads. Model: a sparse bundle of bare grey sticks; nothing silver, soft or cushion-like. V3.64: Silver now, and a pale plume; still a few bare stems for a cushion. V3.65: As before: a few silver plumes on bare grey stems, not a cushion.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1578,6 +1617,15 @@
      "stem_leaves"
     ],
     "note": "Photographs: a low, dense, silvery-white cushion of finely cut feathery leaves with arching leafy stems of tiny yellow heads. Model: a sparse bundle of bare grey sticks; nothing silver, soft or cushion-like."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 3,
+    "faults": [
+     "habit",
+     "stem_leaves"
+    ],
+    "note": "Photographs: a low, dense, silvery-white cushion of finely cut feathery leaves with arching leafy stems of tiny yellow heads. Model: a sparse bundle of bare grey sticks; nothing silver, soft or cushion-like. V3.64: Silver now, and a pale plume; still a few bare stems for a cushion."
    }
   ]
  },
@@ -4654,13 +4702,13 @@
     "89483510"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
    "stem_leaves",
    "sparse"
   ],
-  "note": "Photographs: a dense leafy clump of square stems with whorls of four narrow leaves, topped by a foamy mass of tiny white flowers in branched clusters. Model: a sparse bundle of bare straight stems with a scatter of white specks floating around them; no leaf whorls show and no white foam. V3.64: White panicles at the tips where specks floated; the stems still bare.",
-  "read_in": "V3.64",
+  "note": "Photographs: a dense leafy clump of square stems with whorls of four narrow leaves, topped by a foamy mass of tiny white flowers in branched clusters. Model: a sparse bundle of bare straight stems with a scatter of white specks floating around them; no leaf whorls show and no white foam. V3.64: White panicles at the tips where specks floated; the stems still bare. V3.65: White panicles at the read size read as foamy cones; stems still bare.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4683,6 +4731,15 @@
      "sparse"
     ],
     "note": "Photographs: a dense leafy clump of square stems with whorls of four narrow leaves, topped by a foamy mass of tiny white flowers in branched clusters. Model: a sparse bundle of bare straight stems with a scatter of white specks floating around them; no leaf whorls show and no white foam."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 4,
+    "faults": [
+     "stem_leaves",
+     "sparse"
+    ],
+    "note": "Photographs: a dense leafy clump of square stems with whorls of four narrow leaves, topped by a foamy mass of tiny white flowers in branched clusters. Model: a sparse bundle of bare straight stems with a scatter of white specks floating around them; no leaf whorls show and no white foam. V3.64: White panicles at the tips where specks floated; the stems still bare."
    }
   ]
  },
@@ -5243,8 +5300,8 @@
    "stem_leaves",
    "habit"
   ],
-  "note": "Photographs: a bushy, leafy clump with pinnate leaves of many leaflets, each stem ending in a long one-sided raceme of drooping pink-purple pea flowers. Model: about ten nearly bare stalks with a few small pinnate leaves near the ground and pink flecks strung loosely up every stalk; no dense raceme, and the clump is a broom, not a bush. V3.64: Pink racemes now read, a little blocky.",
-  "read_in": "V3.64",
+  "note": "Photographs: a bushy, leafy clump with pinnate leaves of many leaflets, each stem ending in a long one-sided raceme of drooping pink-purple pea flowers. Model: about ten nearly bare stalks with a few small pinnate leaves near the ground and pink flecks strung loosely up every stalk; no dense raceme, and the clump is a broom, not a bush. V3.64: Pink racemes now read, a little blocky. V3.65: Racemes taper to their tips; a little solid.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5266,6 +5323,16 @@
      "habit"
     ],
     "note": "Photographs: a bushy, leafy clump with pinnate leaves of many leaflets, each stem ending in a long one-sided raceme of drooping pink-purple pea flowers. Model: about ten nearly bare stalks with a few small pinnate leaves near the ground and pink flecks strung loosely up every stalk; no dense raceme, and the clump is a broom, not a bush."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "sparse",
+     "stem_leaves",
+     "habit"
+    ],
+    "note": "Photographs: a bushy, leafy clump with pinnate leaves of many leaflets, each stem ending in a long one-sided raceme of drooping pink-purple pea flowers. Model: about ten nearly bare stalks with a few small pinnate leaves near the ground and pink flecks strung loosely up every stalk; no dense raceme, and the clump is a broom, not a bush. V3.64: Pink racemes now read, a little blocky."
    }
   ]
  },
@@ -5662,14 +5729,14 @@
     "83145251"
    ]
   },
-  "score": 5,
+  "score": 4,
   "faults": [
    "flower_colour",
-   "leaf_shape",
-   "flower_arch"
+   "flower_arch",
+   "leaf_shape"
   ],
-  "note": "Photographs: a basal clump of rounded, shallowly lobed and scalloped leaves under tall leafless stalks with a narrow panicle of small greenish-cream bells. Model: two rosettes of sharp star-shaped leaves under tall bare stalks with red specks round their tops; the stalks are right, the leaves too sharply lobed, and the flowers drawn red (the recorded colour, which the photographs do not show).",
-  "read_in": "V3.62",
+  "note": "Photographs: a basal clump of rounded, shallowly lobed and scalloped leaves under tall leafless stalks with a narrow panicle of small greenish-cream bells. Model: two rosettes of sharp star-shaped leaves under tall bare stalks with red specks round their tops; the stalks are right, the leaves too sharply lobed, and the flowers drawn red (the recorded colour, which the photographs do not show). V3.65: The narrow panicle is longer and a narrow spike of tiny flowers is drawn as a solid bar at the read length, in the recorded red (the owner's).",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5681,6 +5748,16 @@
      "leaf_colour"
     ],
     "note": "A rosette of round, scalloped, shallowly lobed leaves and a few tall bare hairy stalks, each ending in a narrow spike of small greenish-yellow to tan bells. The model's rosette and bare stalks are the right kind. Its flowers are red stars scattered in a cloud off the stalks: every photograph shows green-yellow, and they sit on the stalk."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_colour",
+     "leaf_shape",
+     "flower_arch"
+    ],
+    "note": "Photographs: a basal clump of rounded, shallowly lobed and scalloped leaves under tall leafless stalks with a narrow panicle of small greenish-cream bells. Model: two rosettes of sharp star-shaped leaves under tall bare stalks with red specks round their tops; the stalks are right, the leaves too sharply lobed, and the flowers drawn red (the recorded colour, which the photographs do not show)."
    }
   ]
  },
@@ -7556,8 +7633,8 @@
    "leaf_size",
    "flower_size"
   ],
-  "note": "Photographs: a bushy plant of soft, fern-like, twice-divided toothed leaves held up the stems, with small, open umbels of tiny white flowers. Model: a few giant flat leaf cut-outs lying in rings on the ground and floating on bare stalks, with a few white specks; the leaves are huge plates and the plant has no leafy body. V3.64: Little change.",
-  "read_in": "V3.64",
+  "note": "Photographs: a bushy plant of soft, fern-like, twice-divided toothed leaves held up the stems, with small, open umbels of tiny white flowers. Model: a few giant flat leaf cut-outs lying in rings on the ground and floating on bare stalks, with a few white specks; the leaves are huge plates and the plant has no leafy body. V3.64: Little change. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7580,6 +7657,16 @@
      "flower_size"
     ],
     "note": "Photographs: a bushy plant of soft, fern-like, twice-divided toothed leaves held up the stems, with small, open umbels of tiny white flowers. Model: a few giant flat leaf cut-outs lying in rings on the ground and floating on bare stalks, with a few white specks; the leaves are huge plates and the plant has no leafy body."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 3,
+    "faults": [
+     "leaf_place",
+     "leaf_size",
+     "flower_size"
+    ],
+    "note": "Photographs: a bushy plant of soft, fern-like, twice-divided toothed leaves held up the stems, with small, open umbels of tiny white flowers. Model: a few giant flat leaf cut-outs lying in rings on the ground and floating on bare stalks, with a few white specks; the leaves are huge plates and the plant has no leafy body. V3.64: Little change."
    }
   ]
  },
@@ -9964,8 +10051,8 @@
   "faults": [
    "sparse"
   ],
-  "note": "Photographs: a dense stand of tall, leafy stems crowded with lance leaves, each topped by a large, arching, branched plume of golden yellow. Model: a few thin stems with sparse leaves and a faint haze of yellow specks around their tops; the golden plumes that make a goldenrod stand are missing. V3.64: Golden plumes at the tips where specks floated.",
-  "read_in": "V3.64",
+  "note": "Photographs: a dense stand of tall, leafy stems crowded with lance leaves, each topped by a large, arching, branched plume of golden yellow. Model: a few thin stems with sparse leaves and a faint haze of yellow specks around their tops; the golden plumes that make a goldenrod stand are missing. V3.64: Golden plumes at the tips where specks floated. V3.65: Plumes at the read size.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -9987,6 +10074,14 @@
      "sparse"
     ],
     "note": "Photographs: a dense stand of tall, leafy stems crowded with lance leaves, each topped by a large, arching, branched plume of golden yellow. Model: a few thin stems with sparse leaves and a faint haze of yellow specks around their tops; the golden plumes that make a goldenrod stand are missing."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "sparse"
+    ],
+    "note": "Photographs: a dense stand of tall, leafy stems crowded with lance leaves, each topped by a large, arching, branched plume of golden yellow. Model: a few thin stems with sparse leaves and a faint haze of yellow specks around their tops; the golden plumes that make a goldenrod stand are missing. V3.64: Golden plumes at the tips where specks floated."
    }
   ]
  },
@@ -10019,8 +10114,8 @@
   "faults": [
    "sparse"
   ],
-  "note": "Photographs: tall leafy stems crowded with lance leaves, ending in a large branched plume of arching yellow sprays. Model: tall leafy stems with a few yellow specks drifting loosely round their upper halves; the stems read, but the dense golden plume at the top is missing. V3.64: Golden plumes.",
-  "read_in": "V3.64",
+  "note": "Photographs: tall leafy stems crowded with lance leaves, ending in a large branched plume of arching yellow sprays. Model: tall leafy stems with a few yellow specks drifting loosely round their upper halves; the stems read, but the dense golden plume at the top is missing. V3.64: Golden plumes. V3.65: Plumes at the read size.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10041,6 +10136,14 @@
      "flower_place"
     ],
     "note": "Photographs: tall leafy stems crowded with lance leaves, ending in a large branched plume of arching yellow sprays. Model: tall leafy stems with a few yellow specks drifting loosely round their upper halves; the stems read, but the dense golden plume at the top is missing."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 5,
+    "faults": [
+     "sparse"
+    ],
+    "note": "Photographs: tall leafy stems crowded with lance leaves, ending in a large branched plume of arching yellow sprays. Model: tall leafy stems with a few yellow specks drifting loosely round their upper halves; the stems read, but the dense golden plume at the top is missing. V3.64: Golden plumes."
    }
   ]
  },
@@ -10065,13 +10168,13 @@
     "322765469"
    ]
   },
-  "score": 5,
+  "score": 4,
   "faults": [
    "flower_arch",
    "flower_place"
   ],
-  "note": "Photographs: a short plant with a basal rosette of spoon leaves under a stiff stem ending in a dense, narrow wand of yellow heads. Model: a basal rosette and thin stems with yellow stars scattered loosely round their upper half; the rosette is right, but the dense yellow wand is an open scatter.",
-  "read_in": "V3.62",
+  "note": "Photographs: a short plant with a basal rosette of spoon leaves under a stiff stem ending in a dense, narrow wand of yellow heads. Model: a basal rosette and thin stems with yellow stars scattered loosely round their upper half; the rosette is right, but the dense yellow wand is an open scatter. V3.65: The wand is the length read, and a narrow spike of tiny flowers is drawn as a solid bar at the read length.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10083,6 +10186,15 @@
      "leaf_size"
     ],
     "note": "A small goldenrod: a tuft of spoon-shaped basal leaves and one unbranched stem ending in a narrow, dense, upright wand of yellow heads about 1 cm across. The model's yellow stars are visible, more than on the tall goldenrods; they are scattered round a star-shaped tower of long blades, not gathered in a wand."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 5,
+    "faults": [
+     "flower_arch",
+     "flower_place"
+    ],
+    "note": "Photographs: a short plant with a basal rosette of spoon leaves under a stiff stem ending in a dense, narrow wand of yellow heads. Model: a basal rosette and thin stems with yellow stars scattered loosely round their upper half; the rosette is right, but the dense yellow wand is an open scatter."
    }
   ]
  },
@@ -10111,8 +10223,8 @@
   "faults": [
    "sparse"
   ],
-  "note": "Photographs: leafy stems crowded with lance leaves to the top, ending in a dense club or plume of tiny bright yellow heads. Model: leafy stems with yellow specks floating loosely around and above them; no dense plume at the stem tips, so it reads as stems in a yellow haze. V3.64: Golden plumes over leafy stems.",
-  "read_in": "V3.64",
+  "note": "Photographs: leafy stems crowded with lance leaves to the top, ending in a dense club or plume of tiny bright yellow heads. Model: leafy stems with yellow specks floating loosely around and above them; no dense plume at the stem tips, so it reads as stems in a yellow haze. V3.64: Golden plumes over leafy stems. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10134,6 +10246,14 @@
      "stem_leaves"
     ],
     "note": "Photographs: leafy stems crowded with lance leaves to the top, ending in a dense club or plume of tiny bright yellow heads. Model: leafy stems with yellow specks floating loosely around and above them; no dense plume at the stem tips, so it reads as stems in a yellow haze."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 6,
+    "faults": [
+     "sparse"
+    ],
+    "note": "Photographs: leafy stems crowded with lance leaves to the top, ending in a dense club or plume of tiny bright yellow heads. Model: leafy stems with yellow specks floating loosely around and above them; no dense plume at the stem tips, so it reads as stems in a yellow haze. V3.64: Golden plumes over leafy stems."
    }
   ]
  },
@@ -10159,8 +10279,8 @@
   "faults": [
    "dense"
   ],
-  "note": "Photographs: upright leafy stems ending in a dense, arching, one-sided plume of tiny golden heads. Model: a bundle of stems with a loose cloud of yellow specks scattered round them from top to bottom; no plume at the tip, so it reads as a plant in a yellow haze. V3.64: A golden plume; perhaps too solid.",
-  "read_in": "V3.64",
+  "note": "Photographs: upright leafy stems ending in a dense, arching, one-sided plume of tiny golden heads. Model: a bundle of stems with a loose cloud of yellow specks scattered round them from top to bottom; no plume at the tip, so it reads as a plant in a yellow haze. V3.64: A golden plume; perhaps too solid. V3.65: As before.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10181,6 +10301,14 @@
      "flower_place"
     ],
     "note": "Photographs: upright leafy stems ending in a dense, arching, one-sided plume of tiny golden heads. Model: a bundle of stems with a loose cloud of yellow specks scattered round them from top to bottom; no plume at the tip, so it reads as a plant in a yellow haze."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 6,
+    "faults": [
+     "dense"
+    ],
+    "note": "Photographs: upright leafy stems ending in a dense, arching, one-sided plume of tiny golden heads. Model: a bundle of stems with a loose cloud of yellow specks scattered round them from top to bottom; no plume at the tip, so it reads as a plant in a yellow haze. V3.64: A golden plume; perhaps too solid."
    }
   ]
  },
@@ -10210,13 +10338,13 @@
     "13478372"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
    "leaf_size",
    "sparse"
   ],
-  "note": "Photographs: stiff, leafy, grey-green stems with broad oval leaves topped by a dense, flat-topped cluster of golden-yellow heads. Model: a bundle of thin bare stems with faint pale flat sprays at the top; the golden dome that is the plant's mark is a pale haze, and the leafy stems are bare. V3.64: Small flat yellow tops now; the stems still bare.",
-  "read_in": "V3.64",
+  "note": "Photographs: stiff, leafy, grey-green stems with broad oval leaves topped by a dense, flat-topped cluster of golden-yellow heads. Model: a bundle of thin bare stems with faint pale flat sprays at the top; the golden dome that is the plant's mark is a pale haze, and the leafy stems are bare. V3.64: Small flat yellow tops now; the stems still bare. V3.65: Flat golden tops at the read width; the leafy stems still thin.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10240,6 +10368,15 @@
      "leaf_size"
     ],
     "note": "Photographs: stiff, leafy, grey-green stems with broad oval leaves topped by a dense, flat-topped cluster of golden-yellow heads. Model: a bundle of thin bare stems with faint pale flat sprays at the top; the golden dome that is the plant's mark is a pale haze, and the leafy stems are bare."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 4,
+    "faults": [
+     "leaf_size",
+     "sparse"
+    ],
+    "note": "Photographs: stiff, leafy, grey-green stems with broad oval leaves topped by a dense, flat-topped cluster of golden-yellow heads. Model: a bundle of thin bare stems with faint pale flat sprays at the top; the golden dome that is the plant's mark is a pale haze, and the leafy stems are bare. V3.64: Small flat yellow tops now; the stems still bare."
    }
   ]
  },
@@ -11034,14 +11171,13 @@
     "427825136"
    ]
   },
-  "score": 3,
+  "score": 5,
   "faults": [
    "stem_leaves",
-   "flower_arch",
-   "leaf_shape"
+   "leaf_place"
   ],
-  "note": "Photographs: a tall, leafy plant with large, many-times-divided leaves of small three-lobed leaflets all up the stems, topped by a big, fluffy, branched panicle of white tassels. Model: a few tall, thin bare stalks with small ragged leaf cards and no flowers drawn; neither the lacy leaves nor the white plume read. V3.64: Little change: no flowers drawn.",
-  "read_in": "V3.64",
+  "note": "Photographs: a tall, leafy plant with large, many-times-divided leaves of small three-lobed leaflets all up the stems, topped by a big, fluffy, branched panicle of white tassels. Model: a few tall, thin bare stalks with small ragged leaf cards and no flowers drawn; neither the lacy leaves nor the white plume read. V3.64: Little change: no flowers drawn. V3.65: A big white plume at the read size (it was 5 cm); the leaves are still few and read as rings round the stems.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11065,6 +11201,16 @@
      "leaf_shape"
     ],
     "note": "Photographs: a tall, leafy plant with large, many-times-divided leaves of small three-lobed leaflets all up the stems, topped by a big, fluffy, branched panicle of white tassels. Model: a few tall, thin bare stalks with small ragged leaf cards and no flowers drawn; neither the lacy leaves nor the white plume read."
+   },
+   {
+    "read_in": "V3.64",
+    "score": 3,
+    "faults": [
+     "stem_leaves",
+     "flower_arch",
+     "leaf_shape"
+    ],
+    "note": "Photographs: a tall, leafy plant with large, many-times-divided leaves of small three-lobed leaflets all up the stems, topped by a big, fluffy, branched panicle of white tassels. Model: a few tall, thin bare stalks with small ragged leaf cards and no flowers drawn; neither the lacy leaves nor the white plume read. V3.64: Little change: no flowers drawn."
    }
   ]
  },
@@ -11089,14 +11235,13 @@
     "254622192"
    ]
   },
-  "score": 3,
+  "score": 4,
   "faults": [
    "habit",
-   "leaf_place",
-   "no_flower"
+   "leaf_place"
   ],
-  "note": "Photographs: a lush clump of lacy blue-green leaves of many rounded, lobed leaflets, under airy panicles of drooping tassels, green-yellow or purple. Model: a few thin bare stalks over ragged leaf cards lying in rings on the ground, and no flowers; neither the lacy clump nor the tassels read.",
-  "read_in": "V3.62",
+  "note": "Photographs: a lush clump of lacy blue-green leaves of many rounded, lobed leaflets, under airy panicles of drooping tassels, green-yellow or purple. Model: a few thin bare stalks over ragged leaf cards lying in rings on the ground, and no flowers; neither the lacy clump nor the tassels read. V3.65: Greenish panicles now show; the leaves still read as rings round the stems, not a lacy clump.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11109,6 +11254,16 @@
      "no_flower"
     ],
     "note": "A leafy woodland plant with thin, delicate leaves divided into many round three-lobed leaflets, and open panicles of nodding flowers: tassels of purple-brown stamens or small star-shaped seed clusters. The model is the same bundle of bare wires as the other meadow-rues."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "habit",
+     "leaf_place",
+     "no_flower"
+    ],
+    "note": "Photographs: a lush clump of lacy blue-green leaves of many rounded, lobed leaflets, under airy panicles of drooping tassels, green-yellow or purple. Model: a few thin bare stalks over ragged leaf cards lying in rings on the ground, and no flowers; neither the lacy clump nor the tassels read."
    }
   ]
  },
@@ -11132,14 +11287,13 @@
     "47584467"
    ]
   },
-  "score": 3,
+  "score": 4,
   "faults": [
    "habit",
-   "leaf_place",
-   "no_flower"
+   "leaf_place"
   ],
-  "note": "Photographs: a leafy clump of rounded, three-lobed, blue-green leaflets in loose sprays, under a narrow panicle of drooping greenish flowers with tassels of stamens. Model: a few bare thin stalks standing over ragged leaf cards lying flat on the ground; no leafy clump and no flowers to see.",
-  "read_in": "V3.62",
+  "note": "Photographs: a leafy clump of rounded, three-lobed, blue-green leaflets in loose sprays, under a narrow panicle of drooping greenish flowers with tassels of stamens. Model: a few bare thin stalks standing over ragged leaf cards lying flat on the ground; no leafy clump and no flowers to see. V3.65: Pale panicles now show; the leaves still rings round the stems.",
+  "read_in": "V3.65",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11152,6 +11306,16 @@
      "no_flower"
     ],
     "note": "A knee-high leafy plant: blue-green leaves divided into many rounded, three-lobed leaflets with raised veins beneath, and loose panicles of small drooping tassels, greenish to purplish. The model is six bare wires from a few tiny ladders on the ground, with dust in the air."
+   },
+   {
+    "read_in": "V3.62",
+    "score": 3,
+    "faults": [
+     "habit",
+     "leaf_place",
+     "no_flower"
+    ],
+    "note": "Photographs: a leafy clump of rounded, three-lobed, blue-green leaflets in loose sprays, under a narrow panicle of drooping greenish flowers with tassels of stamens. Model: a few bare thin stalks standing over ragged leaf cards lying flat on the ground; no leafy clump and no flowers to see."
    }
   ]
  },
