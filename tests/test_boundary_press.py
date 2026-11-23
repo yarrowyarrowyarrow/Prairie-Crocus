@@ -50,7 +50,12 @@ def _run_probe(page: str = "boundary_probe.html"):
     try:
         url = f"http://127.0.0.1:{server.port}/{page}"
         proc = subprocess.run(
-            [chrome, "--headless", "--no-sandbox",
+            # Offline: no name resolves but the local server's, and no proxy
+            # resolves one for it. Without --no-proxy-server a session whose
+            # environment sets HTTPS_PROXY (a cloud container) fetched the map
+            # tiles through the proxy, so the offline line never showed and
+            # four of test_offline_map's checks failed there and nowhere else.
+            [chrome, "--headless", "--no-sandbox", "--no-proxy-server",
              "--host-resolver-rules=MAP * ~NOTFOUND , EXCLUDE 127.0.0.1",
              "--window-size=1000,800", "--virtual-time-budget=20000",
              "--dump-dom", url],

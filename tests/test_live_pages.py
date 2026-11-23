@@ -189,8 +189,10 @@ class TestThePagesFillThemselves(unittest.TestCase):
         panel._tabs.setCurrentWidget(panel._food)
         panel.set_placed_plants(self._plants)
         self.assertTrue(panel._live.fill_now())
-        self.assertIn("Your plants are recorded as food for",
-                      panel._food._summary_line.text())
+        # V3.55 cut the page by two thirds (the owner: "be more concise"):
+        # the line is the Overview's count in its words, "Recorded as food
+        # for N kinds of wildlife." The test kept the old wording until V3.65.
+        self.assertIn("Recorded as food for", panel._food._summary_line.text())
         panel.close()
 
     def test_a_live_page_moved_to_another_strip_is_still_filled(self):
