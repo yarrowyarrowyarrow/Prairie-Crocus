@@ -1047,8 +1047,12 @@ class TestEveryTextFileReadPinsItsEncoding(unittest.TestCase):
         and `scripts/retag_releases.py` reads commit subjects through exactly
         that call."""
         import subprocess                                   # noqa: PLC0415
+        # The whole history, not the last 400: the subjects went ASCII after
+        # V2.67, so by V3.67 the last 400 held none and this failed on any
+        # full clone (the owner's PC); CI's shallow clone skips it. The old
+        # subjects are still read by scripts/retag_releases.py.
         out = subprocess.run(
-            ["git", "log", "--format=%s", "-400"],
+            ["git", "log", "--format=%s"],
             capture_output=True, text=True, encoding="utf-8",
             cwd=str(_SRC.parent), check=False)
         if out.returncode != 0:
@@ -1064,7 +1068,7 @@ class TestEveryTextFileReadPinsItsEncoding(unittest.TestCase):
             self.skipTest(f"shallow clone: {len(subjects)} subjects is too "
                           f"small a sample to say the history is ASCII")
         self.assertTrue(any(ord(ch) > 0x7F for ch in out.stdout),
-                        "no non-ASCII in 400 commit subjects — check why")
+                        "no non-ASCII in any commit subject — check why")
 
     def test_the_seed_json_is_what_makes_this_bite(self):
         """Not hypothetical. If the seed data were ASCII this guard would be
