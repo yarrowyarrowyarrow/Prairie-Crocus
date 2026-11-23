@@ -410,6 +410,7 @@ function _leafyStems(B, P, bloom, rng) {
     // from higher, or it lies on the ground (V3.65, an estimate).
     const y0 = Math.max(P.basal ? 0.14 : 0.07, Math.min(0.4, 0.6 * L / hi)) * hi;
     const y1 = Math.max(y0 + 0.01, hi - Math.min(bloom.top, hi * 0.35) - 0.005);
+    (P.paths = P.paths || []).push({ at, top, y0, y1, a });        // 03g-stemleaves.js
     const whorlAt = P.perNode >= WHORL && colony;      // one whorl, at the top
     const nodes = whorlAt ? 1 : P.nodes;
     for (let j = 0; j < nodes; j++) {
@@ -605,7 +606,10 @@ function buildLeafyGeo(p, v) {
   const P = _leafyPlan(d, bloom, LEAFY_BUDGET[Math.max(1, Math.min(2, QUALITY))]);
   const rng = mulberry32(hashPid((p.genus || '') + (p.species || '') + d.form) + 131 * v);
   const B = _lbNew(), C = Object.assign(_lbNew(), { uv: [] });
-  if (P.form === 'stems' || P.form === 'colony') _leafyStems(B, P, bloom, rng);
+  if (P.form === 'stems' || P.form === 'colony') {
+    _leafyStems(B, P, bloom, rng);
+    if (window.leafyStemCards) leafyStemCards(C, P, rng);           // V3.66
+  }
   else if (P.form === 'tuft') _leafyTufts(B, P, bloom, rng);
   else if (P.form === 'mat' && P.shoots) _leafyMat(B, P, bloom, rng, C);
   else _leafyRosettes(B, P, bloom, rng);

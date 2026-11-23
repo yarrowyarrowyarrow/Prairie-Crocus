@@ -56,10 +56,10 @@ from src import photo_picks  # noqa: E402
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 MANIFEST = ROOT / "data" / "fetched" / "model_refs" / "manifest.json"
 MASTER = ROOT / "data" / "plants_master.json"
-PASS = "V3.65"
+PASS = "V3.66"
 
 #: The passes in order, oldest first.
-PASSES = ("V3.48", "V3.62", "V3.64", "V3.65")
+PASSES = ("V3.48", "V3.62", "V3.64", "V3.65", "V3.66")
 
 #: What a photograph can be the reference for.
 KINDS = ("habit", "flower", "leaf", "fruit", "winter", "bark")

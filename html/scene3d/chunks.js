@@ -33,6 +33,9 @@ window.SCENE3D_CHUNKS = [
   'scene3d/03d-woody.js',
   // V3.50: a tree built from its own crown where that was read (F268): its
   // trunks, bare bole, limbs and outline, on 03d-woody.js's shoots.
+  // V3.66: a leafy wildflower's stems carry cut-out leafy shoots, as a shrub's
+  // do, as many as cover its outline (F268). Called by 03c-leafy.js at build.
+  'scene3d/03g-stemleaves.js',
   'scene3d/03e-crowns.js',
   // V3.51: a grass, sedge or rush built from its own blades and seed head
   // where those were read (F268). After 03c-leafy.js for its blades and tubes.

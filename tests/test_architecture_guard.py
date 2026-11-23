@@ -583,7 +583,9 @@ class TestStructuralCeilings(unittest.TestCase):
         (_HTML / "scene3d" / "15d-woodyfruit.js", 300),  # 210 now
         # V3.64 (F268): a head's least size and facing, and a wildflower's
         # dense clusters as cards; took _inflorescence from 15-florets.js.
-        (_HTML / "scene3d" / "15e-heads.js", 220),  # 130 now
+        (_HTML / "scene3d" / "15e-heads.js", 220),
+        # V3.66: a leafy wildflower's stems carry leafy-shoot cards.
+        (_HTML / "scene3d" / "03g-stemleaves.js", 160),  # 130 now
         # V2.43: click-to-plant + the viewer's first QWebChannel. Geometry in,
         # coordinates out — if this file grows past its ceiling the cause is
         # almost certainly placement logic that belongs in
