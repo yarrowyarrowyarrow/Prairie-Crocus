@@ -34,6 +34,8 @@
 //   corymb (denseClusterApplies). A plant with no stem tip to carry it (a
 //   water plant's own body) keeps its florets.
 //
+// * a loose cluster's showy flowers are drawn at least LOOSE_MIN_M (V3.67).
+//
 // Every number above is a stated estimate: nothing records how far out a head
 // turns, how many heads a cluster holds, or how small a head may be drawn.
 // `_inflorescence` moved here from 15-florets.js, which was at its ceiling.
@@ -50,15 +52,24 @@ const HEADS_PER_CLUSTER = { unbranched: 1, branched_above: 5, branched_throughou
 const HEAD_COVER = 0.6;
 // A cluster is dense, and drawn as one card, from this many florets.
 const DENSE_FLORETS = 15;
+// A loose cluster's flowers, from LOOSE_FROM_M across, are drawn at least
+// LOOSE_MIN_M, never more than LOOSE_GAIN_MAX times their width (V3.67).
+const LOOSE_FROM_M = 0.01, LOOSE_MIN_M = 0.028, LOOSE_GAIN_MAX = 1.6;
 const DENSE_ARCHES = { spike: 1, raceme: 1, panicle: 1, corymb: 1 };
 
 // How much larger than life a flower is drawn: a tree's or shrub's by its crown
 // (15b-anchors.js), a wildflower's head by HEAD_MIN_M.
 function bloomGain(p, arch) {
   const woody = woodyBloomGain(p);
-  if (woody !== 1 || (arch !== 'head' && arch !== 'solitary')) return woody;
+  if (woody !== 1) return woody;
   const d = Math.max(0.0015, (p.flower_diameter_cm || 2) / 100);
-  return Math.max(1, Math.min(HEAD_GAIN_MAX, HEAD_MIN_M / d));
+  if (arch === 'head' || arch === 'solitary') return Math.max(1, Math.min(HEAD_GAIN_MAX, HEAD_MIN_M / d));
+  // A loose cluster of showy flowers (a penstemon's, a skullcap's, a
+  // lungwort's bells, V3.67): each flower at least LOOSE_MIN_M. Not one of
+  // tiny flowers, which reads as a haze whatever its size, nor a dense one,
+  // which is a card (denseClusterApplies).
+  if (d < LOOSE_FROM_M || (p.florets_per_head || 0) >= DENSE_FLORETS) return 1;
+  return Math.max(1, Math.min(LOOSE_GAIN_MAX, LOOSE_MIN_M / d));
 }
 
 // `reach` is the unit frame the placements are scaled into (the whole cluster);

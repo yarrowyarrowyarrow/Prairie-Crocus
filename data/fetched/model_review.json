@@ -941,12 +941,11 @@
   },
   "score": 5,
   "faults": [
-   "flower_size",
    "leaf_shape",
    "fruit"
   ],
-  "note": "Photographs: a whorl of deeply cut palmate leaves under long bare stalks, each with one white flower 2 to 3 cm, then tall thimble-shaped seed heads. Model: a few maple-like star leaves under very long bare stalks with tiny white specks on top; the long stalks are right, but the flowers are specks and the leaves not cut finely. V3.66: Model unchanged since its last reading.",
-  "read_in": "V3.66",
+  "note": "Photographs: a whorl of deeply cut palmate leaves under long bare stalks, each with one white flower 2 to 3 cm, then tall thimble-shaped seed heads. Model: a few maple-like star leaves under very long bare stalks with tiny white specks on top; the long stalks are right, but the flowers are specks and the leaves not cut finely. V3.66: Model unchanged since its last reading. V3.67: As before.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -968,6 +967,16 @@
      "fruit"
     ],
     "note": "Photographs: a whorl of deeply cut palmate leaves under long bare stalks, each with one white flower 2 to 3 cm, then tall thimble-shaped seed heads. Model: a few maple-like star leaves under very long bare stalks with tiny white specks on top; the long stalks are right, but the flowers are specks and the leaves not cut finely."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_size",
+     "leaf_shape",
+     "fruit"
+    ],
+    "note": "Photographs: a whorl of deeply cut palmate leaves under long bare stalks, each with one white flower 2 to 3 cm, then tall thimble-shaped seed heads. Model: a few maple-like star leaves under very long bare stalks with tiny white specks on top; the long stalks are right, but the flowers are specks and the leaves not cut finely. V3.66: Model unchanged since its last reading."
    }
   ]
  },
@@ -993,13 +1002,12 @@
     "326324681"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
-   "leaf_shape",
-   "flower_size"
+   "leaf_shape"
   ],
-  "note": "Photographs: a tuft of finely and repeatedly divided basal leaves, hairy stems with a leafy whorl partway up, single flowers 1.5 to 2.5 cm in magenta, cream, yellow or white, then a woolly seed head. Model: a few broad maple-like star leaves under tall bare stalks with tiny pink flowers; the leaves are not cut finely enough and the flowers are too small. V3.66: Few stems with small pink flowers over flat leaves.",
-  "read_in": "V3.66",
+  "note": "Photographs: a tuft of finely and repeatedly divided basal leaves, hairy stems with a leafy whorl partway up, single flowers 1.5 to 2.5 cm in magenta, cream, yellow or white, then a woolly seed head. Model: a few broad maple-like star leaves under tall bare stalks with tiny pink flowers; the leaves are not cut finely enough and the flowers are too small. V3.67: The pink flowers are larger and read; the leaves still flat blobs.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1030,6 +1038,15 @@
      "flower_size"
     ],
     "note": "Photographs: a tuft of finely and repeatedly divided basal leaves, hairy stems with a leafy whorl partway up, single flowers 1.5 to 2.5 cm in magenta, cream, yellow or white, then a woolly seed head. Model: a few broad maple-like star leaves under tall bare stalks with tiny pink flowers; the leaves are not cut finely enough and the flowers are too small. V3.64: Flowers drawn larger (3 cm) and facing out; still small and the leaves not cut finely."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 4,
+    "faults": [
+     "leaf_shape",
+     "flower_size"
+    ],
+    "note": "Photographs: a tuft of finely and repeatedly divided basal leaves, hairy stems with a leafy whorl partway up, single flowers 1.5 to 2.5 cm in magenta, cream, yellow or white, then a woolly seed head. Model: a few broad maple-like star leaves under tall bare stalks with tiny pink flowers; the leaves are not cut finely enough and the flowers are too small. V3.66: Few stems with small pink flowers over flat leaves."
    }
   ]
  },
@@ -1780,11 +1797,10 @@
   },
   "score": 5,
   "faults": [
-   "flower_arch",
-   "dense"
+   "flower_arch"
   ],
-  "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.66: A grey leafy mass with yellow plumes; the photographs show it grey-green and wiry, the plumes much finer.",
-  "read_in": "V3.66",
+  "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.66: A grey leafy mass with yellow plumes; the photographs show it grey-green and wiry, the plumes much finer. V3.67: As before.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -1825,6 +1841,15 @@
      "flower_arch"
     ],
     "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.64: Yellow-green panicles at the tips where there was nothing. V3.65: Narrow yellow plumes at the read length, bolder than the photographs' green-yellow specks."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_arch",
+     "dense"
+    ],
+    "note": "Photographs: a bushy clump of finely cut thread-like grey-green leaves at the base and reddish stems with long narrow panicles of tiny nodding yellow-green heads. Model: a few bare thin stems with faint grey sprigs; no basal mass of cut leaves, no red stems and no flowering panicles. V3.66: A grey leafy mass with yellow plumes; the photographs show it grey-green and wiry, the plumes much finer."
    }
   ]
  },
@@ -2716,13 +2741,12 @@
     "22710688"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_shape",
-   "dense"
+   "flower_shape"
   ],
-  "note": "Photographs: a few slender wiry stems with narrow leaves, each carrying nodding lavender-blue bells about 2 cm; rounded basal leaves often gone by flowering. Model: a spray of thin stems with flat sky-blue stars facing up; the airy habit is right, but the flowers are open stars instead of hanging bells, and too pale a blue. V3.66: A dense clump of narrow leaves with blue stars; the photographs show a few slender stems with nodding bells.",
-  "read_in": "V3.66",
+  "note": "Photographs: a few slender wiry stems with narrow leaves, each carrying nodding lavender-blue bells about 2 cm; rounded basal leaves often gone by flowering. Model: a spray of thin stems with flat sky-blue stars facing up; the airy habit is right, but the flowers are open stars instead of hanging bells, and too pale a blue. V3.67: An open clump of narrow stems with blue flowers at the tips, larger now and readable.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -2745,6 +2769,15 @@
      "leaf_shape"
     ],
     "note": "Photographs: a few slender wiry stems with narrow leaves, each carrying nodding lavender-blue bells about 2 cm; rounded basal leaves often gone by flowering. Model: a spray of thin stems with flat sky-blue stars facing up; the airy habit is right, but the flowers are open stars instead of hanging bells, and too pale a blue."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_shape",
+     "dense"
+    ],
+    "note": "Photographs: a few slender wiry stems with narrow leaves, each carrying nodding lavender-blue bells about 2 cm; rounded basal leaves often gone by flowering. Model: a spray of thin stems with flat sky-blue stars facing up; the airy habit is right, but the flowers are open stars instead of hanging bells, and too pale a blue. V3.66: A dense clump of narrow leaves with blue stars; the photographs show a few slender stems with nodding bells."
    }
   ]
  },
@@ -2767,11 +2800,11 @@
   },
   "score": 5,
   "faults": [
-   "flower_size",
-   "dense"
+   "dense",
+   "flower_colour"
   ],
-  "note": "Photographs: a leafy, branched plant with lance leaves and showy purple daisies 3 to 4 cm, with many thin rays round a yellow centre. Model: thin stems with sparse leaves and tiny orange-brown dots at the tips; the purple rays do not show at all, so it reads as a plant gone to seed. V3.66: A dense leafy column with small purple heads; the photographs show a looser plant with big purple daisies.",
-  "read_in": "V3.66",
+  "note": "Photographs: a leafy, branched plant with lance leaves and showy purple daisies 3 to 4 cm, with many thin rays round a yellow centre. Model: thin stems with sparse leaves and tiny orange-brown dots at the tips; the purple rays do not show at all, so it reads as a plant gone to seed. V3.67: Leafy below with a more open, flowering top; its heads read pink where the photographs show purple-blue.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -2802,6 +2835,15 @@
      "sparse"
     ],
     "note": "Photographs: a leafy, branched plant with lance leaves and showy purple daisies 3 to 4 cm, with many thin rays round a yellow centre. Model: thin stems with sparse leaves and tiny orange-brown dots at the tips; the purple rays do not show at all, so it reads as a plant gone to seed. V3.64: Lilac heads visible at the tips."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_size",
+     "dense"
+    ],
+    "note": "Photographs: a leafy, branched plant with lance leaves and showy purple daisies 3 to 4 cm, with many thin rays round a yellow centre. Model: thin stems with sparse leaves and tiny orange-brown dots at the tips; the purple rays do not show at all, so it reads as a plant gone to seed. V3.66: A dense leafy column with small purple heads; the photographs show a looser plant with big purple daisies."
    }
   ]
  },
@@ -3815,11 +3857,9 @@
    ]
   },
   "score": 7,
-  "faults": [
-   "flower_size"
-  ],
-  "note": "Photographs: an airy, much-branched plant with fine thread-cut leaves and many yellow daisies with a dark red ring and centre, 2 to 4 cm. Model: a thin branched plant with small yellow and red heads scattered over it; the colours and airy habit read, but the heads are too small and the plant has almost no visible leaves. V3.66: A leafy clump topped with yellow and red heads, as photographed; the heads small.",
-  "read_in": "V3.66",
+  "faults": [],
+  "note": "Photographs: an airy, much-branched plant with fine thread-cut leaves and many yellow daisies with a dark red ring and centre, 2 to 4 cm. Model: a thin branched plant with small yellow and red heads scattered over it; the colours and airy habit read, but the heads are too small and the plant has almost no visible leaves. V3.67: Covered in yellow and red heads that now read at a distance, as photographed.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -3840,6 +3880,14 @@
      "stem_leaves"
     ],
     "note": "Photographs: an airy, much-branched plant with fine thread-cut leaves and many yellow daisies with a dark red ring and centre, 2 to 4 cm. Model: a thin branched plant with small yellow and red heads scattered over it; the colours and airy habit read, but the heads are too small and the plant has almost no visible leaves."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 7,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: an airy, much-branched plant with fine thread-cut leaves and many yellow daisies with a dark red ring and centre, 2 to 4 cm. Model: a thin branched plant with small yellow and red heads scattered over it; the colours and airy habit read, but the heads are too small and the plant has almost no visible leaves. V3.66: A leafy clump topped with yellow and red heads, as photographed; the heads small."
    }
   ]
  },
@@ -4113,11 +4161,10 @@
   },
   "score": 5,
   "faults": [
-   "flower_shape",
-   "flower_size"
+   "flower_shape"
   ],
-  "note": "Photographs: a clump of leafy stems with broad, pleated, oval leaves, each topped by one flower: a yellow pouch with twisted maroon-brown petals either side. Model: a clump of leafy stems with broad leaves and a small flat yellow card at each tip; the leafy clump reads, but the pouch and twisted petals that make the orchid are a flat petal, and too small. V3.66: A leafy clump with small yellow flowers; the photographs show big slipper flowers.",
-  "read_in": "V3.66",
+  "note": "Photographs: a clump of leafy stems with broad, pleated, oval leaves, each topped by one flower: a yellow pouch with twisted maroon-brown petals either side. Model: a clump of leafy stems with broad leaves and a small flat yellow card at each tip; the leafy clump reads, but the pouch and twisted petals that make the orchid are a flat petal, and too small. V3.67: The yellow flowers larger and read; still not slippers.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4139,6 +4186,15 @@
      "flower_size"
     ],
     "note": "Photographs: a clump of leafy stems with broad, pleated, oval leaves, each topped by one flower: a yellow pouch with twisted maroon-brown petals either side. Model: a clump of leafy stems with broad leaves and a small flat yellow card at each tip; the leafy clump reads, but the pouch and twisted petals that make the orchid are a flat petal, and too small."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_shape",
+     "flower_size"
+    ],
+    "note": "Photographs: a clump of leafy stems with broad, pleated, oval leaves, each topped by one flower: a yellow pouch with twisted maroon-brown petals either side. Model: a clump of leafy stems with broad leaves and a small flat yellow card at each tip; the leafy clump reads, but the pouch and twisted petals that make the orchid are a flat petal, and too small. V3.66: A leafy clump with small yellow flowers; the photographs show big slipper flowers."
    }
   ]
  },
@@ -4285,8 +4341,8 @@
   "faults": [
    "flower_size"
   ],
-  "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse. V3.66: A leafy column with small white tops.",
-  "read_in": "V3.66",
+  "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse. V3.67: As before; its white tops still few for a 1.5 m plant.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4315,6 +4371,14 @@
      "sparse"
     ],
     "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse. V3.65: White flat tops, small."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a tall leafy plant with lance leaves up the stems, ending in a broad flat-topped cluster of white daisies about 2 cm with yellow centres. Model: tall leafy stems with a small flat cluster of white specks at the top; the plant reads, but the daisies are too small to read as daisies and the cluster too sparse. V3.66: A leafy column with small white tops."
    }
   ]
  },
@@ -4926,13 +4990,12 @@
     "129144907"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_colour",
-   "dense"
+   "flower_colour"
   ],
-  "note": "Photographs: a basal rosette of soft leaves under branched stems topped by many small daisies 1.5 to 2.5 cm with hundreds of thread-like pale pink to white rays round a yellow centre. Model: a leaf rosette and thin branched stems with a few tiny pinkish-yellow dots; the daisies are too small and too few to read. V3.66: A dense round leafy clump with pink heads; the photographs show a looser plant.",
-  "read_in": "V3.66",
+  "note": "Photographs: a basal rosette of soft leaves under branched stems topped by many small daisies 1.5 to 2.5 cm with hundreds of thread-like pale pink to white rays round a yellow centre. Model: a leaf rosette and thin branched stems with a few tiny pinkish-yellow dots; the daisies are too small and too few to read. V3.67: An open plant now, its heads covering the top as in the photographs; the heads pinker than the white photographs (the owner s colour).",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -4963,6 +5026,15 @@
      "flower_colour"
     ],
     "note": "Photographs: a basal rosette of soft leaves under branched stems topped by many small daisies 1.5 to 2.5 cm with hundreds of thread-like pale pink to white rays round a yellow centre. Model: a leaf rosette and thin branched stems with a few tiny pinkish-yellow dots; the daisies are too small and too few to read. V3.64: Pink heads visible where they were specks."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_colour",
+     "dense"
+    ],
+    "note": "Photographs: a basal rosette of soft leaves under branched stems topped by many small daisies 1.5 to 2.5 cm with hundreds of thread-like pale pink to white rays round a yellow centre. Model: a leaf rosette and thin branched stems with a few tiny pinkish-yellow dots; the daisies are too small and too few to read. V3.66: A dense round leafy clump with pink heads; the photographs show a looser plant."
    }
   ]
  },
@@ -5037,12 +5109,12 @@
     "542091626"
    ]
   },
-  "score": 6,
+  "score": 7,
   "faults": [
    "flower_size"
   ],
-  "note": "Photographs: a leafy plant with large broad ovate leaves up the stem, topped by a flat cluster of violet daisies 3 to 4 cm with yellow centres. Model: leafy stems with broad leaves, topped by small yellow-centred heads whose violet rays barely show; the leaves are right, but the flowers read as yellow buttons. V3.66: Leafy stems with purple and yellow heads.",
-  "read_in": "V3.66",
+  "note": "Photographs: a leafy plant with large broad ovate leaves up the stem, topped by a flat cluster of violet daisies 3 to 4 cm with yellow centres. Model: leafy stems with broad leaves, topped by small yellow-centred heads whose violet rays barely show; the leaves are right, but the flowers read as yellow buttons. V3.67: A leafy plant of broad leaves with a spray of purple daisies over it, as photographed.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5064,6 +5136,14 @@
      "flower_size"
     ],
     "note": "Photographs: a leafy plant with large broad ovate leaves up the stem, topped by a flat cluster of violet daisies 3 to 4 cm with yellow centres. Model: leafy stems with broad leaves, topped by small yellow-centred heads whose violet rays barely show; the leaves are right, but the flowers read as yellow buttons."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a leafy plant with large broad ovate leaves up the stem, topped by a flat cluster of violet daisies 3 to 4 cm with yellow centres. Model: leafy stems with broad leaves, topped by small yellow-centred heads whose violet rays barely show; the leaves are right, but the flowers read as yellow buttons. V3.66: Leafy stems with purple and yellow heads."
    }
   ]
  },
@@ -5084,12 +5164,12 @@
     "419254960"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_size"
+   "habit"
   ],
-  "note": "Photographs: a low, sprawling to ascending plant on gravel, leafy stems, lilac-purple daisies about 3 cm with yellow centres. Model: an upright clump of leafy stems with a few small lilac heads on top; the colour and leaves are right, the plant stands too straight and the heads are too small and too few. V3.66: A small leafy clump; the heads small and pale for the photographs purple daisies.",
-  "read_in": "V3.66",
+  "note": "Photographs: a low, sprawling to ascending plant on gravel, leafy stems, lilac-purple daisies about 3 cm with yellow centres. Model: an upright clump of leafy stems with a few small lilac heads on top; the colour and leaves are right, the plant stands too straight and the heads are too small and too few. V3.67: Its lilac daisies now read on the small clump; the photographs show it lower and spreading.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5112,6 +5192,14 @@
      "flower_count"
     ],
     "note": "Photographs: a low, sprawling to ascending plant on gravel, leafy stems, lilac-purple daisies about 3 cm with yellow centres. Model: an upright clump of leafy stems with a few small lilac heads on top; the colour and leaves are right, the plant stands too straight and the heads are too small and too few."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a low, sprawling to ascending plant on gravel, leafy stems, lilac-purple daisies about 3 cm with yellow centres. Model: an upright clump of leafy stems with a few small lilac heads on top; the colour and leaves are right, the plant stands too straight and the heads are too small and too few. V3.66: A small leafy clump; the heads small and pale for the photographs purple daisies."
    }
   ]
  },
@@ -5139,8 +5227,8 @@
   },
   "score": 7,
   "faults": [],
-  "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.66: Leafy stems under flat golden tops, as photographed.",
-  "read_in": "V3.66",
+  "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.67: Leafy stems under flat golden tops, a little more open at the top.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5180,6 +5268,12 @@
      "sparse"
     ],
     "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.64: Flat yellow tops at the stem tips. V3.65: Flat golden tops at the read width."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 7,
+    "faults": [],
+    "note": "Photographs: a bushy, branched plant crowded with narrow grass-like leaves, ending in a flat-topped cluster of small golden heads. Model: bare thin branched stems with a few tiny leaves, holding open flat sprays of yellow dots; the flat top is there, but the plant is a bare skeleton where it is densely leafy and the heads are specks. V3.66: Leafy stems under flat golden tops, as photographed."
    }
   ]
  },
@@ -5746,10 +5840,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_size"
+   "dense"
   ],
-  "note": "Photographs: a leafy, hairy, branching plant with large pinnate basal leaves and three-lobed stem leaves, bright yellow buttercup flowers 1.5 to 2 cm, and round bristly seed burs. Model: a few thin branched stems with small yellow flowers over a faint skirt of tiny fronds; the flowers read, but the leafy body and the burs are missing. V3.66: A leafy clump with small yellow flowers.",
-  "read_in": "V3.66",
+  "note": "Photographs: a leafy, hairy, branching plant with large pinnate basal leaves and three-lobed stem leaves, bright yellow buttercup flowers 1.5 to 2 cm, and round bristly seed burs. Model: a few thin branched stems with small yellow flowers over a faint skirt of tiny fronds; the flowers read, but the leafy body and the burs are missing. V3.67: Its yellow flowers now read over the leaves; the plant a denser bush than the photographs' open stems.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5772,6 +5866,14 @@
      "fruit"
     ],
     "note": "Photographs: a leafy, hairy, branching plant with large pinnate basal leaves and three-lobed stem leaves, bright yellow buttercup flowers 1.5 to 2 cm, and round bristly seed burs. Model: a few thin branched stems with small yellow flowers over a faint skirt of tiny fronds; the flowers read, but the leafy body and the burs are missing."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a leafy, hairy, branching plant with large pinnate basal leaves and three-lobed stem leaves, bright yellow buttercup flowers 1.5 to 2 cm, and round bristly seed burs. Model: a few thin branched stems with small yellow flowers over a faint skirt of tiny fronds; the flowers read, but the leafy body and the burs are missing. V3.66: A leafy clump with small yellow flowers."
    }
   ]
  },
@@ -7493,11 +7595,10 @@
   },
   "score": 4,
   "faults": [
-   "flower_arch",
-   "dense"
+   "flower_arch"
   ],
-  "note": "Photographs: an upright stem with narrow leaves and a short spike of large fluffy purple-magenta button heads, the top one largest, 2 to 3 cm. Model: two thin stems with narrow leaves and small pink stars spaced up their tops; the fuzzy purple buttons that make it a blazingstar are tiny pink stars instead, and the spike is too open. V3.66: A dense mass of narrow leaves with pink specks; the photographs show a narrow stem with a spike of purple tufts.",
-  "read_in": "V3.66",
+  "note": "Photographs: an upright stem with narrow leaves and a short spike of large fluffy purple-magenta button heads, the top one largest, 2 to 3 cm. Model: two thin stems with narrow leaves and small pink stars spaced up their tops; the fuzzy purple buttons that make it a blazingstar are tiny pink stars instead, and the spike is too open. V3.67: No longer a solid mass: an open plant of narrow leaves; its purple heads still specks.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7529,6 +7630,15 @@
      "flower_colour"
     ],
     "note": "Photographs: an upright stem with narrow leaves and a short spike of large fluffy purple-magenta button heads, the top one largest, 2 to 3 cm. Model: two thin stems with narrow leaves and small pink stars spaced up their tops; the fuzzy purple buttons that make it a blazingstar are tiny pink stars instead, and the spike is too open. V3.64: Little change: a raceme of eight heads keeps its florets."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 4,
+    "faults": [
+     "flower_arch",
+     "dense"
+    ],
+    "note": "Photographs: an upright stem with narrow leaves and a short spike of large fluffy purple-magenta button heads, the top one largest, 2 to 3 cm. Model: two thin stems with narrow leaves and small pink stars spaced up their tops; the fuzzy purple buttons that make it a blazingstar are tiny pink stars instead, and the spike is too open. V3.66: A dense mass of narrow leaves with pink specks; the photographs show a narrow stem with a spike of purple tufts."
    }
   ]
  },
@@ -8280,10 +8390,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_size"
+   "flower_shape"
   ],
-  "note": "Photographs: a leafy, arching clump with broad, pointed, veined leaves and loose drooping clusters of tubular blue bells, pink in bud. Model: a branched clump with leaves and small blue flowers at the tips; the blue reads, but the flowers are upturned stars rather than hanging bells, and the leaves are too small and few. V3.66: A leafy clump with small blue bells.",
-  "read_in": "V3.66",
+  "note": "Photographs: a leafy, arching clump with broad, pointed, veined leaves and loose drooping clusters of tubular blue bells, pink in bud. Model: a branched clump with leaves and small blue flowers at the tips; the blue reads, but the flowers are upturned stars rather than hanging bells, and the leaves are too small and few. V3.67: Its blue flowers now read in sprays; they face up where the photographs show nodding bells.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -8305,6 +8415,14 @@
      "leaf_size"
     ],
     "note": "Photographs: a leafy, arching clump with broad, pointed, veined leaves and loose drooping clusters of tubular blue bells, pink in bud. Model: a branched clump with leaves and small blue flowers at the tips; the blue reads, but the flowers are upturned stars rather than hanging bells, and the leaves are too small and few."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a leafy, arching clump with broad, pointed, veined leaves and loose drooping clusters of tubular blue bells, pink in bud. Model: a branched clump with leaves and small blue flowers at the tips; the blue reads, but the flowers are upturned stars rather than hanging bells, and the leaves are too small and few. V3.66: A leafy clump with small blue bells."
    }
   ]
  },
@@ -9107,10 +9225,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_size"
+   "habit"
   ],
-  "note": "Photographs: slender upright stems with paired narrow leaves and a loose, one-sided raceme of pale lilac tubular two-lipped flowers. Model: slender stems with violet flowers in loose tiers; recognisable as a penstemon, but each flower is a flat flared star rather than a tube, the violet is deeper than the pale lilac, and the stems are nearly bare. V3.66: A leafy clump with small purple flowers.",
-  "read_in": "V3.66",
+  "note": "Photographs: slender upright stems with paired narrow leaves and a loose, one-sided raceme of pale lilac tubular two-lipped flowers. Model: slender stems with violet flowers in loose tiers; recognisable as a penstemon, but each flower is a flat flared star rather than a tube, the violet is deeper than the pale lilac, and the stems are nearly bare. V3.67: Its lilac flowers now larger and read; the plant bushier than the photographs' slender stems.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -9131,6 +9249,14 @@
      "stem_leaves"
     ],
     "note": "Photographs: slender upright stems with paired narrow leaves and a loose, one-sided raceme of pale lilac tubular two-lipped flowers. Model: slender stems with violet flowers in loose tiers; recognisable as a penstemon, but each flower is a flat flared star rather than a tube, the violet is deeper than the pale lilac, and the stems are nearly bare."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: slender upright stems with paired narrow leaves and a loose, one-sided raceme of pale lilac tubular two-lipped flowers. Model: slender stems with violet flowers in loose tiers; recognisable as a penstemon, but each flower is a flat flared star rather than a tube, the violet is deeper than the pale lilac, and the stems are nearly bare. V3.66: A leafy clump with small purple flowers."
    }
   ]
  },
@@ -11439,10 +11565,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_size"
+   "habit"
   ],
-  "note": "Photographs: a low, leafy, branching plant with paired lance leaves and blue-violet hooded flowers in pairs at the leaf joints, each facing one way. Model: an open spray of thin stems with violet flowers scattered all over; the colour is right, but the plant is too airy and bare and the flowers float free of the leaf joints. V3.66: A leafy clump with small purple flowers up the stems.",
-  "read_in": "V3.66",
+  "note": "Photographs: a low, leafy, branching plant with paired lance leaves and blue-violet hooded flowers in pairs at the leaf joints, each facing one way. Model: an open spray of thin stems with violet flowers scattered all over; the colour is right, but the plant is too airy and bare and the flowers float free of the leaf joints. V3.67: Its blue-purple flowers now read up the stems; the plant bushier than photographed.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -11464,6 +11590,14 @@
      "stem_leaves"
     ],
     "note": "Photographs: a low, leafy, branching plant with paired lance leaves and blue-violet hooded flowers in pairs at the leaf joints, each facing one way. Model: an open spray of thin stems with violet flowers scattered all over; the colour is right, but the plant is too airy and bare and the flowers float free of the leaf joints."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a low, leafy, branching plant with paired lance leaves and blue-violet hooded flowers in pairs at the leaf joints, each facing one way. Model: an open spray of thin stems with violet flowers scattered all over; the colour is right, but the plant is too airy and bare and the flowers float free of the leaf joints. V3.66: A leafy clump with small purple flowers up the stems."
    }
   ]
  },
@@ -12549,12 +12683,12 @@
     "172609841"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "dense"
+   "habit"
   ],
-  "note": "Photographs: slender stems in wet ground with narrow leaves and a few white daisies 2 to 3 cm with yellow centres. Model: very thin, nearly bare stems with tiny yellow specks at the tips; the white rays do not show, so no daisy reads. V3.66: A dense bed of narrow leaves where the photographs show slender branched stems.",
-  "read_in": "V3.66",
+  "note": "Photographs: slender stems in wet ground with narrow leaves and a few white daisies 2 to 3 cm with yellow centres. Model: very thin, nearly bare stems with tiny yellow specks at the tips; the white rays do not show, so no daisy reads. V3.67: Narrow leafy stems opening into branches carrying white daisies, as photographed; the heads splay a little wide.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12586,6 +12720,14 @@
      "stem_leaves"
     ],
     "note": "Photographs: slender stems in wet ground with narrow leaves and a few white daisies 2 to 3 cm with yellow centres. Model: very thin, nearly bare stems with tiny yellow specks at the tips; the white rays do not show, so no daisy reads. V3.64: White daisies visible."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "dense"
+    ],
+    "note": "Photographs: slender stems in wet ground with narrow leaves and a few white daisies 2 to 3 cm with yellow centres. Model: very thin, nearly bare stems with tiny yellow specks at the tips; the white rays do not show, so no daisy reads. V3.66: A dense bed of narrow leaves where the photographs show slender branched stems."
    }
   ]
  },
@@ -12608,13 +12750,12 @@
     "320035827"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "leaf_shape",
-   "flower_size"
+   "leaf_shape"
   ],
-  "note": "Photographs: a leafy clump with heart-shaped lower leaves and branched tops crowded with lilac-blue daisies about 2.5 cm. Model: a few big heart leaves at the base under thin, nearly bare stems with a few tiny pink and yellow specks; the lilac daisies are lost, so it reads as stems gone to seed. V3.66: A leafy column of round leaves; the heads small and pale.",
-  "read_in": "V3.66",
+  "note": "Photographs: a leafy clump with heart-shaped lower leaves and branched tops crowded with lilac-blue daisies about 2.5 cm. Model: a few big heart leaves at the base under thin, nearly bare stems with a few tiny pink and yellow specks; the lilac daisies are lost, so it reads as stems gone to seed. V3.67: Its lilac heads now cover an open top over the leafy stems, as the photographs show.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12644,6 +12785,15 @@
      "sparse"
     ],
     "note": "Photographs: a leafy clump with heart-shaped lower leaves and branched tops crowded with lilac-blue daisies about 2.5 cm. Model: a few big heart leaves at the base under thin, nearly bare stems with a few tiny pink and yellow specks; the lilac daisies are lost, so it reads as stems gone to seed. V3.64: Lilac heads visible in sprays at the tips."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "leaf_shape",
+     "flower_size"
+    ],
+    "note": "Photographs: a leafy clump with heart-shaped lower leaves and branched tops crowded with lilac-blue daisies about 2.5 cm. Model: a few big heart leaves at the base under thin, nearly bare stems with a few tiny pink and yellow specks; the lilac daisies are lost, so it reads as stems gone to seed. V3.66: A leafy column of round leaves; the heads small and pale."
    }
   ]
  },
@@ -12666,12 +12816,12 @@
     "231295115"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_size"
+   "leaf_colour"
   ],
-  "note": "Photographs: a bushy, much-branched plant with tiny narrow leaves, its arching branches crowded with small white daisies like a white haze in late summer. Model: an upright broom of bare green stems with barely visible white specks; neither the bushiness nor the white haze reads. V3.66: A fine leafy stand with small white heads; looks right from afar, the heads small.",
-  "read_in": "V3.66",
+  "note": "Photographs: a bushy, much-branched plant with tiny narrow leaves, its arching branches crowded with small white daisies like a white haze in late summer. Model: an upright broom of bare green stems with barely visible white specks; neither the bushiness nor the white haze reads. V3.67: A fine branched stand covered in small white heads that now read.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12705,6 +12855,14 @@
      "flower_count"
     ],
     "note": "Photographs: a bushy, much-branched plant with tiny narrow leaves, its arching branches crowded with small white daisies like a white haze in late summer. Model: an upright broom of bare green stems with barely visible white specks; neither the bushiness nor the white haze reads. V3.64: A white haze at the top where nothing showed."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a bushy, much-branched plant with tiny narrow leaves, its arching branches crowded with small white daisies like a white haze in late summer. Model: an upright broom of bare green stems with barely visible white specks; neither the bushiness nor the white haze reads. V3.66: A fine leafy stand with small white heads; looks right from afar, the heads small."
    }
   ]
  },
@@ -12729,8 +12887,8 @@
   "faults": [
    "flower_size"
   ],
-  "note": "Photographs: a bushy, much-branched plant of small, narrow, grey-green leaves covered with white daisies with yellow centres along its upper branches. Model: three thin, nearly bare stems with a few white heads at the tips; the right flower, but too few and on bare wires where the plant is bushy and crowded with them. V3.66: A grey leafy clump with white daisies.",
-  "read_in": "V3.66",
+  "note": "Photographs: a bushy, much-branched plant of small, narrow, grey-green leaves covered with white daisies with yellow centres along its upper branches. Model: three thin, nearly bare stems with a few white heads at the tips; the right flower, but too few and on bare wires where the plant is bushy and crowded with them. V3.67: Its open top now covered in white daisies; drawn larger than the photographs small heads along the stems.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12760,6 +12918,14 @@
      "sparse"
     ],
     "note": "Photographs: a bushy, much-branched plant of small, narrow, grey-green leaves covered with white daisies with yellow centres along its upper branches. Model: three thin, nearly bare stems with a few white heads at the tips; the right flower, but too few and on bare wires where the plant is bushy and crowded with them. V3.64: White daisies along the tops."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a bushy, much-branched plant of small, narrow, grey-green leaves covered with white daisies with yellow centres along its upper branches. Model: three thin, nearly bare stems with a few white heads at the tips; the right flower, but too few and on bare wires where the plant is bushy and crowded with them. V3.66: A grey leafy clump with white daisies."
    }
   ]
  },
@@ -12781,10 +12947,10 @@
   },
   "score": 6,
   "faults": [
-   "flower_size"
+   "flower_colour"
   ],
-  "note": "Photographs: a colony of leafy stems with long narrow leaves, the tops branched with many white to pale lilac daisies 2 to 3 cm. Model: a colony of thin, sparsely leaved stems with tiny pale dots at the tips; the daisies do not read. V3.66: A leafy clump with small heads.",
-  "read_in": "V3.66",
+  "note": "Photographs: a colony of leafy stems with long narrow leaves, the tops branched with many white to pale lilac daisies 2 to 3 cm. Model: a colony of thin, sparsely leaved stems with tiny pale dots at the tips; the daisies do not read. V3.67: Leafy stems under an open top of small heads; the heads read pink against the photographs lilac.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12816,6 +12982,14 @@
      "sparse"
     ],
     "note": "Photographs: a colony of leafy stems with long narrow leaves, the tops branched with many white to pale lilac daisies 2 to 3 cm. Model: a colony of thin, sparsely leaved stems with tiny pale dots at the tips; the daisies do not read. V3.64: Faint pale heads."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a colony of leafy stems with long narrow leaves, the tops branched with many white to pale lilac daisies 2 to 3 cm. Model: a colony of thin, sparsely leaved stems with tiny pale dots at the tips; the daisies do not read. V3.66: A leafy clump with small heads."
    }
   ]
  },
@@ -12842,13 +13016,12 @@
     "246600934"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_size",
    "flower_colour"
   ],
-  "note": "Photographs: a clump of smooth, blue-green clasping leaves and branched tops crowded with lilac-blue daisies 2 to 3 cm with yellow centres. Model: a clump of thin stems with sparse leaves and only tiny pinkish specks at the tips; the lilac daisies, the whole look of the plant in September, are lost. V3.66: A grey leafy column with small pale heads.",
-  "read_in": "V3.66",
+  "note": "Photographs: a clump of smooth, blue-green clasping leaves and branched tops crowded with lilac-blue daisies 2 to 3 cm with yellow centres. Model: a clump of thin stems with sparse leaves and only tiny pinkish specks at the tips; the lilac daisies, the whole look of the plant in September, are lost. V3.67: An open branched plant now covered in small heads, as the photographs show; the heads read pink against their lilac.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12880,6 +13053,15 @@
      "sparse"
     ],
     "note": "Photographs: a clump of smooth, blue-green clasping leaves and branched tops crowded with lilac-blue daisies 2 to 3 cm with yellow centres. Model: a clump of thin stems with sparse leaves and only tiny pinkish specks at the tips; the lilac daisies, the whole look of the plant in September, are lost. V3.64: Lilac heads visible but small."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 5,
+    "faults": [
+     "flower_size",
+     "flower_colour"
+    ],
+    "note": "Photographs: a clump of smooth, blue-green clasping leaves and branched tops crowded with lilac-blue daisies 2 to 3 cm with yellow centres. Model: a clump of thin stems with sparse leaves and only tiny pinkish specks at the tips; the lilac daisies, the whole look of the plant in September, are lost. V3.66: A grey leafy column with small pale heads."
    }
   ]
  },
@@ -12905,12 +13087,10 @@
     "441870374"
    ]
   },
-  "score": 6,
-  "faults": [
-   "flower_size"
-  ],
-  "note": "Photographs: a leafy, branched colony crowded in autumn with white (sometimes pale lilac) daisies 1.5 to 2.5 cm with yellow centres. Model: a colony of thin, sparsely leaved stems with tiny pale specks; the white daisies do not read. V3.66: A grey-green leafy clump with white heads.",
-  "read_in": "V3.66",
+  "score": 7,
+  "faults": [],
+  "note": "Photographs: a leafy, branched colony crowded in autumn with white (sometimes pale lilac) daisies 1.5 to 2.5 cm with yellow centres. Model: a colony of thin, sparsely leaved stems with tiny pale specks; the white daisies do not read. V3.67: A fine branched stand covered in white heads, as photographed.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -12941,6 +13121,14 @@
      "sparse"
     ],
     "note": "Photographs: a leafy, branched colony crowded in autumn with white (sometimes pale lilac) daisies 1.5 to 2.5 cm with yellow centres. Model: a colony of thin, sparsely leaved stems with tiny pale specks; the white daisies do not read. V3.64: Cream heads visible but small."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 6,
+    "faults": [
+     "flower_size"
+    ],
+    "note": "Photographs: a leafy, branched colony crowded in autumn with white (sometimes pale lilac) daisies 1.5 to 2.5 cm with yellow centres. Model: a colony of thin, sparsely leaved stems with tiny pale specks; the white daisies do not read. V3.66: A grey-green leafy clump with white heads."
    }
   ]
  },
@@ -12969,13 +13157,12 @@
     "502560800"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
-   "flower_size",
    "dense"
   ],
-  "note": "Photographs: a tall, leafy, branched plant with reddish hairy stems, clasping lance leaves and many pale blue-violet daisies about 3 cm. Model: a tall bundle of thin green stems with sparse narrow leaves and no visible flowers in its August picture; it reads as a stand of bare stems. V3.66: A dense green column now, its heads small specks at the top; the photographs show a bushy branched plant covered in blue daisies.",
-  "read_in": "V3.66",
+  "note": "Photographs: a tall, leafy, branched plant with reddish hairy stems, clasping lance leaves and many pale blue-violet daisies about 3 cm. Model: a tall bundle of thin green stems with sparse narrow leaves and no visible flowers in its August picture; it reads as a stand of bare stems. V3.67: A leafy column below an open branched top now carrying its heads, as the photographs show it; the lower stems still a solid mass.",
+  "read_in": "V3.67",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -13007,6 +13194,15 @@
      "sparse"
     ],
     "note": "Photographs: a tall, leafy, branched plant with reddish hairy stems, clasping lance leaves and many pale blue-violet daisies about 3 cm. Model: a tall bundle of thin green stems with sparse narrow leaves and no visible flowers in its August picture; it reads as a stand of bare stems. V3.64: Little change."
+   },
+   {
+    "read_in": "V3.66",
+    "score": 4,
+    "faults": [
+     "flower_size",
+     "dense"
+    ],
+    "note": "Photographs: a tall, leafy, branched plant with reddish hairy stems, clasping lance leaves and many pale blue-violet daisies about 3 cm. Model: a tall bundle of thin green stems with sparse narrow leaves and no visible flowers in its August picture; it reads as a stand of bare stems. V3.66: A dense green column now, its heads small specks at the top; the photographs show a bushy branched plant covered in blue daisies."
    }
   ]
  },

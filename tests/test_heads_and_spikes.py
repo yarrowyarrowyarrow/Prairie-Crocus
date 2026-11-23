@@ -116,7 +116,7 @@ class TheRulesInNode(unittest.TestCase):
     def _run(self, expr):
         src = _js("15e-heads.js")
         consts = "\n".join(l for l in src.splitlines()
-                           if re.match(r"const (HEAD_|HEADS_|DENSE_)", l))
+                           if re.match(r"const (HEAD_|HEADS_|DENSE_|LOOSE_)", l))
         prog = "\n".join([
             "let STYLISED = false;",
             "function woodyBloomGain(p) { return (p.plant_type === 'shrub' || p.plant_type === 'tree')"
@@ -156,6 +156,18 @@ class TheRulesInNode(unittest.TestCase):
         # The first head stands at the anchor, facing out along +x (bearing pi/2).
         self.assertEqual((got[0]["x"], got[0]["y"]), (1, 0.8))
         self.assertAlmostEqual(got[0]["spin"], 1.5708, delta=0.41)
+
+    def test_a_loose_cluster_of_showy_flowers_is_drawn_larger(self):
+        """V3.67: a penstemon's, a skullcap's and a lungwort's flowers were
+        drawn at their 1 to 2 cm, specks at a yard's distance."""
+        got = self._run("[bloomGain({plant_type: 'wildflower', flower_diameter_cm: 1.8, florets_per_head: 12}, 'raceme'),"
+                        " bloomGain({plant_type: 'wildflower', flower_diameter_cm: 1.0, florets_per_head: 8}, 'cyme'),"
+                        " bloomGain({plant_type: 'wildflower', flower_diameter_cm: 0.6, florets_per_head: 8}, 'cyme'),"
+                        " bloomGain({plant_type: 'wildflower', flower_diameter_cm: 1.8, florets_per_head: 40}, 'raceme')]")
+        self.assertAlmostEqual(got[0], 2.8 / 1.8)
+        self.assertAlmostEqual(got[1], 1.6)               # the limit
+        self.assertEqual(got[2], 1)                       # tiny flowers: a haze
+        self.assertEqual(got[3], 1)                       # dense: a card
 
     def test_a_count_already_of_heads_is_not_multiplied(self):
         """V3.67's first build gave a coneflower's 24 counted heads five each:
