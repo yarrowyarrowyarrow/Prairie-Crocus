@@ -64,8 +64,16 @@ class LiveRefresh(QObject):
         self._timer.start()
 
     def eventFilter(self, obj, event) -> bool:                 # noqa: N802
-        if obj is self._owner and event.type() == QEvent.Type.Show:
-            self.poke()
+        # Qt can deliver one last event while the panel and this filter are
+        # being torn down. Reading a deleted wrapper raises RuntimeError there,
+        # and an exception out of a Qt virtual ends the process wherever
+        # main.py's handler is not installed: a Windows test run on Python 3.14
+        # died on it with no summary (V3.67). ``_run`` already guarded the same.
+        try:
+            if obj is self._owner and event.type() == QEvent.Type.Show:
+                self.poke()
+        except RuntimeError:            # deleted with its panel
+            pass
         return False
 
     def fill_now(self) -> bool:

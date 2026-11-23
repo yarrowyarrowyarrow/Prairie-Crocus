@@ -128,6 +128,18 @@ class TestLiveRefresh(unittest.TestCase):
             self._app.processEvents()
         self.assertEqual(calls, ["a"])
 
+    def test_an_event_after_deletion_does_not_raise(self):
+        """V3.67: on a Windows run (Python 3.14) Qt delivered an event to a
+        LiveRefresh already deleted with its panel; the RuntimeError escaped
+        ``eventFilter`` and PyQt6 ended the whole test process, so no failure
+        in that run was ever printed."""
+        from PyQt6 import sip
+        from PyQt6.QtCore import QEvent
+        owner, tabs, live, calls = self._owner()
+        sip.delete(live)
+        self.assertFalse(live.eventFilter(owner, QEvent(QEvent.Type.Show)))
+        self.assertEqual(calls, [])
+
 
 @unittest.skipUnless(_HAVE_QT, "PyQt6 not installed in this env")
 class TestThePagesFillThemselves(unittest.TestCase):
