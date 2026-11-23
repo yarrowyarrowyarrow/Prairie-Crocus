@@ -227,6 +227,21 @@ class TheBodyInTheRealViewer(unittest.TestCase):
             self.assertLessEqual(r["triangles"], 1800 * 1.12, where)
             self.assertLess(r["card_top"], 0.75, f"{where}: the leaves stand, not lie")
 
+    def test_a_leafy_stem_carries_its_leafy_shoots(self):
+        """V3.66: a 1 m aster read at 18 leaves a stem was a bundle of bare
+        stems; its stems now carry cut-out leafy shoots to its outline."""
+        cards = self.got["scenes"]["read"]["cards"]
+        self.assertEqual(len(cards), 1, "the leafy stem's shoots were not drawn")
+        self.assertTrue(cards[0]["cut"])
+        # As many as cover its outline, within 500 to 2,200 triangles by
+        # height (HERB_CARD_BUDGET): this narrow 1 m aster needs ~150 cards.
+        self.assertGreater(cards[0]["triangles"], 120)
+        self.assertLess(cards[0]["triangles"], 2200 * 1.05)
+
+    def test_a_rosette_gets_no_stem_shoots(self):
+        """A rosette's leaves are at the ground: it has no leafy stem to fill."""
+        self.assertEqual(self.got["scenes"]["rosette"]["cards"], [])
+
     def test_two_species_do_not_share_a_body_they_should_not(self):
         keys = {(r["form"], r["shape"], r["arrangement"]): r["key"] for r in self.got["matrix"]}
         self.assertEqual(len(set(keys.values())), len(keys))
