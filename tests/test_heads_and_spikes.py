@@ -133,9 +133,10 @@ class TheRulesInNode(unittest.TestCase):
     def test_a_small_head_is_drawn_larger_within_its_limit(self):
         got = self._run("[1, 2, 2.5, 5, 0.5].map(d => bloomGain({plant_type: 'wildflower', "
                         "flower_diameter_cm: d}, 'head'))")
+        # HEAD_MIN_M 4 cm since V3.67 (3 cm before), at most 1.8 times.
         self.assertEqual(got[0], 1.8)                     # 1 cm: the limit
-        self.assertAlmostEqual(got[1], 1.5)               # 2 cm drawn 3 cm
-        self.assertAlmostEqual(got[2], 1.2)
+        self.assertAlmostEqual(got[1], 1.8)               # 2 cm: the limit
+        self.assertAlmostEqual(got[2], 1.6)               # 2.5 cm drawn 4 cm
         self.assertEqual(got[3], 1)                       # 5 cm: as it is
         self.assertEqual(got[4], 1.8)
 
@@ -147,7 +148,7 @@ class TheRulesInNode(unittest.TestCase):
 
     def test_a_branched_asters_cluster_is_a_spray_facing_out(self):
         got = self._run("headSpray({stem_branching: 'branched_throughout'}, 'head', 1, 0.8, 0, 0, 0, 0.03, rnd)")
-        self.assertEqual(len(got), 4)
+        self.assertEqual(len(got), 6)                     # 4 until V3.67
         for h in got:
             self.assertGreaterEqual(h["tilt"], 0.5)
             self.assertLessEqual(h["tilt"], 0.95)

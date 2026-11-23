@@ -234,8 +234,9 @@ class TheBodyInTheRealViewer(unittest.TestCase):
         self.assertEqual(len(cards), 1, "the leafy stem's shoots were not drawn")
         self.assertTrue(cards[0]["cut"])
         # As many as cover its outline, within 500 to 2,200 triangles by
-        # height (HERB_CARD_BUDGET): this narrow 1 m aster needs ~150 cards.
-        self.assertGreater(cards[0]["triangles"], 120)
+        # height (HERB_CARD_BUDGET), fewer for narrow leaves (V3.67): this
+        # 1 m aster of lanceolate leaves gets about 56 cards.
+        self.assertGreater(cards[0]["triangles"], 80)
         self.assertLess(cards[0]["triangles"], 2200 * 1.05)
 
     def test_a_rosette_gets_no_stem_shoots(self):

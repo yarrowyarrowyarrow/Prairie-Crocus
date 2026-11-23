@@ -19,11 +19,13 @@
 //   A spike of forty florets was forty florets spaced along a line.
 //
 // So:
-// * a head is drawn at least HEAD_MIN_M across, never more than HEAD_GAIN_MAX
+// * a head is drawn at least HEAD_MIN_M across (4 cm since V3.67; 3 cm read as
+//   specks at a yard's distance), never more than HEAD_GAIN_MAX
 //   times its width; it faces out from the plant and up (HEAD_TILT), the way
 //   a composite turns to the light; and on a plant whose stems branch, each
 //   flower cluster the catalogue counts is a small spray of heads
-//   (HEADS_PER_CLUSTER), which is what a cluster of an aster is;
+//   (HEADS_PER_CLUSTER: 5 and 6 since V3.67, 3 and 4 before; an aster in
+//   flower is covered in them), which is what a cluster of an aster is;
 // * a dense cluster on a wildflower is carried as one cut-out card on its stem
 //   tip, the card a shrub's flower cluster has been since V3.49
 //   (15c-woodybloom.js): a column of flowers for a spike or a raceme, a cone
@@ -37,12 +39,12 @@
 
 // A head (or a solitary flower) is drawn at least this wide, and no more than
 // this many times its own width.
-const HEAD_MIN_M = 0.03;
+const HEAD_MIN_M = 0.04;
 const HEAD_GAIN_MAX = 1.8;
 // How far a head nods from face-up, toward the outside of the plant: from, to.
 const HEAD_TILT = [0.5, 0.95];
 // Heads in one counted cluster, by how the stems branch.
-const HEADS_PER_CLUSTER = { unbranched: 1, branched_above: 3, branched_throughout: 4 };
+const HEADS_PER_CLUSTER = { unbranched: 1, branched_above: 5, branched_throughout: 6 };
 // A cluster is dense, and drawn as one card, from this many florets.
 const DENSE_FLORETS = 15;
 const DENSE_ARCHES = { spike: 1, raceme: 1, panicle: 1, corymb: 1 };

@@ -38,7 +38,8 @@ class TheChunk(unittest.TestCase):
     def test_the_leafy_body_calls_it_for_stems_and_colonies(self):
         leafy = _js("03c-leafy.js")
         self.assertIn("leafyStemCards(C, P, rng)", leafy)
-        self.assertIn("(P.paths = P.paths || []).push(", leafy)
+        self.assertIn("noteStemPath(P, at, top, y0, y1, hi, a)", leafy)
+        self.assertIn("noteBranchPath(P, p0, end, ba)", leafy)
 
     def test_the_estimates_are_named(self):
         src = _js("03g-stemleaves.js")
@@ -56,6 +57,14 @@ class TheChunk(unittest.TestCase):
 
     def test_a_card_stays_under_the_stem_top(self):
         self.assertIn("const lim = pa.top * 0.96", _js("03g-stemleaves.js"))
+
+    def test_an_open_top_and_narrow_leaves_are_not_filled_solid(self):
+        """V3.67: the asters, harebell and blazingstar read as solid columns."""
+        src = _js("03g-stemleaves.js")
+        self.assertIn("HERB_NARROW_FLOOR", src)
+        self.assertIn("FORKS.branched_above[0]", src)        # none above the first fork
+        self.assertIn("pa.small ? HERB_BRANCH_CARD", src)    # a branch's, smaller
+        self.assertIn("BRANCH_OPEN", _js("03c-leafy.js"))
 
     def test_a_divided_leaf_counts_what_it_fills(self):
         src = _js("03g-stemleaves.js")

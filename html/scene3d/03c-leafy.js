@@ -43,6 +43,9 @@ const FORKS = { branched_above: [0.56, 0.64, 0.72],
 const _LONG_STALKED = { cordate: 1, reniform: 1, orbicular: 1, palmately_lobed: 1,
                         trifoliate: 1, compound_palmate: 1, ternate: 1, sagittate: 1 };
 const STALK_BASAL = 1.2, STALK_STEM = 0.3;
+// How far out a branch above reaches, as a share of the plant's height and
+// never past its outline (V3.67, an estimate read off the asters' photographs).
+const BRANCH_OPEN = 0.32;
 // A ternate leaf this long is divided twice, and its stalks droop by about this
 // much (a share of straight down mixed in), both estimates (V3.65).
 const TERNATE_TWICE_M = 0.1, TERNATE_DROOP = 0.15;
@@ -410,7 +413,7 @@ function _leafyStems(B, P, bloom, rng) {
     // from higher, or it lies on the ground (V3.65, an estimate).
     const y0 = Math.max(P.basal ? 0.14 : 0.07, Math.min(0.4, 0.6 * L / hi)) * hi;
     const y1 = Math.max(y0 + 0.01, hi - Math.min(bloom.top, hi * 0.35) - 0.005);
-    (P.paths = P.paths || []).push({ at, top, y0, y1, a });        // 03g-stemleaves.js
+    if (window.noteStemPath) noteStemPath(P, at, top, y0, y1, hi, a);   // 03g-stemleaves.js
     const whorlAt = P.perNode >= WHORL && colony;      // one whorl, at the top
     const nodes = whorlAt ? 1 : P.nodes;
     for (let j = 0; j < nodes; j++) {
@@ -428,7 +431,12 @@ function _leafyStems(B, P, bloom, rng) {
     // Side branches, each to a tip of its own.
     (FORKS[P.branching] || []).forEach((f0, n) => {
       const p0 = at(f0), ba = a + n * 2.39996 + rng();
-      const out = hi * (P.branching === 'branched_above' ? 0.12 : 0.22 * (1 - 0.6 * f0));
+      // A plant branched above opens into a wide top to its outline, which is
+      // where its flowers are (V3.67): at 0.12 of its height the top was no
+      // wider than the stems and an aster read as a column.
+      const out = P.branching === 'branched_above'
+        ? Math.max(hi * 0.12, Math.min(hi * BRANCH_OPEN, R * 0.85))
+        : hi * 0.22 * (1 - 0.6 * f0);
       const tipY = hi * (f0 + (1 - f0) * (0.72 + 0.2 * rng()));
       const end = [p0[0] + Math.cos(ba) * out, tipY - (bloom.rays ? bloom.rays * 0.5 : 0),
                    p0[2] + Math.sin(ba) * out];
@@ -436,6 +444,7 @@ function _leafyStems(B, P, bloom, rng) {
                    (p0[2] + end[2]) / 2 + Math.sin(ba) * out * 0.2];
       _lbTube(B, [p0, mid, end], rStem * 0.5, rStem * 0.3, shade);
       _lbTip(B, [end[0], tipY, end[2]], bloom, rng, shade);
+      if (window.noteBranchPath) noteBranchPath(P, p0, end, ba);    // 03g-stemleaves.js
       for (let k = 0; k < P.forkLeaves; k++)
         _lbSet(B, k ? mid : _lbMix(p0, mid, 0.5, 0.5), ba + k * 2.4, 0.55, L * 0.5,
                P.shape, P.lod, rng, 0.8, 0);

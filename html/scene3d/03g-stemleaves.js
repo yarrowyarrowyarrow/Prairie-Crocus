@@ -26,7 +26,10 @@
 //  * the triangles the cards may spend, by height (HERB_CARD_BUDGET);
 //  * how far larger than life a card may be drawn to cover it (HERB_GAIN_MAX);
 //  * how many counted leaves a stem has before it is filled in full
-//    (HERB_FULL_NODES): fewer, and it is filled in proportion.
+//    (HERB_FULL_NODES): fewer, and it is filled in proportion;
+//  * how much less a narrow-leaved plant is filled (HERB_NARROW_FLOOR). A stem
+//    branched above carries none above its first fork (V3.67): that top is
+//    its open branches and their flowers.
 // A stem of one or two leaves (a sarsaparilla's single umbrella, a lily's
 // pair) gets none: its leaves are what the readings say they are.
 
@@ -38,6 +41,12 @@ const HERB_CARD_H = [0.3, 1.5];
 const HERB_GAIN_MAX = 1.6;
 const HERB_CARD_MIN_NODES = 3;
 const HERB_FULL_NODES = 8;
+// The least share of HERB_COVER a narrow-leaved plant is filled to (linear
+// leaves); a leaf half as wide as an elliptic one gets half (V3.67).
+const HERB_NARROW_FLOOR = 0.35;
+// A side branch's leafy shoots against the main stem's (V3.67, an estimate:
+// 03c-leafy.js draws a branch's own leaves at half size).
+const HERB_BRANCH_CARD = 0.6;
 // The share of its length by width a leaf of each divided outline fills.
 const _HERB_LEAF_FILL = { compound_pinnate: 0.35, bipinnate: 0.3, pinnatifid: 0.45,
                           ternate: 0.4, trifoliate: 0.5, compound_palmate: 0.4,
@@ -57,7 +66,10 @@ function leafyStemCards(C, P, rng) {
   // A stem the readings found few leaves on is an open plant: fill it in
   // proportion, all of it from HERB_FULL_NODES counted leaves (V3.66's first
   // build filled a 3-leaved golden alexanders as full as a 25-leaved aster).
-  const want = HERB_COVER * Math.min(1, P.nodes / HERB_FULL_NODES) * area - drawn;
+  // Narrow leaves are an airy plant (V3.67): counted as broad ones, a marsh
+  // aster's, a harebell's and a blazingstar's were a solid column.
+  const narrow = Math.max(HERB_NARROW_FLOOR, Math.min(1, (LEAF_WIDTH_RATIO[P.shape] || 0.45) / 0.45));
+  const want = HERB_COVER * narrow * Math.min(1, P.nodes / HERB_FULL_NODES) * area - drawn;
   if (want <= 0) return;
   const card = sp.w * L * sp.h * L * (sp.leafCover || sp.cover) * 0.6;
   const t = Math.max(0, Math.min(1, (P.H - HERB_CARD_H[0]) / (HERB_CARD_H[1] - HERB_CARD_H[0])));
@@ -78,7 +90,9 @@ function leafyStemCards(C, P, rng) {
     let e = 0.35 + 0.6 * f + (rng() - 0.5) * 0.3;
     // Its tip under the stem's top, or the body would be taller than the
     // plant (it is scaled to its highest point, 03c-leafy.js).
-    const lim = pa.top * 0.96, hk = Math.min(h * (0.8 + 0.4 * rng()), (lim - pa.y0) * 0.9);
+    // A branch's shoots are smaller (HERB_BRANCH_CARD), as its leaves are.
+    const lim = pa.top * 0.96, hk = Math.min(h * (0.8 + 0.4 * rng()) * (pa.small ? HERB_BRANCH_CARD : 1),
+                                             (lim - pa.y0) * 0.9);
     if (hk <= 0.002) continue;
     const ymax = Math.max(pa.y0, Math.min(pa.y1, lim - hk * Math.sin(e)));
     const at = pa.at((pa.y0 + (ymax - pa.y0) * f) / pa.top);
@@ -95,4 +109,23 @@ function leafyStemCards(C, P, rng) {
   C.gain = gain;
 }
 
+// Where 03c-leafy.js's stems and branches can carry the shoots. A stem
+// branched above carries none above its first fork (V3.67): that top is its
+// open branches, and a branch carries its own, smaller ones.
+function noteStemPath(P, at, top, y0, y1, hi, a) {
+  const yOpen = P.branching === 'branched_above' && FORKS.branched_above
+    ? Math.max(y0 + 0.01, Math.min(y1, hi * FORKS.branched_above[0])) : y1;
+  (P.paths = P.paths || []).push({ at, top, y0, y1: yOpen, a });
+}
+function noteBranchPath(P, p0, end, a) {
+  const ey = end[1], py = p0[1];
+  if (ey - py <= 0.02) return;
+  (P.paths = P.paths || []).push({
+    at: (t) => { const u = Math.max(0, Math.min(1, (t * ey - py) / (ey - py)));
+                 return _lbMix(p0, end, 1 - u, u); },
+    top: ey, y0: py + 0.15 * (ey - py), y1: py + 0.8 * (ey - py), a, small: true });
+}
+
 window.leafyStemCards = leafyStemCards;
+window.noteStemPath = noteStemPath;
+window.noteBranchPath = noteBranchPath;
