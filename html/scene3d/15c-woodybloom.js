@@ -95,9 +95,8 @@ function _wbFlower(g, x, y, r, petals, spin) {
 const _WB_MASKS = new Map();
 function _wbMask(arch, petals, share, florets) {
   const sh = _wbShare(share);
-  // Never more flowers painted than the cluster has (V3.65): drawn at the
-  // length read, alumroot's 30-flowered panicle was painted with 70, 1.5 px
-  // apart, and read as a solid bar.
+  // Never more flowers painted than the cluster has (V3.65): alumroot's 30, at
+  // the length read, were painted as 70 flowers 1.5 px apart, a solid bar.
   const has = Math.max(1, Math.min(140, Math.round(florets || 140)));
   const key = arch + '|' + Math.min(12, petals) + '|' + sh + '|' + has;
   let mk = _WB_MASKS.get(key);
@@ -269,9 +268,8 @@ function buildWoodyBlooms(plants, month, terrain) {
       if (!nx && !nz) { const a = Math.atan2(q.z + p.y, q.x - p.x) + (rnd() - 0.5) * 0.6; nx = Math.cos(a); nz = Math.sin(a); }
       const jit = 0.85 + 0.3 * rnd();
       const sx = fit ? Wd / fit[0] * jit : reach * jit, sy = fit ? L / fit[1] * jit : reach * jit * 1.1;
-      // How far out from the shoot's end it stands is by the cluster's own
-      // width, not the card's: a narrow spike's card is mostly empty, and
-      // pushed out by it the spike floated beside its stem.
+      // Out from the shoot's end by the cluster's width, not its mostly empty
+      // card's: pushed out by that, a narrow spike floated beside its stem.
       gr.items.push({ x: q.x, y: q.y, z: q.z, nx, nz, size: sy / 1.1, sx, sy, ox: fit ? Wd * jit : sx,
                       lean: (0.25 + 0.5 * rnd()) * (q.top ? 0.35 : 1), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
                       // A poplar's, an aspen's or a birch's catkins hang (src/tree_habit.py).

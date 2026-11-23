@@ -577,7 +577,7 @@ class TestStructuralCeilings(unittest.TestCase):
         # 800 and this is a different thing from a canvas drawing.
         (_HTML / "scene3d" / "15-florets.js", 500),    # ~493 now (V2.93)
         # V3.49 (F268): a read shrub's flower clusters as cut-out cards.
-        (_HTML / "scene3d" / "15c-woodybloom.js", 320),  # 258 now
+        (_HTML / "scene3d" / "15c-woodybloom.js", 320),  # 319 now (V3.65): split before adding
         # V3.63 (F268): a shrub's or tree's fruit as cut-out bunches, held into
         # the winter where read; split from 11-fruit.js's points like the blooms.
         (_HTML / "scene3d" / "15d-woodyfruit.js", 300),  # 210 now
