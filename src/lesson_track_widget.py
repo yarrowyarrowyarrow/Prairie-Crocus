@@ -68,7 +68,18 @@ class LessonTrackWidget(QWidget):
         form.addRow("Lesson", self._lesson_box)
         self._about = QComboBox()
         self._about.setAccessibleName("About which landscape")
+        # Sized by a short name, not the longest: a QComboBox widens to its
+        # longest item, and a saved design's name ("10 Main St (unsaved
+        # changes from 12 Oct)") made Learn › Lessons scroll sideways (V3.67,
+        # the owner's PC; CI has no saved designs). The list opens wide enough.
+        self._about.setSizeAdjustPolicy(
+            QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+        self._about.setMinimumContentsLength(18)
         self._fill_about()
+        fm = self._about.fontMetrics()
+        self._about.view().setMinimumWidth(max(
+            fm.horizontalAdvance(self._about.itemText(i))
+            for i in range(self._about.count())) + 32)
         form.addRow("About", self._about)
         lay.addLayout(form)
 

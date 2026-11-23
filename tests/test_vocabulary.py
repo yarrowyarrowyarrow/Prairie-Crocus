@@ -125,7 +125,9 @@ def counts() -> Counter:
     advanced = [(w, _pattern(w)) for w in vocabulary.ADVANCED_ONLY]
     out = Counter()
     for path in sorted(_SRC.rglob("*.py")):
-        name = str(path.relative_to(_SRC))
+        # as_posix: the table's keys are "db/polycultures.py" on every OS;
+        # str() gave "db\\polycultures.py" on Windows, which matched no key.
+        name = path.relative_to(_SRC).as_posix()
         if name in EXEMPT or name.startswith(EXEMPT_PREFIXES):
             continue
         words = never + (advanced if name in SIMPLE_MODULES else [])

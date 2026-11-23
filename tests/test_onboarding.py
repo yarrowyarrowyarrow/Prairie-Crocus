@@ -314,6 +314,12 @@ class TestFirstStepBar(unittest.TestCase):
     def test_detail_is_elided_not_clipped(self):
         bar = self._bar()
         bar.resize(300, 30)
+        # Shown, so the layout gives the label its real share of the 300 px:
+        # a hidden widget keeps whatever width it was born with, which on
+        # Windows was enough for the whole sentence (V3.67).
+        bar.show()
+        self.addCleanup(bar.close)
+        self._app.processEvents()
         # Any detail too long for its room (V3.30's are short enough to fit).
         current = dict(onboarding.first_step(_project()),
                        detail="Type your address, or click your yard on the "
