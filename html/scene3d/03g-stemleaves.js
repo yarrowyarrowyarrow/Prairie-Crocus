@@ -24,7 +24,9 @@
 //  * how much of its outline a leafy wildflower covers in leaf (HERB_COVER,
 //    the share a person sees filled; a shrub's is 0.75);
 //  * the triangles the cards may spend, by height (HERB_CARD_BUDGET);
-//  * how far larger than life a card may be drawn to cover it (HERB_GAIN_MAX).
+//  * how far larger than life a card may be drawn to cover it (HERB_GAIN_MAX);
+//  * how many counted leaves a stem has before it is filled in full
+//    (HERB_FULL_NODES): fewer, and it is filled in proportion.
 // A stem of one or two leaves (a sarsaparilla's single umbrella, a lily's
 // pair) gets none: its leaves are what the readings say they are.
 
@@ -35,6 +37,7 @@ const HERB_CARD_BUDGET = [500, 2200];
 const HERB_CARD_H = [0.3, 1.5];
 const HERB_GAIN_MAX = 1.6;
 const HERB_CARD_MIN_NODES = 3;
+const HERB_FULL_NODES = 8;
 // The share of its length by width a leaf of each divided outline fills.
 const _HERB_LEAF_FILL = { compound_pinnate: 0.35, bipinnate: 0.3, pinnatifid: 0.45,
                           ternate: 0.4, trifoliate: 0.5, compound_palmate: 0.4,
@@ -51,7 +54,10 @@ function leafyStemCards(C, P, rng) {
   // A divided leaf is mostly the air between its leaflets (a stated estimate).
   const fill = _HERB_LEAF_FILL[P.shape] || 0.6;
   const drawn = P.stems * P.nodes * P.perNode * L * P.W * fill;
-  const want = HERB_COVER * area - drawn;
+  // A stem the readings found few leaves on is an open plant: fill it in
+  // proportion, all of it from HERB_FULL_NODES counted leaves (V3.66's first
+  // build filled a 3-leaved golden alexanders as full as a 25-leaved aster).
+  const want = HERB_COVER * Math.min(1, P.nodes / HERB_FULL_NODES) * area - drawn;
   if (want <= 0) return;
   const card = sp.w * L * sp.h * L * (sp.leafCover || sp.cover) * 0.6;
   const t = Math.max(0, Math.min(1, (P.H - HERB_CARD_H[0]) / (HERB_CARD_H[1] - HERB_CARD_H[0])));

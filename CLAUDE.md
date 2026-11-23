@@ -67,6 +67,9 @@ feature, skim where it sits in that philosophy. The sources of truth:
   as cards (`html/scene3d/15e-heads.js`); [V3.65](docs/plans/V3.65-mats-vines-and-big-leaves.md)
   drew the mats as leafy shoots (no plate), big ternate leaves divided twice, opposite leaves as
   turning pairs, and 40 wildflowers' clusters at the size read (`head_length_cm` on a wildflower).
+  [V3.66](docs/plans/V3.66-leafy-stems-and-a-fresh-reading.md) gave a leafy wildflower's stems
+  leafy-shoot cards (`html/scene3d/03g-stemleaves.js`) and read all 250 again (mean 5.50): its
+  "Still wrong" table is the current ranking.
   [V3.49](docs/plans/V3.49-shrubs-from-their-own-stems.md) did the shrubs and
   [V3.50](docs/plans/V3.50-trees-and-vines-from-their-photographs.md) the trees and vines,
   [V3.51](docs/plans/V3.51-grasses-sedges-and-rushes-by-their-heads.md) the grasses, sedges and rushes;
