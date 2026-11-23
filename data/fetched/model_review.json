@@ -7990,8 +7990,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: a carpet of shoots each with one to three glossy heart-shaped leaves and a short, dense spike of tiny white star flowers, then speckled then red berries. Model: a loose colony of single stalks with a leaf or two and a few white specks, red berries in July; it reads as the plant, but the carpet is far thinner and the spike a loose scatter. V3.65: As before. V3.66: As before.",
+  "faults": [
+   "sparse"
+  ],
+  "note": "Photographs: a carpet of shoots each with one to three glossy heart-shaped leaves and a short, dense spike of tiny white star flowers, then speckled then red berries. Model: a loose colony of single stalks with a leaf or two and a few white specks, red berries in July; it reads as the plant, but the carpet is far thinner and the spike a loose scatter. V3.65: As before. V3.66: As before. Still a loose scatter of flowers on a thinner patch than the photographs.",
   "read_in": "V3.66",
   "earlier": [
    {
@@ -11565,8 +11567,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: an open shrub with brown scurfy twigs and opposite oval leaves, dull green above and silvery with rusty dots beneath; translucent red berries in July. Model: a dense shrub of silvery white sprays of paired leaves that read as pinnate fronds; far too silver (only the undersides are), and no berries. V3.64: Dull green, no longer drawn all silver, and its red berries show in July. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before. V3.66: As before.",
+  "faults": [
+   "crown"
+  ],
+  "note": "Photographs: an open shrub with brown scurfy twigs and opposite oval leaves, dull green above and silvery with rusty dots beneath; translucent red berries in July. Model: a dense shrub of silvery white sprays of paired leaves that read as pinnate fronds; far too silver (only the undersides are), and no berries. V3.64: Dull green, no longer drawn all silver, and its red berries show in July. V3.65: Opposite leaves now drawn as pairs turning at each node, no longer pinnate-looking; otherwise as before. V3.66: As before. A narrow upright bush where the photographs show a spreading one.",
   "read_in": "V3.66",
   "earlier": [
    {
@@ -11733,8 +11737,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: a dense stand of tall, leafy stems crowded with lance leaves, each topped by a large, arching, branched plume of golden yellow. Model: a few thin stems with sparse leaves and a faint haze of yellow specks around their tops; the golden plumes that make a goldenrod stand are missing. V3.66: A leafy stand with golden plumes.",
+  "faults": [
+   "flower_size"
+  ],
+  "note": "Photographs: a dense stand of tall, leafy stems crowded with lance leaves, each topped by a large, arching, branched plume of golden yellow. Model: a few thin stems with sparse leaves and a faint haze of yellow specks around their tops; the golden plumes that make a goldenrod stand are missing. V3.66: A leafy stand with golden plumes. The plumes small for the photographs' broad arching panicles.",
   "read_in": "V3.66",
   "earlier": [
    {
@@ -11802,8 +11808,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: tall leafy stems crowded with lance leaves, ending in a large branched plume of arching yellow sprays. Model: tall leafy stems with a few yellow specks drifting loosely round their upper halves; the stems read, but the dense golden plume at the top is missing. V3.66: A leafy stand with golden plumes.",
+  "faults": [
+   "flower_size"
+  ],
+  "note": "Photographs: tall leafy stems crowded with lance leaves, ending in a large branched plume of arching yellow sprays. Model: tall leafy stems with a few yellow specks drifting loosely round their upper halves; the stems read, but the dense golden plume at the top is missing. V3.66: A leafy stand with golden plumes. The plumes small for the photographs' broad arching panicles.",
   "read_in": "V3.66",
   "earlier": [
    {
@@ -11989,8 +11997,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: upright leafy stems ending in a dense, arching, one-sided plume of tiny golden heads. Model: a bundle of stems with a loose cloud of yellow specks scattered round them from top to bottom; no plume at the tip, so it reads as a plant in a yellow haze. V3.66: A leafy clump with golden plumes.",
+  "faults": [
+   "flower_size"
+  ],
+  "note": "Photographs: upright leafy stems ending in a dense, arching, one-sided plume of tiny golden heads. Model: a bundle of stems with a loose cloud of yellow specks scattered round them from top to bottom; no plume at the tip, so it reads as a plant in a yellow haze. V3.66: A leafy clump with golden plumes. The plumes small; the photographs show it lower with wide arching heads.",
   "read_in": "V3.66",
   "earlier": [
    {
@@ -12400,8 +12410,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: an open shrub of thin arching twigs with small round to oval paired leaves, blue-green, small pink bells and, from late summer, clusters of round white berries that last into winter. Model: a dense upright mass of paired leaves in sprays that read as pinnate fronds, in a plain mid-green; the white berries that make the plant are not on the July picture. V3.66: Paired leaves now read; a blue-green bush.",
+  "faults": [
+   "fruit"
+  ],
+  "note": "Photographs: an open shrub of thin arching twigs with small round to oval paired leaves, blue-green, small pink bells and, from late summer, clusters of round white berries that last into winter. Model: a dense upright mass of paired leaves in sprays that read as pinnate fronds, in a plain mid-green; the white berries that make the plant are not on the July picture. V3.66: Paired leaves now read; a blue-green bush. No white berries on the July picture, which the photographs show by then.",
   "read_in": "V3.66",
   "earlier": [
    {
@@ -12474,8 +12486,10 @@
    ]
   },
   "score": 6,
-  "faults": [],
-  "note": "Photographs: a low thicket of upright twigs with paired, thick, oval, grey-green leaves, small pink bells in clusters at the tips, and clusters of greenish-white berries that blacken over winter. Model: a dense dome of paired leaves arranged into feather-like fronds, plain green; in September it turns yellow with no white berries showing. It reads as a fern-leaved bush, not a snowberry, and it is the same body as common snowberry. V3.66: Paired blue-green leaves now turn.",
+  "faults": [
+   "fruit"
+  ],
+  "note": "Photographs: a low thicket of upright twigs with paired, thick, oval, grey-green leaves, small pink bells in clusters at the tips, and clusters of greenish-white berries that blacken over winter. Model: a dense dome of paired leaves arranged into feather-like fronds, plain green; in September it turns yellow with no white berries showing. It reads as a fern-leaved bush, not a snowberry, and it is the same body as common snowberry. V3.66: Paired blue-green leaves now turn. No berries on the July picture.",
   "read_in": "V3.66",
   "earlier": [
    {

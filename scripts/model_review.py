@@ -161,6 +161,10 @@ def fold(batch: dict, manifest: dict, known: dict) -> tuple:
         score = note.get("score")
         if not isinstance(score, int) or not 0 <= score <= 10:
             errors.append(f"{sci}: a score from 0 to 10 is needed")
+        elif score < 7 and not faults:
+            # A model below 7 is not doing its job: say what holds it back.
+            # V3.66's re-read wrote seven "as before" readings with none.
+            errors.append(f"{sci}: a score under 7 needs at least one fault")
         out[sci] = {"refs": refs, "score": score, "faults": faults,
                     "note": str(note.get("note") or "").strip(), "read_in": PASS}
         if note.get("fixed"):

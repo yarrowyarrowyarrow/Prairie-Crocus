@@ -32,6 +32,16 @@ class Folding(unittest.TestCase):
         self.assertEqual(rec["note"], "Lilac, not pink.")
         self.assertEqual(rec["read_in"], mv.PASS)
 
+    def test_a_low_score_with_no_fault_is_refused(self):
+        """V3.66's re-read wrote seven 'as before' readings under 7 with no
+        fault; the suite caught it after the fact, the tool now refuses it."""
+        _, errors = mv.fold({"Monarda fistulosa": {"score": 5, "faults": []}},
+                            MANIFEST, KNOWN)
+        self.assertTrue(any("needs at least one fault" in e for e in errors), errors)
+        _, errors = mv.fold({"Monarda fistulosa": {"score": 7, "faults": []}},
+                            MANIFEST, KNOWN)
+        self.assertEqual(errors, [])
+
     def test_a_bad_note_is_named(self):
         for note, word in (
                 ({"refs": {"habit": [4]}, "score": 5}, "no photograph 4"),
