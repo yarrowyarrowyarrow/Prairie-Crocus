@@ -45,7 +45,7 @@ const _LONG_STALKED = { cordate: 1, reniform: 1, orbicular: 1, palmately_lobed: 
 const STALK_BASAL = 1.2, STALK_STEM = 0.3;
 // How far out a branch above reaches, as a share of the plant's height and
 // never past its outline (V3.67, an estimate read off the asters' photographs).
-const BRANCH_OPEN = 0.32;
+const BRANCH_OPEN = 0.25;
 // A ternate leaf this long is divided twice, and its stalks droop by about this
 // much (a share of straight down mixed in), both estimates (V3.65).
 const TERNATE_TWICE_M = 0.1, TERNATE_DROOP = 0.15;

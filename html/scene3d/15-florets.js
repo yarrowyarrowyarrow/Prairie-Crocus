@@ -371,7 +371,7 @@ function buildFlorets(plants, month, terrain) {
           : gy + h * frac * (0.70 + 0.22 * rnd());
         // A head faces out from the plant and a counted cluster of a branched
         // aster is a spray of heads (15e-heads.js headSpray, V3.64).
-        for (const sp of headSpray(p, b.arch, hx, hy, hz, p.x, -p.y, reach, rnd)) {
+        for (const sp of headSpray(p, b.arch, hx, hy, hz, p.x, -p.y, reach, rnd, heads)) {
         const spin0 = sp.spin == null ? rnd() * Math.PI * 2 : sp.spin;
         const lean = sp.tilt == null ? (rnd() - 0.5) * 0.30 : sp.tilt;
         const [hx, hy, hz] = [sp.x, sp.y, sp.z];

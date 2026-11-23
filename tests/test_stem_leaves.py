@@ -62,7 +62,7 @@ class TheChunk(unittest.TestCase):
         """V3.67: the asters, harebell and blazingstar read as solid columns."""
         src = _js("03g-stemleaves.js")
         self.assertIn("HERB_NARROW_FLOOR", src)
-        self.assertIn("FORKS.branched_above[0]", src)        # none above the first fork
+        self.assertIn("FORKS.branched_above[FORKS.branched_above.length - 1]", src)  # none above the last fork
         self.assertIn("pa.small ? HERB_BRANCH_CARD", src)    # a branch's, smaller
         self.assertIn("BRANCH_OPEN", _js("03c-leafy.js"))
 

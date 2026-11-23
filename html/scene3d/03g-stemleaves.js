@@ -28,7 +28,7 @@
 //  * how many counted leaves a stem has before it is filled in full
 //    (HERB_FULL_NODES): fewer, and it is filled in proportion;
 //  * how much less a narrow-leaved plant is filled (HERB_NARROW_FLOOR). A stem
-//    branched above carries none above its first fork (V3.67): that top is
+//    branched above carries none above its last fork (V3.67): that top is
 //    its open branches and their flowers.
 // A stem of one or two leaves (a sarsaparilla's single umbrella, a lily's
 // pair) gets none: its leaves are what the readings say they are.
@@ -42,8 +42,10 @@ const HERB_GAIN_MAX = 1.6;
 const HERB_CARD_MIN_NODES = 3;
 const HERB_FULL_NODES = 8;
 // The least share of HERB_COVER a narrow-leaved plant is filled to (linear
-// leaves); a leaf half as wide as an elliptic one gets half (V3.67).
-const HERB_NARROW_FLOOR = 0.35;
+// leaves); a leaf narrower than 0.3 of its length gets less in proportion
+// (V3.67). A first build, from 0.45 down to 0.35, left the swamp aster and
+// flat-topped goldenrod too thin once their tops were open as well.
+const HERB_NARROW_FLOOR = 0.5;
 // A side branch's leafy shoots against the main stem's (V3.67, an estimate:
 // 03c-leafy.js draws a branch's own leaves at half size).
 const HERB_BRANCH_CARD = 0.6;
@@ -68,10 +70,17 @@ function leafyStemCards(C, P, rng) {
   // build filled a 3-leaved golden alexanders as full as a 25-leaved aster).
   // Narrow leaves are an airy plant (V3.67): counted as broad ones, a marsh
   // aster's, a harebell's and a blazingstar's were a solid column.
-  const narrow = Math.max(HERB_NARROW_FLOOR, Math.min(1, (LEAF_WIDTH_RATIO[P.shape] || 0.45) / 0.45));
+  const narrow = Math.max(HERB_NARROW_FLOOR, Math.min(1, (LEAF_WIDTH_RATIO[P.shape] || 0.45) / 0.3));
   const want = HERB_COVER * narrow * Math.min(1, P.nodes / HERB_FULL_NODES) * area - drawn;
   if (want <= 0) return;
-  const card = sp.w * L * sp.h * L * (sp.leafCover || sp.cover) * 0.6;
+  // Cards are shared by each path's length (V3.67): shared evenly, three short
+  // branches took three times the main stem's, at a branch card's smaller
+  // size, and the plant came out with far less leaf than it was owed.
+  const paths = P.paths, up = [0, 1, 0];
+  const lens = paths.map(pa => Math.max(0.005, pa.y1 - pa.y0));
+  const sum = lens.reduce((x, y) => x + y, 0);
+  const scale2 = paths.reduce((x, pa, k) => x + lens[k] / sum * (pa.small ? HERB_BRANCH_CARD * HERB_BRANCH_CARD : 1), 0);
+  const card = sp.w * L * sp.h * L * (sp.leafCover || sp.cover) * 0.6 * scale2;
   const t = Math.max(0, Math.min(1, (P.H - HERB_CARD_H[0]) / (HERB_CARD_H[1] - HERB_CARD_H[0])));
   const tris = (HERB_CARD_BUDGET[0] + (HERB_CARD_BUDGET[1] - HERB_CARD_BUDGET[0]) * t)
     * (QUALITY >= 2 ? 1.6 : 1);
@@ -80,10 +89,15 @@ function leafyStemCards(C, P, rng) {
   const gain = n > room ? Math.min(HERB_GAIN_MAX, Math.sqrt(n / room)) : 1;
   n = Math.min(room, Math.ceil(n / (gain * gain)));
   const w = sp.w * L * gain, h = sp.h * L * gain;
-  const paths = P.paths, up = [0, 1, 0];
+  // Each card's path and its place up it: the i-th of n along the paths laid
+  // end to end, so a path takes its share and its cards are spread along it.
+  const starts = [];
+  lens.reduce((x, l) => (starts.push(x), x + l), 0);
   for (let i = 0; i < n; i++) {
-    const pa = paths[i % paths.length];
-    const f = (Math.floor(i / paths.length) + rng()) / Math.ceil(n / paths.length);
+    const pos = (i + rng()) / n * sum;
+    let k = 0;
+    while (k < paths.length - 1 && starts[k + 1] <= pos) k++;
+    const pa = paths[k], f = Math.max(0, Math.min(1, (pos - starts[k]) / lens[k]));
     const a = pa.a + i * 2.39996 + (rng() - 0.5) * 0.6;
     const o = [Math.cos(a), 0, Math.sin(a)];
     // Standing out and up from the stem, the lower ones spreading wider.
@@ -111,10 +125,11 @@ function leafyStemCards(C, P, rng) {
 
 // Where 03c-leafy.js's stems and branches can carry the shoots. A stem
 // branched above carries none above its first fork (V3.67): that top is its
-// open branches, and a branch carries its own, smaller ones.
+// open branches, and a branch carries its own, smaller ones. (Stopped at the
+// first fork, the upper half of a flat-topped goldenrod was bare.)
 function noteStemPath(P, at, top, y0, y1, hi, a) {
   const yOpen = P.branching === 'branched_above' && FORKS.branched_above
-    ? Math.max(y0 + 0.01, Math.min(y1, hi * FORKS.branched_above[0])) : y1;
+    ? Math.max(y0 + 0.01, Math.min(y1, hi * FORKS.branched_above[FORKS.branched_above.length - 1])) : y1;
   (P.paths = P.paths || []).push({ at, top, y0, y1: yOpen, a });
 }
 function noteBranchPath(P, p0, end, a) {

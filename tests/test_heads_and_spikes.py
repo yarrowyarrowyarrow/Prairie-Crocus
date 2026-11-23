@@ -123,6 +123,7 @@ class TheRulesInNode(unittest.TestCase):
             " ? Math.max(1, Math.min(2.5, 1 + ((p.height_m || 1) - 1.5) / 3)) : 1; }",
             consts, _fn(src, "bloomGain"), _fn(src, "headSpray"),
             _fn(src, "denseClusterApplies"),
+            _fn(src, "headsPerCluster"),
             "let s = 7; const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);",
             f"console.log(JSON.stringify({expr}));"])
         node = shutil.which("node") or shutil.which("nodejs")
@@ -155,6 +156,14 @@ class TheRulesInNode(unittest.TestCase):
         # The first head stands at the anchor, facing out along +x (bearing pi/2).
         self.assertEqual((got[0]["x"], got[0]["y"]), (1, 0.8))
         self.assertAlmostEqual(got[0]["spin"], 1.5708, delta=0.41)
+
+    def test_a_count_already_of_heads_is_not_multiplied(self):
+        """V3.67's first build gave a coneflower's 24 counted heads five each:
+        120 heads on a 45 cm plant. The heads are capped by its footprint."""
+        got = self._run("[headsPerCluster({stem_branching: 'branched_above', canopy_m: 0.45}, 0.05, 24),"
+                        " headsPerCluster({stem_branching: 'branched_above', canopy_m: 0.9}, 0.04, 24),"
+                        " headsPerCluster({stem_branching: 'branched_above'}, 0.04)]")
+        self.assertEqual(got, [2, 5, 5])
 
     def test_an_unbranched_stem_and_a_cluster_carry_one(self):
         got = self._run("[headSpray({stem_branching: 'unbranched'}, 'head', 0, 1, 0, 0, 0, 0.03, rnd).length,"

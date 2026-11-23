@@ -25,7 +25,8 @@
 //   a composite turns to the light; and on a plant whose stems branch, each
 //   flower cluster the catalogue counts is a small spray of heads
 //   (HEADS_PER_CLUSTER: 5 and 6 since V3.67, 3 and 4 before; an aster in
-//   flower is covered in them), which is what a cluster of an aster is;
+//   flower is covered in them), which is what a cluster of an aster is, never
+//   more than HEAD_COVER of its footprint between them;
 // * a dense cluster on a wildflower is carried as one cut-out card on its stem
 //   tip, the card a shrub's flower cluster has been since V3.49
 //   (15c-woodybloom.js): a column of flowers for a spike or a raceme, a cone
@@ -45,6 +46,8 @@ const HEAD_GAIN_MAX = 1.8;
 const HEAD_TILT = [0.5, 0.95];
 // Heads in one counted cluster, by how the stems branch.
 const HEADS_PER_CLUSTER = { unbranched: 1, branched_above: 5, branched_throughout: 6 };
+// The share of the plant's footprint all its heads may cover between them.
+const HEAD_COVER = 0.6;
 // A cluster is dense, and drawn as one card, from this many florets.
 const DENSE_FLORETS = 15;
 const DENSE_ARCHES = { spike: 1, raceme: 1, panicle: 1, corymb: 1 };
@@ -80,8 +83,8 @@ function _inflorescence(p, arch, drawn, h) {
 // Where the heads of one counted cluster sit, round its anchor at (x, y, z):
 // [{x, y, z, spin, tilt}], the first at the anchor. A head faces out from the
 // plant's middle (cx, cz) and up; `size` is a head's drawn width.
-function headSpray(p, arch, x, y, z, cx, cz, size, rnd) {
-  const out = [], heads = arch === 'head' ? (HEADS_PER_CLUSTER[p.stem_branching] || 1) : 1;
+function headSpray(p, arch, x, y, z, cx, cz, size, rnd, clusters) {
+  const out = [], heads = arch === 'head' ? headsPerCluster(p, size, clusters) : 1;
   const face = (hx, hz) => {
     const dx = hx - cx, dz = hz - cz;
     return Math.hypot(dx, dz) > 0.02 ? Math.atan2(dx, dz) : rnd() * 6.283;
@@ -97,6 +100,19 @@ function headSpray(p, arch, x, y, z, cx, cz, size, rnd) {
   return out;
 }
 
+// Heads in one of `clusters` counted clusters of `p`, each `size` across. Never
+// so many that the heads together would cover more than HEAD_COVER of the
+// plant's footprint (V3.67): where a count is already of heads (a coneflower's
+// 24, a gumweed's 40) and not of an aster's clusters, five to a cluster buried
+// the plant in up to 240 of them.
+function headsPerCluster(p, size, clusters) {
+  const want = HEADS_PER_CLUSTER[p.stem_branching] || 1;
+  if (!clusters || !size) return want;
+  const r = Math.max(0.05, (p.canopy_m || 0.4) / 2);
+  const most = HEAD_COVER * r * r / ((size / 2) * (size / 2));
+  return Math.max(1, Math.min(want, Math.floor(most / clusters)));
+}
+
 // A wildflower whose clusters are dense enough to read as one shape: carried as
 // a card (15c-woodybloom.js) and not as florets.
 function denseClusterApplies(p) {
@@ -107,4 +123,5 @@ function denseClusterApplies(p) {
 
 window.bloomGain = bloomGain;
 window.headSpray = headSpray;
+window.headsPerCluster = headsPerCluster;
 window.denseClusterApplies = denseClusterApplies;
