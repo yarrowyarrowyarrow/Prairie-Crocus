@@ -318,10 +318,9 @@
   "score": 4,
   "faults": [
    "sparse",
-   "stem_leaves",
-   "flower_arch"
+   "stem_leaves"
   ],
-  "note": "Photographs: a leafy plant with large, coarsely toothed pinnate leaves of unequal leaflets along the stem, ending in a long slender spike of small yellow flowers, then hooked burs. Model: two thin stalks with yellow specks up their tips and a few small fronds low down; the spikes read, but the big leafy body is missing. V3.65: The spikes are the length read, and a narrow spike of tiny flowers is drawn as a solid bar at the read length.",
+  "note": "Photographs: a leafy plant with large, coarsely toothed pinnate leaves of unequal leaflets along the stem, ending in a long slender spike of small yellow flowers, then hooked burs. Model: two thin stalks with yellow specks up their tips and a few small fronds low down; the spikes read, but the big leafy body is missing. V3.65: The spikes are the length read, and a narrow spike of tiny flowers is drawn as a solid bar at the read length. Then: painted with no more flowers than the cluster has, a spike of separate flowers on its stem tip.",
   "read_in": "V3.65",
   "earlier": [
    {
@@ -5729,13 +5728,12 @@
     "83145251"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
    "flower_colour",
-   "flower_arch",
    "leaf_shape"
   ],
-  "note": "Photographs: a basal clump of rounded, shallowly lobed and scalloped leaves under tall leafless stalks with a narrow panicle of small greenish-cream bells. Model: two rosettes of sharp star-shaped leaves under tall bare stalks with red specks round their tops; the stalks are right, the leaves too sharply lobed, and the flowers drawn red (the recorded colour, which the photographs do not show). V3.65: The narrow panicle is longer and a narrow spike of tiny flowers is drawn as a solid bar at the read length, in the recorded red (the owner's).",
+  "note": "Photographs: a basal clump of rounded, shallowly lobed and scalloped leaves under tall leafless stalks with a narrow panicle of small greenish-cream bells. Model: two rosettes of sharp star-shaped leaves under tall bare stalks with red specks round their tops; the stalks are right, the leaves too sharply lobed, and the flowers drawn red (the recorded colour, which the photographs do not show). V3.65: The narrow panicle is longer and a narrow spike of tiny flowers is drawn as a solid bar at the read length, in the recorded red (the owner's). Then: painted with no more flowers than the cluster has, a spike of separate flowers on its stem tip.",
   "read_in": "V3.65",
   "earlier": [
    {
@@ -10168,12 +10166,11 @@
     "322765469"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
-   "flower_arch",
    "flower_place"
   ],
-  "note": "Photographs: a short plant with a basal rosette of spoon leaves under a stiff stem ending in a dense, narrow wand of yellow heads. Model: a basal rosette and thin stems with yellow stars scattered loosely round their upper half; the rosette is right, but the dense yellow wand is an open scatter. V3.65: The wand is the length read, and a narrow spike of tiny flowers is drawn as a solid bar at the read length.",
+  "note": "Photographs: a short plant with a basal rosette of spoon leaves under a stiff stem ending in a dense, narrow wand of yellow heads. Model: a basal rosette and thin stems with yellow stars scattered loosely round their upper half; the rosette is right, but the dense yellow wand is an open scatter. V3.65: The wand is the length read, and a narrow spike of tiny flowers is drawn as a solid bar at the read length. Then: painted with no more flowers than the cluster has, a spike of separate flowers on its stem tip.",
   "read_in": "V3.65",
   "earlier": [
    {
