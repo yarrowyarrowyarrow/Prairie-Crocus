@@ -93,9 +93,13 @@ function _wbFlower(g, x, y, r, petals, spin) {
 // cluster's, `petals` its petal count (0: a catkin's fuzz, drawn solid).
 // {key, map, test, cover}, one for each cluster that differs, kept for the session.
 const _WB_MASKS = new Map();
-function _wbMask(arch, petals, share) {
+function _wbMask(arch, petals, share, florets) {
   const sh = _wbShare(share);
-  const key = arch + '|' + Math.min(12, petals) + '|' + sh;
+  // Never more flowers painted than the cluster has (V3.65): drawn at the
+  // length read, alumroot's 30-flowered panicle was painted with 70, 1.5 px
+  // apart, and read as a solid bar.
+  const has = Math.max(1, Math.min(140, Math.round(florets || 140)));
+  const key = arch + '|' + Math.min(12, petals) + '|' + sh + '|' + has;
   let mk = _WB_MASKS.get(key);
   if (mk) return mk;
   const W = 128, cv = document.createElement('canvas');
@@ -110,7 +114,7 @@ function _wbMask(arch, petals, share) {
   // up to 140 in a flat or round cluster, so one of many tiny flowers (a
   // Joe-Pye weed's dome) is not half bare (70 until V3.65); 70 along a spike
   // or a panicle, where 140 made a slender agrimony spike a solid bar.
-  const most = _WB_LONG[arch] ? 70 : 140;
+  const most = Math.min(has, _WB_LONG[arch] ? 70 : 140);
   const fill = (area) => Math.max(1, Math.min(most, Math.round(area * W * W / (3.2 * r * r))));
   switch (arch) {
     case 'solitary': case 'head':
@@ -242,7 +246,7 @@ function buildWoodyBlooms(plants, month, terrain) {
     const L = p.plant_type === 'tree' || p.plant_type === 'shrub' ? 0
       : Math.min((p.head_length_cm || 0) / 100, _REACH_OF_HEIGHT * Math.max(0.1, bodyHeightOf(p)));
     const Wd = L ? Math.max(d, (p.head_width_cm || p.head_length_cm * 0.4) / 100) * L * 100 / p.head_length_cm : 0;
-    const mk = _wbMask(arch, petals, d / (L ? Math.max(L, Wd) : natural));
+    const mk = _wbMask(arch, petals, d / (L ? Math.max(L, Wd) : natural), p.florets_per_head);
     const fit = L ? _wbFill(arch, petals, _wbShare(d / Math.max(L, Wd))) : null;
     const anchors = bloomAnchors(p, WOODY_BLOOM_MAX, month);     // 15b-anchors.js
     // A wildflower whose body offers no tip to carry a card keeps its florets.
@@ -265,7 +269,10 @@ function buildWoodyBlooms(plants, month, terrain) {
       if (!nx && !nz) { const a = Math.atan2(q.z + p.y, q.x - p.x) + (rnd() - 0.5) * 0.6; nx = Math.cos(a); nz = Math.sin(a); }
       const jit = 0.85 + 0.3 * rnd();
       const sx = fit ? Wd / fit[0] * jit : reach * jit, sy = fit ? L / fit[1] * jit : reach * jit * 1.1;
-      gr.items.push({ x: q.x, y: q.y, z: q.z, nx, nz, size: sy / 1.1, sx, sy,
+      // How far out from the shoot's end it stands is by the cluster's own
+      // width, not the card's: a narrow spike's card is mostly empty, and
+      // pushed out by it the spike floated beside its stem.
+      gr.items.push({ x: q.x, y: q.y, z: q.z, nx, nz, size: sy / 1.1, sx, sy, ox: fit ? Wd * jit : sx,
                       lean: (0.25 + 0.5 * rnd()) * (q.top ? 0.35 : 1), spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
                       // A poplar's, an aspen's or a birch's catkins hang (src/tree_habit.py).
                       hang: !!(p.drawn && p.drawn.catkins_hang) && petals < 3 && arch === 'spike',
@@ -290,7 +297,7 @@ function buildWoodyBlooms(plants, month, terrain) {
       m.makeBasis(X, Y, Z);
       // Its middle just past the shoot's end and a little out from the
       // shrub: a cluster stands proud of the last leaves, or it is not seen.
-      v.set(it.x + it.nx * it.sx * it.out, it.y, it.z + it.nz * it.sx * it.out)
+      v.set(it.x + it.nx * it.ox * it.out, it.y, it.z + it.nz * it.ox * it.out)
         .addScaledVector(Y, it.hang ? 0 : -it.sy * (it.top ? 0.955 : 0.27));   // a stem tip's spike ends there
       m.setPosition(v);
       m.scale(v.set(it.sx, it.sy, it.sx));

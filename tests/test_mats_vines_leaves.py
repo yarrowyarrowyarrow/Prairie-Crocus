@@ -122,6 +122,24 @@ class TheViewer(unittest.TestCase):
         spray = _fn(_js("03d-woody.js"), "_wdSpray(shape")
         self.assertIn("per === 2 && j % 2 === 1", spray)
 
+    def test_a_card_paints_no_more_flowers_than_the_cluster_has(self):
+        """V3.65's first build painted alumroot's 30-flowered panicle with 70
+        flowers 1.5 px apart, a solid bar, once it was drawn at its read
+        length; a rule by the column's width instead halved chokecherry's."""
+        bloom = _js("15c-woodybloom.js")
+        mask = _fn(bloom, "_wbMask")
+        self.assertIn("florets", mask.split("\n")[0])
+        self.assertIn("Math.min(has,", mask)
+        self.assertIn("+ '|' + has", mask, "the count must be in the mask's key")
+        self.assertIn("p.florets_per_head);", bloom)
+
+    def test_a_narrow_spike_stands_on_its_stem_tip(self):
+        """Pushed out by its card's width, which a narrow spike's card is
+        mostly empty of, the spike floated beside its stem."""
+        bloom = _js("15c-woodybloom.js")
+        self.assertIn("ox: fit ? Wd * jit : sx", bloom)
+        self.assertIn("it.nx * it.ox * it.out", bloom)
+
     def test_a_read_vine_clothes_its_side(self):
         m = re.search(r"const VINE_SHOOT_GAP = ([\d.]+);", _js("22b-vineleaves.js"))
         self.assertLessEqual(float(m.group(1)), 0.3)
