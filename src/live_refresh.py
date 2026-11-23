@@ -52,6 +52,10 @@ class LiveRefresh(QObject):
         and Planning's went into Design)."""
         self._tabs.currentChanged.disconnect(self._on_current)
         self._owner.removeEventFilter(self)
+        # Belong to the panel now watched, or the one left behind deletes this
+        # filter while the new one still uses it: under Python 3.14 that
+        # corrupted memory and the next test crashed (V3.67).
+        self.setParent(owner)
         self._owner, self._tabs, self._pages = owner, tabs, dict(pages)
         tabs.currentChanged.connect(self._on_current)
         owner.installEventFilter(self)

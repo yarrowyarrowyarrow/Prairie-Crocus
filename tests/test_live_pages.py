@@ -235,6 +235,29 @@ class TestThePagesFillThemselves(unittest.TestCase):
         new_owner.close()
         old_owner.close()
 
+    def test_the_panel_it_left_does_not_take_it_down(self):
+        """V3.67: a moved LiveRefresh stayed the Qt child of the panel it
+        left, so deleting that panel deleted the filter the new panel still
+        used. Under Python 3.14 that corrupted memory and the next test in
+        the run crashed inside the compiler, naming no test."""
+        from PyQt6 import sip
+        from PyQt6.QtWidgets import QLabel, QTabWidget, QWidget
+        from src.live_refresh import LiveRefresh
+        old_owner, new_owner = QWidget(), QWidget()
+        old_tabs, new_tabs = QTabWidget(old_owner), QTabWidget(new_owner)
+        page = QLabel("page")
+        filled = []
+        live = LiveRefresh(old_owner, old_tabs, {})
+        new_tabs.addTab(page, "Page")
+        live.move_to(new_owner, new_tabs, {page: lambda: filled.append(1)})
+        self.assertIs(live.parent(), new_owner)
+        sip.delete(old_owner)
+        self.assertFalse(sip.isdeleted(live), "the panel it left deleted it")
+        new_owner.show()
+        self.assertTrue(live.fill_now())
+        self.assertEqual(filled, [1])
+        new_owner.close()
+
     def test_every_type_in_the_design_has_its_row_in_the_hours(self):
         """Until V3.08 the table listed six fixed types, so wildflowers and
         grasses were in the subtotal with no row of their own: a worked example
