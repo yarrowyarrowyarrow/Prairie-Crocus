@@ -34,6 +34,8 @@ def _app():
 
 
 TYPES = {"tree": "Tree", "shrub": "Shrub", "vine": "Vine", "fern": "Fern"}
+#: A click on a name: past the box (`_BOX_ZONE`, 22 px), on its first letters.
+_NAME_X = 30
 
 
 @unittest.skipUnless(_HAVE_QT, "PyQt6 not installed in this env")
@@ -257,7 +259,10 @@ class TestWhatAClickOnARowMeans(unittest.TestCase):
 
     def test_a_name_chooses_it_and_closes_the_list(self):
         combo = self._combo()
-        self._click(combo, 1, 60)                 # "Shrub"
+        # On the name's first letters, not 60 px in: the box at 10 px was hit
+        # on Windows and 60 px was not, the offscreen list being narrower
+        # there (V3.67). The app ticks and closes on a name click on Windows.
+        self._click(combo, 1, _NAME_X)            # "Shrub"
         self.assertEqual(combo.checked_keys(), ["shrub"])
         self.assertFalse(combo.view().isVisible())
 
@@ -293,10 +298,10 @@ class TestWhatAClickOnARowMeans(unittest.TestCase):
     def test_a_ticked_name_clicked_again_is_unticked(self):
         """V3.14: the second click on a chosen value takes it off."""
         combo = self._combo()
-        self._click(combo, 1, 60)
+        self._click(combo, 1, _NAME_X)
         combo.showPopup()
         self._app.processEvents()
-        self._click(combo, 1, 60)
+        self._click(combo, 1, _NAME_X)
         self.assertEqual(combo.checked_keys(), [])
         self.assertFalse(combo.view().isVisible())
 
