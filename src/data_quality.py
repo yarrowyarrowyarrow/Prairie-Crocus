@@ -196,7 +196,7 @@ INFLORESCENCE_FORMS = {"turkey_foot", "open_panicle", "contracted_spike",
 FLOWER_ARCHITECTURES = ("solitary", "raceme", "spike", "panicle", "corymb",
                         "umbel", "head", "cyme", "whorl")
 FLOWER_SYMMETRIES = ("radial", "bilateral")
-PETAL_SHAPES      = ("narrow", "oval", "notched", "tubular", "lipped")
+PETAL_SHAPES      = ("narrow", "oval", "notched", "tubular", "lipped", "reflexed")
 STEM_BRANCHINGS   = ("unbranched", "branched_above", "branched_throughout")
 
 # ── Fauna morphology (schema v58, V2.36) ────────────────────────────────────
@@ -535,7 +535,10 @@ def validate_plant(
 
     # The crown (schema v100): two words from their vocabularies and the
     # share of the height that is bare trunk.
-    shapes = SHRUB_CROWN_SHAPES if record.get("plant_type") == "shrub" else CROWN_SHAPES
+    # A shrub's crown in its own words, and a woody mat's (a creeping juniper
+    # filed as a groundcover, branching prostrate, V3.67b).
+    shrubby = record.get("plant_type") == "shrub" or record.get("branching") == "prostrate"
+    shapes = SHRUB_CROWN_SHAPES if shrubby else CROWN_SHAPES
     for field, vocab in (("crown_shape", shapes), ("limb_habit", LIMB_HABITS)):
         val = (record.get(field) or "").strip()
         if val and val not in vocab:

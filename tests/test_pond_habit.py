@@ -45,7 +45,9 @@ EXPECTED = {
     "Buckbean": "broadleaf",
     "Water Arum (Wild Calla)": "broadleaf",
     "Common Mare's-tail": "whorled",
-    "Water Parsnip": "herb",
+    # Drawn by the leafy body since its leaves were read (V3.67b): a herb's
+    # habit is the pond's ("herb") only while it is the baked figure.
+    "Water Parsnip": None,
     # Read off their photographs in V3.51: drawn from their own blades and
     # heads by src/grass_habit.py, so the pond gives them no body.
     "Cattail": None,
@@ -93,9 +95,13 @@ class TheBody(unittest.TestCase):
                 continue
             with self.subTest(r["common_name"]):
                 body = PH.body_for(r)
+                # ...or a herb whose leaves were read, drawn by the leafy body
+                # (V3.67b: water parsnip).
+                from src import herb_habit                    # noqa: PLC0415
                 self.assertTrue(body in PH.BODIES
                                 or r.get("growth_form") == "jointed"
-                                or grass_habit.form_for(r))
+                                or grass_habit.form_for(r)
+                                or herb_habit.form_for(r))
 
     def test_the_habit_decides_not_the_habitat(self):
         # A wildflower that is an emergent with broad leaves (Water Arum).

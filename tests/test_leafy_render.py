@@ -207,7 +207,9 @@ class TheBodyInTheRealViewer(unittest.TestCase):
             self.assertEqual(r["bad"], 0, where)
             self.assertGreater(r["triangles"], 20, where)
             self.assertLessEqual(r["triangles"], 1800 * 1.12, where)
-            self.assertGreater(r["tips"], 0, where)
+            # A fern's fronds carry no flowers, so offer no tips (V3.67b).
+            if r["form"] != "fronds":
+                self.assertGreater(r["tips"], 0, where)
             self.assertAlmostEqual(r["top"], 1.0, delta=0.02, msg=where)
 
     def test_a_mat_is_leafy_shoots_and_not_a_plate(self):

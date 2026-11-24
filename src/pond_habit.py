@@ -85,7 +85,12 @@ def body_for(plant: dict) -> Optional[str]:
         return "reed" if ptype == "aquatic" else None
     if ptype != "aquatic":
         return None
-    return "herb" if form in _HERB_FORMS else "reed"
+    if form in _HERB_FORMS:
+        # A herb whose leaves and habit were read is drawn from them by the
+        # leafy body (src/herb_habit.py, V3.67b: water parsnip).
+        from src import herb_habit                       # noqa: PLC0415
+        return None if herb_habit.form_for(plant) else "herb"
+    return "reed"
 
 
 def water_at(x: float, y: float, structures) -> float:

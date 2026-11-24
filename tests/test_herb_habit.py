@@ -61,16 +61,40 @@ class TheGate(unittest.TestCase):
     def test_only_wildflowers_herbs_and_groundcovers(self):
         for kind in ("wildflower", "herb", "groundcover"):
             self.assertIsNotNone(herb_habit.form_for(_plant(plant_type=kind)))
-        for kind in ("grass", "sedge", "rush", "fern", "shrub", "tree", "vine", "aquatic"):
+        for kind in ("grass", "sedge", "rush", "shrub", "tree", "vine"):
             self.assertIsNone(herb_habit.form_for(_plant(plant_type=kind)), kind)
+
+    def test_a_fern_and_a_herb_like_water_plant_are_drawn_too(self):
+        """V3.67b: an ostrich fern's fronds, and a water parsnip's leafy stems;
+        a floating, submerged or emergent water plant keeps the pond's body."""
+        self.assertEqual(herb_habit.form_for(_plant(plant_type="fern", growth_form="fern")),
+                         "fronds")
+        self.assertEqual(herb_habit.form_for(_plant(plant_type="aquatic")), "stems")
+        for habit in ("emergent", "floating", "submerged"):
+            self.assertIsNone(herb_habit.form_for(_plant(plant_type="aquatic",
+                                                         growth_form=habit)), habit)
+
+    def test_a_one_leaf_shoot_of_a_divided_leaf_is_an_umbrella(self):
+        """V3.67b: wild sarsaparilla's shoots are each one ternate leaf."""
+        p = _plant(growth_form="colony", stem_leaf_nodes=1, leaf_shape="ternate")
+        self.assertEqual(herb_habit.form_for(p), "umbrella")
+        p = _plant(growth_form="colony", stem_leaf_nodes=1, leaf_shape="ovate")
+        self.assertEqual(herb_habit.form_for(p), "colony")
+
+    def test_a_woody_mat_is_the_shrub_bodys(self):
+        """V3.67b: creeping juniper, its stems counted, is drawn as a shrub."""
+        p = _plant(plant_type="groundcover", growth_form="mat", branching="prostrate",
+                   woody_stems=14)
+        self.assertIsNone(herb_habit.form_for(p))
 
     def test_no_leaf_recorded_draws_nothing_new(self):
         self.assertIsNone(herb_habit.form_for(_plant(leaf_shape="")))
         self.assertIsNone(herb_habit.form_for(_plant(leaf_size_cm=None)))
 
     def test_a_habit_these_forms_do_not_draw_is_left_alone(self):
+        # "fern" is drawn since V3.67b (the fronds form), on a fern.
         for habit in ("tussock", "emergent", "floating", "jointed", "pads",
-                      "globose", "succulent", "vining", "fern", ""):
+                      "globose", "succulent", "vining", ""):
             self.assertIsNone(herb_habit.form_for(_plant(growth_form=habit)), habit)
 
     def test_another_modules_body_is_not_overwritten(self):

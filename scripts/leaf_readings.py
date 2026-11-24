@@ -85,7 +85,7 @@ from src import (grass_habit, herb_habit, native_here, photo_picks, shrub_habit,
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.65"
+READ_IN = "V3.67b"
 
 #: A word from a vocabulary.
 WORDS = {
@@ -104,6 +104,8 @@ WORDS = {
     "blade_habit": dq.BLADE_HABITS,
     "head_attitude": dq.HEAD_ATTITUDES,
     "inflorescence_form": dq.INFLORESCENCE_FORMS,
+    # V3.67b: how a fruit is borne (a baneberry's raceme of berries); never its colour.
+    "fruit_form": dq.FRUIT_FORMS,
 }
 #: A colour, '#rrggbb': a species' leaves and a graminoid's head (V3.51).
 #: Never a flower's, which is the owner's answer.
@@ -114,7 +116,8 @@ COLOURS = ("leaf_color", "head_color")
 CLUSTER = ("head_length_cm", "head_width_cm")
 #: A number, with the range a reading may fall in.
 NUMBERS = {
-    "leaf_size_cm": (0.2, 80.0),
+    # To the data gate's own bound: an ostrich fern's frond is over a metre (V3.67b).
+    "leaf_size_cm": (0.2, 120.0),
     "stem_leaf_nodes": (1, 80),
     "flowering_stems": (1, 300),
     "woody_stems": (1, 60),
@@ -220,6 +223,7 @@ def problems(batch: dict, rows: dict, review: dict) -> list:
                 out.append(f"{sci}: {field} is not a field this tool reads")
             elif field == "crown_shape" and value not in (
                     dq.SHRUB_CROWN_SHAPES if row.get("plant_type") == "shrub"
+                    or {**row, **reading}.get("branching") == "prostrate"
                     else dq.CROWN_SHAPES):
                 # A shrub's crown in its own words (V3.63), a tree's in its.
                 out.append(f"{sci}: crown_shape {value!r} is not a "

@@ -129,7 +129,9 @@ function headsPerCluster(p, size, clusters) {
 function denseClusterApplies(p) {
   if (STYLISED || !p.flower_arch || p.inflorescence_form) return false;
   if (p.plant_type === 'tree' || p.plant_type === 'shrub' || p.plant_type === 'vine') return false;
-  return !!DENSE_ARCHES[p.flower_arch] && (p.florets_per_head || 0) >= DENSE_FLORETS;
+  // An umbel whose globe was measured (an onion's, V3.67b) is one too.
+  const arch = DENSE_ARCHES[p.flower_arch] || (p.flower_arch === 'umbel' && p.head_length_cm > 0);
+  return !!arch && (p.florets_per_head || 0) >= DENSE_FLORETS;
 }
 
 window.bloomGain = bloomGain;

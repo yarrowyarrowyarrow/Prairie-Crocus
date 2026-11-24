@@ -256,13 +256,16 @@ VINE_HOST = "Cornus sericea"
 #: flowers set off the vines' fresh green leaflets and their racemes.
 VINE_HOST_LOW = "Symphoricarpos occidentalis"
 
-#: Unit (east, north) toward the right-hand edge of the shrub as the gallery's
-#: camera sees it. frameCamera (html/scene3d/01-core.js) puts the camera 0.9 r
-#: east and 1.1 r south of the scene, so screen-right is east-north-east. A
-#: vine there hangs on the shrub's silhouette, seen against the ground. Facing
-#: the camera it was lost among the shrub's own leaves, and due east it was
-#: half behind them.
-_VINE_SIDE = (1.1 / math.hypot(0.9, 1.1), 0.9 / math.hypot(0.9, 1.1))
+#: Unit (east, north) toward the side of the shrub the vine climbs. Until
+#: V3.67b it was east-north-east, the right-hand edge for the gallery's own
+#: camera (frameCamera, 0.9 r east and 1.1 r south of the scene). But the
+#: reference sheets the models are judged on (scripts/model_references.py
+#: views) look from due south, and from there east-north-east is behind the
+#: shrub: every vine sheet since V3.48 showed the host with the vine on its far
+#: side. South-east is the near, right-hand side for that camera and faces the
+#: gallery's; since V3.67b a vine drapes proud of its host's leaves
+#: (22-vines.js VINE_PROUD), so facing a camera it is no longer lost among them.
+_VINE_SIDE = (0.8, -0.6)
 
 
 def _vine_scene(plant, pid, name, i, when=None):

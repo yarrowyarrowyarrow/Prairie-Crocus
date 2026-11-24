@@ -71,11 +71,18 @@ feature, skim where it sits in that philosophy. The sources of truth:
   leafy-shoot cards (`html/scene3d/03g-stemleaves.js`) and read all 250 again (mean 5.50): its
 "Still wrong" table is the current ranking; [V3.67](docs/plans/V3.67-flowers-you-can-see.md) opened
   the branched wildflowers' tops and made their flowers readable (`HEAD_COVER`, `LOOSE_MIN_M`).
+  [Its second sitting](docs/plans/V3.67-the-lowest-models.md) (pass `V3.67b`) reworked the 39 at 4
+  or below by cause: hanging flowers (`head_attitude` on a wildflower, `15f-nodding.js`),
+  umbrellas, fronds and thin tufts (`03h-leafyforms.js`, which now holds the rosettes and tufts),
+  water plants by their parts (`23b-pondforms.js`), vines over their host's near side, a woody
+  mat filed as a groundcover (`shrub_habit.WOODY_MATS`); mean 5.82, the plan's table the ranking.
+  **A flower recorded by its characters is drawn whatever its `flower_form`**, which stays the
+  pollinator logic's: never change it to make a flower show.
   [V3.49](docs/plans/V3.49-shrubs-from-their-own-stems.md) did the shrubs and
   [V3.50](docs/plans/V3.50-trees-and-vines-from-their-photographs.md) the trees and vines,
   [V3.51](docs/plans/V3.51-grasses-sedges-and-rushes-by-their-heads.md) the grasses, sedges and rushes;
-  still open: the 12 water plants, the horsetails, prickly-pear, creeping juniper, ostrich
-  fern, leaf colour for the plants read before V3.51, cones.
+  still open: the arrowheads, pond-lily and floating marsh-marigold (`23-pond.js`), the
+  horsetails, prickly-pear, leaf colour for the plants read before V3.51, cones.
 
 **The thirteen principles, in one line each:**
 

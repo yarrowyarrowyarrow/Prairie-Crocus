@@ -68,7 +68,9 @@ class TheClustersWereRead(unittest.TestCase):
         """grass_habit draws a tuft from head_length_cm: only on a graminoid."""
         from src import grass_habit
         for r in _rows().values():
-            if r["plant_type"] in herb_habit.TYPES and r.get("head_length_cm"):
+            # A water plant may be either (V3.67b): a cattail's head is a grass's.
+            if (r["plant_type"] in herb_habit.TYPES and r["plant_type"] != "aquatic"
+                    and r.get("head_length_cm")):
                 self.assertIsNone(grass_habit.form_for(r), r["common_name"])
 
 

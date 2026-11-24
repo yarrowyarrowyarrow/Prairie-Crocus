@@ -113,7 +113,8 @@ function _toScene(points, b, top) {
 // body is not one this chunk knows (the caller then places them as it did).
 function bloomAnchors(p, count, month) {
   const own = (window.vineAnchorsFor && vineAnchorsFor(p))             // V2.89
-    || (window.succulentAnchorsFor && succulentAnchorsFor(p));        // V2.93
+    || (window.succulentAnchorsFor && succulentAnchorsFor(p))         // V2.93
+    || (window.pondAnchorsFor && pondAnchorsFor(p));                  // V3.67b
   if (own) return own;
   const herb = _BLOOM_BODY.get(p);
   if (herb) {
@@ -150,10 +151,30 @@ function woodyBloomCount(p) {
 // 1 up to 1.5 m, rising to 2.5 at 6 m and over. An estimate: nothing records
 // how much of a crown its flowers cover.
 function woodyBloomGain(p) {
+  // A vine is seen on its host from the host's distance (V3.67b): at life size
+  // a vetch's racemes and a honeysuckle's clusters were specks on a shrub, and
+  // at 1.4 a peavine's still were among the leaves it lies over. 1.8, an
+  // estimate like the rest, whatever the climb.
+  if (p.plant_type === 'vine') return 1.8;
   if (p.plant_type !== 'tree' && p.plant_type !== 'shrub') return 1;
   return Math.max(1, Math.min(2.5, 1 + ((p.height_m || 1) - 1.5) / 3));
 }
 
+// How many clusters a shrub in full flower carries this year: by the surface
+// of its crown, and never fewer than were recorded (moved from 15c-woodybloom.js,
+// at its ceiling, in V3.67b).
+function woodyBloomCards(p) {
+  // A wildflower's clusters are the ones counted on it (15e-heads.js, V3.64).
+  if (p.plant_type !== 'tree' && p.plant_type !== 'shrub' && p.plant_type !== 'vine') return Math.max(1, p.flowering_stems || 6);
+  const r = Math.max(0.15, (p.canopy_m || 1) / 2), h = Math.max(0.2, bodyHeightOf(p));
+  const byCrown = Math.round(Math.PI * r * (r + 2 * h) * 0.7 * WOODY_BLOOM_PER_M2);
+  return Math.min(WOODY_BLOOM_MAX, Math.max(8, p.flowering_stems || 0, byCrown));
+}
+
+// A tree, a shrub or a vine: a plant whose flowers are carried on cards.
+const woodyKind = (p) => p.plant_type === 'tree' || p.plant_type === 'shrub' || p.plant_type === 'vine';
+
+window.woodyBloomCards = woodyBloomCards;
 window.noteBloomBody = noteBloomBody;
 window.bloomBodiesReset = bloomBodiesReset;
 window.bloomAnchors = bloomAnchors;

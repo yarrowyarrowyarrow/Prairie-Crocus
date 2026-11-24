@@ -36,6 +36,9 @@ window.SCENE3D_CHUNKS = [
   // V3.66: a leafy wildflower's stems carry cut-out leafy shoots, as a shrub's
   // do, as many as cover its outline (F268). Called by 03c-leafy.js at build.
   'scene3d/03g-stemleaves.js',
+  // V3.67b: the leafy body's rosettes and tufts, split from 03c-leafy.js (at
+  // its ceiling), with an umbrella of one divided leaf and a fern's fronds.
+  'scene3d/03h-leafyforms.js',
   'scene3d/03e-crowns.js',
   // V3.51: a grass, sedge or rush built from its own blades and seed head
   // where those were read (F268). After 03c-leafy.js for its blades and tubes.
@@ -63,6 +66,9 @@ window.SCENE3D_CHUNKS = [
   // V3.64: a daisy you can see and a spike drawn as a spike: a head's least
   // size and its facing, and a wildflower's dense clusters as cards (F268).
   'scene3d/15e-heads.js',
+  // V3.67b: a flower that hangs, as a bell or a swept-back dart, where its
+  // head_attitude was read nodding (F268). Called by 05-flowers.js at build.
+  'scene3d/15f-nodding.js',
   // V2.43: click-to-plant in the reference sandboxes, and the QWebChannel
   // the viewer never had. Last on purpose — its pointer handlers must
   // register after 10-inspect.js's so both see the same click.
@@ -91,6 +97,10 @@ window.SCENE3D_CHUNKS = [
   // V2.90: the pond (F175) — floating leaves on a pond's water, submerged
   // plants showing what reaches the surface, broad leaves on stalks.
   'scene3d/23-pond.js',
+  // V3.67b: the water plants by their own parts (F268): feathery shoots and
+  // threads on the water, flowering stalks out of it, duckweed chains, a
+  // buckbean's leaflets, a water-plantain's panicle, a calla's spathe.
+  'scene3d/23b-pondforms.js',
   'scene3d/24-succulents.js',   // V2.93: cacti, yucca and roseroot (F177)
   // V3.39: what a card says, its links and the trail back (F255). After
   // 16-editing.js, whose bridge Plant one calls, and after 10-inspect.js,

@@ -680,7 +680,8 @@ function buildPlants(group, plants, month, year, terrain) {
     // at Stylised it keeps the tuft its type has always had.
     if (pb === 'tuft') { (tuftKeyFor(p) ? byKind.tuft : byKind.grass).push(p); continue; }
     if (pb && ['reed', 'herb', 'leafy', 'woody', 'crown'].indexOf(pb) < 0) { byKind.pond.push(p); continue; }
-    let t = pb === 'herb' || pb === 'leafy' ? 'herb' : p.plant_type;
+    // A woody mat filed as a groundcover is drawn as the shrub it is (V3.67b).
+    let t = pb === 'herb' || pb === 'leafy' ? 'herb' : pb === 'woody' ? 'shrub' : p.plant_type;
     if (t === 'sedge' || t === 'rush') t = 'grass';   // graminoids share blades
     const k = byKind[t] ? t : 'herb';
     byKind[k].push(p);

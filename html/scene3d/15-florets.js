@@ -38,7 +38,7 @@
 
 const FLORET_ARCHITECTURES = ['solitary', 'raceme', 'spike', 'panicle',
                               'corymb', 'umbel', 'head', 'cyme', 'whorl'];
-const PETAL_SHAPES = ['narrow', 'oval', 'notched', 'tubular', 'lipped'];
+const PETAL_SHAPES = ['narrow', 'oval', 'notched', 'tubular', 'lipped', 'reflexed'];
 
 // How many florets are DRAWN, against how many the plant carries. A yarrow
 // corymb holds ~200 and reads as roughly fifteen white dots at yard scale;

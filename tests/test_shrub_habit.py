@@ -274,8 +274,10 @@ class TheCatalogue(unittest.TestCase):
             if r.get("woody_stems"):
                 self.assertTrue(herb_habit.is_read(r),
                                 f"{r['scientific_name']}: a stem count with no reading")
-                # A tree's trunks are counted in the same column (V3.50).
-                self.assertIn(r.get("plant_type"), shrub_habit.TYPES + ("tree",),
+                # A tree's trunks are counted in the same column (V3.50), and
+                # a woody mat's, a creeping juniper's (V3.67b).
+                self.assertIn(r.get("plant_type"),
+                              shrub_habit.TYPES + shrub_habit.WOODY_MATS + ("tree",),
                               r["scientific_name"])
 
     def test_every_native_shrub_is_drawn_from_its_own_numbers(self):

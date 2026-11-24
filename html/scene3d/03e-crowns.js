@@ -56,6 +56,11 @@ const SPRAY_UNIT = { frond: 16, tuft: 8, rosette: 10 };
 // conifer's fronds lie level but hang and turn at their ends, so from a
 // person's height they are seen more from the side than a shrub's.
 const CROWN_FACE_UP = { leaf: 0.5, frond: 0.32, tuft: 0.4, rosette: 0.4 };
+// How much of WOODY_COVER a crown of each spray fills (V3.67b, an estimate read
+// off the photographs): a pine's and a tamarack's crowns are open, the sky and
+// their branches seen through them; filled as a spruce's, a jack pine read as a
+// poplar and a tamarack as a spruce.
+const CROWN_OPEN = { leaf: 1, frond: 1, tuft: 0.5, rosette: 0.45 };
 // A conifer's whorls: how far apart up the trunk, in metres (never closer than
 // a fortieth of the tree), and limbs to a whorl.
 const WHORL_GAP = 0.4, WHORL_LIMBS = 4;
@@ -191,7 +196,8 @@ function _crownPlan(d, quality) {
     area += 2 * Math.PI * R * crownEnvelope(d.form, t, d.clear) * H / 24;
   }
   area = area * 0.8 + Math.PI * R * R * 0.4;
-  const need = WOODY_COVER * area / (spray.w * L * spray.h * L * (spray.leafCover || spray.cover) * 0.6);
+  const need = WOODY_COVER * (CROWN_OPEN[kind] || 1) * area
+    / (spray.w * L * spray.h * L * (spray.leafCover || spray.cover) * 0.6);
   const P = { H, R, L, shape: d.leaf_shape, form: d.form, budget, area, need, spray, tier,
               gain: 1, cards: 0, base: d.clear, faceUp: CROWN_FACE_UP[kind], trunks: Math.max(1, Math.min(12, d.trunks || 1)),
               limbs: LIMB_HABITS.indexOf(d.limbs) >= 0 ? d.limbs : 'spreading', needles };

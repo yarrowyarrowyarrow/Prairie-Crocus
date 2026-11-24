@@ -35,7 +35,8 @@
 //  * how much darker coloured fruit is in winter (WOODY_FRUIT_WINTER): a hip
 //    dries to a deeper red, a cranberry shrivels. Pale fruit (a snowberry's,
 //    a silverberry's) stays as it is: darkened it was grey on the snow.
-// A vine keeps its fruit on its own leaves (11-fruit.js, 22-vines.js).
+// A vine whose leaves were read carries its fruit so too, on its own shoots
+// (V3.67b): as points a honeysuckle's red berries were not seen on its host.
 
 // Bunches a square metre of the crown's surface, the most a plant carries, and
 // the share still on its twigs in the months it holds them.
@@ -67,7 +68,7 @@ function fruitInSeason(p, month) {
 // A shrub drawn from its own numbers, or a tree from its own crown.
 function woodyFruitApplies(p) {
   return !!p.fruit_color && !!((window.woodyKeyFor && woodyKeyFor(p))
-    || (window.crownKeyFor && crownKeyFor(p)));
+    || (window.crownKeyFor && crownKeyFor(p)) || (window.vineReadFor && vineReadFor(p)));
 }
 
 // A bunch of the form, painted in the grey ramp the instance colour tints

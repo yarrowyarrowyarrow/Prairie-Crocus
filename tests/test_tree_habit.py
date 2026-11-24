@@ -156,7 +156,9 @@ class TheViewerAgrees(unittest.TestCase):
         wind-pollinated tree; the flower layer lets a card body through on its
         colour instead."""
         flowers = _js("05-flowers.js")
-        self.assertIn("(!byForm[form] && !carries)", flowers)
+        # V3.67b: and a flower recorded by its characters on its own (a
+        # sarsaparilla's umbels, recorded 'none' for the pollinator logic too).
+        self.assertIn("(!byForm[form] && !carries && !described)", flowers)
         with open(os.path.join(_ROOT, "data", "plants_master.json"), encoding="utf-8") as fh:
             rows = {r["scientific_name"]: r for r in json.load(fh)}
         self.assertEqual(rows["Populus tremuloides"]["flower_form"], "none")
@@ -192,9 +194,11 @@ class TheCatalogue(unittest.TestCase):
         from src import data_quality
         for r in self.rows:
             if r.get("crown_shape") or r.get("limb_habit") or r.get("crown_clear") is not None:
-                self.assertIn(r["plant_type"], ("tree", "shrub"), r["scientific_name"])
+                # ...or a woody mat filed as a groundcover (V3.67b), in a shrub's words.
+                mat = r["plant_type"] == "groundcover" and r.get("branching") == "prostrate"
+                self.assertTrue(r["plant_type"] in ("tree", "shrub") or mat, r["scientific_name"])
                 self.assertTrue(herb_habit.is_read(r), r["scientific_name"])
-                words = (data_quality.SHRUB_CROWN_SHAPES if r["plant_type"] == "shrub"
+                words = (data_quality.SHRUB_CROWN_SHAPES if r["plant_type"] == "shrub" or mat
                          else data_quality.CROWN_SHAPES)
                 self.assertIn(r.get("crown_shape"), words, r["scientific_name"])
                 if r["plant_type"] == "shrub":

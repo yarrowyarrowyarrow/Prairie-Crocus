@@ -72,10 +72,11 @@ class TestGalleryScenes(unittest.TestCase):
             host = next(p for p in plants if p.get("plant_type") != "vine")
             with self.subTest(key):
                 self.assertEqual(sorted(vines), ["climbing", "sprawling"])
-                # On the shrub's right-hand edge as the gallery camera sees
-                # it (east-north-east), not hidden behind or inside it.
+                # On the near, right-hand side of the shrub for the reference
+                # sheets' camera, due south (south-east, V3.67b): east-north-east
+                # was behind it, and every vine sheet showed only the host.
                 self.assertGreater(vines["climbing"]["x"], host["x"])
-                self.assertGreater(vines["climbing"]["y"], host["y"])
+                self.assertLess(vines["climbing"]["y"], host["y"])
 
     def test_a_floating_or_submerged_plant_is_shown_on_water(self):
         # V2.90: on the lawn a pond-lily is a scatter of pads on grass.

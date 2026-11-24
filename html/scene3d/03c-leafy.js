@@ -24,7 +24,7 @@
 // cut to LEAFY_BUDGET, simplest leaves first, then leaves a stem, then stems.
 
 // The forms (src/herb_habit.py FORMS; tests/test_herb_habit.py holds them equal).
-const LEAFY_FORMS = ['stems', 'colony', 'rosette', 'tuft', 'mat'];
+const LEAFY_FORMS = ['stems', 'colony', 'rosette', 'tuft', 'mat', 'umbrella', 'fronds'];
 // Triangles one plant may spend, by detail level. Stylised draws none of these.
 const LEAFY_BUDGET = [0, 1800, 3200];
 // Leaf spacing up a stem, as a multiple of the leaf's length.
@@ -301,8 +301,12 @@ function _leafyBloom(p, H) {
   const arch = FLORET_ARCHITECTURES.indexOf(p.flower_arch) >= 0 ? p.flower_arch : 'cyme';
   const reach = _inflorescence(p, arch, _drawnFlorets(p.florets_per_head), H).reach;
   if (arch === 'head' || arch === 'solitary') return { top: reach * 0.6 + 0.01, rays: 0 };
-  if (arch === 'corymb' || arch === 'umbel' || arch === 'cyme')
-    return { top: reach * 0.5 + 0.01, rays: reach > 0.03 ? reach : 0 };
+  if (arch === 'corymb' || arch === 'umbel' || arch === 'cyme') {
+    // A cluster read much tighter than its florets would spread (a pussytoes'
+    // heads, an onion's globe, V3.67b) has no wider a fan of stalks than read.
+    const w = (p.head_width_cm || 0) / 100, fan = w && w < reach * 0.5 ? w : reach;
+    return { top: reach * 0.5 + 0.01, rays: fan > 0.03 ? fan : 0 };
+  }
   return { top: reach * 1.1 + 0.01, rays: 0 };
 }
 
@@ -331,14 +335,19 @@ function _leafyPlan(d, bloom, budget) {
   const gap = L * (INTERNODE[d.arrangement] || INTERNODE.alternate);
   const P = { H, R, L, W, shape, perNode, form: d.form, stems: Math.max(1, d.stems), budget,
               nodes: 0, basal: 0, groups: 1, lod: 2, branching: d.branching,
-              habit: d.habit, forkLeaves: 2 };
+              habit: d.habit, forkLeaves: 2, bladeW: d.blade_m || 0 };
+  // An umbrella's or a fern's fronds (03h-leafyforms.js): the plainer leaves where the budget is low.
+  if (d.form === 'umbrella' || d.form === 'fronds') return Object.assign(P, { lod: budget >= 3000 ? 2 : 1 });
   const leafy = d.form === 'stems' || d.form === 'colony';
   if (leafy) {
     // The recorded count where somebody counted; else the spacing estimate.
     P.nodes = d.nodes > 0 ? Math.min(80, d.nodes)
       : Math.max(2, Math.min(40, Math.round((H * 0.9 - Math.min(bloom.top, H * 0.35)) / gap)));
     if (d.basal) P.basal = Math.max(5, Math.min(14, Math.round(Math.PI * L / (W * 0.6))));
-  } else if (d.form === 'mat' && !d.basal) {
+  } else if (d.form === 'mat' && (!d.basal || L < 0.026)) {
+    // (V3.67b: a carpet of rosettes of leaves under 2.6 cm, the pussytoes',
+    // is drawn as shoots too: one rosette at a time the budget covered a
+    // third of its ground in specks.)
     // Sprigs a few leaves long, as many as cover the ground.
     P.sprig = Math.min(R * 0.6, Math.max(0.04, L * 3));
     P.nodes = Math.max(2, Math.min(12, Math.round(P.sprig / gap)));
@@ -453,92 +462,7 @@ function _leafyStems(B, P, bloom, rng) {
   if (P.basal && !colony) _leafyRosette(B, P, [0, 0, 0], P.basal, L * 1.2, crown + 0.005, rng);
 }
 
-// Leaves round one point at the ground: the outer ones low, the inner rising.
-function _leafyRosette(B, P, c, n, L, r0, rng) {
-  const rot = rng() * 6.283;
-  for (let i = 0; i < n; i++) {
-    const a = i * 2.39996 + rot, inner = i / Math.max(1, n - 1);
-    const at = [c[0] + Math.cos(a) * r0 * 0.5, c[1] + 0.004, c[2] + Math.sin(a) * r0 * 0.5];
-    const stalk = _stalkAtGround(P.shape) * (1 - 0.6 * inner) * (0.8 + 0.4 * rng());
-    _lbSet(B, at, a, (_LONG_STALKED[P.shape] ? 0.5 : 0.16) + 0.75 * inner * inner + rng() * 0.12,
-           L * (1 - 0.3 * inner), P.shape, P.lod, rng, 0.5 + 0.24 * inner, stalk);
-  }
-}
-
-// A bare flower stalk from near `c` to `h`, leaning out by `lean`.
-function _leafyStalk(B, P, c, h, lean, bloom, rng) {
-  const a = rng() * 6.283, shade = 0.66 + rng() * 0.1;
-  const r = Math.max(0.001, Math.min(0.004, h * 0.006));
-  const foot = [c[0] + Math.cos(a) * 0.008, c[1], c[2] + Math.sin(a) * 0.008];
-  const top = h - (bloom.rays ? bloom.rays * 0.5 : 0);
-  const tip = [c[0] + Math.cos(a) * lean, c[1] + top, c[2] + Math.sin(a) * lean];
-  const mid = [(foot[0] + tip[0]) / 2 + Math.cos(a) * lean * 0.15, c[1] + top * 0.5,
-               (foot[2] + tip[2]) / 2 + Math.sin(a) * lean * 0.15];
-  _lbTube(B, [foot, mid, tip], r, r * 0.6, shade);
-  _lbTip(B, [tip[0], c[1] + h, tip[2]], bloom, rng, shade);
-}
-
-// The leaves of a mat that no budget draws one by one: a low mound under the
-// ones that are drawn, in their colour, darker as the inside of a mat is.
-function _leafyUnderlay(B, R, h, rng) {
-  const base = B.pos.length / 3, N = 12, rot = rng() * 6.283;
-  B.pos.push(0, h, 0); B.col.push(0.5, 0.5, 0.5);
-  for (const [f, y] of [[0.6, h * 0.8], [1, 0.002]]) {
-    for (let i = 0; i < N; i++) {
-      const a = rot + i * 6.2832 / N, r = R * f * (0.86 + 0.14 * rng());
-      B.pos.push(Math.cos(a) * r, y, Math.sin(a) * r);
-      B.col.push(0.46, 0.46, 0.46);
-    }
-  }
-  for (let i = 0; i < N; i++) {
-    const a = base + 1 + i, b = base + 1 + (i + 1) % N;
-    B.idx.push(base, b, a, a, b, a + N, b, b + N, a + N);
-  }
-}
-
-// Where `n` rosettes or tufts sit to fill a disc of radius `R`.
-function _leafySpots(n, R, rr, rng) {
-  if (n <= 1) return [[0, 0, 0]];
-  const out = [], rot = rng() * 6.283, reach = Math.max(0, R - rr * 0.8);
-  for (let i = 0; i < n; i++) {
-    const f = Math.sqrt((i + 0.5) / n), a = i * 2.39996 + rot;
-    out.push([Math.cos(a) * reach * f, 0, Math.sin(a) * reach * f]);
-  }
-  return out;
-}
-
-// Rosettes (or a carpet of them) under bare flower stalks.
-function _leafyRosettes(B, P, bloom, rng) {
-  const spots = _leafySpots(P.groups, P.R, P.rr, rng);
-  if (P.form === 'mat') {
-    const h = Math.min(0.03, P.L * 0.4);
-    _leafyUnderlay(B, P.R, h, rng);
-    for (const c of spots) c[1] = h * (1 - 0.9 * Math.hypot(c[0], c[2]) / P.R);
-  }
-  for (const c of spots) _leafyRosette(B, P, c, P.basal, P.L, 0.01, rng);
-  for (let i = 0; i < P.stems; i++) {
-    const c = spots[i % spots.length];
-    _leafyStalk(B, P, c, P.H * (i ? 0.78 + 0.22 * rng() : 1),
-                Math.min(P.R * 0.5, P.H * 0.22) * rng(), bloom, rng);
-  }
-}
-
-// Narrow leaves standing up from the ground and arching over, with bare stalks.
-function _leafyTufts(B, P, bloom, rng) {
-  const spots = _leafySpots(P.groups, P.R, P.rr, rng);
-  for (const c of spots) {
-    const rot = rng() * 6.283;
-    for (let i = 0; i < P.basal; i++) {
-      const a = i * 2.39996 + rot, out = Math.sqrt((i + 0.5) / P.basal);
-      const at = [c[0] + Math.cos(a) * 0.012 * out, 0.003, c[2] + Math.sin(a) * 0.012 * out];
-      _lbSet(B, at, a, 1.45 - 0.7 * out + (rng() - 0.5) * 0.2, P.L * (0.7 + 0.3 * rng()),
-             P.shape, P.lod, rng, 0.5 + 0.24 * rng(), 0);
-    }
-  }
-  for (let i = 0; i < P.stems; i++)
-    _leafyStalk(B, P, spots[i % spots.length], P.H * (i ? 0.8 + 0.2 * rng() : 1),
-                Math.min(P.R * 0.4, P.H * 0.12) * rng(), bloom, rng);
-}
+// The rosettes, tufts, umbrellas and fronds: 03h-leafyforms.js (V3.67b).
 
 // A mat of leafy shoots (V3.65). Until V3.65 a solid mound stood in for the
 // leaves no budget could draw one by one, and every mat read as a green plate
@@ -574,7 +498,9 @@ function _leafyMat(B, P, bloom, rng, C) {
     _leafyStalk(B, P, [e[0], e[1], e[2]], (H - e[1]) * (i ? 0.8 + 0.2 * rng() : 1), 0.01, bloom, rng);
   }
   // The leafy shoots: as many as cover the mat, on what the budget leaves.
-  const sp = _wdSpray(P.shape, P.perNode);                            // 03d-woody.js
+  // A mat of whorled leaves wears its whorls (a bedstraw's, 03h-leafyforms.js, V3.67b).
+  const sp = (P.perNode >= 3 && !/needle|awl|scale/.test(P.shape) && window.whorlSpray && whorlSpray(P.shape))
+    || _wdSpray(P.shape, P.perNode);                                 // 03d-woody.js
   const card = sp.w * sp.h * L * L * (sp.leafCover || sp.cover);
   let n = Math.ceil(MAT_COVER * Math.PI * R * R / Math.max(1e-6, card));
   const room = Math.max(60, Math.floor((P.budget - B.idx.length / 3) / 2));
@@ -605,7 +531,7 @@ function leafyKeyFor(p) {
   const b = _leafyBloom(p, d.mature_h);
   return ['leafy', d.form, d.mature_h, d.mature_w, d.stems, d.leaf_m, d.leaf_shape,
           d.arrangement, d.branching, d.habit, d.nodes || 0, d.basal ? 1 : 0, b.top.toFixed(3),
-          b.rays.toFixed(3)].join('|');
+          b.rays.toFixed(3), d.blade_m || 0].join('|');
 }
 
 // The body for the plants sharing `key`, in the unit frame every herb is placed
@@ -619,6 +545,7 @@ function buildLeafyGeo(p, v) {
     _leafyStems(B, P, bloom, rng);
     if (window.leafyStemCards) leafyStemCards(C, P, rng);           // V3.66
   }
+  else if (window.leafyForm && leafyForm[P.form]) leafyForm[P.form](B, P, bloom, rng);
   else if (P.form === 'tuft') _leafyTufts(B, P, bloom, rng);
   else if (P.form === 'mat' && P.shoots) _leafyMat(B, P, bloom, rng, C);
   else _leafyRosettes(B, P, bloom, rng);

@@ -46,6 +46,9 @@ const WOODY_BUDGET_H = [1, 4];
 // shell the drawn leaves are asked to cover.
 const WOODY_GAIN_MAX = 3;
 const WOODY_COVER = 0.75;
+// A woody groundcover (creeping juniper, V3.67b) is all leaf from above: its budget grows
+// with its ground, to this many times, and its tiny shoots drawn this much larger. Estimates.
+const WOODY_GROUND_BUDGET = 3, WOODY_GROUND_GAIN = 2;
 const WOODY_STEMS_MAX = 36;
 // A shrub part grown is built as a smaller shrub, not as a grown one shrunk:
 // at the first of these shares of its grown height that holds it, with fewer
@@ -136,6 +139,7 @@ function _wdSprayLeaves(shape) {
 
 // One leaf of `len` pixels, painted white, pointing up the canvas from (0, 0).
 function _wdPaintLeaf(g, shape, len) {
+  if (shape === 'ternate' && window.paintTernate) return paintTernate(g, len);   // 03h-leafyforms.js
   const ell = (l, w, y0) => { g.beginPath(); g.ellipse(0, -(y0 + l / 2), w / 2, l / 2, 0, 0, 6.2832); g.fill(); };
   const stalk = (l) => { g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -l); g.stroke(); };
   const at = (y, a, f) => { g.save(); g.translate(0, -y); g.rotate(a); f(); g.restore(); };
@@ -314,11 +318,13 @@ function _woodyPlan(d, quality) {
   // seen at an angle.
   const need = WOODY_COVER * area / (spray.w * L * spray.h * L * spray.leafCover * 0.6);
   const crown = WOODY_CROWNS.indexOf(d.crown) >= 0 ? d.crown : '';
-  const P = { H, R, L, shape, form: d.form, budget, area, need, spray, gain: 1, cards: 0, tier,
+  const more = d.ground ? _wdClamp(area / 1.5, 1, WOODY_GROUND_BUDGET) : 1;
+  const P = { H, R, L, shape, form: d.form, budget: Math.round(budget * more), area, need, spray,
+              gain: 1, cards: 0, tier, gainMax: WOODY_GAIN_MAX * (d.ground ? WOODY_GROUND_GAIN : 1),
               crown, clear: crown ? _wdClamp(d.clear || 0, 0, 0.6) : 0,
               // A young shrub has sent up fewer of its stems.
               stems: _wdClamp(Math.round((d.stems || 1) * (0.4 + 0.6 * tier)), 1, WOODY_STEMS_MAX) };
-  _woodyCards(P, budget * 0.62);
+  _woodyCards(P, P.budget * 0.62);
   P.shoots = Math.max(P.stems, Math.round(P.cards / WOODY_PER_SHOOT));
   return P;
 }
@@ -326,7 +332,7 @@ function _woodyPlan(d, quality) {
 // The sprays `tris` triangles buy, and how much larger than life they must be.
 function _woodyCards(P, tris) {
   const n = Math.max(1, Math.floor(tris / 2));
-  P.gain = _wdClamp(Math.sqrt(P.need / n), 1, WOODY_GAIN_MAX);
+  P.gain = _wdClamp(Math.sqrt(P.need / n), 1, P.gainMax || WOODY_GAIN_MAX);
   P.cards = Math.min(n, Math.ceil(P.need / (P.gain * P.gain)));
 }
 

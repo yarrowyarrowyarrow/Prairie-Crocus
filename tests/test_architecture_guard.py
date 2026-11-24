@@ -551,6 +551,8 @@ class TestStructuralCeilings(unittest.TestCase):
         # leaves on stalks. Its own chunk because 04-quality.js had no room;
         # when this trips, the three body builders are the seam.
         (_HTML / "scene3d" / "23-pond.js", 350),       # ~189 now
+        # V3.67b: the water plants by their own parts.
+        (_HTML / "scene3d" / "23b-pondforms.js", 400),
         # V2.93: succulents and cacti (F177) — pads, balls, swords, fleshy
         # stems. When this trips, the unit shapes are the seam.
         (_HTML / "scene3d" / "24-succulents.js", 650),  # ~533 now
@@ -584,8 +586,12 @@ class TestStructuralCeilings(unittest.TestCase):
         # V3.64 (F268): a head's least size and facing, and a wildflower's
         # dense clusters as cards; took _inflorescence from 15-florets.js.
         (_HTML / "scene3d" / "15e-heads.js", 220),
+        # V3.67b: hanging flowers, out of 15-florets.js (at its ceiling).
+        (_HTML / "scene3d" / "15f-nodding.js", 320),
         # V3.66: a leafy wildflower's stems carry leafy-shoot cards.
         (_HTML / "scene3d" / "03g-stemleaves.js", 160),  # 130 now
+        # V3.67b: the rosettes, tufts, umbrellas and fronds, out of 03c-leafy.js.
+        (_HTML / "scene3d" / "03h-leafyforms.js", 400),
         # V2.43: click-to-plant + the viewer's first QWebChannel. Geometry in,
         # coordinates out — if this file grows past its ceiling the cause is
         # almost certainly placement logic that belongs in

@@ -42,22 +42,39 @@ from typing import Optional
 BODY = "leafy"
 
 #: The forms the viewer builds (``03c-leafy.js`` ``LEAFY_FORMS``; a test holds
-#: the two equal).
-FORMS = ("stems", "colony", "rosette", "tuft", "mat")
+#: the two equal). ``umbrella`` and ``fronds`` since V3.67b (``03h-leafyforms.js``):
+#: a colony of shoots that are each one divided leaf (wild sarsaparilla), and a
+#: fern's crown of fronds.
+FORMS = ("stems", "colony", "rosette", "tuft", "mat", "umbrella", "fronds")
 
 #: ``leaf_data_source`` values that mean somebody read the leaf and habit
 #: numbers, where ``estimated`` (or nothing) means the seeder's genus default.
 READ = ("photo", "flora", "measured")
 
 #: The plant types these bodies are for. Grasses, sedges and rushes keep their
-#: tufts, and a fern its fronds.
-TYPES = ("wildflower", "herb", "groundcover")
+#: tufts. A fern whose fronds were read is drawn from them (V3.67b); until then
+#: it was the baked fern, a bundle of stalks with a few blades on them. So is a
+#: water plant whose habit is a herb's (water parsnip), where src/pond_habit.py
+#: defers to this; one floating, submerged or emergent keeps the pond's body.
+TYPES = ("wildflower", "herb", "groundcover", "fern", "aquatic")
 
 #: Recorded habit -> form. A habit not listed (tussock, emergent, floating,
 #: vining, jointed, pads...) is another module's or the baked figure's.
 FORM_OF = {"erect": "stems", "clump": "stems", "ferny": "stems",
            "colony": "colony", "rosette": "rosette", "grassy": "tuft",
-           "mat": "mat", "cushion": "mat", "sprawling": "mat"}
+           "mat": "mat", "cushion": "mat", "sprawling": "mat", "fern": "fronds"}
+
+#: Leaves that make a one-leaf shoot an umbrella: its divisions spread level at
+#: the top of the leaf stalk (V3.67b). A bunchberry's one whorl and a Canada
+#: anemone's one leaf keep the colony form.
+UMBRELLA_LEAVES = ("ternate",)
+
+#: A water plant's habits that are a herb's (src/pond_habit.py draws the rest).
+AQUATIC_HERB_FORMS = ("erect", "clump", "rosette", "ferny", "mat", "cushion")
+
+#: Fronds in a fern's crown, which nothing records: an estimate read off the
+#: ostrich fern's photographs, five to nine sterile fronds a crown.
+FRONDS = 7
 
 #: Flower clusters one stem carries, by how it forks. ``flowering_stems``
 #: counts the clusters on a grown plant (schema v54); the stems are that
@@ -86,12 +103,31 @@ def form_for(plant: dict) -> Optional[str]:
         return None
     if not plant.get("leaf_shape") or not float(plant.get("leaf_size_cm") or 0):
         return None
-    return FORM_OF.get((plant.get("growth_form") or "").lower())
+    # A water plant only where its habit is a herb's (water parsnip), never a
+    # grass-like one drawn from its blades and head (src/grass_habit.py: a
+    # cattail, a bulrush) or one the pond draws (src/pond_habit.py).
+    if (plant.get("plant_type") or "").lower() == "aquatic":
+        from src import grass_habit                       # noqa: PLC0415
+        if (grass_habit.form_for(plant) or (plant.get("growth_form") or "").lower()
+                not in AQUATIC_HERB_FORMS):
+            return None
+    # A woody mat (creeping juniper: branching prostrate, its stems counted) is
+    # drawn as the shrub it is, by src/shrub_habit.py (V3.67b).
+    if ((plant.get("branching") or "").lower() == "prostrate"
+            and int(plant.get("woody_stems") or 0)):
+        return None
+    form = FORM_OF.get((plant.get("growth_form") or "").lower())
+    if (form == "colony" and int(plant.get("stem_leaf_nodes") or 0) == 1
+            and (plant.get("leaf_shape") or "").lower() in UMBRELLA_LEAVES):
+        return "umbrella"
+    return form
 
 
 def stems_for(plant: dict, form: str) -> int:
     """Stems on the grown plant: the recorded clusters over the tips one stem
     carries. A rosette's, a tuft's and a mat's stalks carry one cluster each."""
+    if form == "fronds":
+        return FRONDS
     tips = int(plant.get("flowering_stems") or 0) or DEFAULT_TIPS
     per = 1
     if form in ("stems", "colony"):
@@ -128,6 +164,9 @@ def drawn_block(plant: dict, form: str) -> dict:
         # a carpet of rosettes are nothing else.
         "basal": bool(plant.get("basal_rosette")) or arrangement == "basal"
                  or form in ("rosette", "tuft"),
+        # A narrow leaf measured across (V3.67b): wild chives' 3 mm tubes,
+        # where the linear outline's ratio drew a 1.5 cm strap. 0: not measured.
+        "blade_m": round(float(plant.get("blade_width_mm") or 0) / 1000.0, 4),
     }
 
 

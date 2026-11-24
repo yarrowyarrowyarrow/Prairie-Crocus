@@ -216,21 +216,17 @@ function _wbCardGeo(crossed) {
   return g;
 }
 
-// How many clusters a shrub in full flower carries this year: by the surface
-// of its crown, and never fewer than were recorded.
-function woodyBloomCards(p) {
-  // A wildflower's clusters are the ones counted on it (15e-heads.js, V3.64).
-  if (p.plant_type !== 'tree' && p.plant_type !== 'shrub' && p.plant_type !== 'vine') return Math.max(1, p.flowering_stems || 6);
-  const r = Math.max(0.15, (p.canopy_m || 1) / 2), h = Math.max(0.2, bodyHeightOf(p));
-  const byCrown = Math.round(Math.PI * r * (r + 2 * h) * 0.7 * WOODY_BLOOM_PER_M2);
-  return Math.min(WOODY_BLOOM_MAX, Math.max(8, p.flowering_stems || 0, byCrown));
-}
+// How many clusters a plant in full flower carries: 15b-anchors.js woodyBloomCards.
 
 function buildWoodyBlooms(plants, month, terrain) {
   const groups = new Map(), back = [];
   const _c = new THREE.Color(), X = new THREE.Vector3(), Y = new THREE.Vector3(), Z = new THREE.Vector3();
   for (const p of plants) {
-    const arch = FLORET_ARCHITECTURES.indexOf(p.flower_arch) >= 0 ? p.flower_arch : 'cyme';
+    let arch = FLORET_ARCHITECTURES.indexOf(p.flower_arch) >= 0 ? p.flower_arch : 'cyme';
+    // A wildflower's dense umbel as tall as it is wide is a globe (an onion's,
+    // V3.67b), painted round; a flat one (a water parsnip's) stays flat.
+    const globe = arch === 'umbel' && !woodyKind(p) && p.head_length_cm >= 0.7 * (p.head_width_cm || 0);
+    if (globe) arch = 'cyme';                       // its florets packed close (0.6 of their width)
     const petals = Math.max(0, Math.min(60, p.petal_count == null ? 5 : p.petal_count));
     const d = Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
     // A wildflower's spike is part of its height, never more than its share of it.
@@ -238,14 +234,14 @@ function buildWoodyBlooms(plants, month, terrain) {
       p.plant_type === 'tree' || p.plant_type === 'shrub' ? 9 : _REACH_OF_HEIGHT * Math.max(0.1, bodyHeightOf(p)));
     // A tree's clusters take the whole of 15b-anchors.js's allowance (2.5 at 6 m
     // and over): at life size a pin cherry's are pixels at a yard's distance.
-    const tree = p.drawn && p.drawn.body === 'crown';
+    const tree = p.drawn && p.drawn.body === 'crown' || p.plant_type === 'vine';
     const reach = natural * (tree ? woodyBloomGain(p) : Math.min(WOODY_BLOOM_GAIN_MAX, woodyBloomGain(p)));
     // A cluster whose length and width were read is drawn at them (V3.65),
     // never taller than its share of the plant.
     const L = p.plant_type === 'tree' || p.plant_type === 'shrub' ? 0
       : Math.min((p.head_length_cm || 0) / 100, _REACH_OF_HEIGHT * Math.max(0.1, bodyHeightOf(p)));
     const Wd = L ? Math.max(d, (p.head_width_cm || p.head_length_cm * 0.4) / 100) * L * 100 / p.head_length_cm : 0;
-    const mk = _wbMask(arch, petals, d / (L ? Math.max(L, Wd) : natural), p.florets_per_head);
+    const mk = _wbMask(arch, petals, d / (L ? Math.max(L, Wd) : natural) * (globe ? 0.6 : 1), p.florets_per_head);
     const fit = L ? _wbFill(arch, petals, _wbShare(d / Math.max(L, Wd))) : null;
     const anchors = bloomAnchors(p, WOODY_BLOOM_MAX, month);     // 15b-anchors.js
     // A wildflower whose body offers no tip to carry a card keeps its florets.

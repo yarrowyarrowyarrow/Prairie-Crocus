@@ -69,8 +69,11 @@ FORMS = ("clump", "thicket", "arching", "mat")
 #: test holds the two equal). The vocabulary is ``data_quality``'s.
 CROWNS = SHRUB_CROWN_SHAPES
 
-#: The plant types this body is for. A tree keeps its crown.
+#: The plant types this body is for. A tree keeps its crown. A groundcover
+#: whose habit is a woody mat (``branching`` prostrate: creeping juniper) is
+#: one too since V3.67b; as a leafy mat it was a grey star of broad blades.
 TYPES = ("shrub",)
+WOODY_MATS = ("groundcover",)
 
 #: Recorded woody habit (``branching``, schema v47) -> form.
 FORM_OF = {"multi_stem": "clump", "suckering": "thicket",
@@ -81,7 +84,9 @@ def form_for(plant: dict) -> Optional[str]:
     """The form ``plant`` is drawn in, or None when it keeps the body it had:
     not a shrub; numbers not read; no leaf length, outline or stem count
     recorded; or a habit these forms do not draw."""
-    if (plant.get("plant_type") or "").lower() not in TYPES:
+    ptype = (plant.get("plant_type") or "").lower()
+    if ptype not in TYPES and not (ptype in WOODY_MATS
+                                   and (plant.get("branching") or "").lower() == "prostrate"):
         return None
     if not is_read(plant):
         return None
@@ -115,6 +120,9 @@ def drawn_block(plant: dict, form: str) -> dict:
         # lowest leafy branch (V3.63). Empty: the form's own outline.
         "crown": crown if crown in CROWNS else "",
         "clear": round(float(plant.get("crown_clear") or 0.0), 3) if crown in CROWNS else 0.0,
+        # A woody mat filed as a groundcover (V3.67b): the viewer spends on it
+        # by the ground it covers, which is all a person sees of it.
+        "ground": (plant.get("plant_type") or "").lower() in WOODY_MATS,
     }
 
 

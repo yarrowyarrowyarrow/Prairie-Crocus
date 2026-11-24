@@ -284,7 +284,7 @@ function buildFlowers(plants, month, terrain) {
     FLOWER_TEX.cattail_spike = FLOWER_TEX.cattail;
   }
   const byForm = {}; ALL_FORMS.forEach(f => byForm[f] = []);
-  const modelled = [], carded = [];
+  const modelled = [], carded = [], nodding = [];
   for (const p of plants || []) {
     // A grass's inflorescence_form (schema v52) supersedes its flower_form,
     // which stays 'plume' for every graminoid because that column feeds the
@@ -297,7 +297,11 @@ function buildFlowers(plants, month, terrain) {
     const carries = window.woodyBloomApplies && woodyBloomApplies(p);
     // A grass drawn from its own head carries it (03f-tufts.js, V3.51).
     if (window.tuftKeyFor && tuftKeyFor(p)) continue;
-    if (!p.flower_color || (!byForm[form] && !carries)) continue;
+    // A flower recorded by its characters is drawn from them whatever its
+    // flower_form, which stays the pollinator logic's: a sarsaparilla's umbels
+    // and a snakeroot's spikes were recorded 'none' there, and never drawn (V3.67b).
+    const described = window.floretsApply && floretsApply(p);
+    if (!p.flower_color || (!byForm[form] && !carries && !described)) continue;
     if ((p.opacity ?? 1) < 0.25) continue;            // not-yet-present plants
     const bs = p.bloom_start || 0;
     // A seed head is not a bloom: prairie grasses hold theirs from flowering
@@ -308,6 +312,9 @@ function buildFlowers(plants, month, terrain) {
       ? Math.max(p.bloom_end || 0, p.fruit_end || 0, 12) : (p.bloom_end || 0);
     // …and through the winter on its dry stems (01d-season.js, V3.46).
     if (!bs || ((month < bs || month > be) && !holdsSeedHead(p))) continue;
+    // A flower that hangs (15f-nodding.js, V3.67b); a calla's spathe (23b-pondforms.js).
+    if (window.noddingApplies && noddingApplies(p)) { nodding.push(p); continue; }
+    if (window.pondOwnsFlower && pondOwnsFlower(p)) continue;
     // A species that records its flower as CHARACTERS gets built rather than
     // stamped (15-florets.js, schema v53). Everything else — 4 flowering
     // species the seed data doesn't describe, every graminoid seed head, and
@@ -323,6 +330,7 @@ function buildFlowers(plants, month, terrain) {
   }
   if (modelled.length) window.buildFlorets(modelled, month, terrain);
   if (carded.length) window.buildWoodyBlooms(carded, month, terrain);
+  if (nodding.length) window.buildNodding(nodding, month, terrain);
   const _fc = new THREE.Color();
   for (const form of ALL_FORMS) {
     const list = byForm[form];

@@ -575,7 +575,14 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # their length and width read off photographs into head_length_cm and
 # head_width_cm (until then a graminoid's seed head only): the viewer draws a
 # dense spike, panicle or flat top at that size.
-_SCHEMA_VERSION = 106
+# v107 (V3.67, second sitting): no DDL. A reseed for the 39 natives whose
+# models scored 4 or less, read again off their photographs: how a nodding
+# flower hangs (`head_attitude`, a grass's column until now, and the petal
+# shape `reflexed` for a shooting star's dart), the flower numbers of six
+# plants whose flower_form says none (that column untouched), the ostrich
+# fern's and creeping juniper's habits, the water plants' clusters, a few
+# heights, counts and cluster sizes, and wild chives' leaf width.
+_SCHEMA_VERSION = 107
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
