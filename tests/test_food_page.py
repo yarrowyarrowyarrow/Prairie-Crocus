@@ -1,6 +1,6 @@
 """
-tests/test_food_page.py — Design › Food, the owner's "what it feeds" page
-(V3.08).
+tests/test_food_page.py — Design › Through the year (Food until V3.55), the
+owner's "what it feeds" page (V3.08).
 
 One animal, any animal: the Bees page answered "design for this bee", and the
 owner wanted "a per species analysis but not one limited to just bees". Month
@@ -68,7 +68,7 @@ class TestFoodPage(unittest.TestCase):
         top = animals_fed(self.ids)[0]
         self.assertEqual(page._animal.currentData()["fid"], top["fauna_id"])
         self.assertIn("Fed by your design", page._animal.itemText(0))
-        self.assertIn("Your plants are recorded as food for", page._summary_line.text())
+        self.assertIn("Recorded as food for", page._summary_line.text())
 
     def test_any_animal_not_only_bees(self):
         page = self._page()
@@ -117,26 +117,156 @@ class TestFoodPage(unittest.TestCase):
         page._find.setText("")
         self.assertIsNotNone(page._animal.currentData())
 
+    def test_the_year_comes_first_and_the_look_up_last(self):
+        """V3.55 (F270), the owner's order: the month by month, caterpillars
+        to birds, the animals that depend on a few plants, then any animal."""
+        from src.food_page import SECTIONS
+        page = self._page()
+        layout = page.widget().layout()
+        widgets = [layout.itemAt(i).widget() for i in range(layout.count())]
+        heads = [w.text() for w in widgets
+                 if hasattr(w, "text") and w.text() in SECTIONS]
+        self.assertEqual(heads, list(SECTIONS))
+
+        def at(widget):
+            return layout.indexOf(widget)
+        self.assertLess(at(page._months[-1][0]), at(page._caterpillars))
+        self.assertLess(at(page._caterpillars), at(page._depends))
+        self.assertLess(at(page._depends), at(page._lookup))
+        # The look-up waits behind its heading (the owner: "be more concise").
+        self.assertFalse(page._lookup.isVisibleTo(page))
+        page._lookup_btn.click()
+        self.assertTrue(page._lookup.isVisibleTo(page))
+
     def test_each_month_keeps_people_apart_and_last(self):
         page = self._page()
-        self.assertEqual(page._tree.topLevelItemCount(), 12)
-        for m in range(12):
-            month = page._tree.topLevelItem(m)
-            groups = [month.child(i).text(0) for i in range(month.childCount())]
-            self.assertEqual(groups, ["For pollinators: flowers",
-                                      "For birds: fruit and seed",
-                                      "For people: what you can harvest"])
-        # Chokecherry fruits in August: a harvest for people, with its part.
-        august = page._tree.topLevelItem(7)
-        people = august.child(2)
-        harvest = [people.child(i).text(1) for i in range(people.childCount())]
-        self.assertIn("Chokecherry — fruit", harvest)
+        self.assertEqual(len(page._months), 12)
+        # Chokecherry fruits in August: a harvest for people, with its part,
+        # after the flowers and the fruit and in its own line.
+        import re
+        august = re.sub(r"<[^>]+>", "", page._months[7][1].text())
+        self.assertIn("To harvest: Chokecherry", august)
+        self.assertLess(august.index("Fruit:"), august.index("To harvest:"))
+        self.assertLess(august.index("To harvest:"), august.index("Look:"))
+        self.assertTrue(page._months[7][0].text().startswith("August"))
+
+    def test_this_month_is_open_and_the_rest_wait(self):
+        page = self._page()
+        from src import through_the_year as ty
+        opened = [m for m, (button, text) in enumerate(page._months, 1)
+                  if button.isChecked()]
+        ahead = ty.next_active(ty.year(page._placed)["months"], page._now)
+        self.assertEqual(opened, [ahead])
+        # A quiet month opens the first one ahead with something in it
+        # instead, one month only.
+        page._now = 1
+        page._opened.clear()
+        page.refresh()
+        opened = [m for m, (button, text) in enumerate(page._months, 1)
+                  if button.isChecked()]
+        self.assertEqual(len(opened), 1)
+        self.assertGreater(opened[0], 1)
+        self.assertIn("Flowers:", page._months[opened[0] - 1][1].text())
+        page.refresh()
+        self.assertIn("(this month)", page._months[0][0].text())
+        # A month a person opens stays open, and this month stays as they
+        # left it, through a redraw.
+        page._now = 7
+        page._opened.clear()
+        page.refresh()
+        other = 8
+        page._months[other - 1][0].click()
+        page._months[page._now - 1][0].click()
+        page.refresh()
+        self.assertTrue(page._months[other - 1][0].isChecked())
+        self.assertFalse(page._months[page._now - 1][0].isChecked())
+
+    def test_who_is_eating_here_names_one_species_by_its_english_name(self):
+        page = self._page()
+        july = page._months[6][1].text()
+        self.assertIn("Eating here:", july)
+        self.assertNotIn("spp", july)
+        self.assertIn("recorded", page._near_note.text())
+
+    def test_the_milkweed_serves_the_monarch(self):
+        page = self._page()
+        import re
+        self.assertIn("Monarch (Showy Milkweed)",
+                      re.sub(r"<[^>]+>", "", page._depends.text()))
+        self.assertIn("chickadees", page._caterpillars.text())
+        self.assertNotIn("keystone", page._caterpillars.text().lower())
 
     def test_an_empty_design_says_so(self):
         page = self._page(ids=[])
         self.assertEqual(page._summary_line.text(),
-                         "Place plants to see who they feed.")
-        self.assertEqual(page._tree.topLevelItemCount(), 1)
+                         "Place plants to see their year, and who they feed.")
+        self.assertFalse(any(b.isEnabled() for b, _t in page._months))
+        self.assertIn("Place plants", page._caterpillars.text())
+
+    def _busy_page(self):
+        """A design with more than four plants in flower in one month."""
+        names = ("Fireweed", "Giant Hyssop", "Wild Bergamot", "Showy Milkweed",
+                 "Wild Raspberry", "Wild Vetch", "Smooth Aster", "Chokecherry")
+        page = self._page(ids=[self.rows[n]["id"] for n in names])
+        month = next(m for m in page._year["months"] if len(m["flowering"]) > 4)
+        return page, month
+
+    def test_plus_n_shows_the_whole_list_and_fewer_folds_it(self):
+        """V3.55, the owner: "I want to be able to click the +# button to see
+        the full list of plants"."""
+        page, month = self._busy_page()
+        m, names = month["month"], month["flowering"]
+        text = page._months[m - 1][1].text()
+        self.assertIn(f"href='more:{m}:flowers'", text)
+        self.assertNotIn(names[-1], text)
+        page._on_link(f"more:{m}:flowers")
+        text = page._months[m - 1][1].text()
+        for name in names:
+            self.assertIn(name, text)
+        self.assertIn(f"href='less:{m}:flowers'", text)
+        page._on_link(f"less:{m}:flowers")
+        self.assertNotIn(names[-1], page._months[m - 1][1].text())
+
+    def test_a_plant_name_opens_its_page(self):
+        """The owner: "click the individual plant and be brought to the read
+        out of that plant"."""
+        import re
+        page, month = self._busy_page()
+        asked = []
+        page.plant_requested.connect(asked.append)
+        text = page._months[month["month"] - 1][1].text()
+        pid = int(re.search(r"href='plant:(\d+)'", text).group(1))
+        page._on_link(f"plant:{pid}")
+        self.assertEqual(asked, [pid])
+        # The caterpillar line and the depends line name plants as links too.
+        self.assertIn("href='plant:", page._caterpillars.text())
+        self.assertIn("href='plant:", page._depends.text())
+
+    def test_an_animal_name_looks_it_up(self):
+        import re
+        page, month = self._busy_page()
+        text = "".join(t.text() for _b, t in page._months)
+        fid = int(re.search(r"href='animal:(\d+)'", text).group(1))
+        page._on_link(f"animal:{fid}")
+        self.assertTrue(page._lookup.isVisibleTo(page))
+        self.assertEqual(page._animal.currentData()["fid"], fid)
+
+    def test_the_page_says_little(self):
+        """The owner: "The Tab is still too verbose. No one will read all
+        that." What shows on arrival, July open, was about 755 words; it is
+        held under 300."""
+        import re
+        from PyQt6.QtWidgets import QAbstractButton, QLabel
+        page = self._page()
+        page._now = 7
+        page._opened.clear()
+        page.refresh()
+        body = page.widget()
+        words = 0
+        for w in body.findChildren((QLabel, QAbstractButton)):
+            if w.isVisibleTo(body):
+                words += len(re.sub(r"<[^>]+>", " ", w.text()).split())
+        self.assertLess(words, 300)
 
     def test_the_map_shows_the_plants_that_feed_it(self):
         page = self._page()
@@ -174,7 +304,8 @@ class TestPlantedSaysWhatEatsIt(unittest.TestCase):
         panel.set_plants_counts({cherry: 3})
         name, line = panel._plants_list.item(0).text().split("\n")
         self.assertEqual(name, "Chokecherry  ×3")
-        self.assertRegex(line, r"^food for \d+ kinds?: .* · flowers .* · fruit ")
+        # When first, then what eats it (V3.55, the owner).
+        self.assertRegex(line, r"^flowers .* · fruit .* · food for \d+ kinds?: ")
 
     def test_the_rows_wrap_inside_the_list(self):
         """Qt measured the wrap without the item padding, and the first build
@@ -213,7 +344,8 @@ class TestPlantedSaysWhatEatsIt(unittest.TestCase):
         first, line = text.split("\n")
         self.assertTrue(first.startswith("Edge  — 1 instance, 2 members"))
         n = sum(1 for a in animals_fed(ids) if a["food"])
-        self.assertTrue(line.startswith(f"food for {n} kind"), line)
+        self.assertTrue(line.startswith("flowers "), line)
+        self.assertIn(f" · food for {n} kind", line)
 
 
 if __name__ == "__main__":

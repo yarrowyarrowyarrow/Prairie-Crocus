@@ -94,36 +94,13 @@ class TestCommunityDrag(unittest.TestCase):
         self.assertFalse(p._mix_community_scroll.isHidden())
         self.assertFalse(p._mix_community_actions.isHidden())
 
-    # ── Group By (V1.88) ─────────────────────────────────────────────────────
-
-    def _set_group(self, key):
-        i = self._panel._group_combo.findData(key)
-        self.assertGreaterEqual(i, 0)
-        self._panel._group_combo.setCurrentIndex(i)
-
-    def test_grouping_builds_unselectable_folders(self):
-        from PyQt6.QtCore import Qt
+    def test_there_is_no_grouping_or_title(self):
+        """V3.58: the library is the plant list's shape; Group by went with
+        the title and Show variations (each arrow opens its variations)."""
         p = self._panel
-        tree = p.polyculture_tree
-        self._set_group("none")
-        flat_n = tree.topLevelItemCount()
-        if flat_n == 0:
-            self.skipTest("no communities seeded")
-        # flat: top-level items are real communities (have ids)
-        self.assertIsNotNone(tree.topLevelItem(0).data(0, Qt.ItemDataRole.UserRole))
-
-        self._set_group("structure")
-        # grouped: top-level items are category folders — no id, not selectable,
-        # and they hold the communities as children.
-        groups = [tree.topLevelItem(i) for i in range(tree.topLevelItemCount())]
-        self.assertTrue(groups)
-        for node in groups:
-            self.assertIsNone(node.data(0, Qt.ItemDataRole.UserRole))
-            self.assertFalse(bool(node.flags() & Qt.ItemFlag.ItemIsSelectable))
-        self.assertEqual(sum(g.childCount() for g in groups), flat_n)
-
-        self._set_group("none")
-        self.assertEqual(tree.topLevelItemCount(), flat_n)
+        self.assertFalse(hasattr(p, "_group_combo"))
+        self.assertFalse(hasattr(p, "variations_toggle_btn"))
+        self.assertEqual(p._group_by, "none")
 
 
 if __name__ == "__main__":

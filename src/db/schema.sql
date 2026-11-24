@@ -219,7 +219,64 @@ CREATE TABLE IF NOT EXISTS plants (
     -- pair, because they get verified in different sittings from different
     -- sources — a photograph settles petal count, a flora settles leaf length.
     leaf_data_source TEXT DEFAULT '',
-    leaf_data_citation TEXT DEFAULT ''
+    leaf_data_citation TEXT DEFAULT '',
+    -- How many leaves stand up one stem of a grown plant (schema v98, V3.48):
+    -- single leaves, pairs or whorls, each counted once. A fireweed stem holds
+    -- about sixty and a columbine's three, and nothing else recorded says so:
+    -- the 3D viewer spaced leaves by a multiple of their length, which drew
+    -- the columbine as a spiral stair. Counted off a photograph and covered by
+    -- the leaf provenance pair above. NULL leaves it to the viewer's spacing
+    -- estimate (html/scene3d/03c-leafy.js INTERNODE), which says it is one.
+    stem_leaf_nodes INTEGER,
+    -- How many woody stems a grown shrub sends up from the ground (schema v99,
+    -- V3.49). A red-osier dogwood is two dozen wands and a hawthorn four
+    -- trunks, and until this column every shrub was a handful of sticks as
+    -- thick as an arm: the stems' thickness follows from their number (the
+    -- same crown shared between more stems is thinner ones). Counted off a
+    -- photograph, most easily a winter one, and covered by the leaf provenance
+    -- pair. NULL keeps the shrub on the shared baked figure.
+    woody_stems INTEGER,
+    -- A grown tree's crown, read off a photograph of one grown in the open
+    -- (schema v100, V3.50). Nothing else recorded says that an aspen carries
+    -- its crown in the top half of a bare white trunk and a white spruce
+    -- carries branches to the ground, or that a spruce's limbs droop and a
+    -- poplar's climb. `crown_shape` is the outline (conical, spire, oval,
+    -- rounded, irregular), `crown_clear` the share of the height that is bare
+    -- trunk below the lowest live limb, and `limb_habit` which way the main
+    -- limbs go (ascending, spreading, drooping). Covered by the leaf
+    -- provenance pair. NULL keeps the tree on the shared baked crown.
+    crown_shape TEXT DEFAULT '',
+    crown_clear REAL,
+    limb_habit TEXT DEFAULT '',
+    -- The colour of a species' leaves as a photograph shows them in summer
+    -- (schema v101, V3.51), '#rrggbb'. Empty keeps the green the 3D viewer
+    -- gives the plant's type or genus. Not a flower colour: those are the
+    -- owner's answers (flower_colour_source). Covered by the leaf pair.
+    leaf_color TEXT DEFAULT '',
+    -- The last month a plant's fruit is still on its twigs after its fruiting
+    -- season (schema v104, V3.63), 1-12: a snowberry's white berries and a
+    -- highbush cranberry's red bunches into March, a rose's hips through the
+    -- winter. Read off winter photographs. NULL: the fruit goes with
+    -- fruit_period. Drawn on the bare twigs by the 3D viewer.
+    fruit_held_until INTEGER,
+    -- A grass's, sedge's or rush's blades and seed head, read off its
+    -- photographs (schema v101, V3.51). `blade_width_mm` is a blade's width
+    -- (a leafless rush records none), `blade_habit` how the blades are held
+    -- (upright, arching, drooping, flat on the ground, or none: leafless
+    -- stems). The head: `head_length_cm` and `head_width_cm` its size (a
+    -- panicle's length and spread, a sedge's cylinder, a rush's spray),
+    -- `head_count` how many a stem carries, `head_color` its colour in
+    -- flower or fruit, and `head_attitude` how it is held (erect, nodding,
+    -- hanging, or from the stem's side below its tip). The form is
+    -- inflorescence_form. Covered by the leaf pair. NULL keeps the plant on
+    -- the shared baked tuft.
+    blade_width_mm REAL,
+    blade_habit TEXT DEFAULT '',
+    head_length_cm REAL,
+    head_width_cm REAL,
+    head_count INTEGER,
+    head_color TEXT DEFAULT '',
+    head_attitude TEXT DEFAULT ''
 );
 
 -- Companion pairings (schema v61: + source/notes).

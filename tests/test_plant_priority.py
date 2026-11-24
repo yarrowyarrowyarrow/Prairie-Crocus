@@ -196,7 +196,8 @@ class TheCommunityLibrary(unittest.TestCase):
 
     def test_it_is_the_default(self):
         from src import polyculture_panel
-        self.assertEqual(polyculture_panel._SORT_BY_OPTIONS[0][0], "best")
+        from src import community_filters
+        self.assertEqual(community_filters.ORDERS[0][0], "best")
 
 
 class TheRegionsDefaults(unittest.TestCase):

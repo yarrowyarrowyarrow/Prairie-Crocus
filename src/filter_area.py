@@ -6,8 +6,8 @@ work." Unfolded in the side panel the picker showed every filter at once: nine
 dropdowns in five rows and ten toggles in three, nineteen controls above a list
 that then began halfway down the column.
 
-Now the four dropdowns and four toggles a person choosing plants for a yard
-reaches for first are shown, and the other ten wait behind **More filters**,
+Now the dropdowns and toggles a person choosing plants for a yard reaches for
+first are shown, and the rest wait behind **More filters**,
 which says how many of them are on. Nothing is further than one click, a filter
 that is on is still a removable chip on the line above either tier, and the
 Plant Directory, a window with room, opens with both tiers showing.
@@ -17,6 +17,15 @@ owner's aim of useful, available plants in real yards: what the plant is, the
 light and water it needs, where it can be bought, whether it belongs here,
 whether it can be found, and whether it is safe around a dog. Moving a key in
 or out of it is the whole change.
+
+V3.57, the owner: "the mess that is the filters ... needs to be simple,
+intuitive and can drop what isn't useful". The first tier is now what a yard
+is chosen by: kind, sun, soil, when it flowers and in what colour, native
+around here, sold locally, safe near a pet. Three dropdowns to a row in the
+side panel. Gone: Perennial (242 of the 250 natives), Leaves out known
+spreaders (240: spreading is recorded for 16 plants), the Availability
+dropdown, which disagreed with Easy to buy (70 against 187), and Easy to buy,
+which became Sold locally.
 """
 
 from __future__ import annotations
@@ -32,8 +41,8 @@ from src.filter_widgets import (
 from src.plant_list_view import _colour_icon, _type_icon
 
 #: Shown before "More filters", by facet or quality key (``plant_filters``).
-EVERYDAY = ("type", "sun", "water", "availability",
-            "native_only", "local_native", "common_only", "pet_safe_only")
+EVERYDAY = ("type", "sun", "water", "bloom_months", "colour",
+            "local_native", "sold_locally", "pet_safe_only")
 
 
 class FilterArea(QWidget):
@@ -46,29 +55,41 @@ class FilterArea(QWidget):
     #: A quality's key, when its toggle is flipped.
     quality_toggled = pyqtSignal(str)
 
-    def __init__(self, criteria: dict, *, wide: bool = False, parent=None):
+    def __init__(self, criteria: dict, *, wide: bool = False, hide=(),
+                 parent=None):
+        """``hide`` names filters a scoped catalogue makes needless
+        (``plant_filters.SCOPED_OUT``, V3.58): they are not built."""
         super().__init__(parent)
+        hide = set(hide)
         col = QVBoxLayout(self)
         col.setContentsMargins(0, 0, 0, 2)
         col.setSpacing(4)
-        per_row = 5 if wide else 2
+        per_row = 5 if wide else 3
         self.combos: dict = {}
         self._hidden_on = 0
-        col.addLayout(self._grid([f for f in pf.FACETS if f.key in EVERYDAY],
-                                 criteria, per_row))
+        everyday = [f for f in pf.FACETS
+                    if f.key in EVERYDAY and f.key not in hide]
+        first = self._grid(everyday, criteria, per_row)
+        col.addLayout(first)
         self.everyday_chips = QualityChips(
-            [q for q in pf.QUALITIES if q.key in EVERYDAY], criteria)
+            [q for q in pf.QUALITIES if q.key in EVERYDAY
+             and q.key not in hide], criteria)
         col.addWidget(self.everyday_chips)
 
         self.more_button = QToolButton()
         self.more_button.setCheckable(True)
         self.more_button.setStyleSheet(SMALL_BUTTON)
         self.more_button.setAccessibleName("More filters")
-        tip = ("Role, the region you are restoring toward, bloom and fruit "
-               "months, flower colour and six more toggles.")
+        tip = ("What it does, fruit months and a few more toggles.")
         self.more_button.setToolTip(wrapped(tip))
         self.more_button.setAccessibleDescription(tip)
-        col.addWidget(self.more_button)
+        if len(everyday) % per_row:
+            # The first tier's last row has room: More filters goes there
+            # rather than on a row of its own (V3.57).
+            first.addWidget(self.more_button, len(everyday) // per_row,
+                            len(everyday) % per_row)
+        else:
+            col.addWidget(self.more_button)
 
         self.more = QWidget()
         self.more.setAccessibleName("More filters")
@@ -76,10 +97,11 @@ class FilterArea(QWidget):
         more_col.setContentsMargins(0, 0, 0, 0)
         more_col.setSpacing(4)
         more_col.addLayout(self._grid(
-            [f for f in pf.FACETS if f.key not in EVERYDAY], criteria, per_row))
+            [f for f in pf.FACETS if f.key not in EVERYDAY
+             and f.key not in hide], criteria, per_row))
         self.more_chips = QualityChips(
-            [q for q in pf.QUALITIES if q.key not in EVERYDAY], criteria,
-            soil=False)
+            [q for q in pf.QUALITIES if q.key not in EVERYDAY
+             and q.key not in hide], criteria, soil=False)
         more_col.addWidget(self.more_chips)
         col.addWidget(self.more)
 
@@ -102,7 +124,9 @@ class FilterArea(QWidget):
             if f.values is None:
                 build_ecoregion_tree(combo)
             else:
-                icon_for = (_type_icon if f.key == "type" else
+                icon_for = ((lambda k: _type_icon("grass" if k == "grass_like"
+                                                  else k))
+                            if f.key == "type" else
                             _colour_icon if f.key == "colour" else None)
                 for key, label in f.values.items():
                     combo.add_check_item(

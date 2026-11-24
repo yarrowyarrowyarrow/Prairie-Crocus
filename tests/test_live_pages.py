@@ -128,6 +128,18 @@ class TestLiveRefresh(unittest.TestCase):
             self._app.processEvents()
         self.assertEqual(calls, ["a"])
 
+    def test_an_event_after_deletion_does_not_raise(self):
+        """V3.67: on a Windows run (Python 3.14) Qt delivered an event to a
+        LiveRefresh already deleted with its panel; the RuntimeError escaped
+        ``eventFilter`` and PyQt6 ended the whole test process, so no failure
+        in that run was ever printed."""
+        from PyQt6 import sip
+        from PyQt6.QtCore import QEvent
+        owner, tabs, live, calls = self._owner()
+        sip.delete(live)
+        self.assertFalse(live.eventFilter(owner, QEvent(QEvent.Type.Show)))
+        self.assertEqual(calls, [])
+
 
 @unittest.skipUnless(_HAVE_QT, "PyQt6 not installed in this env")
 class TestThePagesFillThemselves(unittest.TestCase):
@@ -189,8 +201,10 @@ class TestThePagesFillThemselves(unittest.TestCase):
         panel._tabs.setCurrentWidget(panel._food)
         panel.set_placed_plants(self._plants)
         self.assertTrue(panel._live.fill_now())
-        self.assertIn("Your plants are recorded as food for",
-                      panel._food._summary_line.text())
+        # V3.55 cut the page by two thirds (the owner: "be more concise"):
+        # the line is the Overview's count in its words, "Recorded as food
+        # for N kinds of wildlife." The test kept the old wording until V3.65.
+        self.assertIn("Recorded as food for", panel._food._summary_line.text())
         panel.close()
 
     def test_a_live_page_moved_to_another_strip_is_still_filled(self):
@@ -220,6 +234,29 @@ class TestThePagesFillThemselves(unittest.TestCase):
                          "the strip it left still pokes it")
         new_owner.close()
         old_owner.close()
+
+    def test_the_panel_it_left_does_not_take_it_down(self):
+        """V3.67: a moved LiveRefresh stayed the Qt child of the panel it
+        left, so deleting that panel deleted the filter the new panel still
+        used. Under Python 3.14 that corrupted memory and the next test in
+        the run crashed inside the compiler, naming no test."""
+        from PyQt6 import sip
+        from PyQt6.QtWidgets import QLabel, QTabWidget, QWidget
+        from src.live_refresh import LiveRefresh
+        old_owner, new_owner = QWidget(), QWidget()
+        old_tabs, new_tabs = QTabWidget(old_owner), QTabWidget(new_owner)
+        page = QLabel("page")
+        filled = []
+        live = LiveRefresh(old_owner, old_tabs, {})
+        new_tabs.addTab(page, "Page")
+        live.move_to(new_owner, new_tabs, {page: lambda: filled.append(1)})
+        self.assertIs(live.parent(), new_owner)
+        sip.delete(old_owner)
+        self.assertFalse(sip.isdeleted(live), "the panel it left deleted it")
+        new_owner.show()
+        self.assertTrue(live.fill_now())
+        self.assertEqual(filled, [1])
+        new_owner.close()
 
     def test_every_type_in_the_design_has_its_row_in_the_hours(self):
         """Until V3.08 the table listed six fixed types, so wildflowers and

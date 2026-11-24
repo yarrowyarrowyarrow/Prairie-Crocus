@@ -99,7 +99,7 @@ class TestStructuralCeilings(unittest.TestCase):
         # V2.22: headroom restored (was 2 lines!) — new handlers still belong
         # in flow modules; the terrain-queue block is the natural extraction
         # when this trips again.
-        (_SRC / "controllers" / "map_events.py", 2100),# 1988 now (V3.11)
+        (_SRC / "controllers" / "map_events.py", 2100),# 2049 now (V3.45)
         # V2.22: the three biggest panels, previously unguarded — each is
         # already past the size plant_panel.py was split at (Chunk 4).
         (_SRC / "polyculture_panel.py", 2900),         # 2569 now (V3.05)
@@ -126,10 +126,10 @@ class TestStructuralCeilings(unittest.TestCase):
         # FlowLayout was deleted. V3.05 (F200): Native began naming the pin's
         # province, the picker passed 560 again, and its quality toggles went
         # to filter_status.QualityChips, as the chips had.
-        (_SRC / "plant_filters.py", 520),              # 520 now (V3.05): full
+        (_SRC / "plant_filters.py", 520),              # 519 now (V3.57): full
         (_SRC / "plant_picker.py", 560),               # 510 now (V3.14): the order
         # block (set_site to _reorder, about 60 lines) is the next to go.
-        (_SRC / "filter_status.py", 300),              # 295 now (V3.14)
+        (_SRC / "filter_status.py", 320),              # 306 now (V3.57: chips only while folded)
         # V3.14, opted in on arrival: the filters in two tiers, everyday first
         # (the owner: "so so busy"), which took the picker's filter building
         # with it; and which ecoregions a community belongs in, Qt-free.
@@ -317,7 +317,7 @@ class TestStructuralCeilings(unittest.TestCase):
         (_SRC / "local_flora.py", 360),                # 296 now
         (_SRC / "native_here.py", 280),                # 227 now
         # V3.26 (PR-1): the ranking, one table of weights and its words.
-        (_SRC / "plant_priority.py", 380),             # 340 now
+        (_SRC / "plant_priority.py", 400),             # 386 now (V3.56)
         (_SRC / "plant_page_sections.py", 250),        # 209 now
         # V3.27 (OV-1): what the overview measures, and its six items.
         (_SRC / "yard_overview.py", 400),              # 372 now (V3.28)
@@ -336,16 +336,22 @@ class TestStructuralCeilings(unittest.TestCase):
         # site_facets.py and belongs beside the pages that use it.
         (_SRC / "static_site_wildlife.py", 340),       # 274 now
         (_HTML / "site" / "browse.js", 200),           # 156 now
-        (_SRC / "start_screen.py", 380),               # 376 now (V3.37)
+        (_SRC / "start_screen.py", 380),               # 369 now (V3.42)
+        # V3.42: the two-column rebuild took start_screen.py past its 380;
+        # its rows, links, card and layout helpers moved here, opted in on
+        # arrival.
+        (_SRC / "start_rows.py", 280),                 # 219 now
         (_SRC / "onboarding_flow.py", 620),            # 571 now (V3.04)
         # V2.43 — Learn mode. Opted in on arrival, the V2.41 precedent: a
         # ceiling added late is a ceiling set around whatever shape the file
         # drifted into. learn_flow.py exists *because* this guard fired — the
         # Learn wiring took onboarding_flow.py to 646/620 and the honest fix
         # was the split it asks for, not a bigger number.
-        (_SRC / "learn_flow.py", 260),                 # 129 now
-        (_SRC / "learn_menu.py", 300),                 # 144 now
-        (_SRC / "app_mode.py", 200),                   # 124 now
+        (_SRC / "learn_flow.py", 260),                 # 124 now
+        # learn_menu.py until V3.42, when the menu went and the window it
+        # held stayed (the Lessons and the Quizzes).
+        (_SRC / "learn_window.py", 200),               # 85 now
+        (_SRC / "app_mode.py", 200),                   # 94 now
         (_SRC / "reference_edit.py", 340),             # 297 now
         (_SRC / "db" / "progress.py", 320),            # 275 now
         # V2.45: the wingbeat physics. Mostly derivation and sourcing notes —
@@ -375,7 +381,24 @@ class TestStructuralCeilings(unittest.TestCase):
         # When this trips, the next seam is the bar: build_tools() is a third of
         # the file and is presentation, not handling.
         (_SRC / "reference_edit_flow.py", 320),        # 282 now
-        (_SRC / "scene3d_toolbar.py", 340),            # 259 now
+        (_SRC / "scene3d_toolbar.py", 340),            # 314 now (V3.44)
+        # V3.44 (F261): the toolbar's two plain groups (named stops, named
+        # viewpoints) took it to 398 of 340, so they are a mixin of their own,
+        # with their words in a Qt-free table and the pollinator list, moved
+        # out of the window, beside them. If one of these trips, the cause is
+        # most likely logic that belongs in scene_views or scene_contract.
+        (_SRC / "scene3d_named_groups.py", 200),       # 124 now
+        # V3.45 (F262): what the ground is in the 3D scene. Qt-free; one
+        # vocabulary with the shape tool and the Overview's lists.
+        (_SRC / "scene_site.py", 450),                 # 353 now
+        (_SRC / "scene3d_stops.py", 260),              # 174 now
+        # V3.46 (F263): the season the 3D preview draws, and what the years
+        # took, each decided once for the viewer. If scene_season grows past
+        # its ceiling the cause is most likely a per-plant rule that wants
+        # data (a recorded leaf-out, a warm-season grass), not more code.
+        (_SRC / "scene_season.py", 340),               # 262 now
+        (_SRC / "scene_timeline.py", 420),             # 333 now
+        (_SRC / "scene3d_creatures.py", 200),          # 113 now
         (_SRC / "controllers" / "split_view.py", 320),  # 253 now
         # V2.46: plant / remove / net in the *design*, not just the sandbox.
         # A separate module from reference_edit_flow on purpose — a design edit
@@ -383,12 +406,12 @@ class TestStructuralCeilings(unittest.TestCase):
         # collapsing the two would mean one of those happening quietly in the
         # wrong place. When this trips, the seam is the widget half
         # (build_tools/set_mode) away from the bridge handlers.
-        (_SRC / "scene3d_edit_flow.py", 400),          # 312 now
+        (_SRC / "scene3d_edit_flow.py", 400),          # 398 now (V3.44): split first
         # V2.46: opted in on arrival, like learn_flow.py before it. This file
         # hand-rolls the toolbar the V2.44 extraction was meant to share (the
         # note at the import explains why that swap was deferred), so the
         # ceiling is set where it is to make the next growth pay for it.
-        (_SRC / "scene3d_window.py", 950),             # 950 now (V3.05): split before adding
+        (_SRC / "scene3d_window.py", 950),             # 932 now (V3.44): split before adding
         # V1.64: the former 4,900-line map.html monolith — keep the shell
         # thin and the split files from regrowing into a new monolith.
         (_HTML / "map.html", 400),                     # 269 now (V3.11)
@@ -445,9 +468,15 @@ class TestStructuralCeilings(unittest.TestCase):
         # order (shared-global classic scripts like html/map/*.js). Keep each
         # chunk under its own ceiling; the fix when one trips is a further split,
         # not a bigger number.
-        # 400 now (V2.94, 01c-leaves.js), NONE LEFT: the next chunk needs the
-        # bootstrap's FILES list moved out of the page, not a bigger number.
+        # 400 at V2.94 (01c-leaves.js), none left; V3.39 moved the bootstrap's
+        # FILES list out to html/scene3d/chunks.js, as this note asked: 357 now.
         (_HTML / "scene3d.html", 400),
+        (_HTML / "scene3d" / "chunks.js", 120),        # ~60 now (V3.39)
+        # V3.39: what a card says, its links and the trail back (F255).
+        (_HTML / "scene3d" / "25-cards.js", 320),      # ~280 now
+        # V3.46 (F263): the button, the list and the rings for
+        # scene.timeline_notes. It shows what src/scene_timeline.py wrote.
+        (_HTML / "scene3d" / "25b-timeline.js", 220),  # 165 now
         (_HTML / "scene3d" / "01-core.js", 700),       # 606 now (V3.04)
         # V2.33 (F63): plantMaterial + the procedural surfaces moved OUT of
         # 02-plants.js into their own chunk. 02-plants was at 626/700 and both
@@ -458,15 +487,47 @@ class TestStructuralCeilings(unittest.TestCase):
         # reached 548/550 with it inline. Light through a leaf and the bake on
         # the sky; anything more about light belongs in its own chunk too.
         (_HTML / "scene3d" / "01c-leaves.js", 150),    # 74 now
+        # V3.46 (F263): the season as the scene decided it. One place colours
+        # a plant body and says whether leaves are down and snow lies; the
+        # old month rules live on here for a scene that does not say. If it
+        # grows past its ceiling the cause is most likely a decision that
+        # belongs in src/scene_season.py.
+        (_HTML / "scene3d" / "01d-season.js", 160),    # 102 now
+        # V3.53 (F265): the light that follows the sun, and the shadow map
+        # over the yard. Opted in on arrival.
+        (_HTML / "scene3d" / "01e-light.js", 220),     # ~150 now
         # 687 now (V3.04, one ground on a slope). The next ground work is a chunk
         # of its own, which needs the bootstrap's FILES list moved out first.
-        (_HTML / "scene3d" / "02-plants.js", 700),
+        (_HTML / "scene3d" / "02-plants.js", 700),     # 635 now (V3.45)
+        # V3.45 (F262): what the ground is, the lines on it, the street and the
+        # houses, with the outline and the buildings moved out of 02-plants.js
+        # (687 of 700). It draws what src/scene_site.py decides; if it grows
+        # past its ceiling the cause is most likely a decision that belongs
+        # there, or a second look that wants a chunk of its own.
+        (_HTML / "scene3d" / "02c-site.js", 520),      # 463 now
         (_HTML / "scene3d" / "03-herbs.js", 700),      # ~432 now
         # V2.92 (F178): the procedural trees, split out of 03-herbs.js when the
         # Stylised half of F178 took it to 758/700 — the split the ceiling
         # asks for, along the herbs/trees seam.
         (_HTML / "scene3d" / "03b-trees.js", 450),     # ~339 now
-        (_HTML / "scene3d" / "04-quality.js", 900),    # 896 now (V2.93): move code out first
+        # V3.48 (F268): a wildflower built from its own leaf, arrangement and
+        # stem count once those were read. When this trips, the leaf outlines
+        # (_lbBlade, _lbLeaf) are the seam: they know nothing of the forms.
+        (_HTML / "scene3d" / "03c-leafy.js", 680),     # 626 now (V3.67c)
+        # V3.49 (F268): a shrub built from its own stem count and leaf, with
+        # the shrub layer moved here from 04-quality.js (899 of 900). When
+        # this trips, the leafy shoot's mask (_wdSpray and its painters) is
+        # the seam: 15c-woodybloom.js already shares its smaller-copy rule.
+        (_HTML / "scene3d" / "03d-woody.js", 700),     # 700 now (V3.67c): split before adding
+        # V3.50 (F268): a tree built from its own crown on 03d-woody.js's
+        # shoots. When this trips, the needle masks (_crNeedles) are the seam.
+        (_HTML / "scene3d" / "03e-crowns.js", 520),    # 420 now
+        # V3.50: a read vine's leafy shoots along its stems.
+        (_HTML / "scene3d" / "22b-vineleaves.js", 160),  # 147 now (V3.67c)
+        # V3.51 (F268): a grass, sedge or rush from its own blades and head.
+        # When this trips, the head builders (_tfHead) are the seam.
+        (_HTML / "scene3d" / "03f-tufts.js", 520),     # 430 now
+        (_HTML / "scene3d" / "04-quality.js", 900),    # 815 now (V3.49)
         (_HTML / "scene3d" / "05-flowers.js", 800),    # 775 now (V3.04)
         (_HTML / "scene3d" / "06-fly.js", 950),        # ~732 now
         (_HTML / "scene3d" / "07-wildlife.js", 800),   # ~550 now
@@ -485,11 +546,13 @@ class TestStructuralCeilings(unittest.TestCase):
         # V2.89: vines fitted to the host they climb (F179). The profile
         # measurement and the path/leaf builders; when this trips, the host
         # profile half is the seam.
-        (_HTML / "scene3d" / "22-vines.js", 520),      # ~433 now
+        (_HTML / "scene3d" / "22-vines.js", 520),      # 452 now (V3.67c)
         # V2.90: the pond (F175) — floating leaves, submerged plants, broad
         # leaves on stalks. Its own chunk because 04-quality.js had no room;
         # when this trips, the three body builders are the seam.
         (_HTML / "scene3d" / "23-pond.js", 350),       # ~189 now
+        # V3.67b: the water plants by their own parts.
+        (_HTML / "scene3d" / "23b-pondforms.js", 400),
         # V2.93: succulents and cacti (F177) — pads, balls, swords, fleshy
         # stems. When this trips, the unit shapes are the seam.
         (_HTML / "scene3d" / "24-succulents.js", 650),  # ~533 now
@@ -515,6 +578,20 @@ class TestStructuralCeilings(unittest.TestCase):
         # inflorescence architectures. 05-flowers.js was at 737 of its
         # 800 and this is a different thing from a canvas drawing.
         (_HTML / "scene3d" / "15-florets.js", 500),    # ~493 now (V2.93)
+        # V3.49 (F268): a read shrub's flower clusters as cut-out cards.
+        (_HTML / "scene3d" / "15c-woodybloom.js", 320),  # 319 now (V3.65): split before adding
+        # V3.63 (F268): a shrub's or tree's fruit as cut-out bunches, held into
+        # the winter where read; split from 11-fruit.js's points like the blooms.
+        (_HTML / "scene3d" / "15d-woodyfruit.js", 300),  # 210 now
+        # V3.64 (F268): a head's least size and facing, and a wildflower's
+        # dense clusters as cards; took _inflorescence from 15-florets.js.
+        (_HTML / "scene3d" / "15e-heads.js", 220),
+        # V3.67b: hanging flowers, out of 15-florets.js (at its ceiling).
+        (_HTML / "scene3d" / "15f-nodding.js", 320),
+        # V3.66: a leafy wildflower's stems carry leafy-shoot cards.
+        (_HTML / "scene3d" / "03g-stemleaves.js", 160),  # 130 now
+        # V3.67b: the rosettes, tufts, umbrellas and fronds, out of 03c-leafy.js.
+        (_HTML / "scene3d" / "03h-leafyforms.js", 400),
         # V2.43: click-to-plant + the viewer's first QWebChannel. Geometry in,
         # coordinates out — if this file grows past its ceiling the cause is
         # almost certainly placement logic that belongs in
@@ -534,6 +611,10 @@ class TestStructuralCeilings(unittest.TestCase):
         # creature collision took it to 852 of its 800. The line the split
         # follows: 07 is the animals, 19 is how they are explained to a person.
         (_HTML / "scene3d" / "19-roster.js", 300),     # 177 now
+        # V3.44 (F261): the named viewpoints and the moment in words.
+        # 08-modes.js, where the camera presets live, had eleven lines left.
+        # Where each view stands is src/scene_views.py's; this only draws it.
+        (_HTML / "scene3d" / "27-views.js", 200),      # 89 now
     ]
 
     def test_module_line_ceilings(self):
@@ -972,8 +1053,12 @@ class TestEveryTextFileReadPinsItsEncoding(unittest.TestCase):
         and `scripts/retag_releases.py` reads commit subjects through exactly
         that call."""
         import subprocess                                   # noqa: PLC0415
+        # The whole history, not the last 400: the subjects went ASCII after
+        # V2.67, so by V3.67 the last 400 held none and this failed on any
+        # full clone (the owner's PC); CI's shallow clone skips it. The old
+        # subjects are still read by scripts/retag_releases.py.
         out = subprocess.run(
-            ["git", "log", "--format=%s", "-400"],
+            ["git", "log", "--format=%s"],
             capture_output=True, text=True, encoding="utf-8",
             cwd=str(_SRC.parent), check=False)
         if out.returncode != 0:
@@ -989,16 +1074,20 @@ class TestEveryTextFileReadPinsItsEncoding(unittest.TestCase):
             self.skipTest(f"shallow clone: {len(subjects)} subjects is too "
                           f"small a sample to say the history is ASCII")
         self.assertTrue(any(ord(ch) > 0x7F for ch in out.stdout),
-                        "no non-ASCII in 400 commit subjects — check why")
+                        "no non-ASCII in any commit subject — check why")
 
     def test_the_seed_json_is_what_makes_this_bite(self):
         """Not hypothetical. If the seed data were ASCII this guard would be
-        pedantry; it is not, and the byte that killed seven tests is in there."""
+        pedantry; it is not. The byte that killed seven tests (a photographer's
+        Cyrillic name) left with the photo it credited in V3.55, and what is
+        left is worse: Windows' cp1252 now reads the file without an error and
+        gets the text wrong (a dash, an accent), so an unpinned read passes
+        every test and garbles what the app shows."""
         blob = (_SRC.parent / "data" / "plants_master.json").read_bytes()
         self.assertTrue(any(b > 0x7F for b in blob),
                         "plants_master.json is pure ASCII — check why")
-        with self.assertRaises(UnicodeDecodeError):
-            blob.decode("cp1252")
+        self.assertNotEqual(blob.decode("cp1252", errors="replace"),
+                            blob.decode("utf-8"))
 
 
 class TestTheTestSuiteCanReachItsOwnSummary(unittest.TestCase):

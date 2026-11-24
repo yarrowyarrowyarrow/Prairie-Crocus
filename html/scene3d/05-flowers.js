@@ -284,14 +284,24 @@ function buildFlowers(plants, month, terrain) {
     FLOWER_TEX.cattail_spike = FLOWER_TEX.cattail;
   }
   const byForm = {}; ALL_FORMS.forEach(f => byForm[f] = []);
-  const modelled = [];
+  const modelled = [], carded = [], nodding = [];
   for (const p of plants || []) {
     // A grass's inflorescence_form (schema v52) supersedes its flower_form,
     // which stays 'plume' for every graminoid because that column feeds the
     // pollinator logic and a wind-pollinated grass offers a bee nothing.
     const form = (p.inflorescence_form && p.inflorescence_form !== 'cattail_spike')
       ? p.inflorescence_form : p.flower_form;
-    if (!p.flower_color || !byForm[form]) continue;
+    // A body that carries its flowers as cards needs only their colour: a
+    // poplar's catkins are recorded flower_form 'none', which the pollinator
+    // logic reads, and are still drawn (15c-woodybloom.js, V3.50).
+    const carries = window.woodyBloomApplies && woodyBloomApplies(p);
+    // A grass drawn from its own head carries it (03f-tufts.js, V3.51).
+    if (window.tuftKeyFor && tuftKeyFor(p)) continue;
+    // A flower recorded by its characters is drawn from them whatever its
+    // flower_form, which stays the pollinator logic's: a sarsaparilla's umbels
+    // and a snakeroot's spikes were recorded 'none' there, and never drawn (V3.67b).
+    const described = window.floretsApply && floretsApply(p);
+    if (!p.flower_color || (!byForm[form] && !carries && !described)) continue;
     if ((p.opacity ?? 1) < 0.25) continue;            // not-yet-present plants
     const bs = p.bloom_start || 0;
     // A seed head is not a bloom: prairie grasses hold theirs from flowering
@@ -300,19 +310,27 @@ function buildFlowers(plants, month, terrain) {
     // to its FRUIT window's end, not its bloom's.
     const be = p.inflorescence_form
       ? Math.max(p.bloom_end || 0, p.fruit_end || 0, 12) : (p.bloom_end || 0);
-    if (!bs || month < bs || month > be) continue;     // out of season
+    // …and through the winter on its dry stems (01d-season.js, V3.46).
+    if (!bs || ((month < bs || month > be) && !holdsSeedHead(p))) continue;
+    // A flower that hangs (15f-nodding.js, V3.67b); a calla's spathe (23b-pondforms.js).
+    if (window.noddingApplies && noddingApplies(p)) { nodding.push(p); continue; }
+    if (window.pondOwnsFlower && pondOwnsFlower(p)) continue;
     // A species that records its flower as CHARACTERS gets built rather than
     // stamped (15-florets.js, schema v53). Everything else — 4 flowering
     // species the seed data doesn't describe, every graminoid seed head, and
     // the whole scene at Stylised — keeps the billboard below, which is why
     // partial coverage of the new fields is never a broken plant (P9).
     if (window.floretsApply && window.floretsApply(p)) {
-      modelled.push(p);
+      // A shrub drawn from its own numbers carries each cluster as one
+      // cut-out card on its shoots (15c-woodybloom.js, V3.49).
+      (carries ? carded : modelled).push(p);
       continue;
     }
     byForm[form].push(p);
   }
   if (modelled.length) window.buildFlorets(modelled, month, terrain);
+  if (carded.length) window.buildWoodyBlooms(carded, month, terrain);
+  if (nodding.length) window.buildNodding(nodding, month, terrain);
   const _fc = new THREE.Color();
   for (const form of ALL_FORMS) {
     const list = byForm[form];
@@ -360,7 +378,7 @@ function buildFlowers(plants, month, terrain) {
         const rr = isCattail ? rad * 0.22 * j2
                              : rad * (0.12 + 0.9 * Math.sqrt(j2));  // even areal spread
         const dy = isCattail ? 0 : (j3 - 0.5) * Math.max(0.14, h * 0.3);
-        const q = va && va[(k * 7 + (seed >>> 0)) % va.length];
+        const q = va && va[(k * (va.length % 7 ? 7 : 1) + (seed >>> 0)) % va.length];   // never 2 of 14 (V3.67c)
         const sz = isCattail ? 1
                  : pscale * (0.6 + 0.85 * (((seed + k * 17) % 100) / 100));
         // Attitude, jittered per bloom so a plant is not a rank of clones.
@@ -549,6 +567,8 @@ function disposeDesignGroup(group) {
   const sharedMat = new Set(MATS ? Object.values(MATS) : []);
   if (GROUND_MAT) sharedMat.add(GROUND_MAT);   // shared meadow texture lives on
   if (GROUND_SNOW_MAT) sharedMat.add(GROUND_SNOW_MAT);   // and its winter twin
+  if (GROUND_DORMANT_MAT) sharedMat.add(GROUND_DORMANT_MAT);   // and October's
+  for (const m of siteSharedMats()) sharedMat.add(m);    // 02c-site.js (V3.45)
   group.traverse(obj => {
     if (obj.isInstancedMesh) obj.dispose();             // frees instance buffers only
     if (obj.geometry && !sharedGeo.has(obj.geometry)) obj.geometry.dispose();
@@ -574,6 +594,7 @@ window.permaSetScene = function (sc) {
   lastOrigin = sc.origin || null;
   lastMonth = sc.month || 6;
   sceneMonth = sc.month || 6;         // bloom-gating + the seasonal-tour HUD
+  sceneSeason = sc.season || null;    // 01d-season.js: before anything is built
   sceneNight = !!sc.is_night;         // set before buildPlants so flowers night-glow
   // The site's real wind for this month, and the lee of its own windbreaks
   // (F68). Uniforms only, so this re-aims every plant in the yard without
@@ -581,17 +602,19 @@ window.permaSetScene = function (sc) {
   if (window.applySceneWind) applySceneWind(sc.wind);
   lastYear = sc.year || 0;
   lastBounds = sc.bounds;
+  lastFocus = sc.focus || null; lastViews = sc.views || null;   // V3.43
   const groundWas = groundKey(lastTerrain);
   lastTerrain = sc.terrain || null;
 
   buildGround(designGroup, sc);
+  buildSite(designGroup, sc);    // V3.45: surfaces, lines, the street (02c-site.js)
   buildBoundary(designGroup, sc.boundary, sc.terrain);
-  buildBuildings(designGroup, sc.buildings, sc.terrain);
+  buildBuildings(designGroup, sc.buildings, sc.terrain, sc.month);
   buildPlants(designGroup, sc.plants, sc.month, sc.year, sc.terrain);
   buildStructures(designGroup, sc.structures);
   if (sc.is_night) setNight();
   else { setDay(); if (sc.sun) setSun(sc.sun.azimuth_deg, sc.sun.altitude_deg); }
-  fitShadow(sc.bounds);
+  placeShadow(sc);
 
   // Frame the camera only on first load or when a genuinely different design is
   // opened (origin moved) — a slider re-push of the same design keeps the
@@ -603,7 +626,7 @@ window.permaSetScene = function (sc) {
   if (moved) {
     // Don't yank the camera while the user is flying, walking, or in the
     // cinematic flyover — those modes own the camera.
-    if (!beeMode && !walkMode && !cinematic) frameCamera(sc.bounds);
+    if (!beeMode && !walkMode && !cinematic) frameCamera(frameBox());
     framedOrigin = o ? { lat: o.lat, lng: o.lng } : { lat: 0, lng: 0 };
   } else if (groundKey(lastTerrain) !== groundWas && !beeMode && !walkMode && !cinematic) {
     settleOrbitOnGround();   // the terrain came after the first push (V3.04)
@@ -617,14 +640,26 @@ window.permaSetScene = function (sc) {
   // (V2.46).
   if (typeof buildCritterObstacles === 'function') buildCritterObstacles();
 
-  const n = (sc.plants || []).length;
-  document.getElementById('hud').innerHTML =
-    `<b>Year ${sc.year}</b> &nbsp;·&nbsp; ${n} plant${n === 1 ? '' : 's'}`
-    + ((sc.buildings || []).length ? ` &nbsp;·&nbsp; ${sc.buildings.length} structure footprint(s)` : '')
-    + (sc.terrain ? ' &nbsp;·&nbsp; terrain' : '');
+  document.getElementById('hud').innerHTML = hudText(sc);   // 01-core.js
+  // Where the losses are and which plants (25b-timeline.js, V3.46), after the
+  // line it sits under and after the scene its rings lie on.
+  if (typeof showTimeline === 'function') showTimeline();
 };
 
-window.permaSetSun = function (azDeg, altDeg) { setSun(azDeg, altDeg); };
+window.permaSetSun = function (azDeg, altDeg) {
+  setSun(azDeg, altDeg);
+  if (lastSceneObj && !sceneNight) placeShadow(lastSceneObj);
+};
+// The light for the sun just placed, and the shadow map over the yard
+// (01e-light.js, V3.53), else 01-core.js's square over the stage.
+function placeShadow(sc) {
+  if (typeof relight === 'function') relight();
+  if (typeof fitShadowToYard === 'function' && fitShadowToYard(sc)) return;
+  const v = sun.position.clone().sub(sun.target.position).normalize();
+  sun.target.position.set(0, 0, 0);
+  sun.position.copy(v).multiplyScalar(300);
+  fitShadow(sc.bounds);
+}
 
 // Detail / quality knob (V1.94): 0 Stylised · 1 Balanced · 2 Lifelike. Drops the
 // cached archetypes (their density AND, at level 0, their whole construction

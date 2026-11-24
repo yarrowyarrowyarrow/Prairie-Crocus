@@ -123,7 +123,7 @@ def build_asset(key, spec=None, seed_salt="", half_widths=None):
             halves[prefix] = unit_frame(objs)
             for o in objs:
                 decimate_to_budget(o, _budget_for(spec))
-            bake_ao(objs, gradient=True, strength=0.7, seed_key=key + prefix)
+            bake_ao(objs, gradient=True, seed_key=key + prefix, **LOW_AO)
             tris[prefix] = _check_budget(f"{key}/{prefix}", objs,
                                          _budget_for(spec))
             for o in objs:
@@ -156,7 +156,7 @@ def build_asset(key, spec=None, seed_salt="", half_widths=None):
             budget = C.TRI_BUDGETS.get(kind, _budget_for(spec))
             for o in objs:
                 decimate_to_budget(o, budget)
-            bake_ao(objs, gradient=True, strength=0.6, seed_key=key + prefix)
+            bake_ao(objs, gradient=True, seed_key=key + prefix, **LOW_AO)
             tris[prefix] = _check_budget(f"{key}/{prefix}", objs, budget)
             for o in objs:
                 o.parent = root
@@ -205,6 +205,16 @@ def build_asset(key, spec=None, seed_salt="", half_widths=None):
 #: a path. A lighter bake was tried for shrubs and bought little; one rule for
 #: every crown is the one to keep (docs/plans/V2.96-shrubs-show-their-shade.md).
 CROWN_AO = dict(strength=0.65, max_dist=0.15, floor_z=0.0, gradient_floor=0.8)
+
+
+#: How a herb, a grass tuft or a groundcover mat is shaded (V3.48). They kept
+#: the bake the crowns gave up in V2.94: the vertical gradient fell to 0.55 at
+#: the ground and rays reached 60% of the plant, so a leaf low on the plant came
+#: out at about a third of its colour. Low is where a rosette's leaves, a mat
+#: and the base of every tussock are: against photographs 85 of the region's
+#: 250 natives read too dark, the rosettes near black. Same rule as CROWN_AO,
+#: a little lighter, since a low plant has no crown above it to shade it.
+LOW_AO = dict(strength=0.5, max_dist=0.15, floor_z=0.0, gradient_floor=0.85)
 
 
 def _match(key, only):

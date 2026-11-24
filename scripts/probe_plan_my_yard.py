@@ -10,6 +10,11 @@ grown, measured by ``yard_overview.cover`` exactly as the Overview measures it.
     python scripts/probe_plan_my_yard.py            # print the table
     python scripts/probe_plan_my_yard.py --assert   # fail on the PY-2/PY-4 rules
 
+Since V3.52 (F264, 3D-5) it also plans the 3D review's lot (a house, a garage,
+two neighbours, two trees already there; ``render_yard.review_lot``) front and
+back, and asks the 3D preview's own shade model what the years do to it: *a
+plan survives its own preview*.
+
 It uses a throwaway database, so your own designs and catalogue are never
 touched. It takes a minute or two (a few seconds a plan).
 """
@@ -87,6 +92,34 @@ def run(density: str = "balanced", features=(), cover=None,
             "per_m2": len(plants) / c["area_m2"] if c["area_m2"] else 0.0}
 
 
+def shade() -> dict:
+    """The review lot's plan under the preview's shade model (F264):
+    ``{placed, misfits, lost: {year: n}, by_fixed: {year: n}}``. ``misfits``
+    stand in more shade from the buildings and the trees already there than
+    they take; ``by_fixed`` are the losses those casters are the main cause
+    of, the plan's own plants adding the rest."""
+    import render_yard
+    from src.db.plants import get_plant
+    from src.plan_shade import misfits
+    from src.project_store import ProjectStore
+    from src.succession_engine import (SuccessionEngine,
+                                       static_casters_from_project)
+    lot = render_yard.review_lot()
+    placed = ProjectStore(lot).placed_plants
+    statics = static_casters_from_project(lot)
+    engine = SuccessionEngine(placed, static_casters=statics)
+    out = {"placed": len(placed), "lost": {}, "by_fixed": {},
+           "misfits": len(misfits(placed, statics, get_plant))}
+    for year in (5, 10):
+        dead = [i for i in range(len(placed))
+                if engine.death_year(i, year) is not None]
+        out["lost"][year] = len(dead)
+        out["by_fixed"][year] = sum(
+            (engine.main_shader(i, year) or {}).get("kind") == "static"
+            for i in dead)
+    return out
+
+
 def measure() -> dict:
     out = {"cover": {}, "shapes": {}}
     for label, cover in (("Fill it now", 0.70),
@@ -97,6 +130,7 @@ def measure() -> dict:
         out["shapes"][label] = run(features=[_shape(kind, *box)])
     # PY-10: a bed and no outline is enough to plan (V3.28).
     out["bed_alone"] = run(features=[_shape(*SHAPES[0][1:])], boundary=None)
+    out["shade"] = shade()
     return out
 
 
@@ -135,6 +169,17 @@ def failures(m: dict) -> list:
     if zone["cover"] < open_yard["cover"] - 0.05 or zone["kinds"] < 6:
         bad.append(f"Lawn - to convert: {zone['cover']:.0%} cover by "
                    f"{zone['kinds']} kinds, open yard {open_yard['cover']:.0%}")
+    # F264 (3D-5): a plan survives its own preview. Nothing it planted is lost
+    # to shade by the fifth summer, and nothing stands where the house or a
+    # tree already there shades it more than it takes.
+    sh = m.get("shade")
+    if sh is not None:
+        if sh["misfits"]:
+            bad.append(f"Review lot: {sh['misfits']} plants in more shade "
+                       "from the buildings and trees than they take")
+        if sh["lost"][5]:
+            bad.append(f"Review lot: {sh['lost'][5]} of {sh['placed']} lost "
+                       "to shade by the fifth summer")
     return bad
 
 
@@ -156,6 +201,14 @@ def main(argv=None) -> int:
     print(f"  {'Garden Bed, no outline':30s} placed {r['placed']:3d} of "
           f"{r['kinds']:2d} kinds; {r['on_shape']:3d} on it; covers "
           f"{r['cover']:.0%} of {r['area']:.0f} m2")
+    sh = m["shade"]
+    print(f"\nThe 3D review's lot, front and back: {sh['placed']} plants; "
+          f"{sh['misfits']} in more shade from the buildings and trees than "
+          "they take")
+    for year in (5, 10):
+        print(f"  lost to shade by summer {year:2d}: {sh['lost'][year]:3d} "
+              f"({sh['by_fixed'][year]} mostly by a building or a tree "
+              "already there)")
     if "--assert" in argv:
         bad = failures(m)
         for line in bad:

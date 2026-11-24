@@ -6,15 +6,16 @@ Design principle P6 — see docs/DESIGN_PHILOSOPHY.md.
 
 :func:`install` puts the page first in the Design tab and makes it current; it
 refills when it is on screen and after edits (``src/live_refresh.py``, poked by
-``follow_design.request_sync``, which every edit, open and undo reaches). In
-the simple app it replaces the Report card, which the Advanced tools switch
-holds (``advanced_tools.ADVANCED_PAGES``).
+``follow_design.request_sync``, which every edit, open and undo reaches). It
+replaced the Report card, retired in V3.55 (F270).
 
 :func:`run_action` turns a card's target into what its words say: a filter set
 on the plant list, Draw › Shape opened on the right type, the fill and swap
 dialogs (``src/yard_overview_dialogs.py``), Export PDF, Plan My Yard. A *More
 detail* link (MD-4) turns the Advanced tools on and shows the page that
-explains the item, and says once a session how to turn them off.
+explains the item, and says once a session how to turn them off. The street
+item's *See it in 3D* (V3.44, the owner's M2) opens the 3D preview from the
+street and **leaves the switch alone** (D1; U21 found the switch disorienting).
 """
 
 from __future__ import annotations
@@ -82,16 +83,20 @@ def _advanced(main, which: str) -> None:
             _said_advanced = True
             main.statusBar().showMessage(ADVANCED_ON, 10000)
     design = main.analysis_panel
-    page = {"food": getattr(design, "_food", None),
-            "over_time": getattr(design, "_over_time_page", None)}.get(which)
+    page = {"over_time": getattr(design, "_over_time_page", None)}.get(which)
     if page is not None:
         show_panel(page)
 
 
 def _page(main, which: str) -> None:
+    """A page of the simple app, leaving the Advanced tools as they are:
+    Planted, or Through the year (V3.55; the flowers and food items had
+    turned the Advanced tools on to reach it as Food)."""
     from src.keyboard_help import show_panel
     if which == "planted":
         show_panel(main.on_this_design)
+    elif which == "year":
+        show_panel(main.analysis_panel._food)
 
 
 def _plants(main, arg: str) -> None:
@@ -100,9 +105,8 @@ def _plants(main, arg: str) -> None:
     panel = main.plant_panel
     show_panel(panel)
     picker = panel.picker
-    if arg == "berry_shrub":
-        picker.set_facet("type", ["shrub"])
-        picker.set_facet("use", ["bird_food"])
+    if arg == "caterpillars":
+        picker.set_facet("use", ["keystone_species"])
     elif arg.startswith("blooms_in="):
         picker.set_facet("bloom_months", [arg.split("=", 1)[1]])
 
@@ -142,7 +146,14 @@ def _fill(main, _arg: str) -> None:
     yard_overview_dialogs.fill_gaps(main)
 
 
+def _view3d(main, view: str) -> None:
+    """The 3D preview, looking from ``view`` (the street, for the item that
+    asks how it will look from there). No switch is turned."""
+    from src.scene3d_window import open_3d_view
+    open_3d_view(main, view or "")
+
+
 _HANDLERS = {"advanced": _advanced, "page": _page, "plants": _plants,
              "shape": _shape, "export": _export, "site": _site,
              "draw": _draw, "plan": _plan, "swap": _swap,
-             "fill_gaps": _fill}
+             "fill_gaps": _fill, "view3d": _view3d}

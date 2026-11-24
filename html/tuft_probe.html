@@ -1,0 +1,118 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#101815;color:#dfe;font:13px system-ui}
+iframe{width:640px;height:480px;border:0;display:block}
+#out{padding:8px;white-space:pre-wrap;font-family:ui-monospace,monospace}</style>
+</head><body>
+<div id="out">working…</div>
+<iframe id="v" src="scene3d.html"></iframe>
+<script src="probe_watch.js"></script>
+<script>
+// A grass, sedge or rush built from its own blades and seed head, read back
+// from the real viewer (V3.51): the gate behind tests/test_tuft_render.py.
+//
+//   ?job=URL   one JSON {scenes: {name: scene}, heads: [...]}.
+//
+// For each scene it pushes it and reports every tuft mesh: which part it is
+// (body, stems, heads), its triangles, its height and reach in the unit frame,
+// the scale it was placed at and the colour it was given, and whether the
+// viewer drew anything else for it as well, a billboard or the baked tuft
+// (it must not). Then it builds
+// every head form at every attitude, leafy and leafless, off the scene, and
+// reports each one's triangles and whether any coordinate is not a number.
+// The result goes into document.title as "MEASURED {...}".
+
+const out = document.getElementById('out');
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function until(test, ms) {
+  for (let t = 0; t < ms; t += 100) { if (test()) return true; await sleep(100); }
+  return false;
+}
+function viewer() { return document.getElementById('v').contentWindow; }
+
+function meshes(w) {
+  const found = [];
+  let billboards = 0;
+  w.eval('plantsGroup').traverse((o) => {
+    if (!o.isInstancedMesh) return;
+    if (o.userData.part !== 'tuft') {
+      // Anything else drawn for the plant: the baked tuft or a billboard.
+      if (o.userData.pickId && o.count) billboards += o.count;
+      return;
+    }
+    const g = o.geometry, pos = g.attributes.position;
+    const m = new w.THREE.Matrix4(), p = new w.THREE.Vector3(),
+      q = new w.THREE.Quaternion(), s = new w.THREE.Vector3();
+    o.getMatrixAt(0, m); m.decompose(p, q, s);
+    let top = 0, half = 0;
+    for (let i = 0; i < pos.count; i++) {
+      top = Math.max(top, pos.getY(i));
+      half = Math.max(half, Math.hypot(pos.getX(i), pos.getZ(i)));
+    }
+    const c = new w.THREE.Color();
+    if (o.instanceColor) o.getColorAt(0, c);
+    found.push({ triangles: (g.index ? g.index.count : pos.count) / 3, top, half,
+                 scale: [s.x, s.y], colour: '#' + c.getHexString(),
+                 tuft: g.userData.tuft || null });
+  });
+  return { meshes: found, billboards };
+}
+
+async function run(w, job) {
+  const res = { scenes: {}, matrix: [] };
+  for (const name in job.scenes || {}) {
+    const sc = job.scenes[name];
+    w.permaSetQuality(sc.quality == null ? 1 : sc.quality);
+    w.permaSetScene(sc);
+    await until(() => w.permaModelsReady(), 60000);
+    await sleep(300);
+    const p = w.eval('lastSceneObj').plants[0];
+    res.scenes[name] = Object.assign(meshes(w), { key: w.tuftKeyFor(p) });
+  }
+  w.permaSetQuality(1);
+  for (const head of job.heads || []) {
+    for (const attitude of ['erect', 'nodding', 'hanging', 'side']) {
+      for (const blades of ['arching', 'none']) {
+        const p = { genus: 'Testus', species: head + attitude,
+                    drawn: { body: 'tuft', form: 'bunch', mature_h: 0.8, mature_w: 0.5,
+                             stems: 12, blade_m: blades === 'none' ? 0 : 0.3,
+                             blade_w: blades === 'none' ? 0 : 0.004, blades, head,
+                             head_m: 0.08, head_w: 0.03, heads: 3, attitude } };
+        const row = { head, attitude, blades };
+        try {
+          const a = w.buildTuftGeo(p, 0);
+          let bad = 0;
+          for (const g of [a.body, a.stems, a.heads]) {
+            const arr = g.attributes.position.array;
+            for (let i = 0; i < arr.length; i++) if (!Number.isFinite(arr[i])) bad++;
+          }
+          Object.assign(row, a.body.userData.tuft, { bad, plan: undefined });
+          [a.body, a.stems, a.heads].forEach((g) => g.dispose());
+        } catch (e) { row.error = String(e && e.message || e); }
+        res.matrix.push(row);
+      }
+    }
+  }
+  return res;
+}
+
+(async function () {
+  const q = new URLSearchParams(location.search);
+  try {
+    if (!q.get('job')) {
+      out.textContent = 'Run this through tests/test_tuft_render.py: it needs the job it serves.';
+      return;
+    }
+    const ok = await until(() => {
+      const w = viewer();
+      return w && typeof w.permaSetScene === 'function' && typeof w.permaShowView === 'function';
+    }, 60000);
+    if (!ok) throw new Error('the viewer never finished loading its chunks');
+    const res = await run(viewer(), await (await fetch(q.get('job'))).json());
+    document.title = 'MEASURED ' + JSON.stringify(res);
+    out.textContent = JSON.stringify(res, null, 1);
+  } catch (e) {
+    document.getElementById('probe-errors').textContent += 'probe: ' + (e && e.stack || e) + '\n';
+    document.title = 'FAILED';
+  }
+})();
+</script></body></html>

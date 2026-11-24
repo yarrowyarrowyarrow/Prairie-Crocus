@@ -49,12 +49,13 @@ from src.controllers.map_events import MapEventRouter
 from src.controllers.generation import GenerationController
 from src.controllers.area_fill_controller import AreaFillController
 from src.project_store import ProjectStore
-from src import accessible_names, data_sources_flow, feedback_flow, keyboard_help
+from src import accessible_names, community_turn, data_sources_flow, feedback_flow, keyboard_help
 from src import indicator_style, target_size
 from src import month_tasks, onboarding_flow, start_flow
 from src.yard_overview import bed_area_m2
 from src.elided_label import ElidedLabel
-from src.scene3d_window import open_3d_view as _open_3d_view
+from src.scene3d_window import (open_3d_view as _open_3d_view,
+                                tools_hook as _scene3d_tools_hook)
 from src.ui_style import APP_STYLE as _APP_STYLE
 from src.controllers import split_view as _split_view
 from src.reference_ecosystem_window import (
@@ -539,6 +540,9 @@ class MainWindow(QMainWindow):
         # itself in src/scene3d_window.py and the architecture guard's
         # method ceiling stays meaningful.
         act_3d.triggered.connect(lambda: _open_3d_view(self))
+        # What the Advanced tools switch tells its state for the 3D window,
+        # which does not exist until it is opened (V3.44).
+        self.scene3d_tools = _scene3d_tools_hook(self)
 
         act_reference = view_menu.addAction("Walk a &Wild Landscape…")
 
@@ -596,10 +600,11 @@ class MainWindow(QMainWindow):
         # F44: the welcome shows once, so it needs a way back — both for
         # someone who dismissed it and for anyone looking for the example
         # design later.
-        # FN-11 (V3.31): the one-page guide, in the README.
+        # FN-11 (V3.31): the one-page guide; in a window of its own since
+        # V3.38 (F253), not the README on GitHub.
         act_guide = help_menu.addAction("&How to Plan Your Yard")
         act_guide.setStatusTip("Five steps from your address to a printed "
-                               "plan, in your browser")
+                               "plan")
         act_guide.triggered.connect(lambda: feedback_flow.open_guide(self))
 
         act_welcome = help_menu.addAction("&Start Screen…")
@@ -1022,12 +1027,9 @@ class MainWindow(QMainWindow):
             lambda pid: _drf.substitute_species(self, pid))
         self.on_this_design.community_focus_requested.connect(
             lambda name: _drf.focus_community(self, name))
-        # Report card deep-links: habitat value → Design › Habitat, cost →
-        # Share › Export, where the buy list is (V2.13; V3.08).
-        self.on_this_design.open_habitat_analysis_requested.connect(
-            lambda: _drf.open_habitat_analysis(self))
-        self.on_this_design.open_buying_requested.connect(
-            lambda: _drf.open_buying(self))
+        # A plant named on Through the year opens its page (V3.55).
+        self.analysis_panel._food.plant_requested.connect(
+            lambda pid: _drf.open_plant(self, pid))
         # Address search → drop pin on map (the bridge then notifies us
         # back via site_pin_placed and the usual fetch flow runs).
         self.site_panel.address_resolved.connect(self._on_address_resolved)
@@ -2187,37 +2189,18 @@ class MainWindow(QMainWindow):
         self.learn_panel.set_placed_plants(enriched)
         self.learn_panel.set_structures(structs)
 
-        # "On This Design" sibling inner tab. Push both: Communities + Stats
-        # sub-tabs read from the enriched list; the Plants sub-tab reads
-        # from `_placed_counts` (this catches load-project / new-project
-        # paths where placed_counts_changed didn't fire one-for-one).
+        # Design › Planted: the Communities list reads the enriched list; the
+        # Species list reads `_placed_counts` (this catches load-project /
+        # new-project paths where placed_counts_changed didn't fire
+        # one-for-one). The Report card these also fed went in V3.55 (F270).
         try:
             self.on_this_design.set_plants_counts(self.plant_panel._placed_counts)
             self.on_this_design.set_design_data(enriched)
-            # Whole-design cost (C1): plants + structure install + bed mulch,
-            # with the plant total broken down by type (F2).
-            from src.sourcing import design_cost, cost_by_type
-            bed_area = bed_area_m2(self._project)
-            _cost = design_cost(enriched, structures=structs, mulch_area_m2=bed_area)
-            _cost["type_costs"] = cost_by_type(enriched)
-            self.on_this_design.set_cost_breakdown(_cost)
-            # Lawn-to-habitat conversion tally (N2).
+            # Lawn-to-habitat conversion tally (N2): the Habitat tab's
+            # lawn-equivalent counterfactual (F10) and the phased conversion
+            # plan (F17) read it.
             from src.lawn_zones import conversion_summary
             _conv = conversion_summary(self._project.get("features", []))
-            self.on_this_design.set_lawn_conversion(_conv)
-            # Cues to care (F75, P13) — whether the planting will be read as
-            # tended. Computed here because it needs the whole project (drawn
-            # shapes, structures, boundary), not just the placed plants; the
-            # panel is handed finished lines like the lawn tally above.
-            try:
-                from src import cues_to_care
-                self.on_this_design.set_cues_to_care(
-                    cues_to_care.cue_lines(self._project),
-                    cues_to_care.tally(self._project))
-            except Exception:      # noqa: BLE001
-                self.on_this_design.set_cues_to_care([])
-            # Same summary grounds the Habitat tab's lawn-equivalent
-            # counterfactual (F10) and the phased conversion plan (F17).
             self.analysis_panel.set_lawn_conversion(_conv)
             # Year-by-year conversion schedule (F17) in the planning Timeline tab.
             try:
@@ -2227,17 +2210,6 @@ class MainWindow(QMainWindow):
                 )
             except Exception:  # noqa: BLE001 — schedule is a planning aid
                 self.planning_panel.set_conversion_schedule(None)
-            # Habitat value on the Stats tab (F11) — what the design is worth,
-            # shown beside the cost. Computed here so it stays live with edits.
-            try:
-                # Against the pin's ecoregion, as Habitat scores it (OV-4).
-                from src.habitat_score import score_for_project, site_pin
-                lat, lng = site_pin(self._project)
-                self.on_this_design.set_habitat_value(
-                    score_for_project(enriched, structs, lat=lat, lng=lng)
-                )
-            except Exception:  # noqa: BLE001 — value is a nicety, never break sync
-                self.on_this_design.set_habitat_value(None)
         except Exception:
             pass
         # A design opened or undone reaches the open 3D preview and Growth
@@ -2386,6 +2358,7 @@ class MainWindow(QMainWindow):
             "communities": lambda: show(self.polyculture_panel),
             "structures": lambda: show(self.structure_panel),
             "design": lambda: show(self.analysis_panel),
+            "turn": lambda: community_turn.turn_pending(self),
         }.get(keyboard_help.letter_action(event))
         if act is not None:
             act()

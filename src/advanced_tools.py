@@ -37,9 +37,9 @@ NAME = "Advanced tools"
 ADVANCED_PAGES: tuple = (
     "site_panel.slope_page",          # §5 rank 2: contours, slope, water flow
     "analysis_panel._wind_page",      # rank 3: wind, shelter, snow catch
-    "on_this_design._stats_page",     # the Report card: Overview instead
     "analysis_panel._habitat_page",   # rank 1: the Design tab in depth
-    "analysis_panel._food",
+    # Through the year (analysis_panel._food) is in the simple app since
+    # V3.55 (F270, the owner: "yes"); the Report card is retired.
     "analysis_panel._over_time_page",
     "planning_panel._water_page",
     "learn_panel._present_page",      # rank 7: Share's narrated tour
@@ -49,7 +49,8 @@ ADVANCED_PAGES: tuple = (
 #: Menu actions, by object name (set where each is made).
 ADVANCED_ACTIONS: tuple = (
     "view_split",                     # rank 6: the View menu's windows
-    "view_3d_preview",
+    "view_3d_preview",                # M2: the simple app's doors to it are
+                                      # the plan strip and the Overview
     "view_wild_landscape",
     "view_growth_snapshots",
     "view_scale_units",               # rank 9: map settings and units
@@ -95,6 +96,11 @@ ADVANCED_HOOKS: tuple = (
     "species_flyout.community",       # the community page's pattern card
     "toolbar.shape_tool",             # Draw › Shape's lines and Custom
     "site_panel",                     # Site Info opens on its details (WD-2)
+    # The 3D preview's fine sliders, Detail, Flyover, Identify, pollinator
+    # tools, Plant and Remove, and outputs (V3.44, F261). The window opens
+    # from the simple app (the plan strip, the Overview's street item) with
+    # its two short rows; this holder tells an open one the switch's state.
+    "scene3d_tools",
 )
 
 

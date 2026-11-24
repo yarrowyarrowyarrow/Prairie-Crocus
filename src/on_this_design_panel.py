@@ -1,26 +1,26 @@
 """
-on_this_design_panel.py — what is on the design: the planted lists and the
-report card.
+on_this_design_panel.py — what is on the design: the planted lists.
 
 Split out of ``src/plant_panel.py`` in Chunk 4 of the strengthening plan.
 Pure structural move: ``OnThisDesignPanel`` is now standalone and lives
 beside the plant browser instead of inside it.
 
-Three sub-tabs:
+Two sub-tabs:
   • Species — species → count (driven by PlantPanel._placed_counts).
   • Communities — community-name → instance count + member count.
-  • Stats — the score, what to plant next, cues to care, cost.
 
-**Since V3.07 they sit in the Design tab** (``src/side_panel_layout.py``): the
-Stats page, as **Report card**, is its first page, and this panel, with Species
-and Communities, its second, **Planted**. Until then all three were under
+**Since V3.07 they sit in the Design tab** (``src/side_panel_layout.py``) as
+**Planted**. The third, Stats, was the Design tab's **Report card** from V3.07
+and was retired in V3.55 (F270, the owner's answer to the Design tab's review):
+the Overview says its cost and signs of care, Habitat its score, and its *Where
+to grow next* moved to Habitat as *What would raise it*. Until then all three were under
 Plants › On This Design, "the best page in the app, three levels deep, under a
 tab named for browsing plants" (the V3.05 surface audit).
 
 App.py owns the instance and drives both inputs:
 ``set_plants_counts(plant_panel._placed_counts)`` whenever the Plants
 tab signals ``placed_counts_changed``; ``set_design_data(enriched)``
-inside ``_sync_planning_panel`` for Communities + Stats.
+inside ``_sync_planning_panel`` for Communities.
 """
 
 from __future__ import annotations
@@ -98,12 +98,9 @@ class OnThisDesignPanel(QWidget):
     species_show_in_library_requested = pyqtSignal(int)  # ctx: Plant Library
     species_substitute_requested = pyqtSignal(int)       # ctx: the nursery is out (F91)
     community_focus_requested = pyqtSignal(str)          # click → zoom to members
-    open_habitat_analysis_requested = pyqtSignal()       # Stats: habitat value → Analysis
-    open_buying_requested = pyqtSignal()                 # Stats: cost → Share › Export
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        from PyQt6.QtWidgets import QTextBrowser
         root = QVBoxLayout(self)
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(2)
@@ -178,42 +175,8 @@ class OnThisDesignPanel(QWidget):
         cl.addWidget(self._communities_list, 1)
         self._tabs.addTab(communities_widget, "Communities")
 
-        # Stats sub-tab
-        stats_widget = QWidget()
-        sl = QVBoxLayout(stats_widget)
-        sl.setContentsMargins(2, 2, 2, 2)
-        sl.setSpacing(2)
-        self._stats_text = QTextBrowser()
-        self._stats_text.setAccessibleName("Design summary")
-        self._stats_text.setStyleSheet(
-            "QTextBrowser { background: #1a2a1a; color: #c8e6c9; "
-            "border: 1px solid #2e4a2e; border-radius: 4px; font-size: 12px; }"
-        )
-        # Deep-links: the habitat-value and cost headings are anchors into
-        # Design › Habitat and Share › Export (V2.13; V3.08). Handle them ourselves rather than
-        # letting QTextBrowser try to navigate to a made-up URL.
-        self._stats_text.setOpenLinks(False)
-        self._stats_text.anchorClicked.connect(self._on_stats_anchor)
-        sl.addWidget(self._stats_text, 1)
-        # The Design tab's Report card since V3.07 (src/side_panel_layout.py).
-        self._stats_page = stats_widget
-        self._tabs.addTab(stats_widget, "Stats")
-
-        # Latest enriched snapshot — stashed so Stats can refresh without
-        # the caller re-pushing it.
+        # Latest enriched snapshot, as set_design_data last had it.
         self._latest_enriched: list[dict] = []
-        # Whole-design cost breakdown (C1) — set by app.py via set_cost_breakdown.
-        self._cost_breakdown: dict | None = None
-        # Habitat Value Score (F11) — set by app.py via set_habitat_value, so the
-        # Stats tab shows what the design is worth, not only what it costs.
-        self._habitat_value = None
-        # Lawn-conversion zone summary (N2) — set via set_lawn_conversion.
-        self._lawn_conversion: dict | None = None
-        # Cues-to-care findings (F75) — set via set_cues_to_care. Whether the
-        # planting reads as tended, which is what decides if it is still here
-        # in three years (P13).
-        self._cues_lines: list = []
-        self._cues_tally = None
         # What each plant feeds (src/what_it_feeds.py), by plant id, and what
         # each community's members feed between them, by their ids: neither
         # changes while the app runs, and these lists redraw on every edit.
@@ -270,7 +233,7 @@ class OnThisDesignPanel(QWidget):
                 total += count
             self._plants_count_label.setText(
                 f"{total} plant{'s' if total != 1 else ''} placed"
-                f" ({len(counts)} species) · click a row to find it"
+                f" ({len(counts)} species) · click a row to see it"
             )
         except Exception:
             self._plants_count_label.setText(
@@ -319,24 +282,15 @@ class OnThisDesignPanel(QWidget):
         if name:
             self.community_focus_requested.emit(str(name))
 
-    def _on_stats_anchor(self, url):
-        """Route a Stats deep-link (custom sap: scheme) to the right tab."""
-        target = url.toString()
-        if target == "sap:analysis-habitat":
-            self.open_habitat_analysis_requested.emit()
-        elif target == "sap:buy":
-            self.open_buying_requested.emit()
-
-    # ── Communities + Stats sub-tabs ──────────────────────────────────
+    # ── Communities sub-tab ──────────────────────────────────
 
     def set_design_data(self, enriched: list[dict]):
-        """Refresh Communities + Stats sub-tabs from the full enriched
+        """Refresh the Communities sub-tab from the full enriched
         list of placed-plant features. Each entry should carry at least
         ``plant_id`` and (for community grouping) ``polyculture_name`` +
         ``polyculture_center_lat`` / ``polyculture_center_lng``."""
         self._latest_enriched = list(enriched or [])
         self._refresh_communities(enriched or [])
-        self._refresh_stats(enriched or [])
 
     def _refresh_communities(self, enriched: list[dict]):
         self._communities_list.clear()
@@ -379,309 +333,3 @@ class OnThisDesignPanel(QWidget):
             f"across {len(instances)} community name"
             f"{'s' if len(instances) != 1 else ''}"
         )
-
-    def set_cost_breakdown(self, breakdown: dict | None):
-        """Store the whole-design cost breakdown (from ``sourcing.design_cost``)
-        and refresh the Stats tab. Keys ``plants``/``structures``/``mulch``/
-        ``total`` each map to a ``(low, high)`` CAD tuple."""
-        self._cost_breakdown = breakdown or None
-        self._refresh_stats(self._latest_enriched)
-
-    def set_habitat_value(self, score):
-        """Store the Habitat Value Score (from ``habitat_score.compute_habitat_score``)
-        and refresh the Stats tab. ``score`` is the HabitatScore result, or None
-        (e.g. nothing placed / DB unavailable) — the value block then hides."""
-        self._habitat_value = score
-        self._refresh_stats(self._latest_enriched)
-
-    def set_lawn_conversion(self, summary: dict | None):
-        """Store the lawn-conversion zone summary (from
-        ``lawn_zones.conversion_summary``) and refresh the Stats tab."""
-        self._lawn_conversion = summary or None
-        self._refresh_stats(self._latest_enriched)
-
-    def set_cues_to_care(self, lines, tally=None):
-        """Store the cues-to-care findings (F75) and refresh the Stats tab.
-
-        Computed in ``app.py`` from the project and passed in as lines, like the
-        lawn tally and the cost breakdown — the panel stays presentation-only
-        and never reaches for the project itself.
-        """
-        self._cues_lines = list(lines or [])
-        self._cues_tally = tally
-        self._refresh_stats(self._latest_enriched)
-
-    def _value_block_html(self) -> str:
-        """The habitat-value half of value-vs-price (F11, P6): what the design is
-        worth, shown directly above the cost so the two read together."""
-        sc = self._habitat_value
-        if not sc:
-            return ""
-        total = int(round(getattr(sc, "total", 0) or 0))
-        grade = getattr(sc, "grade", "") or ""
-        head = f"{total}/100" + (f" ({grade})" if grade else "")
-        bits = []
-        ns, n = getattr(sc, "native_species", 0), getattr(sc, "n_species", 0)
-        if n:
-            bits.append(f"{ns} of {n} species native")
-        fed = self._food_words()
-        if fed:
-            bits.append(fed)
-        host = getattr(sc, "host_species", None) or []
-        if host:
-            bits.append(f"{len(host)} caterpillar host plants")
-        parts = [
-            "<p><a href='sap:analysis-habitat' "
-            "style='color:#a5d6a7;text-decoration:none;'>"
-            f"<b>Habitat value</b> ›</a><br>{head}"
-        ]
-        if bits:
-            parts.append("<br><span style='color:#90a4ae;font-size:12px;'>"
-                         + ", ".join(bits) + "</span>")
-        parts.append("</p>")
-        return "".join(parts)
-
-    def _nudges_block_html(self) -> str:
-        """The 'what would help most' list (F11 companion, P6/P9): the design's
-        biggest ecological gaps as ranged, actionable suggestions — so the
-        score reads as a to-do list, not a verdict."""
-        sc = self._habitat_value
-        if not sc:
-            return ""
-        try:
-            from src.habitat_score import habitat_nudges
-            nudges = habitat_nudges(sc, limit=3)
-        except Exception:
-            return ""
-        if not nudges:
-            return ("<p><b>Where to grow next</b><br>"
-                    "<span style='color:#a5d6a7;font-size:12px;'>"
-                    "This design already covers the habitat basics — nice "
-                    "work.</span></p>")
-        items = "".join(
-            f"<li style='margin-bottom:3px;'>{nd['text']}</li>"
-            for nd in nudges)
-        return ("<p><b>Where to grow next</b>"
-                "<ul style='margin:2px 0 0 0;color:#c8e6c9;font-size:12px;'>"
-                f"{items}</ul></p>")
-
-    def _food_words(self) -> str:
-        """'recorded as food for N kinds of wildlife', counted as Design ›
-        Food counts it (V3.20, OV-5): food edges only, from the design's
-        plants. Asked of the database only when the plants change."""
-        ids = frozenset(p.get("plant_id")
-                        for p in getattr(self, "_latest_enriched", []) or []
-                        if p.get("plant_id") is not None)
-        if getattr(self, "_food_key", None) != ids:
-            try:
-                from src.what_it_feeds import food_counts, food_words
-                self._food_line = food_words(food_counts(ids)) if ids else ""
-            except Exception:                              # noqa: BLE001
-                self._food_line = ""
-            self._food_key = ids
-        return self._food_line
-
-    def _cues_block_html(self) -> str:
-        """Will the neighbours read it as cared for? (F75, P13.)
-
-        The sibling of "Where to grow next": that block asks whether the design
-        works ecologically, this one asks whether it survives *socially*, which
-        is what actually decides whether it is still there in three years. A
-        native planting is rarely removed for failing ecologically — it is
-        removed because it read as neglect.
-
-        Only absences and the sign prompt are listed. Reciting the cues that are
-        already present would bury the one thing worth changing.
-        """
-        if not self._cues_lines:
-            return ""
-        tally = self._cues_tally
-        if tally and tally[1] and tally[0] == tally[1]:
-            head = ("<p><b>How it will be read</b><br>"
-                    "<span style='color:#a5d6a7;font-size:12px;'>"
-                    f"All {tally[1]} cues to care are here — this will read as "
-                    "tended.</span>")
-        else:
-            sub = (f" <span style='color:#90a4ae;font-size:12px;'>"
-                   f"({tally[0]} of {tally[1]} cues present)</span>"
-                   if tally and tally[1] else "")
-            head = f"<p><b>How it will be read</b>{sub}"
-        items = "".join(
-            f"<li style='margin-bottom:3px;'>{line}</li>"
-            for line in self._cues_lines)
-        return (head +
-                "<ul style='margin:2px 0 0 0;color:#c8e6c9;font-size:12px;'>"
-                f"{items}</ul></p>")
-
-    def _lawn_block_html(self) -> str:
-        s = self._lawn_conversion
-        if not s or s.get("total_zone_m2", 0) <= 0:
-            return ""
-        from src.lawn_zones import ZONE_TYPES
-
-        def area(m2):
-            return f"{m2:,.0f} m²" if m2 < 10000 else f"{m2 / 10000:.2f} ha"
-
-        parts = [
-            "<p><b>Lawn conversion</b><br>",
-            f"Converted: {area(s['converted_m2'])} "
-            f"({s['pct_converted']:.0f}% of lawn+restoration)<br>",
-            f"Lawn remaining: {area(s['lawn_remaining_m2'])}<br>",
-        ]
-        by = s.get("by_zone", {})
-        rows = [f"{spec['label']}: {area(by[key])}"
-                for key, spec in ZONE_TYPES.items() if by.get(key, 0) > 0]
-        if rows:
-            parts.append("<span style='color:#90a4ae;font-size:12px;'>"
-                         + " · ".join(rows) + "</span>")
-        parts.append("</p>")
-        return "".join(parts)
-
-    def _cost_block_html(self) -> str:
-        bd = self._cost_breakdown
-        if not bd:
-            return ""
-        from src.sourcing import format_cost
-
-        def row(label: str, key: str) -> str:
-            v = bd.get(key)
-            return f"{label}: {format_cost(v[0], v[1])}<br>" if v else ""
-
-        parts = ["<p><a href='sap:buy' "
-                 "style='color:#a5d6a7;text-decoration:none;'>"
-                 "<b>Estimated cost (CAD)</b> ›</a><br>",
-                 row("Plants", "plants")]
-        # Per-type breakdown so the plant total isn't one intimidating number,
-        # with the math shown — count × per-plant range (F2 + R4).
-        type_costs = bd.get("type_costs") or {}
-        if type_costs:
-            _LABELS = {"tree": "Trees", "shrub": "Shrubs", "vine": "Vines",
-                       "herb": "Herbaceous", "grass": "Grasses",
-                       "groundcover": "Groundcover", "root": "Roots/bulbs"}
-            chips = []
-            for t, v in sorted(type_costs.items(), key=lambda kv: -kv[1][1]):
-                lo, hi = v[0], v[1]
-                count = v[2] if len(v) > 2 else 0
-                if hi <= 0:
-                    continue
-                label = _LABELS.get(t, t.replace("_", " ").title())
-                if count:
-                    each = format_cost(lo / count, hi / count)
-                    chips.append(f"{label} {format_cost(lo, hi)} "
-                                 f"({count} × {each} ea)")
-                else:
-                    chips.append(f"{label} {format_cost(lo, hi)}")
-            if chips:
-                parts.append("<span style='color:#90a4ae;font-size:12px;'>&nbsp;&nbsp;"
-                             + "<br>&nbsp;&nbsp;".join(chips) + "</span><br>")
-        if bd.get("structures") and bd["structures"][1] > 0:
-            parts.append(row("Structures", "structures"))
-        if bd.get("mulch") and bd["mulch"][1] > 0:
-            parts.append(row("Mulch", "mulch"))
-        tot = bd.get("total")
-        if tot:
-            parts.append(f"<b>Total: {format_cost(tot[0], tot[1])}</b>")
-        parts.append(
-            "<br><span style='color:#90a4ae;font-size:12px;'>"
-            f"{_price_words(self)}.</span></p>"
-        )
-        return "".join(parts)
-
-    def _refresh_stats(self, enriched: list[dict]):
-        value_html = self._value_block_html()
-        nudges_html = self._nudges_block_html()
-        # Directly after the ecological gaps, because they are the two halves of
-        # the same question — will this design work, and will it be allowed to.
-        cues_html = self._cues_block_html()
-        cost_html = self._cost_block_html()
-        lawn_html = self._lawn_block_html()
-        if not enriched:
-            body = "<i style='color:#90a4ae;'>Nothing placed yet.</i>"
-            self._stats_text.setHtml(
-                body + lawn_html + value_html + nudges_html + cues_html
-                + cost_html)
-            return
-        from src.db.plants import get_plant
-        total = len(enriched)
-        species: set = set()
-        native = 0
-        layer_counts: dict[str, int] = {}
-        function_counts: dict[str, int] = {}
-        type_counts: dict[str, int] = {}
-        plant_cache: dict[int, dict] = {}
-        for p in enriched:
-            pid = p.get("plant_id")
-            if not pid:
-                continue
-            species.add(int(pid))
-            plant = plant_cache.get(pid)
-            if plant is None:
-                try:
-                    plant = get_plant(pid) or {}
-                except Exception:
-                    plant = {}
-                plant_cache[pid] = plant
-            # The design's own stamp (V3.25, ED-9), else the Alberta flag.
-            if p.get("native", plant.get("native_to_alberta")
-                     or p.get("native_to_alberta")):
-                native += 1
-            ptype = (plant.get("plant_type") or p.get("plant_type") or "").lower()
-            if ptype:
-                type_counts[ptype] = type_counts.get(ptype, 0) + 1
-            # Layer + function tags only stamp on community members, but
-            # try to surface them when present (the bare-plant case
-            # simply contributes nothing to layer/function tallies).
-            layer = (p.get("layer") or "").lower()
-            if layer:
-                layer_counts[layer] = layer_counts.get(layer, 0) + 1
-            for fn in (p.get("functions") or []):
-                key = str(fn).lower()
-                function_counts[key] = function_counts.get(key, 0) + 1
-        native_pct = (100.0 * native / total) if total else 0.0
-        rows: list[str] = []
-        rows.append(
-            f"<p><b>{total}</b> plants placed · "
-            f"<b>{len(species)}</b> species · "
-            f"<b>{native_pct:.0f}%</b> of plants Alberta-native</p>"
-        )
-        if type_counts:
-            rows.append("<p><b>Plant types</b><br>")
-            rows.append(
-                ", ".join(
-                    f"{t.replace('_', ' ')}: {n}"
-                    for t, n in sorted(type_counts.items(), key=lambda kv: -kv[1])
-                )
-            )
-            rows.append("</p>")
-        if layer_counts:
-            rows.append("<p><b>Vegetation layers</b><br>")
-            rows.append(
-                ", ".join(
-                    f"{l.replace('_', ' ')}: {n}"
-                    for l, n in sorted(layer_counts.items(), key=lambda kv: -kv[1])
-                )
-            )
-            rows.append("</p>")
-        if function_counts:
-            rows.append("<p><b>Ecological functions</b><br>")
-            rows.append(
-                ", ".join(
-                    f"{f.replace('_', ' ')}: {n}"
-                    for f, n in sorted(function_counts.items(), key=lambda kv: -kv[1])
-                )
-            )
-            rows.append("</p>")
-        rows.append(lawn_html)
-        rows.append(value_html)
-        rows.append(nudges_html)
-        rows.append(cues_html)
-        rows.append(cost_html)
-        self._stats_text.setHtml("".join(rows))
-
-
-def _price_words(panel) -> str:
-    """"An estimate at Edmonton native nurseries; prices vary by nursery and
-    year" (V3.30, WD-5): the pack's words, never "AB retail"."""
-    from src.planting_plan import price_words
-    words = price_words(getattr(panel, "_site_config", None))
-    return words[0].upper() + words[1:]

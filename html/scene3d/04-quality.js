@@ -265,7 +265,7 @@ const _BODY_H = { tree: [0.4, Infinity], shrub: [0.2, Infinity],
 // ground, no higher than vine_habit.SPRAWL_HEIGHT_M (tests/test_accuracy_render.py
 // keeps the two equal). A horsetail has no reed or grass body to floor it.
 const _VINE_SPRAWL_H = 0.30;
-function bodyHeightOf(p) {
+function fullBodyHeightOf(p) {   // bodyHeightOf (01d-season.js) is this x the season
   if (p && p.drawn) return Math.max(0.02, p.drawn.height_m);
   if (p && p.plant_type === 'vine') return Math.max(0.05, Math.min(_VINE_SPRAWL_H, p.height_m || 0));
   if (p && p.growth_form === 'jointed') return Math.max(0.05, p.height_m || 0);
@@ -455,7 +455,7 @@ function ensurePlantMats() {
     // lifted normals (V1.92) — lush tufts rather than thin spindly stalks.
     blade:   plantMaterial({ roughness: 0.72, wind: 0.11, vertexColors: true,
                doubleSide: true, detail: 'leaf.matte', detailScale: 16.0,
-               detailAmount: 0.26 }),
+               detailAmount: 0.26, translucency: LEAF_TRANSLUCENCY.blade }),
     simple:  plantMaterial({ roughness: 0.9, wind: 0.06 }),
     ground:  plantMaterial({ roughness: 0.95, wind: 0.02, vertexColors: true }),
     // Slightly lighter than pre-V2.12 — ACES tone mapping deepens darks.
@@ -470,8 +470,6 @@ const GEO = {
   shadow: new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2),
 };
 
-const _isDecid = (ft) => ft !== 'evergreen';   // unknown ⇒ deciduous-ish
-const _bareMonth = (m) => (m >= 11 || m <= 3);
 
 // Spread visualisation (F35): a self-sowing / rhizomatous plant scatters
 // offspring around the parent that keep accumulating as the years advance — a
@@ -538,7 +536,7 @@ function buildLayer(list, variants, mat, archOf, scaleOf, month, year, noRot,
       const [cx, sy, cz] = scaleOf(p);
       const sx = unitXZ(arch, cx), sz = unitXZ(arch, cz);
       const rotY0 = noRot ? 0 : (indHash(p) % 628) / 100;
-      const col = fadeColor(witherColor(seasonalColor(p.color, p.foliage_type, month, p.fall_color), p.health), p.opacity);
+      const col = bodyColor(p, month);                 // 01d-season.js
       places[ii].forEach((pl, k) => {
         const m = pl.mul;
         const wx = p.x + pl.dx, wy = p.y + pl.dz;
@@ -557,26 +555,8 @@ function buildLayer(list, variants, mat, archOf, scaleOf, month, year, noRot,
   });
 }
 
-// Shrub archetypes are profile-specific (growth form, red-stem dogwood…), so
-// they're cached by (profile × variant × quality) like trees rather than the
-// flat ARCH.shrub array. buildShrubGeo returns {foliageGeo, stemGeo} — the
-// faceted leaf masses and the woody stems, each shaded/coloured separately.
-const SHRUB_VARIANTS = 3;
-const SHRUB_CACHE = new Map();
-// `morph` is the species' leaf characters and `vkey` their baked-variant name
-// (02-plants.js variantKeyFor). Both belong in the cache key: they select a
-// DIFFERENT geometry, so leaving them out would hand a rose the dogwood's leaves
-// whenever the two shared a profile and variant.
-function getShrubArch(prof, v, vkey, morph) {
-  const key = prof.id + '_' + v + '_' + vkey + '_q' + QUALITY;
-  let a = SHRUB_CACHE.get(key);
-  if (a) return a;
-  a = (useGLB() && window.glbShrubArch && window.glbShrubArch(prof.form, vkey)) ||
-      buildShrubGeo(mulberry32(13 + v * 97 + prof.id.charCodeAt(0) * 7), prof,
-                    morph);
-  SHRUB_CACHE.set(key, a);
-  return a;
-}
+// The shrub layer (getShrubArch, buildShrubLayer, SHRUB_CACHE) is in
+// 03d-woody.js since V3.49: this file was at its ceiling.
 
 // Herb archetypes are growth-form specific (HERB_CACHE), cached by
 // (form × variant × quality). One green geometry per form (leaves + stems +
@@ -587,7 +567,8 @@ function getHerbArch(formName, v, vkey, morph) {
   const key = formName + '_' + v + '_' + vkey + '_q' + QUALITY;
   let a = HERB_CACHE.get(key);
   if (a) return a;
-  a = (useGLB() && window.glbHerbArch && window.glbHerbArch(formName, vkey)) ||
+  a = (formName === 'leafy' && buildLeafyGeo(morph, v)) ||     // 03c-leafy.js (V3.48)
+      (useGLB() && window.glbHerbArch && window.glbHerbArch(formName, vkey)) ||
       buildPerennialGeo(mulberry32(29 + v * 89 + formName.charCodeAt(0) * 7),
                         HERB_FORMS[formName], morph);
   HERB_CACHE.set(key, a);
@@ -618,12 +599,13 @@ function buildHerbLayer(list, month, year, terrain) {
   if (!list || !list.length) return;
   const buckets = {};
   for (const p of list) {
-    const formName = herbFormFor(p);
+    const own = window.leafyKeyFor && leafyKeyFor(p);   // its own numbers (V3.48)
+    const formName = own ? 'leafy' : herbFormFor(p);
     const v = hashPid(p.plant_id) % HERB_VARIANTS;
     // The variant key is part of the bucket key because it changes the geometry:
     // two species sharing a form but not a leaf would otherwise be instanced from
     // whichever of them the bucket happened to build first.
-    const vkey = variantKeyFor(p, 'herb', formName);
+    const vkey = own || variantKeyFor(p, 'herb', formName);
     // Leaf surface joins the key for the same reason it does on trees: one mesh,
     // one material. It pays off most here — the woolly and silvery forbs
     // (pussytoes, pearly everlasting, the sages, silky lupine) are where a
@@ -631,7 +613,7 @@ function buildHerbLayer(list, month, year, terrain) {
     const surf = leafSurfaceFor(p);
     const bk = formName + '_' + v + '_' + vkey + '_' + surf;
     (buckets[bk] = buckets[bk]
-      || { formName, v, vkey, surf, morph: morphOf(p, 'herb'), items: [] })
+      || { formName, v, vkey, surf, morph: own ? p : morphOf(p, 'herb'), items: [] })
       .items.push(p);
   }
   for (const key in buckets) {
@@ -641,18 +623,21 @@ function buildHerbLayer(list, month, year, terrain) {
     const total = places.reduce((s, pl) => s + pl.length, 0);
     const mesh = instancedMesh(arch, total,
       surfaceMaterial(MAT_PRESETS.herbLeaf, surf, true));
+    const cards = window.leafyCardsMesh && leafyCardsMesh(arch, total, surf);   // a mat (V3.65)
     const names = new Array(total), ids = new Array(total);
     let idx = 0;
     items.forEach((p, ii) => {
       const c = unitXZ(arch, Math.max(0.15, p.canopy_m));
       const h = bodyHeightOf(p);
       const rotY0 = (indHash(p) % 628) / 100;
-      const col = fadeColor(witherColor(seasonalColor(p.color, p.foliage_type, month, p.fall_color), p.health), p.opacity);
+      const col = bodyColor(p, month);                 // 01d-season.js
       places[ii].forEach((pl, k) => {
         const m = pl.mul, x = p.x + pl.dx, wy = p.y + pl.dz;
         const rotY = rotY0 + (k ? pl.dx : 0);
         const gy = terrainHeightAt(x, wy, terrain);
         setInst2(mesh, idx, x, gy, -wy, c * m, h * m, c * m, rotY, col);
+        if (cards) setInst2(cards, idx, x, gy, -wy, c * m, h * m, c * m, rotY, col);
+        if (!k && window.noteBloomBody) noteBloomBody(p, arch, x, gy, -wy, c * m, h * m, rotY);
         names[idx] = p.common_name || '';
         ids[idx] = p.plant_id;
         idx++;
@@ -661,71 +646,7 @@ function buildHerbLayer(list, month, year, terrain) {
     mesh.userData.pick = names;
     mesh.userData.pickId = ids;
     plantsGroup.add(mesh);
-  }
-}
-
-function buildShrubLayer(list, month, year, terrain) {
-  if (!list || !list.length) return;
-  const buckets = {};
-  for (const p of list) {
-    const prof = shrubProfileFor(p);
-    const v = hashPid(p.plant_id) % SHRUB_VARIANTS;
-    const vkey = variantKeyFor(p, 'shrub');
-    const bark = barkClassFor(p), surf = leafSurfaceFor(p);
-    const bk = prof.id + '_' + v + '_' + vkey + '_' + bark + '_' + surf;
-    (buckets[bk] = buckets[bk]
-      || { prof, v, vkey, bark, surf, morph: morphOf(p, 'shrub'), items: [] })
-      .items.push(p);
-  }
-  for (const key in buckets) {
-    const { prof, v, vkey, morph, bark, surf, items } = buckets[key];
-    const arch = getShrubArch(prof, v, vkey, morph);
-    const places = items.map(p => spreadPlacements(p, year));
-    const total = places.reduce((s, pl) => s + pl.length, 0);
-    // Both paths carry colours (the GLB's baked shade, the procedural gradient).
-    // Without `true` they were off, and no shrub drew either until V2.96 (F188).
-    const foliage = instancedMesh(arch.foliageGeo, total,
-      surfaceMaterial(MAT_PRESETS.shrubLeaf, surf, true));
-    const stems = arch.stemGeo
-      ? instancedMesh(arch.stemGeo, total,
-                      surfaceMaterial(MAT_PRESETS.bark, bark,
-                                      !!arch.vertexColorBark))
-      : null;
-    // Woody stems take the species' own bark colour where the seed data has
-    // one — which is how red-osier dogwood gets its red, generalised from the
-    // genus special case that used to be the only way to say so.
-    const stemHex = items.length && items[0].bark_color
-      ? items[0].bark_color : (prof.redStems ? '#b5402e' : '#6b5236');
-    const names = new Array(total), ids = new Array(total);
-    let idx = 0;
-    items.forEach((p, ii) => {
-      const c = unitXZ(arch.foliageGeo, Math.max(0.25, p.canopy_m));
-      const h = bodyHeightOf(p);
-      const rotY0 = (indHash(p) % 628) / 100;
-      const col = fadeColor(witherColor(seasonalColor(p.color, p.foliage_type, month, p.fall_color), p.health), p.opacity);
-      const scol = fadeToward(stemHex, p.opacity);
-      places[ii].forEach((pl, k) => {
-        const m = pl.mul, x = p.x + pl.dx, wy = p.y + pl.dz;
-        const rotY = rotY0 + (k ? pl.dx : 0);
-        const gy = terrainHeightAt(x, wy, terrain);
-        if (!k && window.noteVineHost) {
-          noteVineHost(p, [arch.foliageGeo, arch.stemGeo], x, gy, -wy, c * m, h * m, rotY);
-        }
-        setInst2(foliage, idx, x, gy, -wy, c * m, h * m, c * m, rotY, col);
-        if (stems) setInst2(stems, idx, x, gy, -wy, c * m, h * m, c * m, rotY, scol);
-        names[idx] = p.common_name || '';
-        ids[idx] = p.plant_id;
-        idx++;
-      });
-    });
-    foliage.userData.pick = names;
-    foliage.userData.pickId = ids;
-    // Pick from the stems too, the way trees already do from the trunk: a
-    // deciduous shrub in winter is nothing BUT stems, and it should still name
-    // and open on a click.
-    if (stems) { stems.userData.pick = names; stems.userData.pickId = ids; }
-    plantsGroup.add(foliage);
-    if (stems) plantsGroup.add(stems);
+    if (cards) { cards.userData.pick = names; cards.userData.pickId = ids; plantsGroup.add(cards); }
   }
 }
 
@@ -743,19 +664,24 @@ function buildPlants(group, plants, month, year, terrain) {
   // ever placed. Undefined health_state (older scenes / existing trees) is kept.
   // The scene's own list is kept too: a vine names its host by index into it.
   const scenePlants = plants || [];
-  plants = scenePlants.filter(p => p.health_state !== 'dead');
+  plants = scenePlants.filter(standing);     // 01-core.js: nor `gone` (V3.43)
   if (window.vinesReset) vinesReset();
+  if (window.bloomBodiesReset) bloomBodiesReset();
 
   const byKind = { tree: [], shrub: [], vine: [], groundcover: [], grass: [],
-                   aquatic: [], herb: [], horsetail: [], pond: [], succulent: [] };
+                   aquatic: [], herb: [], horsetail: [], pond: [], succulent: [], tuft: [] };
   for (const p of plants || []) {
     // A horsetail is jointed stems whatever its type (V2.89); a wetland plant or a
     // succulent is the body Python gave it (V2.90 23-pond.js, V2.93 24-succulents.js).
     const pb = p.drawn && p.drawn.body;
     if (p.growth_form === 'jointed' || pb === 'whorled') { byKind.horsetail.push(p); continue; }
     if (window.SUCCULENT_BODIES && SUCCULENT_BODIES[pb]) { byKind.succulent.push(p); continue; }
-    if (pb && pb !== 'reed' && pb !== 'herb') { byKind.pond.push(p); continue; }
-    let t = pb === 'herb' ? 'herb' : p.plant_type;
+    // A grass, sedge or rush read off its photographs (03f-tufts.js, V3.51);
+    // at Stylised it keeps the tuft its type has always had.
+    if (pb === 'tuft') { (tuftKeyFor(p) ? byKind.tuft : byKind.grass).push(p); continue; }
+    if (pb && ['reed', 'herb', 'leafy', 'woody', 'crown'].indexOf(pb) < 0) { byKind.pond.push(p); continue; }
+    // A woody mat filed as a groundcover is drawn as the shrub it is (V3.67b).
+    let t = pb === 'herb' || pb === 'leafy' ? 'herb' : pb === 'woody' ? 'shrub' : p.plant_type;
     if (t === 'sedge' || t === 'rush') t = 'grass';   // graminoids share blades
     const k = byKind[t] ? t : 'herb';
     byKind[k].push(p);
@@ -781,39 +707,45 @@ function buildPlants(group, plants, month, year, terrain) {
       // a bucket even when everything else about them matches.
       const bark = barkClassFor(p);
       const surf = cls === 'conifer' ? 'needle' : leafSurfaceFor(p);
-      const key = cls + '_' + ck + '_' + prof.id + '_' + form + '_' + t + '_' + sub
-        + '_' + bark + '_' + surf;
-      (buckets[key] = buckets[key] || { cls, prof, form, t, sub, bark, surf, items: [] })
+      // A tree whose crown was read is drawn from it (03e-crowns.js, V3.50).
+      const own = window.crownKeyFor && crownKeyFor(p);
+      const key = (own ? 'own|' + own : cls + '_' + ck + '_' + prof.id + '_' + form + '_' + t)
+        + '_' + sub + '_' + bark + '_' + surf;
+      (buckets[key] = buckets[key] || { cls, prof, form, t, sub, bark, surf, own, items: [] })
         .items.push(p);
     }
     for (const key in buckets) {
-      const { cls, prof, form, t, sub, bark, surf, items } = buckets[key];
-      const arch = getTreeArch(cls, prof, form, t, sub);
+      const { cls, prof, form, t, sub, bark, surf, own, items } = buckets[key];
+      const arch = own ? getCrownArch(items[0], sub) : getTreeArch(cls, prof, form, t, sub);
+      const cut = arch.foliageGeo.userData.cut;           // its leaves' outline
       const places = items.map(p => spreadPlacements(p, year));
       const total = places.reduce((s, pl) => s + pl.length, 0);
       const vcBark = !!arch.vertexColorBark;
       const branch = instancedMesh(arch.branchGeo, total,
         surfaceMaterial(MAT_PRESETS.bark, bark, vcBark));
       const foliage = instancedMesh(arch.foliageGeo, total,
-        surf === 'needle' ? surfaceMaterial(MAT_PRESETS.needle, '', true)
-                          : surfaceMaterial(MAT_PRESETS.crown, surf, true));
+        surf === 'needle' ? surfaceMaterial(MAT_PRESETS.needle, '', true, cut)
+                          : surfaceMaterial(MAT_PRESETS.crown, surf, true, cut));
+      if (cut) foliage.customDepthMaterial = cut.depth;
       const names = new Array(total), ids = new Array(total);
       let idx = 0;
       items.forEach((p, ii) => {
         const h = bodyHeightOf(p);
         const c = unitXZ(arch.foliageGeo, Math.max(0.4, p.canopy_m));
         const rotY0 = (indHash(p) % 628) / 100;
-        const bare = _isDecid(p.foliage_type) && _bareMonth(month);
+        const bare = leafless(p, month);               // 01d-season.js
         // The species' own bark colour (schema v47) if the seed data has it,
         // else the genus default the viewer has always used.
         const bcol = fadeToward(p.bark_color || prof.bark || '#5d4433', p.opacity);
-        const fcol = fadeColor(witherColor(seasonalColor(p.color, p.foliage_type, month, p.fall_color), p.health), p.opacity);
+        const fcol = bodyColor(p, month);
         places[ii].forEach((pl, k) => {
           const m = pl.mul, x = p.x + pl.dx, wy = p.y + pl.dz, z = -wy;
           const rotY = rotY0 + (k ? pl.dx + pl.dz : 0);
           const gy = terrainHeightAt(x, wy, terrain);
           if (!k && window.noteVineHost) {     // something a vine can climb
-            noteVineHost(p, bare ? [arch.branchGeo] : [arch.branchGeo, arch.foliageGeo],
+            // Its own crown names its leafy ends first, so flowers sit on them.
+            noteVineHost(p, bare ? [arch.branchGeo] : (own ? [arch.foliageGeo, arch.branchGeo]
+                                                           : [arch.branchGeo, arch.foliageGeo]),
                          x, gy, z, c * m, h * m, rotY);
           }
           setInst2(branch, idx, x, gy, z, c * m, h * m, c * m, rotY, bcol);
@@ -844,6 +776,8 @@ function buildPlants(group, plants, month, year, terrain) {
              (p) => [Math.max(0.16, p.canopy_m), bodyHeightOf(p),
                      Math.max(0.16, p.canopy_m)], month, year, false, terrain,
              (p) => aspectBucket(p, 'grass'));
+
+  buildTuftLayer(byKind.tuft, month, year, terrain);     // 03f-tufts.js (V3.51)
 
   // Aquatic / emergent marsh plants — tall erect reed/strap-leaf clumps; the
   // cattail's brown spike comes from the flower layer (V1.92).

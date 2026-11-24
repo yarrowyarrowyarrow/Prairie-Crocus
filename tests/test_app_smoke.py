@@ -1049,8 +1049,8 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertEqual(self._labels(win._placement_tabs),
                          ["Plants", "Communities", "Structures"])
         self.assertEqual(self._labels(win.analysis_panel._tabs),
-                         ["Overview", "Report card", "Planted", "Habitat", "Food",
-                          "Over time", "Water"])
+                         ["Overview", "Through the year", "Planted",
+                          "Habitat", "Over time", "Water"])
         self.assertEqual(self._labels(win.on_this_design._tabs),
                          ["Species", "Communities"])
         self.assertEqual(self._labels(win.share_panel._tabs),
@@ -1063,8 +1063,9 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertIs(win.analysis_panel._tabs.widget(0),
                       win.overview_page)                       # V3.27, OV-2
         self.assertIs(win.analysis_panel._tabs.widget(1),
-                      win.on_this_design._stats_page)
-        self.assertIs(win.analysis_panel._tabs.widget(6),
+                      win.analysis_panel._food)               # V3.55, F270
+        self.assertIs(win.analysis_panel._tabs.widget(2), win.on_this_design)
+        self.assertIs(win.analysis_panel._tabs.widget(5),
                       win.planning_panel._water_page)
         self.assertIs(win.share_panel._tabs.widget(0),
                       win.learn_panel._present_page)
@@ -1073,14 +1074,13 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertIsNone(win.planning_panel._tabs)
         self.assertFalse(win.planning_panel.isVisibleTo(win))
 
-    def test_over_time_reads_this_month_then_the_years_then_the_hours(self):
+    def test_over_time_reads_the_years_then_the_hours(self):
         from src.side_panel_layout import OVER_TIME
         win = self._win
         page = win.analysis_panel._over_time_page
         self.assertEqual(tuple(page.sections), OVER_TIME)
         self.assertEqual(list(page.sections.values()),
-                         [win.analysis_panel._phenology,
-                          win.planning_panel._timeline_page,
+                         [win.planning_panel._timeline_page,
                           win.planning_panel._maint_page])
         lay = page.widget().layout()
         at = [lay.indexOf(w) for w in page.sections.values()]
@@ -1164,6 +1164,38 @@ class TestMainWindowSmoke(unittest.TestCase):
         win.polyculture_panel.armedChanged.emit({"armed": True})
         self.assertTrue(fly.isHidden())
 
+    def test_a_click_after_placing_opens_the_page_and_stops_placing(self):
+        """V3.60, the owner: "No page opens". After Place the map stays ready
+        to place more, and a click in the list had only changed what the
+        next map click would place, with no page and nothing said."""
+        from PyQt6.QtCore import Qt
+        from PyQt6.QtTest import QTest
+        from src.keyboard_help import show_panel
+        win = self._win
+        fly = win.species_flyout
+        self.addCleanup(fly.hide)
+        self.addCleanup(win._cancel_draw)
+        win.resize(1366, 768)
+        win.show()
+        show_panel(win.polyculture_panel)
+        self._app.processEvents()
+        panel = win.polyculture_panel
+        tree = panel.polyculture_tree
+        first, other = tree.topLevelItem(0), tree.topLevelItem(2)
+        panel.place_by_id(first.data(0, Qt.ItemDataRole.UserRole))
+        self._app.processEvents()
+        self.assertEqual(win._current_mode, "polyculture")
+        QTest.mouseClick(tree.viewport(), Qt.MouseButton.LeftButton,
+                         Qt.KeyboardModifier.NoModifier,
+                         tree.visualItemRect(other).center())
+        for _ in range(6):
+            self._app.processEvents()
+        self.assertEqual(win._current_mode, "none")
+        self.assertFalse(panel._armed)
+        self.assertTrue(fly.showing_community())
+        self.assertEqual(fly.community.shown_id(),
+                         other.data(0, Qt.ItemDataRole.UserRole))
+
     def test_no_community_name_is_cut_at_a_laptops_width(self):
         """V3.19 (QF-10, R21): at 1366 px Placement › Communities cut every
         name to about twelve characters ("Boreal Conifer…", "Boreal
@@ -1183,16 +1215,6 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertGreater(tree.topLevelItemCount(), 20)
         self.assertEqual(cut_cells(tree, columns=(0, 1)), [])
 
-    def test_the_cost_link_opens_where_the_buy_list_is(self):
-        from PyQt6.QtCore import QUrl
-        win = self._win
-        self.addCleanup(win._side_tabs.setCurrentIndex,
-                        win._side_tabs.currentIndex())
-        win.on_this_design._on_stats_anchor(QUrl("sap:buy"))
-        self.assertIs(win._side_tabs.currentWidget(), win.share_panel)
-        self.assertIs(win.share_panel._tabs.currentWidget(),
-                      win.share_panel.export_page)
-
     def test_a_jump_opens_its_page_from_anywhere(self):
         """Every jump goes by the page, through every level it is in: three
         lookups that went by a page's index would have opened the wrong one."""
@@ -1203,10 +1225,10 @@ class TestMainWindowSmoke(unittest.TestCase):
             self.addCleanup(tabs.setCurrentIndex, tabs.currentIndex())
         show_panel(win.analysis_panel._wind_page)          # Site › Wind
         self.assertIs(win._side_tabs.currentWidget(), win.site_panel)
-        win.analysis_panel.show_habitat_tab()               # the report card's link
+        show_panel(win.analysis_panel._food)               # the Overview's link
         self.assertIs(win._side_tabs.currentWidget(), win.analysis_panel)
         self.assertIs(win.analysis_panel._tabs.currentWidget(),
-                      win.analysis_panel._habitat_page)
+                      win.analysis_panel._food)
         win.site_panel.focus_address_search()               # the pin step
         self.assertIs(win._side_tabs.currentWidget(), win.site_panel)
         self.assertIs(win.site_panel._tabs.currentWidget(),
@@ -1224,7 +1246,7 @@ class TestMainWindowSmoke(unittest.TestCase):
         panel.set_placed_plants([])
         panel._live.fill_now()
         self.assertEqual(food._summary_line.text(),
-                         "Place plants to see who they feed.")
+                         "Place plants to see their year, and who they feed.")
         show_panel(panel._habitat_page)
         food._summary_line.setText("")
         panel.set_placed_plants([])
@@ -1387,8 +1409,9 @@ class TestMainWindowSmoke(unittest.TestCase):
         root = Path(__file__).resolve().parent.parent / "src"
         broken, seen = [], 0
         # Modules a person reaches only with Advanced tools on: their words
-        # are read in advanced mode, never in the simple app (V3.21).
-        advanced_only = {"scene3d_window.py", "snow_microsite_flow.py"}
+        # are read in advanced mode, never in the simple app (V3.21). The 3D
+        # preview left this list in V3.44: it opens from the simple app.
+        advanced_only = {"snow_microsite_flow.py"}
         for path in sorted(root.rglob("*.py")):
             if simple and path.name in advanced_only:
                 continue

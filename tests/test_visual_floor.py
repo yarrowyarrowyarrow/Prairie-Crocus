@@ -44,11 +44,15 @@ def tearDownModule():
 
 def _desktop_sources():
     """The desktop app's own text: the panels and dialogs, the map page and
-    its scripts. Not the PDF export (print sizes) or the public website."""
+    its scripts, and since V3.44 the 3D preview's page and its scripts (a
+    homeowner opens it now, and its cards were 9 to 11.5 px in sixteen
+    places). Not the PDF export (print sizes) or the public website."""
     files = (sorted((_ROOT / "src").glob("*.py"))
              + sorted((_ROOT / "src" / "controllers").glob("*.py"))
              + [_ROOT / "html" / "map.html"]
-             + sorted((_ROOT / "html" / "map").glob("*.js")))
+             + sorted((_ROOT / "html" / "map").glob("*.js"))
+             + [_ROOT / "html" / "scene3d.html"]
+             + sorted((_ROOT / "html" / "scene3d").glob("*.js")))
     return [p for p in files
             if p.name != "pdf_export.py" and not p.name.startswith("static_site")]
 
@@ -64,6 +68,17 @@ class TestNoTextUnder12px(unittest.TestCase):
                     if float(size) < 12:
                         offenders.append(f"{path.relative_to(_ROOT)}:{n}: {size}px")
         self.assertEqual(offenders, [])
+
+    def test_the_3d_pages_own_buttons_are_24px(self):
+        """V3.44: a homeowner opens the 3D preview now, and the buttons the
+        page draws itself (a card's close and back, Plant one, the creature
+        speed steps) are outside what ``target_size`` can reach."""
+        css = (_ROOT / "html" / "scene3d.html").read_text(encoding="utf-8")
+        for selector in ("#wild-speed button {", "#inspect-close {",
+                         "#inspect-card .iback, #inspect-card .plant-one {"):
+            start = css.index(selector)
+            rule = css[start:css.index("}", start)]
+            self.assertIn("min-height: 24px", rule, selector)
 
     def test_no_font_sized_under_12px_in_code(self):
         pixel = re.compile(r"setPixelSize\(\s*(\d+)\s*\)")

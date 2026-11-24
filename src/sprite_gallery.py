@@ -249,21 +249,32 @@ def _flower_specimen(p):
 #: currant, spirea) did not make the short peavines and vetch any easier to
 #: see from the gallery's distance.
 VINE_HOST = "Cornus sericea"
+#: The shrub a herbaceous vine scrambles over instead (V3.65): the peavines
+#: and the vetch are a metre of soft stems that photographs show through grass
+#: and low shrubs, and on a 3 m dogwood in flower they were a few sprays lost
+#: in it. Western Snowberry, 1 m: its small blue-green leaves and tiny pink
+#: flowers set off the vines' fresh green leaflets and their racemes.
+VINE_HOST_LOW = "Symphoricarpos occidentalis"
 
-#: Unit (east, north) toward the right-hand edge of the shrub as the gallery's
-#: camera sees it. frameCamera (html/scene3d/01-core.js) puts the camera 0.9 r
-#: east and 1.1 r south of the scene, so screen-right is east-north-east. A
-#: vine there hangs on the shrub's silhouette, seen against the ground. Facing
-#: the camera it was lost among the shrub's own leaves, and due east it was
-#: half behind them.
-_VINE_SIDE = (1.1 / math.hypot(0.9, 1.1), 0.9 / math.hypot(0.9, 1.1))
+#: Unit (east, north) toward the side of the shrub the vine climbs. Until
+#: V3.67b it was east-north-east, the right-hand edge for the gallery's own
+#: camera (frameCamera, 0.9 r east and 1.1 r south of the scene). But the
+#: reference sheets the models are judged on (scripts/model_references.py
+#: views) look from due south, and from there east-north-east is behind the
+#: shrub: every vine sheet since V3.48 showed the host with the vine on its far
+#: side. South-east is the near, right-hand side for that camera and faces the
+#: gallery's; since V3.67b a vine drapes proud of its host's leaves
+#: (22-vines.js VINE_PROUD), so facing a camera it is no longer lost among them.
+_VINE_SIDE = (0.8, -0.6)
 
 
-def _vine_scene(plant, pid, name, i):
+def _vine_scene(plant, pid, name, i, when=None):
     """A vine climbing the gallery's host shrub, and a second copy of it in the
     open with nothing to climb. None if the host is not in the seed data."""
+    soft = (plant.get("deciduous_evergreen") or "").lower() == "herbaceous"
+    want = VINE_HOST_LOW if soft else VINE_HOST
     host_row = next((r for r in _seed_rows()
-                     if (r.get("scientific_name") or "") == VINE_HOST), None)
+                     if (r.get("scientific_name") or "") == want), None)
     if host_row is None:
         return None
     host = _species_specimen(host_row)
@@ -280,7 +291,7 @@ def _vine_scene(plant, pid, name, i):
              at(ux * (hr + 0.25), uy * (hr + 0.25), pid, name),
              at(-(hr + 1.2 + vr), 0.0, pid, name)]
     by_id = {pid: plant, host_id: host}
-    sc = build_scene(_fc(feats), year=0, when=WHEN, get_plant=by_id.get)
+    sc = build_scene(_fc(feats), year=0, when=when or WHEN, get_plant=by_id.get)
     xs = [p["x"] for p in sc["plants"]]
     ys = [p["y"] for p in sc["plants"]]
     h = max(float(p.get("height_m") or 1.0) for p in sc["plants"]
@@ -290,6 +301,7 @@ def _vine_scene(plant, pid, name, i):
                      (max(ys) - min(ys)) / 2.0 + hr), 2)
     sc["bounds"] = {"min_x": cx - half, "max_x": cx + half,
                     "min_y": cy - half, "max_y": cy + half}
+    sc["focus"] = None      # frame the stage set here, not the design (V3.43)
     sc["origin"] = {"lat": LAT0 + i * 0.001, "lng": LNG0}
     sc["boundary"] = []
     return sc
@@ -310,21 +322,25 @@ def _pond_for(p0):
             "properties": {"element_type": "structure", "struct_def": sd}}
 
 
-def _scene_for(plant, pid, name, i):
+def _scene_for(plant, pid, name, i, when=None):
+    """One specimen's scene. ``when`` is July noon unless a caller wants the
+    plant in another month (scripts/model_references.py draws each plant in
+    the month it flowers, V3.48)."""
+    when = when or WHEN
     if plant.get("plant_type") == "vine":
-        sc = _vine_scene(plant, pid, name, i)
+        sc = _vine_scene(plant, pid, name, i, when)
         if sc is not None:
             return sc
     feat = plant_feature({"plant_id": pid, "common_name": name,
                           "lat": LAT0, "lng": LNG0})
     proj = _fc([_boundary(LAT0, LNG0, 8.0), feat])
-    sc = build_scene(proj, year=0, when=WHEN, get_plant=lambda _id: plant)
+    sc = build_scene(proj, year=0, when=when, get_plant=lambda _id: plant)
     p0 = sc["plants"][0] if sc["plants"] else {}
     # A floating or submerged plant is shown on a pond's water (V2.90): on the
     # lawn a pond-lily is a scatter of pads on grass.
     if (p0.get("drawn") or {}).get("body") in ("floating", "submerged"):
         proj = _fc([_boundary(LAT0, LNG0, 8.0), _pond_for(p0), feat])
-        sc = build_scene(proj, year=0, when=WHEN, get_plant=lambda _id: plant)
+        sc = build_scene(proj, year=0, when=when, get_plant=lambda _id: plant)
         p0 = next(p for p in sc["plants"] if p.get("plant_id") == pid)
     h = float(p0.get("height_m") or 1.0)
     c = float(p0.get("canopy_m") or 0.5)
@@ -339,6 +355,7 @@ def _scene_for(plant, pid, name, i):
     # guards against a degenerate box for a 5 cm plant.
     half = round(max(1.0 * h, 1.2 * c, 0.30), 2)
     sc["bounds"] = {"min_x": -half, "max_x": half, "min_y": -half, "max_y": half}
+    sc["focus"] = None      # frame the specimen's box, not the design (V3.43)
     sc["origin"] = {"lat": LAT0 + i * 0.001, "lng": LNG0}   # unique → reframe on switch
     sc["boundary"] = []
     return sc

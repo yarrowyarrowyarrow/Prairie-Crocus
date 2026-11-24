@@ -50,9 +50,14 @@ replays it.
 DB-free — `get_plant` injectable) producing the renderer-agnostic scene. The
 full schema lives in its module docstring; the shape:
 
-`version, year, month, origin{lat,lng}, bounds, boundary, plants[],
-buildings[] (kind: building|canopy), structures[], terrain|None, sun|None,
-is_night`. (`scan_points` and `splat` went with the yard scan in V3.22.)
+`version, year, month, origin{lat,lng}, bounds, focus|None,
+views{street, house}, boundary, plants[], buildings[] (kind:
+building|canopy, roof), structures[], ground, surfaces[], lines[],
+street|None, season, timeline_notes|None, terrain|None, sun|None, is_night`.
+(`scan_points` and `splat` went with the yard scan in V3.22; `focus`, `views`
+and a plant's `gone` came in V3.43, `views.house` in V3.44, `ground`,
+`surfaces`, `lines`, `street` and a building's `roof` in V3.45, and `season`,
+a plant's `season` and `timeline_notes` in V3.46.)
 
 Rules of the contract:
 
@@ -79,6 +84,154 @@ Rules of the contract:
   timeline slider.
 - Scene bounds floor at ±25 m so near-empty designs still get a stage
   (`src/sprite_gallery.py` deliberately fights this for single specimens).
+
+## The whole yard (V3.43; read `docs/plans/V3.43-the-3d-preview-reviewed.md`)
+
+The plan above is the programme for the preview (eight increments, F260–F267)
+and its guardrails. Five rules came out of its first increment, each with a
+test, and each is a mistake the viewer made for years because every audit
+rendered one plant and nobody rendered a yard:
+
+- **Frame `focus`, never `bounds`.** `bounds` is the stage, floored at ±25 m;
+  `focus` is the design's own extent (`src/scene_views.py`). In the page ask
+  `frameBox()`. A scene with no `focus` (the probes, the sprite gallery, which
+  sets it to `None` on purpose) frames `bounds` as before.
+- **Stand where `views.street` says.** A neighbour's spot at the real frontage,
+  clear of trunks and buildings, the same in every year because it is worked
+  out from the design as planted: the before/after page compares three years
+  from it. The sidewalk and walk cameras and the walker's start read it.
+- **A building is a `canopy_footprint` too.** `kind` is `canopy` only when the
+  footprint says it is a tree's crown (`caster_kind`), as `src/shade.py` reads it.
+- **`standing_plants(scene)` is what is in the yard this year.** A placed plant
+  that is `gone` (`"shade"` or `"short_lived"`) stays in `plants` at opacity 0.
+  The page's twin is `standing(p)` in `01-core.js`: use it for anything that
+  draws, picks, blocks or counts. `opacity` below 1 means declining, nothing else.
+- **Year 0 is the design fully grown.** Never caption it as planting day.
+
+`tests/test_yard_render.py` pushes a yard built by the real `build_scene` into
+the real viewer and reads the picture back (`html/yard_probe.html`).
+`python scripts/render_yard.py --out DIR` draws the contact sheets every 3D
+increment ends with; look at them, a green gate is not a picture.
+
+## The yard itself (V3.45; `docs/plans/V3.45-your-yard-not-a-green-field.md`)
+
+`src/scene_site.py` says what the ground is and `html/scene3d/02c-site.js`
+draws it. The rules for anything you add there:
+
+- **Decide in `scene_site.py`, draw in the chunk.** A new shape type gets a
+  row in `SURFACE_KINDS` and its kind a look in `SURFACE_LOOK` (a `rank`, a
+  `tile`, a base colour); `tests/test_scene_site.py` fails on either half
+  missing. A type nobody mapped keeps the person's colour.
+- **Texture, never geometry.** A surface is a flat polygon with a quiet
+  procedural texture. No blades of grass, no chips of mulch (V2.29).
+- **What is not the design is pale.** The ground outside the outline (the
+  owner's D3), the sidewalk and the road. Houses are massing: light walls, a
+  darker roof, and no window, door or colour nobody recorded.
+- **Never draw what is only assumed.** `street` is `None` unless the street's
+  side was told or measured; a roof never makes a building taller than its
+  recorded height. A line's height, a road's width and a roof's pitch are
+  estimates stated in the module, not measurements.
+- **Use `drapedShape` for anything flat on the ground.** It follows a slope
+  (cut in four, uniformly, so no crack opens) and `tests/test_slope_render.py`
+  reads it back on 6 m of relief. Give a new look a `rank`: it orders
+  overlapping surfaces and is the depth offset that stops them flickering.
+- **Winter is part of a look.** Soft ground takes the snow texture, hard
+  ground packed snow, water ice (`siteMat`).
+- The materials are kept for the session: `siteSharedMats()` spares them from
+  `disposeDesignGroup`. A per-surface material (a custom colour) is not shared
+  and is disposed with the scene.
+
+## The season and the years (V3.46; `docs/plans/V3.46-a-timeline-you-can-believe.md`)
+
+`src/scene_season.py` decides the season and `html/scene3d/01d-season.js` is
+the one place the viewer reads it. `src/scene_timeline.py` says what the years
+took and `html/scene3d/25b-timeline.js` shows it. The rules for anything you
+add:
+
+- **The dates are the region pack's frost dates plus stated offsets.** Never
+  type a month into a chunk: ask `seasonSnow(month)`, `seasonGround(month)`,
+  `leafless(p, month)`, `diedBack(p, month)`. `tests/test_scene_season.py`
+  fails on a month comparison outside `01d-season.js`, where the old rules
+  live on for a scene that does not say.
+- **Colour a plant body with `bodyColor(p, month)`**, never `seasonalColor`
+  directly (that is the fallback for a plant with no `season`: an evergreen,
+  an older scene). A new `look` needs a row in `scene_season.LOOKS` and in the
+  chunk's `SEASON_LOOK`; a test holds them equal.
+- **A plant's `height_m` is never changed by the season.** A herb coming up
+  carries `season.up`, and `bodyHeightOf(p)` is `fullBodyHeightOf(p)` times
+  it. Anything that sits on a plant (a bloom, a berry, a perching animal)
+  asks `bodyHeightOf`, or `scene_wildlife._drawn_height` in Python. The views
+  and the focus must not move with the month.
+- **A plant in flower is up and is not dry.** If you add a layer gated by
+  month (seed heads were), check it against the plant's `look` as well.
+- **A tint can only darken.** A dormant meadow and a just-thawed lawn are
+  their own textures (`_MEADOW_DORMANT`, a look's `asleep`), not the green
+  one multiplied, which is how October came out dark olive.
+- **The notes are the shade model's own results.** What shades a plant is
+  `SuccessionEngine.main_shader`; do not derive shade a second way. A note's
+  words are built in Python (the simple app's vocabulary: its module is in the
+  ratchet) and the chunk only shows them.
+- **The rings lie on the ground through `onGround`** and live in
+  `designGroup`, so a scene push disposes them; `showTimeline()` runs at the
+  end of `permaSetScene` and redraws them while the list is open.
+- **The shade-over-time model casts a building's real outline** (V3.46,
+  `in_swept_ring`), as the shade map does, and nothing stands *under* a
+  building; a herbaceous caster gets a deciduous crown's break. Before V3.46
+  a building was its enclosing circle, and most of a plan's "shade deaths"
+  were that circle.
+
+## The window a homeowner opens (V3.44; `docs/plans/V3.44-getting-to-3d.md`)
+
+The 3D preview opens from the simple app (the plan strip's *See it in 3D*, the
+Overview's street item) without turning Advanced tools on. What that asks of
+anything you add to it:
+
+- **Two short rows by default, the rest behind the switch.** *When*, *Season*,
+  *Time of day* as lists of named stops and *View* (From the street, From the
+  house, From above, Walk, Reset view). Their words and values are one Qt-free
+  table, `src/scene3d_stops.py`; the widgets are `Scene3DToolBar`'s `WHEN` and
+  `VIEWS` groups (`src/scene3d_named_groups.py`). Everything else sits in
+  `Scene3DWindow.advanced_rows`, shown by `set_advanced_tools(on)`, which the
+  registry reaches through `main.scene3d_tools` (the window does not exist
+  until it is opened). **A new control goes in `advanced_rows` unless a
+  homeowner needs it**, and a tool the switch hides must be stopped by
+  `set_advanced_tools(False)`.
+- **The sliders are the record of the moment.** `self._year` / `_month` /
+  `_hour` are read in a dozen places; the lists set them and follow them
+  (`when_bar.set_time(..., quiet=True)` in `_update_labels`). A list never
+  names a stop the picture is not at: off a stop it gains one entry that says
+  where it is ("Seventh summer").
+- **It opens on `scene3d_stops.OPENING`** (the owner's D5: fifth summer, July,
+  15:00, from the street), once per design (`_on_new_design`, keyed on the
+  scene's origin), never while Walk, a flight or the Flyover owns the camera.
+  The view itself is `scene_views.opening_view(views)`: the street unless
+  `views.street.behind` (a building hides the planting, or it is all at the
+  back), then the house, else the whole yard.
+- **Named views are `window.permaShowView('street'|'house'|'above'|'whole')`**
+  (`html/scene3d/27-views.js`, `Map3DWidget.show_view`). Where each stands is
+  in the scene: `views.street`, `views.house` (`scene_views.house_view`: the
+  largest building inside the outline, or the one under the pin when nothing
+  is outlined; absent otherwise, and the button says what it needs), `focus`
+  for above. **A yard with no outline is still a yard**: its own extent stands
+  in for the outline (the simple app's usual design is a pin and a bed). A
+  walk through a wild community (`reference_version` in the project's
+  properties) has no views.
+- **`27-views.js` is the last chunk.** A probe that needs it waits for
+  `permaShowView`. Its two callers in earlier chunks (`hudText`, the speed
+  bar) are `typeof`-guarded.
+- **A scene push is cheap only because of two rules.** `build_scene(...,
+  memo=self._memo)` keeps the shade simulation between pushes (a year already
+  shown costs about 0.02 s, not 0.2 to 0.9 s), and `wind_scene` reads the wind
+  from the cache only. **Never let anything `build_scene` calls reach the
+  network**: it runs on the main thread on every slider tick, and the suite's
+  network guard hides the cost by failing the request at once. Slider moves
+  are coalesced (`PUSH_EVERY_MS`); a test that moves a slider twice calls
+  `win._on_push_interval()` to end the interval.
+- **The words are the simple app's.** The window's modules are in the
+  vocabulary ratchet's `SIMPLE_MODULES`; the page and its scripts are under
+  the 12 px floor (`tests/test_visual_floor.py`); the line over the picture
+  says the year in the toolbar's words (`whenWords`, held equal to
+  `scene3d_stops.when_words` by a test).
 
 ## Viewer selection: built-in vs fork
 
@@ -280,6 +433,9 @@ carried untouched on save; nothing reads it (`tests/test_old_scan_designs.py`).
 | You touched | Run |
 |-------------|-----|
 | `src/scene_contract.py` / scene schema | `tests/test_scene_contract.py` |
+| `src/scene_season.py`, `01d-season.js`, anything drawn by month | `tests/test_scene_season.py`, `tests/test_yard_render.py` (herb height in April, bare shrubs, the dormant meadow), then `scripts/render_yard.py` and look at the time sheet |
+| `src/scene_timeline.py`, `25b-timeline.js`, `src/succession_engine.py` | `tests/test_scene_timeline.py`, `tests/test_succession_engine.py`, `tests/test_yard_render.py` (the button, the list, the rings), `tests/test_slope_render.py` (rings on a slope) |
+| `src/scene_views.py`, a camera, the walk start, what counts as standing | `tests/test_scene_views.py`, `tests/test_yard_render.py` (the real viewer on a whole yard), `tests/test_walk_walls.py`, then `scripts/render_yard.py` and look |
 | `src/scene3d.py` growth/spread math | `tests/test_scene3d.py` (and the 2D timeline still matches) |
 | `src/map3d_js.py` builders / hooks | `tests/test_map3d_js.py` + `tests/test_bridge_contract.py` |
 | `html/scene3d.html` | `tests/test_bridge_contract.py` + `tests/test_scene3d_assets.py` (no CDN, vendored files present) |

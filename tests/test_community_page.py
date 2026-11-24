@@ -198,7 +198,9 @@ class TestTheListOpensIt(unittest.TestCase):
             it += 1
         self.fail("no community in the list")
 
-    def test_choosing_opens_the_page_except_while_placing(self):
+    def test_choosing_opens_the_page_even_while_placing(self):
+        """V3.60: the owner clicked communities after placing one and saw no
+        page; a click only re-aimed the placing. A click is looking now."""
         from src.polyculture_panel import PolyculturePanel
         panel = PolyculturePanel()
         self.addCleanup(panel.close)
@@ -208,9 +210,9 @@ class TestTheListOpensIt(unittest.TestCase):
         panel.page_requested.connect(asked.append)
         panel._on_list_choose(index)
         self.assertEqual(len(asked), 1)
-        panel._armed = True                 # the list is a palette now
+        panel._armed = True
         panel._on_list_choose(index)
-        self.assertEqual(len(asked), 1, "a page opened while placing")
+        self.assertEqual(len(asked), 2, "no page while placing")
 
     def test_with_the_page_beside_it_the_list_keeps_its_height(self):
         # V3.11: the card under the list repeated the page and squeezed the

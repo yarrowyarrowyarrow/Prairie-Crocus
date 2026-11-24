@@ -66,10 +66,18 @@ class Scene3DBridge(QObject):
     #: not a catch, and the difference has to reach the user or the click just
     #: appears not to have worked.
     out_of_reach = pyqtSignal(str)
+    #: (plant_id) — *Plant one* on an animal's card in the walk (V3.39): put
+    #: that plant on the trowel. ``choosePlant`` is the slot, for the reason
+    #: ``species_inspected`` is not named ``inspected``.
+    plant_chosen = pyqtSignal(int)
 
     @pyqtSlot(float, float, int, str)
     def plantAt(self, x: float, y: float, plant_id: int, common_name: str):
         self.plant_requested.emit(x, y, plant_id, common_name)
+
+    @pyqtSlot(int)
+    def choosePlant(self, plant_id: int):
+        self.plant_chosen.emit(plant_id)
 
     @pyqtSlot(str)
     def caught(self, name: str):
@@ -218,6 +226,10 @@ class Map3DWidget(QWebEngineView):
         """Place the camera at a named preset ('overview' | 'orbit' | 'walk' |
         'sidewalk')."""
         self.run_js(map3d_js.set_camera_preset(name))
+
+    def show_view(self, name: str):
+        """Look from a named viewpoint: 'street' | 'house' | 'above' (V3.44)."""
+        self.run_js(map3d_js.show_view(name))
 
     def models_ready(self, callback):
         """Ask whether the baked GLB archetypes have loaded (``bool`` to

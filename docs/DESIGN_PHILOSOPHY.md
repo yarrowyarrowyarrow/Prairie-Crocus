@@ -122,7 +122,17 @@ Brand's shearing layers, Weaner's succession planting, Bridges' transition psych
 > birch where it would struggle under a spruce), canopy trees are *suppressed* by crowding rather
 > than culled like a forb, and — crucially — a shaded-out gap does not stay bare: a self-seeding
 > herbaceous native already in the design **recruits into it** and grows in, so the trajectory now
-> shows *recovery*, not just loss. **State: strong.**
+> shows *recovery*, not just loss. **V3.46 took two false deaths out of that simulation and gave
+> the year its seasons** (F263): a building had shaded as a circle out to its farthest corner,
+> with every plant inside the circle standing "under" it, and a wildflower as an evergreen would,
+> all year. On the review lot 136 of 365 plants were "lost to shade" by the fifth summer and 14
+> are once a building casts its real outline and a herb gets a deciduous crown's break. What is
+> lost is now said where, which plants and by what, in the picture
+> ([`scene_timeline.py`](../src/scene_timeline.py)), and it was naming the cause that found the
+> faults. The month is drawn from the region's frost dates
+> ([`scene_season.py`](../src/scene_season.py)): herbs come up through April and May and stand
+> as dry stems from October through the snow, and a shrub drops its leaves when a tree does.
+> **State: strong.**
 
 ### 5. Perception is constructed, not received
 
@@ -397,7 +407,13 @@ Adopted in V2.33, on the owner's decision, from the proposal in [`ROADMAP_NEXT.m
 > complaint or a question about where to buy the seeds. **Until V2.94 that eye-height view drew
 > every tree crown more than half near-black** (F186): leaves now let light through
 > ([`01c-leaves.js`](../html/scene3d/01c-leaves.js)), because a crown seen from a path is
-> its undersides. **Flower colour became a filter** in
+> its undersides. **Until V3.44 a homeowner could not reach that view at all**: the 3D preview
+> was behind the Advanced tools. It opens now from the Overview's street item and from the line
+> above the map after a plan, on the fifth summer, from where a neighbour stands
+> ([`scene3d_stops.py`](../src/scene3d_stops.py), F261). **Until V3.45 that picture was plants
+> on one meadow running to the horizon**: the bed, the lawn, the path and the house's roof are
+> drawn now, and what nobody recorded (the ground outside the outline, a street whose side is only
+> assumed) is left pale or left out ([`scene_site.py`](../src/scene_site.py), F262). **Flower colour became a filter** in
 > V2.47 ([`flower_colour.py`](../src/flower_colour.py), F108) — the hex had been in the schema
 > since v31 driving the 3D florets, and none of the thirty search parameters could ask about
 > it, which meant the catalogue could answer every ecological question and not the one a

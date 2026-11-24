@@ -513,8 +513,10 @@ def _community_digest(limit: int = 14) -> str:
         members = []
         try:
             full = get_polyculture_by_id(c["id"]) if c.get("id") else None
-            members = [m.get("common_name") for m in (full or {}).get("members", [])
-                       if m.get("common_name")][:4]
+            # Each kind once: a seeded community plants drifts (V3.59).
+            members = list(dict.fromkeys(
+                m.get("common_name") for m in (full or {}).get("members", [])
+                if m.get("common_name")))[:4]
         except Exception:  # noqa: BLE001
             members = []
         line = f"- {name}"
@@ -1282,6 +1284,8 @@ def generate_design(prompt: str, *, site_config: Optional[dict] = None,
                          spot=ground.spot_for, pond=ponds)
     _apply_fauna_feedback(project, fauna_ids, scoped, center, boundary,
                           spot=ground.spot_for, pond=ponds)
+    _note_shade(project, _fit_to_shade(project, existing_features,
+                                       lambda: scoped(**goal_filters)))
     _record_budget_note(project, project.placed_plants, budget, budget_dropped)
     _note_vines_without_support(project, existing_features)
     _note_hard_to_find(project)
@@ -1353,6 +1357,38 @@ def _add_warning(project, message: str, code: str = "", **fields) -> None:
 def _water_code(message: str) -> str:
     """``seat_water``'s two notes: nothing to seat them in, or no room."""
     return "no_pond" if message.startswith("Left out") else "pond_full"
+
+
+def _fit_to_shade(project, existing_features, pool, refuse=None) -> dict:
+    """F264 (V3.52): a plant the house or a tree already here would shade out
+    becomes a kind that takes the shade, where it stands
+    (:mod:`src.plan_shade`, which asks the 3D preview's own shade model).
+    Returns what it did, for :func:`_note_shade`; ``{}`` on any failure."""
+    try:
+        from src import plan_shade
+        return plan_shade.fit(project, existing_features,
+                              pool() if callable(pool) else pool,
+                              refuse=refuse)
+    except Exception:  # noqa: BLE001 — shade-fitting must never break a design
+        return {}
+
+
+def _note_shade(project, *done) -> None:
+    """One note for every :func:`_fit_to_shade` of a plan."""
+    from src import plan_shade
+    fields = plan_shade.note_fields(plan_shade.merged(*done))
+    if fields["names"]:
+        _add_warning(project,
+                     f"Where {fields['what']} shades the ground for much of "
+                     "the day, plants that take shade were chosen instead: "
+                     + ", ".join(fields["names"]) + ".",
+                     "shade_swap", what=fields["what"], names=fields["names"])
+    if fields["left"]:
+        _add_warning(project,
+                     f"Left out where {fields['what']} shades the ground: "
+                     + ", ".join(fields["left"]) + " (nothing that grows here "
+                     "takes that much shade in its place).",
+                     "shade_left", what=fields["what"], names=fields["left"])
 
 
 def _note_vines_without_support(project, existing_features=None) -> None:
@@ -3337,6 +3373,8 @@ def generate_design_offline(*, site_config: Optional[dict] = None,
                               plants, keepout, fills)
     _fill_to_cover(project, existing_features, ground, plants, density, cover,
                    budget, refuse)
+    _note_shade(project, _fit_to_shade(project, existing_features, plants,
+                                       refuse))
     _record_budget_note(project, project.placed_plants, budget, budget_dropped)
     _note_vines_without_support(project, existing_features)
     _note_hard_to_find(project)

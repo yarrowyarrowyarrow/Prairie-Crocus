@@ -9,16 +9,18 @@ follows:
 
     Site       Site Info · Slope · Sun & Shade · Wind · Features · Notes
     Placement  Plants · Communities · Structures
-    Design     Report card · Planted · Habitat · Food · Over time · Water
+    Design     Overview · Through the year · Planted · Habitat · Over time
+               · Water
     Share      Present · Export
     Learn      Field Study · Lessons
 
 Sun & Shade and Wind describe the site, not the design. *Placement* is the
 owner's name, for the three kinds of thing that go in. *Design* is what the
-design is and does: On This Design's Stats as the **Report card**, its Species
-and Communities as **Planted**, **Food** (``src/food_page.py``, the Bees,
-Wildlife and Harvest pages as one), **Over time** (This Month, the Timeline and
-Effort, in that order) and Water. Planning's other page, the design journal,
+design is and does: the **Overview** (V3.27), **Through the year**
+(``src/food_page.py``: the Bees, Wildlife and Harvest pages and This Month as
+one; called Food until V3.55), On This Design's Species and Communities as
+**Planted**, **Habitat**, **Over time** (the Timeline and Effort) and Water.
+The Report card, On This Design's Stats, was retired in V3.55 (F270). Planning's other page, the design journal,
 went to Site's **Notes**, under the site walk's questions. **Share** holds what
 leaves the app: Learn's Present, and the exports (``src/share_panel.py``) with
 Where to buy from Site Info beside them.
@@ -41,8 +43,9 @@ from PyQt6.QtWidgets import (
 #: The top-level tabs, in order.
 TOP_TABS = ("Site", "Placement", "Design", "Share", "Learn")
 
-#: Over time's sections, in reading order: the near question first.
-OVER_TIME = ("This month", "Year by year", "Hours of work")
+#: Over time's sections, in reading order. This month went to Through the
+#: year in V3.55 (F270): one calendar, not two.
+OVER_TIME = ("Year by year", "Hours of work")
 
 _SECTION_STYLE = ("color: #a5d6a7; font-size: 13px; font-weight: bold; "
                   "padding: 10px 6px 0 6px;")
@@ -107,14 +110,11 @@ def placement_tab(main) -> QWidget:
 
 
 def over_time_page(main) -> QScrollArea:
-    """Design › Over time: what the design is doing this month, how it grows
-    year by year, and the work each year takes, as one page in that order.
-    The three were Design › This Month and Planning's Timeline and Effort; the
-    owner merged them ("Through the years")."""
-    design, planning = main.analysis_panel, main.planning_panel
-    month = design._phenology_page.takeWidget()     # the scroll page goes
-    _discard(design._phenology_page)
-    design._phenology_page = None
+    """Design › Over time: how the design grows year by year, and the work
+    each year takes, as one page in that order. They were Planning's Timeline
+    and Effort, with Design › This Month first until V3.55; the owner merged
+    them ("Through the years")."""
+    planning = main.planning_panel
     take_page(planning._timeline_page)
     take_page(planning._maint_page)
 
@@ -128,7 +128,7 @@ def over_time_page(main) -> QScrollArea:
     lay.setContentsMargins(0, 0, 0, 0)
     lay.setSpacing(0)
     page.sections = {}
-    for heading, part in zip(OVER_TIME, (month, planning._timeline_page,
+    for heading, part in zip(OVER_TIME, (planning._timeline_page,
                                          planning._maint_page)):
         head = QLabel(heading)
         head.setStyleSheet(_SECTION_STYLE)
@@ -159,19 +159,18 @@ def arrange(main) -> list:
     planning._notes_page.show()
     site._tabs.setCurrentWidget(site.info_page)
 
-    # Design: the report card first, then what is planted, then what the
-    # design does: Habitat and Food are its own, Over time and Water came
-    # from Planning.
-    otd = main.on_this_design
-    move_page(otd._stats_page, design._tabs, 0, "Report card")
-    design._tabs.insertTab(1, otd, "Planted")
+    # Design: the year first (the owner: the month by month "is far and away
+    # the most useful information"), then what is planted, then what the
+    # design does in depth: Habitat is its own, Over time and Water came from
+    # Planning. The Overview goes in front below (V3.27).
+    move_page(design._food, design._tabs, 0, "Through the year")
+    design._tabs.insertTab(1, main.on_this_design, "Planted")
     over_time = over_time_page(main)
     design._tabs.addTab(over_time, "Over time")
     move_page(planning._water_page, design._tabs, design._tabs.count())
     design._over_time_page = over_time
     design._tabs.setCurrentIndex(0)
-    # Overview first, before the Report card it replaces in the simple app
-    # (V3.27, OV-2).
+    # Overview first (V3.27, OV-2).
     from src import yard_overview_flow
     yard_overview_flow.install(main)
     # Effort and Water fill themselves when on screen (src/live_refresh.py);

@@ -12,12 +12,15 @@ Saskatoon Berry's 26 animals stopped at the seventh with a trailing comma and
 the next line drew over them, nothing on it could be selected or copied, and a
 screen reader was given nothing at all. Every line here is a label.
 
-What the card had and the page lacked, it has now: the plant's roles in words
-(the tags the Role filter matches), how many are in this design, and when it
-flowers and fruits, drawn as a twelve-month bar whose accessible name is the
-sentence. The card's planting-calendar strip is not carried over as a strip:
-98% of its cells said "growing" or "harvest", which restate the bloom and fruit
-windows. The months that say something else are a line of text.
+Since V3.56 it is one page in both modes (``plant_page_sections``): the
+short page with the details a design needs on it, and two folds that start
+closed, the animals recorded on the plant with their sources, and where it
+grows wild. A fold stays as the reader left it from one plant to the next, so
+two plants can be compared with the same fold open. The long advanced page,
+370 to 570 words over about two screens, is gone: its roles and badges said
+the short page's reasons again, its safety line said "Not checked for poison"
+again, its season line wrote out the months over the bar, and a third of it
+was sources, eight photograph numbers printed twice.
 
 **P12:** this shows only what the data model holds — horticultural and use
 tags, edible parts, documented ecological relationships. Nothing
@@ -37,10 +40,10 @@ from PyQt6.QtWidgets import (
 )
 
 from src import plant_page_sections as pps
-from src.plant_page_sections import (_apart, _bloom_colour_line,  # noqa: F401
-                                     _colour_word, _conditions, _metres,
-                                     _years)
-from src.maintenance_calendar import says_prune
+# Re-exported: the calendar line is month_tasks' since V3.56, one table.
+from src.month_tasks import month_runs as _month_runs  # noqa: F401
+from src.month_tasks import page_line as _calendar_tasks  # noqa: F401
+from src.month_tasks import _MONTHS
 
 _HEAD = "color: #e8f5e9; font-size: 18px; font-weight: bold;"
 _SCI = "color: #8fb98f; font-size: 13px; font-style: italic;"
@@ -53,13 +56,9 @@ _LINK = "color: #ffe082;"
 #: documented animals; a page that lists them all opens on a wall of names.
 _FIRST = 8
 
-#: Calendar tasks worth a line. "growing" and "harvest" restate the bloom and
-#: fruit windows above them, so only harvest of something edible is said.
-_TASKS = (("start_indoors", "Start indoors"), ("direct_sow", "Sow outdoors"),
-          ("transplant", "Plant out"), ("pruning", "Prune"))
 
-_MONTHS = ("January", "February", "March", "April", "May", "June", "July",
-           "August", "September", "October", "November", "December")
+#: The folds, by key: (title, what it holds). Both start closed (V3.56).
+ANIMALS, WILD = "animals", "wild"
 
 
 class SpeciesPage(QWidget):
@@ -91,7 +90,8 @@ class SpeciesPage(QWidget):
         self._placed = 0
         self._in_mix = False
         self._advanced = False
-        self._expanded = False
+        #: The folds the reader opened, kept from one plant to the next.
+        self._open: set = set()
         #: The region the page speaks for (the picker's ``place``).
         self.place_fn: Optional[Callable] = None
 
@@ -223,8 +223,8 @@ class SpeciesPage(QWidget):
 
     def set_advanced_tools(self, on: bool) -> None:
         """Add to mix only with Advanced tools on (V3.21): the mix it fills
-        is one of the builders the switch holds. The page is the long one
-        with them on, the short one off (PR-4, V3.26)."""
+        is one of the builders the switch holds. Since V3.56 the page is the
+        same in both modes but for the ID line under the photographs."""
         if self._mix_btn is not None:
             self._mix_btn.setVisible(bool(on))
         if bool(on) != self._advanced:
@@ -247,7 +247,6 @@ class SpeciesPage(QWidget):
             self.show_empty()
             return
         same = self.shown_id() == int(row.get("id") or 0)
-        self._expanded = self._expanded and same
         self._row, self._entry = dict(row), entry
         self._placed, self._in_mix = int(placed or 0), bool(in_mix)
         if self._photo_warmer is not None:
@@ -311,25 +310,16 @@ class SpeciesPage(QWidget):
         self._render_head()
         self._clear()
         self._col.addWidget(self._photo_block(entry))
+        if self._advanced:
+            self._section("", pps.ID_LINE, dim=True)     # WD-8, W3
         if getattr(self, "_why", None):
             # F19 (V3.05): why the generator put this one here, read back
             # from the score that chose the spot.
             self._section("Why here", ". ".join(self._why) + ".")
-        # PR-4 (V3.26): the short page unless Advanced tools are on or the
-        # reader asked for everything, which then opens below it.
-        if not self._advanced:
-            self._simple_body(entry)
-        if self._advanced or self._expanded:
-            if not self._advanced:
-                self._heading(pps.MORE)
-            self._section("", pps.ID_LINE, dim=True)
-            self._advanced_body(entry)
-        self._col.addStretch()
-
-    def _simple_body(self, entry: dict):
         place = self.place_fn() if self.place_fn else ""
         for heading, body in pps.simple(entry, place=place):
             if heading == pps.SEASON:
+                self._section(heading, body) if body else self._heading(heading)
                 bloom, fruit = (entry.get("bloom_months") or [],
                                 entry.get("fruit_months") or [])
                 if bloom or fruit:
@@ -338,55 +328,87 @@ class SpeciesPage(QWidget):
                 self._section(heading, body)
             else:
                 self._heading(heading)
-        if self._expanded:
-            return
-        more = QPushButton(f"{pps.MORE} ▸")
-        more.setObjectName("speciesPageMore")
-        more.setStyleSheet(
+        self._animals_fold(entry)
+        self._wild_fold(entry)
+        self._col.addStretch()
+
+    def _fold(self, key: str, title: str) -> Optional[QVBoxLayout]:
+        """A fold's button, and its layout when it is open (else None)."""
+        is_open = key in self._open
+        btn = QPushButton(f"{title} {'▾' if is_open else '▸'}")
+        btn.setObjectName(f"speciesPageFold_{key}")
+        btn.setAccessibleName(title)
+        btn.setCheckable(True)
+        btn.setChecked(is_open)
+        btn.setStyleSheet(
             "QPushButton { color: #ffe082; background: transparent; "
             "border: none; text-align: left; font-size: 13px; "
             "min-height: 24px; } QPushButton:focus { border: 2px solid "
             "#ffe082; }")
-        more.clicked.connect(self._expand)
-        self._col.addWidget(more)
+        btn.clicked.connect(lambda _c=False, k=key: self._toggle(k))
+        self._col.addWidget(btn)
+        return self._col if is_open else None
 
-    def _expand(self):
+    def _toggle(self, key: str):
         keep = self._scroll.verticalScrollBar().value()
-        self._expanded = True
+        self._open ^= {key}
         self._render()
-        # The button removed itself: the keyboard goes to the page (V3.02).
-        self._scroll.setFocus(Qt.FocusReason.OtherFocusReason)
+        # The button was rebuilt: the keyboard goes back to it (V3.02).
+        btn = self.findChild(QPushButton, f"speciesPageFold_{key}")
+        if btn is not None:
+            btn.setFocus(Qt.FocusReason.OtherFocusReason)
         self._scroll.verticalScrollBar().setValue(keep)
 
-    def _advanced_body(self, entry: dict):
-        """Everything (the page before V3.26), less the notes (L8, P12)."""
-        if entry.get("badges"):
-            self._section("Why it matters", " · ".join(entry["badges"]))
-        if entry.get("roles"):
-            self._section("Roles", " · ".join(entry["roles"]))
-        self._section("Conditions", " · ".join(
-            p for p in (_conditions(entry), entry.get("soil_ph"),
-                        entry.get("zones")) if p))
-        self._section("Size", " · ".join(p for p in (
-            _metres(entry.get("mature_height_m"), "tall"),
-            _metres(entry.get("mature_canopy_m"), "wide"),
-            _years(entry.get("years_to_maturity")),
-            _apart(entry.get("spacing_m"))) if p))
-        self._season_block(entry)
-        if entry.get("morphology"):
-            self._section("What it looks like", " · ".join(entry["morphology"]))
-        self._native_block(entry)
-        self._range_block(entry)
-        self._wildlife_block(entry)
-        self._companion_block(entry)
-        if entry.get("edible_parts"):
-            self._section("Edible parts", entry["edible_parts"])
-        self._sourcing_block(entry)
-        if entry.get("safety"):
-            self._section("Safety", " · ".join(entry["safety"]))
-        if entry.get("provenance"):
-            self._section("Where these numbers came from",
-                          " · ".join(entry["provenance"]), dim=True)
+    def _animals_fold(self, entry: dict):
+        """The animals recorded on it, by what they take, and the works the
+        records came from (P9): a fold, closed until asked for."""
+        w = entry.get("wildlife") or {}
+        if not w.get("total"):
+            return
+        animals = int(w.get("animals") or w["total"])
+        if self._fold(ANIMALS, f"Animals recorded on it ({animals})") is None:
+            return
+        special = int(w.get("specialist_animals") or w.get("specialists") or 0)
+        if special:
+            self._section("", f"{special} of them depend on it alone (⚑).")
+        for group in w.get("groups") or []:
+            label = self._section("", _group_html(group, _FIRST), rich=True)
+            if label is not None and len(group.get("items") or []) > _FIRST:
+                label.linkActivated.connect(
+                    lambda _href, lab=label, g=group:
+                    lab.setText(_group_html(g, None)))
+        self._citation_block(w)
+
+    def _wild_fold(self, entry: dict):
+        """Where it is native and where it has been recorded, with the counts
+        (P9): a region seen 242 times and one seen 5 times are different
+        claims. Native before found (F220, F222, V3.12)."""
+        from src.native_here import province_words
+        native = province_words(entry)
+        around = entry.get("around") or {}
+        rows = entry.get("ranges") or []
+        if not (native or around.get("words") or rows):
+            return
+        if self._fold(WILD, "Where it grows wild") is None:
+            return
+        self._section("Native to", native)
+        if around.get("words"):
+            self._section(f"Around {around['short']}", around["words"])
+        if not rows:
+            return
+        bits = [f"{r['name']}, {r['occurrences']} records" if
+                r.get("occurrences") else f"{r['name']} (no records counted)"
+                for r in rows[:4]]
+        if len(rows) > 4:
+            bits.append(f"and {len(rows) - 4} more regions")
+        self._section("Recorded in", "\n".join(bits))
+        origins = []
+        for r in rows:
+            src = (r.get("source") or "").strip()
+            if src and src not in origins:
+                origins.append(src)
+        if origins:
+            self._section("", "From " + "; ".join(origins) + ".", dim=True)
 
     def _heading(self, text: str):
         head = QLabel(text)
@@ -436,79 +458,6 @@ class SpeciesPage(QWidget):
             selected=self._photo_shown.get(sci, 0),
             on_select=lambda i: self._photo_shown.__setitem__(sci, i))
 
-    def _season_block(self, entry: dict):
-        """Bloom and fruit as words, the bar under them, and the calendar's
-        tasks (sowing, pruning) as a line."""
-        text = " · ".join(p for p in (
-            f"blooms {entry['bloom']}" if entry.get("bloom") else "",
-            _bloom_colour_line(entry),
-            f"fruits {entry['fruit']}" if entry.get("fruit") else "",
-            _colour_word(entry.get("fruit_color"), "fruit")) if p)
-        self._section("Season", text)
-        bloom = entry.get("bloom_months") or []
-        fruit = entry.get("fruit_months") or []
-        if bloom or fruit:
-            self._col.addWidget(SeasonBar(bloom, fruit))
-        tasks = _calendar_tasks(entry.get("calendar") or [],
-                                edible=bool(entry.get("edible_parts")))
-        if tasks:
-            self._section("", tasks)
-
-    def _native_block(self, entry: dict):
-        """Where it is native, before where it has been found (F220, F222,
-        V3.12). The website has said "Native to" since V2.47 and this page
-        never did, so Eastern Red Columbine, native to Saskatchewan and "Found
-        in" an ecoregion that straddles the border, read as Albertan."""
-        from src.native_here import province_words
-        self._section("Native to", province_words(entry))
-        around = entry.get("around") or {}
-        if around.get("words"):
-            self._section(f"Around {around['short']}", around["words"])
-
-    def _range_block(self, entry: dict):
-        """Where it has been recorded, **with the count and the confidence**:
-        a region seen 242 times and one seen 5 times are different claims (P9).
-        """
-        rows = entry.get("ranges") or []
-        if not rows:
-            return
-        bits = []
-        for r in rows[:4]:
-            if r.get("occurrences"):
-                bits.append(f"{r['name']} ({r['occurrences']} records, "
-                            f"{r['confidence']} confidence)")
-            else:
-                bits.append(f"{r['name']} (no occurrence data)")
-        self._section("Found in", "\n".join(bits))
-        origins = []
-        for r in rows:
-            src = (r.get("source") or "").strip()
-            if src and src not in origins:
-                origins.append(src)
-        if origins:
-            self._section("", "Range data: " + "; ".join(origins), dim=True)
-
-    def _wildlife_block(self, entry: dict):
-        w = entry.get("wildlife") or {}
-        if not w.get("total"):
-            self._section("Wildlife", "No animals recorded on it yet. That "
-                          "means nobody has written it down, not that "
-                          "nothing uses it.", dim=True)
-            return
-        animals = int(w.get("animals") or w["total"])
-        special = int(w.get("specialist_animals") or w.get("specialists") or 0)
-        line = f"Feeds or shelters {animals} documented species"
-        if special:
-            line += f", {special} of them depending on it alone (⚑)"
-        self._section("Wildlife", line + ".")
-        for group in w.get("groups") or []:
-            label = self._section("", _group_html(group, _FIRST), rich=True)
-            if label is not None and len(group.get("items") or []) > _FIRST:
-                label.linkActivated.connect(
-                    lambda _href, lab=label, g=group:
-                    lab.setText(_group_html(g, None)))
-        self._citation_block(w)
-
     def _citation_block(self, wildlife: dict):
         """Where the wildlife relationships came from. Every edge has carried a
         citation; until V2.42 no screen showed one, so a sourced record and an
@@ -528,41 +477,12 @@ class SpeciesPage(QWidget):
                         keys.append(key)
         if not keys and not unattributed:
             return
-        lines = [f"· {format_citation(k)}" for k in keys]
+        bits = [format_citation(k, short=True) for k in keys]
+        text = ("Sources: " + "; ".join(bits) + ".") if bits else ""
         if unattributed:
-            lines.append(
-                f"· {unattributed} of these relationships were seeded without "
-                "naming a specific work, and are not yet attributable.")
-        self._section("Where these relationships came from",
-                      "\n".join(lines), dim=True)
-
-    def _companion_block(self, entry: dict):
-        groups = (entry.get("relationships") or {}).get("groups") or []
-        bits = []
-        for g in groups:
-            if g.get("group") != "companion":
-                continue
-            names = ", ".join(i["name"] for i in g["items"] if i.get("name"))
-            if names:
-                bits.append(f"{g['label']}: {names}")
-        self._section("Grows with", "\n".join(bits))
-
-    def _sourcing_block(self, entry: dict):
-        # The website's sentence (V3.14): this printed the raw tier, "· rare",
-        # "· big box", where the site says "hard to find in the trade".
-        # Around the region, the nurseries' stock says it (V3.25); the price
-        # stays the catalogue's estimate.
-        from src.local_stock import clause
-        from src.sourcing import describe
-        sourcing = dict(entry.get("sourcing") or {})
-        local = clause(entry.get("scientific_name") or "")
-        if local:
-            sourcing.pop("availability", None)
-        text, note = describe(sourcing)
-        text = " ".join(t for t in (text, local) if t)
-        self._section("Where to get it", text)
-        if note:
-            self._section("", note, dim=True)
+            text += (f" {unattributed} of these were seeded without naming a "
+                     "work.").rstrip()
+        self._section("", text.strip(), dim=True)
 
 
 class SeasonBar(QWidget):
@@ -625,46 +545,9 @@ def _group_html(group: dict, first: Optional[int]) -> str:
     shown = items if first is None else items[:first]
     names = ", ".join(html.escape(i.get("name") or "")
                       + (" ⚑" if i.get("specialist") else "") for i in shown)
-    text = f"<b>{html.escape(group.get('how') or '')}</b>: {names}"
+    how = group.get("how") or ""
+    text = f"<b>{html.escape(how[:1].upper() + how[1:])}</b>: {names}"
     more = len(items) - len(shown)
     if more > 0:
         text += (f' <a href="more" style="{_LINK}">and {more} more</a>')
     return text
-
-
-def _calendar_tasks(calendar: list, *, edible: bool) -> str:
-    """``"Prune in March and April"``: the calendar's months that say something
-    the bloom and fruit windows do not. Harvest is said only of a plant with
-    edible parts, where it is a task rather than the fruiting season again."""
-    by_status: dict = {}
-    for row in calendar or []:
-        status = row.get("status") or ""
-        try:
-            month = int(row.get("month") or 0)
-        except (TypeError, ValueError):
-            continue
-        if status == "pruning" and not says_prune(month):
-            continue                     # never the autumn tidy-up (OV-8)
-        if 1 <= month <= 12:
-            by_status.setdefault(status, set()).add(month)
-    tasks = list(_TASKS) + ([("harvest", "Harvest")] if edible else [])
-    bits = [f"{label} in {_month_runs(sorted(by_status[status]))}"
-            for status, label in tasks if by_status.get(status)]
-    return " · ".join(bits)
-
-
-def _month_runs(months: list) -> str:
-    """``[3, 4]`` → "March and April"; ``[5, 6, 7]`` → "May to July"."""
-    runs, start = [], None
-    for i, m in enumerate(months):
-        if start is None:
-            start = m
-        if i + 1 == len(months) or months[i + 1] != m + 1:
-            if m == start:
-                runs.append(_MONTHS[m - 1])
-            elif m == start + 1:
-                runs.append(f"{_MONTHS[start - 1]} and {_MONTHS[m - 1]}")
-            else:
-                runs.append(f"{_MONTHS[start - 1]} to {_MONTHS[m - 1]}")
-            start = None
-    return ", ".join(runs)

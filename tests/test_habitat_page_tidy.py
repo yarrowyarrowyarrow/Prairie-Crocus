@@ -77,8 +77,10 @@ class ThePageSaysWhatIsTrue(unittest.TestCase):
         self.assertNotIn("vs. lawn", _read("analysis_panel.py"))
 
     def test_the_report_card_no_longer_frames_the_spend(self):
-        self.assertNotIn("What your spend creates",
-                         _read("on_this_design_panel.py"))
+        # The Report card itself was retired in V3.55 (F270).
+        for name in ("on_this_design_panel.py", "analysis_panel.py",
+                     "yard_overview_items.py"):
+            self.assertNotIn("What your spend creates", _read(name), name)
 
 
 if __name__ == "__main__":

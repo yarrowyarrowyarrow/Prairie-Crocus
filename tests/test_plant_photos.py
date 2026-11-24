@@ -22,6 +22,7 @@ Temp-DB pattern from tests/test_polycultures.py — never touches the real user 
 """
 
 import io
+import json
 import os
 import sys
 import tempfile
@@ -42,6 +43,24 @@ from src.db.plants import (PHOTO_SLOTS, get_all_plants,  # noqa: E402
 from src import photo_import                             # noqa: E402
 
 _SCI = "Ratibida columnifera"
+
+
+def _legacy_species() -> str:
+    """A plant whose only photograph is the legacy ``image_url``, which the
+    back-fill files as one ``flower`` row. Since V3.55 the region's natives
+    have their photographs in ``data/plant_photos.json`` (Prairie Coneflower
+    among them), so the back-fill's own rules are tested on a plant it still
+    serves, chosen from the data rather than named."""
+    root = os.path.join(os.path.dirname(__file__), os.pardir, "data")
+    with open(os.path.join(root, "plant_photos.json"), encoding="utf-8") as fh:
+        listed = {r["scientific_name"] for r in json.load(fh)}
+    with open(os.path.join(root, "plants_master.json"), encoding="utf-8") as fh:
+        master = json.load(fh)
+    return sorted(r["scientific_name"] for r in master
+                  if r.get("image_url") and r["scientific_name"] not in listed)[0]
+
+
+_LEGACY = _legacy_species()
 
 
 def _reseed():
@@ -103,15 +122,15 @@ class TestReseedSurvival(unittest.TestCase):
         conn.close()
 
     def test_a_user_photo_survives_a_reseed_and_a_seed_photo_is_replaced(self):
-        photos.add_photo(_SCI, "habit", "/photos/mine.jpg",
+        photos.add_photo(_LEGACY, "habit", "/photos/mine.jpg",
                          attribution="me", license="cc-by-sa",
                          source="owner", origin="user")
-        before = photos.photos_for(_SCI)
+        before = photos.photos_for(_LEGACY)
         self.assertTrue(any(p["origin"] == "user" for p in before))
 
         _reseed()
 
-        after = photos.photos_for(_SCI)
+        after = photos.photos_for(_LEGACY)
         mine = [p for p in after if p["origin"] == "user"]
         self.assertEqual(len(mine), 1,
                          "a person's own photograph did not survive the reseed "
@@ -120,6 +139,20 @@ class TestReseedSurvival(unittest.TestCase):
         self.assertEqual(
             sum(1 for p in after if p["origin"] == "seed"), 1,
             "the shipped photo was either lost or duplicated by the reseed")
+
+    def test_a_natives_picked_photos_survive_a_reseed_beside_yours(self):
+        """V3.55: a native ships several photographs; a reseed with one of
+        your own in place brings back exactly those, in their order."""
+        shipped = [p["url"] for p in photos.photos_for(_SCI)
+                   if p["origin"] == "seed"]
+        self.assertGreater(len(shipped), 1)
+        photos.add_photo(_SCI, "habit", "/photos/mine.jpg", origin="user")
+        _reseed()
+        after = photos.photos_for(_SCI)
+        self.assertEqual([p["url"] for p in after if p["origin"] == "seed"],
+                         shipped)
+        self.assertEqual(after[0]["origin"], "user",
+                         "a person's own photograph comes first")
 
     def test_a_user_photo_does_not_suppress_the_shipped_one(self):
         """The back-fill's dedupe was scoped to the SPECIES at first, so adding
@@ -147,22 +180,22 @@ class TestReseedSurvival(unittest.TestCase):
         conn = get_connection()
         row = conn.execute(
             "SELECT url FROM plant_photos WHERE scientific_name = ?"
-            "   AND origin = 'seed' LIMIT 1", (_SCI,)).fetchone()
+            "   AND origin = 'seed' LIMIT 1", (_LEGACY,)).fetchone()
         self.assertIsNotNone(row, "no shipped photo to re-file")
         url = row["url"]
         conn.execute(
             "UPDATE plant_photos SET slot = 'habit' WHERE scientific_name = ?"
-            "   AND url = ?", (_SCI, url))
+            "   AND url = ?", (_LEGACY, url))
         conn.commit()
         conn.close()
 
-        rows = [dict(p) for p in photos.photos_for(_SCI) if p["url"] == url]
+        rows = [dict(p) for p in photos.photos_for(_LEGACY) if p["url"] == url]
         self.assertEqual([p["slot"] for p in rows], ["habit"])
         # The back-fill must not now ADD a second, flower-slotted copy.
         conn = get_connection()
         _plants_mod._seed_plant_photos(conn)
         conn.commit()
-        again = [p for p in photos.photos_for(_SCI) if p["url"] == url]
+        again = [p for p in photos.photos_for(_LEGACY) if p["url"] == url]
         self.assertEqual(len(again), 1,
                          "the back-fill duplicated a photo that had been sorted")
         self.assertEqual(again[0]["slot"], "habit",
@@ -310,6 +343,26 @@ class TestCoverageReport(unittest.TestCase):
         finally:
             data_quality._load_json_list = real
         self.assertTrue(any("attribution" in e for e in errors))
+
+
+class TestTheShippedPhotographs(unittest.TestCase):
+    """V3.61: V3.55 folded in six photographs for most Edmonton natives after
+    V3.56 had been branched from it, so V3.56 to V3.60 shipped the two-row file
+    and the owner's plant pages went back to one photo, or none. The suite was
+    green throughout, because nothing said how many there should be."""
+
+    def test_every_edmonton_native_has_photographs_and_most_have_six(self):
+        from src import native_here
+        rows = json.load(open(os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "data", "plant_photos.json"), encoding="utf-8"))
+        per: dict = {}
+        for r in rows:
+            per[r["scientific_name"]] = per.get(r["scientific_name"], 0) + 1
+        local = native_here.native_names("edmonton")
+        self.assertEqual([s for s in sorted(local) if not per.get(s)], [])
+        six = sum(1 for s in local if per.get(s, 0) >= 6)
+        self.assertGreaterEqual(six, 0.9 * len(local))
 
 
 if __name__ == "__main__":

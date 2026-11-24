@@ -315,6 +315,13 @@ class PlanningPanel(QWidget):
         info.setStyleSheet("color: #90a4ae; font-size: 12px;")
         layout.addWidget(info)
 
+        # The answer first (V3.55, F270): what a dry week takes, before the
+        # five numbers that refine the table below it.
+        self._water_answer = QLabel("")
+        self._water_answer.setWordWrap(True)
+        self._water_answer.setTextFormat(Qt.TextFormat.RichText)
+        layout.addWidget(self._water_answer)
+
         form = QFormLayout()
         form.setContentsMargins(0, 0, 0, 0)
 
@@ -372,6 +379,7 @@ class PlanningPanel(QWidget):
         for every type, the site's own rainfall when fetched, and the weekly
         rule where a seasonal "surplus" was (R4, R38)."""
         if not self._placed_plants:
+            self._water_answer.setText("")
             self._water_results.setText("No plants placed yet.")
             return
         from src import water_budget as wb
@@ -409,8 +417,11 @@ class PlanningPanel(QWidget):
         garden_m2 = self._garden_area.value()
         captured = min(season_mm * self._roof_area.value() * 0.8,
                        self._rain_barrels.value() * 200)
-        supply = [(f"Rain on the garden ({garden_m2:.0f} m², "
-                   f"{season_mm:.0f} mm May–Sep, {source})",
+        # The source on its own line: inside the row's brackets it read
+        # "(…, Edmonton (Aspen Parkland — central)))" (V3.55).
+        supply = [(f"Rain on the garden: {garden_m2:.0f} m², "
+                   f"{season_mm:.0f} mm May–Sep<br><span style='color:#90a4ae;'>"
+                   f"{source}</span>",
                    season_mm * garden_m2)]
         if captured > 0:
             supply.append((f"Rain barrels ({self._rain_barrels.value()} × "
@@ -433,9 +444,12 @@ class PlanningPanel(QWidget):
                 f"{litres:,.0f} L</td></tr>" for label, litres in supply)
             + "</table>")
 
+        self._water_answer.setText(
+            "<div style='font-size:12px;'>"
+            + self._callout("good", wb.weekly_rule(self._placed_plants))
+            + "</div>")
         self._water_results.setText(
             "<div style='font-size:12px;'>" + demand_html + supply_html
-            + self._callout("good", wb.weekly_rule(self._placed_plants))
             + "</div>")
 
     def set_site_config(self, site_config: dict) -> None:

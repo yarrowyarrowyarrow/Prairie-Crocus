@@ -266,6 +266,13 @@ manifest's `half_width` still matches the shipped geometry. The aspect check
 is the one that would have caught the V2.29 deformation: triangle counts,
 node names and materials were all correct while every tree was stretched 2–4×.
 
+**Build everything, copy what changed (V3.48).** A subset build (`only=`) writes
+no manifest, and a model's variants follow the catalogue, so a model rebuilt
+alone can disagree with the shipped manifest. Build the whole library to a
+scratch folder, then copy the models wanted with their manifest entries. Herbs,
+grass tufts and groundcover are baked with `build_all.LOW_AO`, the crowns with
+`CROWN_AO`.
+
 ## Surface detail (V2.29)
 
 The GLBs stay **texture-free and UV-free** — `POSITION`, `NORMAL`, `COLOR_0`

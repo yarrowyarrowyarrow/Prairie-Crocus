@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 scripts/fetch_inaturalist_images.py — populate the image fields (schema v24,
 V1.60) on plants + fauna from iNaturalist, keeping ONLY openly-licensed photos
 that are safe to redistribute in a shipped installer.

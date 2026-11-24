@@ -46,11 +46,18 @@ EXEMPT_PREFIXES = ("static_site",)
 #: column only in the modules that build simple surfaces"), grown as the
 #: rewrites land.
 SIMPLE_MODULES = (
-    "first_step_bar.py", "onboarding.py", "start_screen.py",
+    "first_step_bar.py", "onboarding.py", "start_screen.py", "start_rows.py",
     "structure_panel.py", "share_panel.py", "community_page.py",
     "species_page.py", "plant_filters.py", "filter_area.py",
     "placement_bar.py", "landing_check.py", "plain_messages.py",
     "month_tasks.py", "advanced_tools_flow.py", "start_flow.py",
+    # V3.44 (F261): the 3D preview opens from the simple app.
+    "plan_bar.py", "scene3d_window.py", "scene3d_toolbar.py",
+    "scene3d_named_groups.py", "scene3d_stops.py", "scene3d_creatures.py",
+    # V3.46 (F263): what the 3D preview says about the season and the years.
+    "scene_season.py", "scene_timeline.py",
+    # V3.55 (F270): Design › Through the year is in the simple app.
+    "food_page.py", "through_the_year.py",
 )
 
 #: Today's uses, ``{(module, word): count}``: WD-2 to WD-6 take these out.
@@ -59,8 +66,8 @@ KNOWN = {
     ('controllers/persistence.py', '.perma.geojson'): 1,
     ('controllers/persistence.py', 'polyculture'): 2,
     ('db/polycultures.py', 'Alberta native'): 2,
-    ('db/polycultures.py', 'guild'): 18,
-    ('db/polycultures.py', 'polyculture'): 6,
+    ('db/polycultures.py', 'guild'): 15,
+    ('db/polycultures.py', 'polyculture'): 5,
     ('design_critic.py', 'Alberta native'): 1,
     ('design_goals.py', 'pet friendly'): 2,
     ('feedback_flow.py', 'project'): 1,
@@ -71,13 +78,12 @@ KNOWN = {
     ('plant_filters.py', 'early successional'): 1,
     ('plant_filters.py', 'keystone'): 1,
     ('plant_filters.py', 'larval host'): 1,
-    ('plant_filters.py', 'species'): 3,
-    ('plant_filters.py', 'toxicity'): 2,
+    ('plant_filters.py', 'species'): 1,
     ('polyculture.py', 'polyculture'): 1,
     ('range_map.py', 'spec'): 1,
     ('saves.py', 'project'): 1,
     ('site_panel.py', 'project'): 1,
-    ('species_page.py', 'species'): 3,
+    ('species_page.py', 'species'): 2,
     # The file dialog's filter, moved from app.py with the dialog (V3.37).
     ('start_flow.py', '.perma.geojson'): 1,
 }
@@ -119,7 +125,9 @@ def counts() -> Counter:
     advanced = [(w, _pattern(w)) for w in vocabulary.ADVANCED_ONLY]
     out = Counter()
     for path in sorted(_SRC.rglob("*.py")):
-        name = str(path.relative_to(_SRC))
+        # as_posix: the table's keys are "db/polycultures.py" on every OS;
+        # str() gave "db\\polycultures.py" on Windows, which matched no key.
+        name = path.relative_to(_SRC).as_posix()
         if name in EXEMPT or name.startswith(EXEMPT_PREFIXES):
             continue
         words = never + (advanced if name in SIMPLE_MODULES else [])

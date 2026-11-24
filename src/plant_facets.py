@@ -43,6 +43,25 @@ _TYPE_LABELS: dict[str, str] = {
     "aquatic":     "Aquatic / Wetland",
 }
 
+#: The Kind filter's values (V3.57): the types, with grasses, sedges and
+#: rushes one choice, as a person choosing for a yard sees them.
+KIND_LABELS: dict = {
+    "wildflower": "Wildflowers", "grass_like": "Grasses & sedges",
+    "groundcover": "Groundcovers", "shrub": "Shrubs", "tree": "Trees",
+    "vine": "Vines", "herb": "Herbs & foliage", "fern": "Ferns",
+    "aquatic": "Water plants"}
+KIND_TYPES: dict = {"grass_like": ("grass", "sedge", "rush")}
+#: What the "What it does" filter offers (V3.57), in plain words: the roles
+#: a yard is planted for. Left out: roles nearly every native has (Wildlife
+#: Habitat, 209 of 250), none has (Canopy Layer), the Kind filter's own
+#: (Groundcover, Aquatic), and Medicinal, which is not a yard's purpose.
+ROLE_FILTER: dict = {
+    "pollinator": "Bees and butterflies", "host_plant": "Caterpillar food",
+    "keystone_species": "Feeds many caterpillars", "bird_food": "Bird food",
+    "nesting_material": "Nesting material", "nitrogen_fixer": "Adds nitrogen",
+    "erosion_control": "Holds a slope", "windbreak": "Windbreak",
+    "hedge": "Hedge", "ornamental": "Showy"}
+
 _DECIDUOUS_LABELS: dict[str, str] = {
     "deciduous":  "Deciduous",
     "evergreen":  "Evergreen",

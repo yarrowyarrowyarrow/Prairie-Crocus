@@ -39,7 +39,9 @@ _MODELS = os.path.join(_HTML, "assets", "models")
 _ASSETLIB = os.path.join(_ROOT, "scripts", "blender", "assetlib")
 
 #: The surface presets that are leaves (04-quality.js MAT_PRESETS).
-_LEAF_PRESETS = {"crown", "shrubLeaf", "herbLeaf", "needle"}
+#: Grass blades joined in V3.48: V2.94 left them opaque on the strength of their
+#: lifted normals, and against photographs half of every tuft drew near black.
+_LEAF_PRESETS = {"crown", "shrubLeaf", "herbLeaf", "needle", "blade"}
 
 #: A shipped crown's baked shade, averaged over its vertices, and the share of
 #: vertices darker than 0.3. V2.93's trees averaged 0.17-0.46 (0.30 overall), 63%
@@ -72,16 +74,17 @@ class LeafLightWiringTest(unittest.TestCase):
     def test_the_chunk_loads_before_any_material_is_built(self):
         """Materials are built from 02-plants.js on; the chunk must be there by
         then, or plantMaterial calls an undefined applyLeafLight."""
-        src = _read(os.path.join(_HTML, "scene3d.html"))
+        # The chunk list left the page in V3.39 (html/scene3d/chunks.js).
+        src = _read(os.path.join(_HTML, "scene3d", "chunks.js"))
         files = re.findall(r"'scene3d/([\w-]+\.js)'", src)
-        self.assertIn("01c-leaves.js", files, "scene3d.html does not load 01c-leaves.js")
+        self.assertIn("01c-leaves.js", files, "the viewer does not load 01c-leaves.js")
         self.assertLess(files.index("01c-leaves.js"), files.index("02-plants.js"))
 
     def test_the_leaves_let_light_through_and_nothing_else_does(self):
         share = _leaf_translucency()
         self.assertEqual(set(share), _LEAF_PRESETS,
-                         "LEAF_TRANSLUCENCY should name the four leaf presets and "
-                         "nothing else: bark and grass blades are opaque")
+                         "LEAF_TRANSLUCENCY should name the leaf presets and the "
+                         "grass blade, and nothing else: bark is opaque")
         for k, v in share.items():
             with self.subTest(k):
                 self.assertGreater(v, 0.0)
@@ -89,7 +92,9 @@ class LeafLightWiringTest(unittest.TestCase):
         self.assertEqual(min(share, key=share.get), "needle",
                          "a needle is the thickest leaf here and lets through the least")
         presets = _js("04-quality.js")
-        for k in _LEAF_PRESETS:
+        # The grass blade is not a surface preset: its one material asks by name.
+        self.assertIn("translucency: LEAF_TRANSLUCENCY.blade", presets)
+        for k in _LEAF_PRESETS - {"blade"}:
             with self.subTest(k):
                 self.assertTrue(re.search(r"\b%s: \{ key: '%s'" % (k, k), presets),
                                 f"04-quality.js MAT_PRESETS lost '{k}', so its "

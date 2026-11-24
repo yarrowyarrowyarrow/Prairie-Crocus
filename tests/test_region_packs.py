@@ -185,9 +185,12 @@ class TheLocalGoalFollowsThePin(unittest.TestCase):
         self.assertEqual(q.value, region.default().key)
         self.assertEqual(pf.criteria_to_kwargs({"edmonton_native": True}),
                          {"native_near": region.default().key})
+        # The communities' "natives only" box went in V3.58: the region's
+        # list is the catalogue (plant_filters.catalogue_scope).
         panel = (pathlib.Path(ROOT) / "src" / "polyculture_panel.py").read_text(
             encoding="utf-8")
-        self.assertIn('f"{self._home.short} natives only"', panel)
+        self.assertNotIn("natives only", panel)
+        self.assertEqual(pf.catalogue_scope(), {"local_native": True})
 
 
 class ASecondPackNeedsNoCode(unittest.TestCase):

@@ -158,18 +158,20 @@ function _pondBroad(p, gy, rng, col, groups) {
 // The unit shapes are built per call, as the vines' are: disposeDesignGroup
 // frees every geometry it does not know to be shared, and these are cheap.
 function buildPond(list, month, year, terrain) {
+  if (window.pondFormsReset) pondFormsReset();                         // 23b-pondforms.js
   if (!list || !list.length) return;
-  const groups = new Map();
+  const groups = new Map(), forms = [];
   for (const p of list) {
     const d = p.drawn || {};
     const onWater = d.body === 'floating' || d.body === 'submerged';
-    if (onWater && _isDecid(p.foliage_type) && _bareMonth(month)) continue;
+    if (onWater && diedBack(p, month)) continue;      // 01d-season.js
     const seed = (hashPid(p.plant_id || 1) ^ Math.round(p.x * 100) * 73856093
                   ^ Math.round(p.y * 100) * 19349663) >>> 0;
     const rng = mulberry32(seed);
     const gy = terrainHeightAt(p.x, p.y, terrain);
-    const col = fadeColor(witherColor(seasonalColor(
-      p.color, p.foliage_type, month, p.fall_color), p.health), p.opacity);
+    const col = bodyColor(p, month);
+    // A water plant drawn by its own parts (23b-pondforms.js, V3.67b).
+    if (window.buildPondForm && buildPondForm(p, d, gy, rng, col, month, forms)) continue;
     if (d.body === 'floating') _pondFloating(p, d, gy, rng, col, groups);
     else if (d.body === 'submerged') _pondSubmerged(p, d, gy, rng, col, groups);
     else if (d.body === 'broadleaf') _pondBroad(p, gy, rng, col, groups);
@@ -185,6 +187,7 @@ function buildPond(list, month, year, terrain) {
     mesh.userData.part = g.part;
     plantsGroup.add(mesh);
   }
+  if (window.addPondForms) addPondForms(forms);
 }
 
 window.buildPond = buildPond;

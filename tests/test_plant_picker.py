@@ -64,7 +64,7 @@ class TestThePicker(unittest.TestCase):
     def test_the_folded_line_names_what_is_on_and_clear_clears_it(self):
         self.picker.chips["native_only"].setChecked(True)
         self.picker.set_facet("type", ["shrub"])
-        self.assertEqual(self.picker.chip_texts(), ["Type: Shrub", "Native to Alberta"])
+        self.assertEqual(self.picker.chip_texts(), ["Kind: Shrubs", "Native to Alberta"])
         self.assertTrue(self.picker.none_label.isHidden())
         self.assertFalse(self.picker.clear_button.isHidden())
         before = len(self.picker.rows())
@@ -82,6 +82,18 @@ class TestThePicker(unittest.TestCase):
         self.assertTrue(all("aster" in (r["common_name"] + r["scientific_name"]
                                         + (r.get("permaculture_uses") or "")
                                         ).lower() for r in self.picker.rows()))
+
+    def test_the_chips_show_only_while_folded(self):
+        """V3.57: open, a chip beside its own toggle said one filter twice."""
+        self.picker.chips["native_only"].setChecked(True)
+        chip = self.picker.filter_line.chips()[0]
+        self.assertFalse(chip.isHidden())
+        self.picker.set_filters_open(True)
+        self.assertTrue(chip.isHidden())
+        self.assertTrue(self.picker.none_label.isHidden())
+        self.assertFalse(self.picker.clear_button.isHidden())
+        self.picker.set_filters_open(False)
+        self.assertFalse(chip.isHidden())
 
     def test_the_filters_button_folds_and_unfolds(self):
         self.picker.filters_button.click()
@@ -128,14 +140,18 @@ class TestThePicker(unittest.TestCase):
         self.assertEqual(self.picker.order(), "priority")
         self.assertEqual(pf.ORDERS[0][0], "priority")
         self.assertEqual(self.picker.order_combo.currentText(),
-                         "Best picks first")
+                         "Most wildlife first")
         rows = self.picker.rows()
         self.assertEqual([r["id"] for r in rows],
                          [r["id"] for r in plant_priority.rank(
                              rows, place=self.picker.place())])
+        # Four orders since V3.57 (the owner); "suits" and "wildlife" left
+        # the menu but order_plants still reads them.
         combo = self.picker.order_combo
-        suits = combo.findData("suits")
-        self.assertFalse(combo.model().item(suits).isEnabled())
+        self.assertEqual([combo.itemText(i) for i in range(combo.count())],
+                         ["Most wildlife first", "Name", "Kind",
+                          "Tallest first"])
+        self.assertEqual(combo.findData("suits"), -1)
 
     def test_recorded_near_this_site_still_works_with_a_site(self):
         """Offered once there is a pin, and no longer chosen for the reader."""
@@ -227,16 +243,16 @@ class TestFiltersPeopleCanRead(unittest.TestCase):
             self.assertEqual(combo.rule_text(), pf.rule(f), f.key)
         self.picker.set_facet("use", ["bird_food", "host_plant"])
         self.assertEqual(self.picker.combos["use"].lineEdit().text(),
-                         "What it does: Larval Host and Bird Food")
+                         "What it does: Caterpillar food and Bird food")
         self.assertEqual(self.picker.chip_texts(),
-                         ["What it does: Larval Host and Bird Food"])
+                         ["What it does: Caterpillar food and Bird food"])
 
     def test_a_chip_removes_its_own_filter_and_nothing_else(self):
         self.picker.set_facet("type", ["shrub", "tree"])
         self.picker.chips["edible_only"].setChecked(True)
         chips = self.picker.filter_line.chips()
         self.assertEqual(chips[0].accessibleName(),
-                         "Remove Type: Tree or Shrub")
+                         "Remove Kind: Shrubs or Trees")
         chips[0].click()
         self.assertEqual(self.picker.combos["type"].checked_keys(), [])
         self.assertTrue(self.picker.chips["edible_only"].isChecked())
@@ -335,19 +351,19 @@ class TestFiltersPeopleCanRead(unittest.TestCase):
                          f"{trees} of {every} plants")
 
     def test_an_empty_list_names_the_filter_that_emptied_it(self):
-        """Ferns have no bloom window, so Blooms in empties a list of ferns."""
+        """Ferns have no bloom window, so Flowers in empties a list of ferns."""
         self.picker.set_facet("type", ["fern"])
         self.picker.set_facet("bloom_months", ["1"])
         self.assertEqual(self.picker.rows(), [])
         ferns = len(self._search(plant_type=["fern"]))
         self.assertGreater(ferns, 0)
         offers = self.picker.why_empty.offers()
-        self.assertIn(f"Remove \u201cBlooms in: January\u201d "
+        self.assertIn(f"Remove \u201cFlowers in: January\u201d "
                       f"({ferns} plant{'s' if ferns != 1 else ''})", offers)
         self.assertFalse(self.picker.why_empty.isHidden())
         # Taking it off is the offer's own button.
         button = next(b for b in self.picker.why_empty._offers
-                      if "Blooms in" in b.text())
+                      if "Flowers in" in b.text())
         button.click()
         self.assertEqual(len(self.picker.rows()), ferns)
         self.assertTrue(self.picker.why_empty.isHidden())
@@ -483,9 +499,11 @@ class TestWhatARowSays(unittest.TestCase):
         self.assertIn("Native to Alberta", text)
         self.assertIn("1 in this design", text)
 
-    def test_the_simple_row_says_its_band(self):
-        """PR-3 (V3.26): the band's chip where the badges were, its reasons
-        in the tooltip and in what a screen reader is given."""
+    def test_a_row_is_never_graded(self):
+        """PR-3 (V3.26) put the band's chip where the badges were; V3.58 (the
+        owner: a grade implies the rest are not good) leaves the reasons in
+        the tooltip and the screen reader's text, and a chip only for a pond
+        plant or one not native here."""
         from unittest import mock
         import src.plant_list_view as plv
         self.assertIsNotNone(self.delegate._layout(self._PLANT, self.rect, 0)
@@ -495,12 +513,16 @@ class TestWhatARowSays(unittest.TestCase):
             self.delegate.place = "edmonton"
             self.assertIsNone(self.delegate._layout(self._PLANT, self.rect, 0)
                               ["zone"])
-            self.assertEqual(self._at("native"), "Top pick. Berries or seed "
-                             "for 5 kinds of bird.")
+            self.assertEqual(self.delegate._right_w(self._PLANT), 0)
             text = plv.row_description(self._PLANT, 0, "AB", "edmonton")
             self.assertTrue(text.startswith(
-                "Saskatoon Berry, Amelanchier alnifolia. Top pick. Berries "
+                "Saskatoon Berry, Amelanchier alnifolia. Berries "
                 "or seed for 5 kinds of bird. Shrub."), text)
+            self.assertNotIn("Top pick", text)
+        with mock.patch.dict(plv._BANDS, {(7, "edmonton"): (
+                "For a pond", ["Visited by 5 kinds of native bee"])}):
+            self.assertEqual(self._at("native"), "Needs a pond. Visited by 5 "
+                             "kinds of native bee.")
 
     def test_the_card_is_gone(self):
         """No ▶, no expansion, no painted detail block: the page is beside
@@ -534,12 +556,14 @@ class TestTheBuilderUsesThePicker(unittest.TestCase):
         self.dialog = PolycultureBuilderDialog(None)
         self.addCleanup(self.dialog.deleteLater)
 
-    def test_it_starts_on_natives_by_the_flora(self):
+    def test_it_lists_the_regions_catalogue(self):
+        """V3.58: the builder lists the region's natives, as the Plants tab
+        does; until then it started on Alberta's, by the flora."""
         from src.db.plants import search_plants
         picker = self.dialog.picker
-        self.assertTrue(picker.chips["native_only"].isChecked())
+        self.assertNotIn("native_only", picker.chips)
         self.assertEqual(len(picker.rows()),
-                         len(search_plants(native_province="AB")))
+                         len(search_plants(native_near="edmonton")))
 
     def test_a_layer_lifts_its_plants_and_hides_none(self):
         picker = self.dialog.picker

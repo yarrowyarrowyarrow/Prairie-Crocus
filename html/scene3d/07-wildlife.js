@@ -624,7 +624,12 @@ function animateWildlife(tRaw) {
     // don't pile up. Fades out with distance.
     if (c.label) {
       const d = camera.position.distanceTo(o.position);
-      if (d > 13) { c.label.visible = false; }
+      // V3.39: only the ones the open card is about, or the nearest few
+      // (25-cards.js, loaded after the loop starts, hence the guard).
+      if (d > 13 || (typeof labelWanted === 'function'
+                     && !labelWanted(o.userData.critterInfo, d))) {
+        c.label.visible = false;
+      }
       else {
         c.label.visible = true;
         const hh = 0.02 * Math.max(1.5, d);
@@ -711,12 +716,22 @@ function _buildWildSpeedChip(el) {
   }
 }
 
+// Only while animals are the subject (27-views.js, V3.44): it sat over every
+// picture. It also stays for as long as they are slowed or paused, whatever
+// the subject, and the Space key follows the same rule: a scene frozen with
+// nothing on screen saying so reads as a hang.
+function _speedBarWanted() {
+  return !!(wildlifeGroup && wildlifeGroup.visible && wildlifeCritters.length
+    && (_wildSpeed !== 1 || typeof animalsAreSubject !== 'function'
+        || animalsAreSubject()));
+}
+
 function updateWildSpeedChip() {
   const el = _chipEl || (_chipEl = document.getElementById('wild-speed'));
   if (!el) return;
   if (!el.childElementCount) _buildWildSpeedChip(el);
   // Called once a frame, so both halves diff before touching the DOM.
-  const show = !!(wildlifeGroup && wildlifeGroup.visible && wildlifeCritters.length);
+  const show = _speedBarWanted();
   if (show !== _chipShown) { el.classList.toggle('on', show); _chipShown = show; }
   if (_wildSpeed !== _chipSpeed) {
     _chipSpeed = _wildSpeed;
@@ -734,7 +749,7 @@ addEventListener('keydown', (e) => {
   if (e.code !== 'Space') return;
   if (typeof beeMode !== 'undefined' && beeMode) return;
   if (typeof walkMode !== 'undefined' && walkMode) return;
-  if (!wildlifeGroup || !wildlifeGroup.visible || !wildlifeCritters.length) return;
+  if (!_speedBarWanted()) return;
   setWildlifeSpeed(_wildSpeed > 0 ? 0 : _wildLastSpeed);
   e.preventDefault();
 });

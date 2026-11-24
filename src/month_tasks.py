@@ -11,8 +11,8 @@ Broad-leaved Arrowhead" was baffling. The line now names only the plants in
 the open design, and says nothing at all when the design has none, or when
 none of them has a job this month.
 
-The jobs are the plant page's (``species_page._TASKS``; a test keeps the words
-equal): start indoors, sow outdoors, plant out, prune, and harvest only of a
+The jobs are the plant page's (:func:`page_line`, the same table, since
+V3.56): start indoors, sow outdoors, plant out, prune, and harvest only of a
 plant with edible parts, where it is a job rather than the fruiting season said
 again. Prune only in spring (V3.20, OV-8): the care calendar says cut back in
 spring, never in the autumn tidy-up (``maintenance_calendar.says_prune``).
@@ -45,6 +45,44 @@ SHOWN = 3
 
 _MONTHS = ("January", "February", "March", "April", "May", "June", "July",
            "August", "September", "October", "November", "December")
+
+
+def page_line(calendar: list, *, edible: bool) -> str:
+    """The plant page's line, ``"Prune in March and April · Harvest in
+    July"``: the calendar's months that say something the bloom and fruit
+    windows do not. Harvest only of a plant with edible parts."""
+    by_status: dict = {}
+    for row in calendar or []:
+        status = row.get("status") or ""
+        try:
+            month = int(row.get("month") or 0)
+        except (TypeError, ValueError):
+            continue
+        if status == "pruning" and not says_prune(month):
+            continue                     # never the autumn tidy-up (OV-8)
+        if 1 <= month <= 12:
+            by_status.setdefault(status, set()).add(month)
+    return " · ".join(
+        f"{words.capitalize()} in {month_runs(sorted(by_status[status]))}"
+        for status, words in JOBS if by_status.get(status)
+        and (edible or status != "harvest"))
+
+
+def month_runs(months: list) -> str:
+    """``[3, 4]`` → "March and April"; ``[5, 6, 7]`` → "May to July"."""
+    runs, start = [], None
+    for i, m in enumerate(months):
+        if start is None:
+            start = m
+        if i + 1 == len(months) or months[i + 1] != m + 1:
+            if m == start:
+                runs.append(_MONTHS[m - 1])
+            elif m == start + 1:
+                runs.append(f"{_MONTHS[start - 1]} and {_MONTHS[m - 1]}")
+            else:
+                runs.append(f"{_MONTHS[start - 1]} to {_MONTHS[m - 1]}")
+            start = None
+    return ", ".join(runs)
 
 
 def jobs_for(plant_ids: Iterable[int], month: int, *,

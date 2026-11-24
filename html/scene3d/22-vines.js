@@ -29,6 +29,17 @@ let VINE_HOSTS = new Map();      // tree/shrub plant -> the frame it was drawn i
 let VINE_ANCHORS = new Map();    // vine plant -> [{x, y, z, nx, nz}], world
 const _VPROF = new Map();        // geometry uuid -> outer-radius profile
 const _VP_A = 16, _VP_H = 24;    // bearings x height bands per profile
+// How far a climbing vine lies out from the crown's surface it is fitted to
+// (V3.67b): a share of the radius there, and a few centimetres. The profile is
+// the crown's 85th percentile, so at 3% and 1.5 cm a host's outer leaves
+// covered the vine: a clematis' 156 bells were drawn and none was seen. A vine
+// in leaf drapes OVER its host; these two are an estimate of how far.
+const VINE_PROUD = 0.14, VINE_PROUD_M = 0.06;
+// A herbaceous vine (a peavine, a vetch) leans a few unbranched stems on its
+// host over this much of the arc either side (radians), where a woody one's
+// branching stems wrap the side it is on (V3.67c: the pair read as one mound
+// of vine). An estimate.
+const VINE_SOFT_ARC = 0.8;
 const _VUP = new THREE.Vector3(0, 1, 0);
 
 function vinesReset() { VINE_HOSTS = new Map(); VINE_ANCHORS = new Map(); }
@@ -164,7 +175,8 @@ function _climbPaths(p, d, H, gy, rng) {
   const spread = Math.max(0.2, (d.canopy_m || 1) / 2);
   // Half the arc of the crown it covers: a big vine on a small shrub wraps
   // most of one side of it; on a tree it is a strip.
-  const half = Math.max(0.4, Math.min(1.5, (spread + 0.3) / R));
+  const soft = (p.foliage_type || '') === 'herbaceous';
+  const half = Math.max(0.4, Math.min(soft ? VINE_SOFT_ARC : 1.5, (spread + 0.3) / R));
   const dv = Math.hypot(vx - H.x, vz - H.z);        // the root, off the host's axis
   const top = H.gy + d.height_m;
   const n = qn(Math.max(3, Math.min(9, Math.round(3 + d.height_m * 0.9))));
@@ -189,7 +201,8 @@ function _climbPaths(p, d, H, gy, rng) {
     }
     let y, prev;
     if (yJoin != null) {                 // up from the root, leaning in near the top
-      const jx = H.x + Math.cos(a0) * rJoin * 1.04, jz = H.z + Math.sin(a0) * rJoin * 1.04;
+      const jx = H.x + Math.cos(a0) * (rJoin * (1 + VINE_PROUD) + VINE_PROUD_M);
+      const jz = H.z + Math.sin(a0) * (rJoin * (1 + VINE_PROUD) + VINE_PROUD_M);
       const sx = vx + (rng() - 0.5) * 0.2, sz = vz + (rng() - 0.5) * 0.2;
       const steps = Math.max(2, Math.ceil((yJoin - gy) / 0.15));
       for (let k = 0; k < steps; k++) {
@@ -229,13 +242,13 @@ function _climbPaths(p, d, H, gy, rng) {
       // lower branches instead of jumping straight to the leaf surface.
       rr = prev + Math.max(-2 * dy, Math.min(2 * dy, rr - prev));
       prev = rr;
-      const out = rr * (1.03 + 0.03 * rng()) + 0.015;
+      const out = rr * (1 + VINE_PROUD + 0.03 * rng()) + VINE_PROUD_M;
       add(H.x + Math.cos(a) * out, y, H.z + Math.sin(a) * out,
           Math.cos(a), 0.25, Math.sin(a), false);
       surf.push({ a, y, r: rr });
     }
     if (pts.length >= 3) paths.push({ pts, nrm, gnd });
-    _sideShoots(H, surf, rng, paths);
+    if (!soft) _sideShoots(H, surf, rng, paths);
   }
   return paths;
 }
@@ -254,7 +267,7 @@ function _sideShoots(H, surf, rng, paths) {
       const y = s0.y + len * 0.35 * t;
       const rr = _hostRadius(H, a, y);
       if (rr > 0.01) r = r + Math.max(-0.15, Math.min(0.15, rr - r));
-      const out = r * 1.04 + 0.015;
+      const out = r * (1 + VINE_PROUD) + VINE_PROUD_M;
       pts.push(new THREE.Vector3(H.x + Math.cos(a) * out, y, H.z + Math.sin(a) * out));
       nrm.push(new THREE.Vector3(Math.cos(a), 0.25, Math.sin(a)).normalize());
       gnd.push(false);
@@ -360,7 +373,7 @@ function buildVines(list, all, month, year, terrain) {
     const d = p.drawn || { habit: 'sprawling', canopy_m: p.canopy_m || 0.5,
                            height_m: Math.min(_VINE_SPRAWL_H, p.height_m || 0.3) };
     const herbaceous = (p.foliage_type || '') === 'herbaceous';
-    const bare = _isDecid(p.foliage_type) && _bareMonth(month);
+    const bare = leafless(p, month);                 // 01d-season.js
     if (bare && herbaceous) continue;   // died back to the ground for the winter
     const seed = (hashPid(p.plant_id || 1) ^ Math.round(p.x * 100) * 73856093
                   ^ Math.round(p.y * 100) * 19349663) >>> 0;
@@ -376,7 +389,9 @@ function buildVines(list, all, month, year, terrain) {
     const stemHex = p.bark_color || (herbaceous ? '#5f7d3c' : '#6e5a44');
     const tubes = paths.map((pa) => new THREE.TubeGeometry(
       new THREE.CatmullRomCurve3(pa.pts), Math.max(4, pa.pts.length * 2),
-      herbaceous ? 0.003 : 0.006, 4, false));
+      // A vine's stems are slender (V3.67b: at 6 mm and laid proud of the
+      // host they read as wires across it): 3 mm woody, 2 mm herbaceous.
+      herbaceous ? 0.002 : 0.003, 4, false));
     const stemGeo = tubes.length > 1 ? mergeGeometries(tubes, false) : tubes[0];
     if (tubes.length > 1) tubes.forEach((t) => t.dispose());
     const stems = instancedMesh(stemGeo, 1, MATS.branch, false);
@@ -396,7 +411,11 @@ function buildVines(list, all, month, year, terrain) {
       const q = pa.pts[pa.pts.length - 1], n = pa.nrm[pa.nrm.length - 1];
       if (q.y >= floorY) anchors.push({ x: q.x, y: q.y, z: q.z, nx: n.x, nz: n.z });
     }
-    if (!bare) {
+    // Leaves read off photographs: its own leafy shoots (22b-vineleaves.js, V3.50).
+    const own = !bare && window.vineReadFor && vineReadFor(p)
+      ? buildVineSprays(p, paths, rng, floorY, anchors, month) : null;
+    if (own) plantsGroup.add(own);
+    else if (!bare) {
       const shape = p.leaf_shape || 'elliptic';
       if (!units.has(shape)) units.set(shape, unitLeafGeo(shape));
       const len = Math.max(0.03, Math.min(0.25, (p.leaf_size_cm || 6) / 100));
@@ -411,8 +430,7 @@ function buildVines(list, all, month, year, terrain) {
       }
       if (mats.length) {
         const leaves = instancedMesh(units.get(shape), mats.length, MATS.leaf);
-        const base = fadeColor(witherColor(seasonalColor(
-          p.color, p.foliage_type, month, p.fall_color), p.health), p.opacity);
+        const base = bodyColor(p, month);
         mats.forEach((m, i) => {
           leaves.setMatrixAt(i, m);
           leaves.setColorAt(i, col.copy(base).multiplyScalar(0.9 + 0.2 * rng()));
@@ -429,5 +447,6 @@ function buildVines(list, all, month, year, terrain) {
 
 window.buildVines = buildVines;
 window.noteVineHost = noteVineHost;
+window.vineHostOf = (p) => VINE_HOSTS.get(p);   // 15b-anchors.js: where a crown is
 window.vinesReset = vinesReset;
 window.vineAnchorsFor = vineAnchorsFor;

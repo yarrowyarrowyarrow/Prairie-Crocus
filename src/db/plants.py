@@ -535,7 +535,58 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # the main colour changed on 70 and the second on 67; 25 of the 49 blanks
 # have a colour, 24 have no showy flower, and duckweed's guess is cleared.
 # Blue 28 -> 16, most of the rest purple.
-_SCHEMA_VERSION = 97
+# v98 (V3.48): `plants.stem_leaf_nodes`, the leaves (or pairs, or whorls) up
+# one stem of a grown plant, and a reseed for the leaf and habit numbers read
+# off the reference photographs (F268): each read row carries
+# `leaf_data_source = 'photo'` and the photographs' ids, and is drawn in 3D
+# from those numbers (src/herb_habit.py). Two leaf outlines join the
+# vocabulary (`palmately_lobed`, `ternate`) and one habit (`colony`).
+# v99 (V3.49): `plants.woody_stems`, the stems a grown shrub sends up from the
+# ground, and a reseed for the 34 native shrubs read off their reference
+# photographs (F268): leaf length, outline and arrangement, the woody habit
+# and the stem count, each row `leaf_data_source = 'photo'`. A read shrub is
+# drawn in 3D from those numbers (src/shrub_habit.py).
+# v100 (V3.50): a tree's crown as read off its photographs, `crown_shape`,
+# `crown_clear` and `limb_habit`, and a reseed for the 10 native trees and 5
+# native vines read (F268). A read tree is drawn from those numbers by
+# src/tree_habit.py; a read vine carries its own leaf sprays and flowers.
+# v101 (V3.51): a species' leaf colour (`leaf_color`) and a grass's, sedge's
+# or rush's blades and seed head (`blade_width_mm`, `blade_habit`,
+# `head_length_cm`, `head_width_cm`, `head_count`, `head_color`,
+# `head_attitude`), and a reseed for the grasses, sedges, rushes and
+# grass-like water plants read (F268). Drawn by src/grass_habit.py.
+# v102 (V3.59): no DDL. The seeded communities are the Edmonton region's:
+# 24 retired (named for other regions, or mostly plants from elsewhere), 30
+# given Edmonton natives for the plants not native here, and each laid out by
+# src/community_layout.py, drifts by kind instead of one plant of each species. A person's own communities are kept.
+# v103 (V3.61): no DDL. The Edmonton natives' photographs (six for most)
+# folded in on V3.55 after V3.56 had branched from it, so V3.56 to V3.60
+# shipped without them; brought back here. Also numbered past both v102s
+# (V3.55's photographs and V3.59's communities claimed the same number).
+# v104 (V3.63): `plants.fruit_held_until`, and a reseed for the 34 native
+# shrubs read again off their photographs: a leaf colour and a leaf surface
+# each, a crown outline (`crown_shape` in the shrubs' own words, with
+# `crown_clear`), the months their fruit stays on the bare twigs, and the
+# fruit colours the photographs contradicted (black currants drawn red).
+# v105 (V3.64): no DDL. A reseed for the leaf colours of the 169 natives that
+# had none (the wildflowers, groundcovers, herbs, trees, vines, water plants,
+# horsetails and the fern), read off their reference photographs.
+# v106 (V3.65): no DDL. A reseed for the flower clusters of 40 wildflowers,
+# their length and width read off photographs into head_length_cm and
+# head_width_cm (until then a graminoid's seed head only): the viewer draws a
+# dense spike, panicle or flat top at that size.
+# v107 (V3.67, second sitting): no DDL. A reseed for the 39 natives whose
+# models scored 4 or less, read again off their photographs: how a nodding
+# flower hangs (`head_attitude`, a grass's column until now, and the petal
+# shape `reflexed` for a shooting star's dart), the flower numbers of six
+# plants whose flower_form says none (that column untouched), the ostrich
+# fern's and creeping juniper's habits, the water plants' clusters, a few
+# heights, counts and cluster sizes, and wild chives' leaf width.
+# v108 (V3.67, third sitting): no DDL. A reseed for three values read again
+# off the photographs of the six still at 4 or less: the bedstraw's leaves
+# (lanceolate, the narrow whorled leaves the photographs show, not obovate)
+# and the leaf colours of the bedstraw and the bog cranberry.
+_SCHEMA_VERSION = 108
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the
@@ -936,6 +987,81 @@ def _migrate_to_v79(conn: sqlite3.Connection):
             "ADD COLUMN native_provinces_source TEXT DEFAULT ''")
     except sqlite3.OperationalError:
         pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v98(conn: sqlite3.Connection):
+    """Leaves up one stem (V3.48).
+
+    `stem_leaf_nodes` is the count the 3D viewer could not derive: how many
+    leaves, pairs or whorls stand up one stem. Additive and idempotent; NULL on
+    every row until the reseed this version forces fills it for the plants
+    somebody counted, and NULL means the viewer estimates and says so.
+    """
+    try:
+        conn.execute("ALTER TABLE plants ADD COLUMN stem_leaf_nodes INTEGER")
+    except sqlite3.OperationalError:
+        pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v99(conn: sqlite3.Connection):
+    """Stems from the ground (V3.49).
+
+    `woody_stems` is how many woody stems a grown shrub sends up: the number
+    the 3D viewer draws a read shrub's stems from, and their thickness with
+    it. Additive and idempotent; NULL on every row until the reseed this
+    version forces fills it for the shrubs somebody counted.
+    """
+    try:
+        conn.execute("ALTER TABLE plants ADD COLUMN woody_stems INTEGER")
+    except sqlite3.OperationalError:
+        pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v104(conn: sqlite3.Connection):
+    """How long a plant's fruit stays on its twigs (V3.63). Additive and
+    idempotent; empty on every row until the reseed this version forces."""
+    try:
+        conn.execute("ALTER TABLE plants ADD COLUMN fruit_held_until INTEGER")
+    except sqlite3.OperationalError:
+        pass                              # column already present
+    conn.commit()
+
+
+def _migrate_to_v101(conn: sqlite3.Connection):
+    """A species' leaf colour, and a graminoid's blades and seed head
+    (V3.51). Additive and idempotent; empty on every row until the reseed
+    this version forces fills it for the plants read."""
+    for ddl in (
+                "ALTER TABLE plants ADD COLUMN leaf_color TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN blade_width_mm REAL",
+                "ALTER TABLE plants ADD COLUMN blade_habit TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN head_length_cm REAL",
+                "ALTER TABLE plants ADD COLUMN head_width_cm REAL",
+                "ALTER TABLE plants ADD COLUMN head_count INTEGER",
+                "ALTER TABLE plants ADD COLUMN head_color TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN head_attitude TEXT DEFAULT ''",
+    ):
+        try:
+            conn.execute(ddl)
+        except sqlite3.OperationalError:
+            pass                          # column already present
+    conn.commit()
+
+
+def _migrate_to_v100(conn: sqlite3.Connection):
+    """A tree's crown (V3.50): its outline, how much of the trunk is bare,
+    and which way its limbs go. Additive and idempotent; empty on every row
+    until the reseed this version forces fills it for the trees read."""
+    for ddl in ("ALTER TABLE plants ADD COLUMN crown_shape TEXT DEFAULT ''",
+                "ALTER TABLE plants ADD COLUMN crown_clear REAL",
+                "ALTER TABLE plants ADD COLUMN limb_habit TEXT DEFAULT ''"):
+        try:
+            conn.execute(ddl)
+        except sqlite3.OperationalError:
+            pass                          # column already present
     conn.commit()
 
 
@@ -2041,6 +2167,20 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             p.get("leaf_data_citation", ""),
             p.get("flower_colour_source", ""),
             p.get("native_provinces_source", ""),
+            p.get("stem_leaf_nodes"),
+            p.get("woody_stems"),
+            p.get("crown_shape", ""),
+            p.get("crown_clear"),
+            p.get("limb_habit", ""),
+            p.get("leaf_color", ""),
+            p.get("blade_width_mm"),
+            p.get("blade_habit", ""),
+            p.get("head_length_cm"),
+            p.get("head_width_cm"),
+            p.get("head_count"),
+            p.get("head_color", ""),
+            p.get("head_attitude", ""),
+            p.get("fruit_held_until"),
         ))
 
     conn.executemany(
@@ -2069,10 +2209,14 @@ def _seed_from_json_file(conn: sqlite3.Connection, json_path: str) -> int:
             flower_height_frac, stem_branching, basal_rosette,
             flowering_stems, flower_data_source, flower_data_citation,
             leaf_data_source, leaf_data_citation, flower_colour_source,
-            native_provinces_source)
+            native_provinces_source, stem_leaf_nodes, woody_stems,
+            crown_shape, crown_clear, limb_habit, leaf_color,
+            blade_width_mm, blade_habit, head_length_cm, head_width_cm,
+            head_count, head_color, head_attitude, fruit_held_until)
            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-                   ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                   ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
+                   ?,?,?,?,?,?,?,?,?)""",
         plant_rows,
     )
     conn.commit()
@@ -2215,6 +2359,21 @@ def init_db() -> None:
 
         if current_version < 81:
             _migrate_to_v81(conn)
+
+        if current_version < 98:
+            _migrate_to_v98(conn)
+
+        if current_version < 99:
+            _migrate_to_v99(conn)
+
+        if current_version < 100:
+            _migrate_to_v100(conn)
+
+        if current_version < 101:
+            _migrate_to_v101(conn)
+
+        if current_version < 104:
+            _migrate_to_v104(conn)
 
         # Add parent_id to polycultures if missing
         try:

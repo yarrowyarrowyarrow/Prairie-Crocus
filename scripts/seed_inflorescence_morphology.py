@@ -78,7 +78,7 @@ _MASTER = os.path.join(_ROOT, "data", "plants_master.json")
 FIELD = "inflorescence_form"
 FORMS = ("turkey_foot", "one_sided_raceme", "open_panicle", "contracted_spike",
          "nodding_raceme", "bristly", "sedge_cluster", "rush_umbel",
-         "cattail_spike")
+         "cattail_spike", "cotton", "bur", "spadix")
 
 # genus -> inflorescence_form
 GENUS_FORM = {
@@ -143,6 +143,18 @@ SPECIES_OVERRIDE = {
     # one-sided, which is the character the geometry draws.
     "Bouteloua curtipendula": "one_sided_raceme",
     "Bouteloua gracilis": "one_sided_raceme",
+    # Read off the reference photographs (V3.51): bluejoint's and sweetgrass's
+    # heads are open panicles, not spikes; a cotton-grass is its white cotton,
+    # not a needle grass's awns; and the small-fruited bulrush's spray of
+    # clusters and the three-square's knot on the stem's side are a bulrush's
+    # lateral head, drawn as a rush's is.
+    "Calamagrostis canadensis": "open_panicle",
+    "Anthoxanthum hirtum": "open_panicle",
+    "Eriophorum angustifolium": "cotton",
+    "Scirpus microcarpus": "rush_umbel",
+    "Schoenoplectus pungens": "rush_umbel",
+    # A narrow sparse raceme of plump grains, not an open panicle.
+    "Oryzopsis asperifolia": "contracted_spike",
 }
 
 # Spore-bearing, so no inflorescence exists to draw (see the module docstring).

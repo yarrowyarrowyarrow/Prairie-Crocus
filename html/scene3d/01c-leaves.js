@@ -29,7 +29,10 @@
 
 // The share of the light on a leaf's far side that it lets through, per preset.
 // Broad leaves the most, needles (thick, and bunched in tufts) the least.
-const LEAF_TRANSLUCENCY = { crown: 0.55, shrubLeaf: 0.55, herbLeaf: 0.45, needle: 0.3 };
+// A grass blade lets light through as a leaf does (V3.48): without it half of
+// every tuft, the blades seen from their shaded side, drew near black.
+const LEAF_TRANSLUCENCY = { crown: 0.55, shrubLeaf: 0.55, herbLeaf: 0.45, needle: 0.3,
+                            blade: 0.5 };
 // How much of the baked shade still falls on the sun (the rest on the sky only).
 const BAKE_ON_SUN = 0.3;
 

@@ -115,7 +115,15 @@ LEAF_SHAPES       = {"needle", "awl", "scale", "linear", "lanceolate",
                      # (prairie crocus, thistle) or "twice-divided" (yarrow,
                      # meadow rue) — between them a large share of the flora.
                      "spatulate", "reniform", "sagittate", "pinnatifid",
-                     "bipinnate"}
+                     "bipinnate",
+                     # V3.48, from the reference photographs: `lobed` is an
+                     # oak's leaf, lobes down both sides of a midrib, and it
+                     # was the only word for a currant's, an alumroot's or an
+                     # anemone's, whose lobes fan from the stalk like a
+                     # maple's. And a columbine's or a meadow-rue's leaf is
+                     # divided in threes and in threes again, with round
+                     # leaflets: not a yarrow's feather (`bipinnate`).
+                     "palmately_lobed", "ternate"}
 LEAF_ARRANGEMENTS = {"alternate", "opposite", "whorled", "fascicled", "basal"}
 BRANCHING_HABITS  = {"excurrent", "decurrent", "multi_stem", "suckering",
                      "arching", "prostrate", "rosette"}
@@ -137,17 +145,44 @@ GROWTH_FORMS      = {"erect", "ferny", "rosette", "clump", "grassy", "mat",
                      # flat pads (the prickly pears) and a spiny ball (the ball
                      # cactus), drawn by src/succulent_habit.py. "succulent" is
                      # the rest: fleshy leaves on an ordinary stem or mat.
-                     "pads", "globose"}
+                     "pads", "globose",
+                     # V3.48: separate upright shoots from creeping roots,
+                     # spread over the ground the plant covers (bunchberry,
+                     # wild lily-of-the-valley, Canada anemone). `erect` and
+                     # `clump` are stems from one crown; drawn as one, a
+                     # carpet of single stems was a fan (src/herb_habit.py).
+                     "colony"}
 # Surface character (schema v52). What a species' bark and foliage look like
 # close up — the 3D viewer's procedural grain (html/scene3d/01b-surface.js).
 # Empty is meaningful and common: a per-genus bark default and a matte leaf.
+# A tree's crown (schema v100, V3.50), read off a photograph of one grown in
+# the open: its outline and which way its main limbs go.
+CROWN_SHAPES      = ("conical", "spire", "oval", "rounded", "irregular")
+LIMB_HABITS       = ("ascending", "spreading", "drooping")
+# A shrub's crown (V3.63), read off photographs of grown plants: the outline
+# from across a yard, which is what tells a saskatoon's vase from a
+# snowberry's mound when the leaves cannot be told apart. Its own words, not
+# a tree's: a shrub has no spire and a tree no mound.
+SHRUB_CROWN_SHAPES = ("vase", "rounded", "mound", "spreading", "upright",
+                      "irregular", "mat")
+# A grass's, sedge's or rush's blades and seed head (schema v101, V3.51), read
+# off a photograph: how the blades are held (`none`: leafless stems, a rush's
+# or a bulrush's) and how the head is (`side`: from the stem's side below its
+# tip, a wire rush's spray or a bulrush's knot).
+BLADE_HABITS      = ("upright", "arching", "drooping", "flat", "none")
+HEAD_ATTITUDES    = ("erect", "nodding", "hanging", "side")
 BARK_TEXTURES     = {"smooth", "furrowed", "papery", "shaggy", "scaly"}
 LEAF_SURFACES     = {"matte", "glossy", "pubescent", "glaucous"}
 # The graminoid field mark (schema v52) — separate from flower_form, which
 # stays 'plume' for every grass because that column feeds pollinator logic.
 INFLORESCENCE_FORMS = {"turkey_foot", "open_panicle", "contracted_spike",
                        "nodding_raceme", "one_sided_raceme", "bristly",
-                       "sedge_cluster", "rush_umbel", "cattail_spike"}
+                       "sedge_cluster", "rush_umbel", "cattail_spike",
+                       # V3.51, read off photographs: a cotton-grass's silky
+                       # white tufts (not a needle grass's awns), a
+                       # bur-reed's round spiky burs, and a sweet flag's
+                       # finger-like spike jutting from its stalk's side.
+                       "cotton", "bur", "spadix"}
 
 # Flower morphology (schema v53). These four lived in
 # scripts/seed_flower_morphology.py — the only place that wrote them — which
@@ -161,7 +196,7 @@ INFLORESCENCE_FORMS = {"turkey_foot", "open_panicle", "contracted_spike",
 FLOWER_ARCHITECTURES = ("solitary", "raceme", "spike", "panicle", "corymb",
                         "umbel", "head", "cyme", "whorl")
 FLOWER_SYMMETRIES = ("radial", "bilateral")
-PETAL_SHAPES      = ("narrow", "oval", "notched", "tubular", "lipped")
+PETAL_SHAPES      = ("narrow", "oval", "notched", "tubular", "lipped", "reflexed")
 STEM_BRANCHINGS   = ("unbranched", "branched_above", "branched_throughout")
 
 # ── Fauna morphology (schema v58, V2.36) ────────────────────────────────────
@@ -479,6 +514,75 @@ def validate_plant(
         err(f"leaf_size_cm={record.get('leaf_size_cm')!r} is not a number")
     elif leaf_cm is not None and not (0.1 <= leaf_cm <= 120):
         err(f"leaf_size_cm={leaf_cm} out of range 0.1–120 cm")
+
+    # stem_leaf_nodes (schema v98): leaves, pairs or whorls up one stem. A
+    # whole number; 80 is more than a fireweed carries.
+    nodes = record.get("stem_leaf_nodes")
+    if nodes not in (None, ""):
+        if isinstance(nodes, bool) or not isinstance(nodes, int):
+            err(f"stem_leaf_nodes={nodes!r} is not a whole number")
+        elif not 1 <= nodes <= 80:
+            err(f"stem_leaf_nodes={nodes} out of range 1–80")
+
+    # woody_stems (schema v99): the stems a grown shrub sends up from the
+    # ground. A whole number; a willow thicket's footprint holds a few dozen.
+    stems = record.get("woody_stems")
+    if stems not in (None, ""):
+        if isinstance(stems, bool) or not isinstance(stems, int):
+            err(f"woody_stems={stems!r} is not a whole number")
+        elif not 1 <= stems <= 60:
+            err(f"woody_stems={stems} out of range 1–60")
+
+    # The crown (schema v100): two words from their vocabularies and the
+    # share of the height that is bare trunk.
+    # A shrub's crown in its own words, and a woody mat's (a creeping juniper
+    # filed as a groundcover, branching prostrate, V3.67b).
+    shrubby = record.get("plant_type") == "shrub" or record.get("branching") == "prostrate"
+    shapes = SHRUB_CROWN_SHAPES if shrubby else CROWN_SHAPES
+    for field, vocab in (("crown_shape", shapes), ("limb_habit", LIMB_HABITS)):
+        val = (record.get(field) or "").strip()
+        if val and val not in vocab:
+            err(f"{field}={val!r} is not one of {', '.join(vocab)}")
+    clear = record.get("crown_clear")
+    if clear not in (None, ""):
+        if isinstance(clear, bool) or not isinstance(clear, (int, float)):
+            err(f"crown_clear={clear!r} is not a number")
+        elif not 0.0 <= clear <= 0.8:
+            err(f"crown_clear={clear} out of range 0–0.8")
+
+    # fruit_held_until (schema v104, V3.63): the last month a plant's fruit
+    # is still on its bare twigs after its fruiting season (a snowberry's
+    # into March). Empty: the fruit goes with the season.
+    held = record.get("fruit_held_until")
+    if held not in (None, ""):
+        if isinstance(held, bool) or not isinstance(held, int) or not 1 <= held <= 12:
+            err(f"fruit_held_until={held!r} is not a month 1–12")
+        elif not (record.get("fruit_color") or "").strip():
+            err("fruit_held_until is set but the plant records no fruit_color")
+
+    # The leaf colour and a graminoid's blades and seed head (schema v101).
+    for field in ("leaf_color", "head_color"):
+        val = (record.get(field) or "").strip()
+        if val and not re.fullmatch(r"#[0-9a-fA-F]{6}", val):
+            err(f"{field}={val!r} is not a #rrggbb colour")
+    for field, vocab in (("blade_habit", BLADE_HABITS),
+                         ("head_attitude", HEAD_ATTITUDES)):
+        val = (record.get(field) or "").strip()
+        if val and val not in vocab:
+            err(f"{field}={val!r} is not one of {', '.join(vocab)}")
+    for field, lo, hi in (("blade_width_mm", 0.2, 40.0),
+                          ("head_length_cm", 0.1, 60.0),
+                          ("head_width_cm", 0.1, 60.0),
+                          ("head_count", 1, 60)):
+        val = record.get(field)
+        if val in (None, ""):
+            continue
+        if isinstance(val, bool) or not isinstance(val, (int, float)):
+            err(f"{field}={val!r} is not a number")
+        elif not lo <= val <= hi:
+            err(f"{field}={val} out of range {lo}–{hi}")
+        elif field == "head_count" and val != int(val):
+            err(f"head_count={val!r} is not a whole number")
 
     # ── Soft enums (deviations = warning) ────────────────────────────────
     val = (record.get("growth_curve") or "").strip()

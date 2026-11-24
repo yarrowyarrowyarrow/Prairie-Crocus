@@ -177,9 +177,10 @@ class TheSixItems(unittest.TestCase):
         cls.by_key = {it.key: it for it in cls.items}
 
     def test_the_fixed_order_and_a_status_word_each(self):
-        """O7, and §4 rule 7."""
+        """O7 as the owner amended it in V3.55 (the seasons first), and §4
+        rule 7."""
         self.assertEqual([it.key for it in self.items],
-                         ["food", "flowers", "native", "cover", "street",
+                         ["flowers", "food", "native", "cover", "street",
                           "cost"])
         for it in self.items:
             self.assertIn(it.status_word, ("Looks good", "Worth a look",
@@ -205,34 +206,86 @@ class TheSixItems(unittest.TestCase):
         placed = ProjectStore(self.example).placed_plants
         ids = {p["plant_id"] for p in placed}
         counts = w.food_counts(ids)
-        food = self.by_key["food"].lines[0]
-        self.assertIn(f"food for {counts['bee']} kinds of bee", food)
-        self.assertIn(f"{counts['lepidoptera']} of butterfly and moth", food)
-        self.assertIn(f"{counts['bird']} of bird", food)
+        self.assertTrue(self.by_key["food"].lines[0].startswith(
+            "Recorded as food for " + w.food_words(counts).split(" for ")[1]))
+        from src import through_the_year as ty
+        self.assertIn(ty.caterpillars(placed)["headline"],
+                      self.by_key["food"].lines)
         lo, hi = sourcing.estimate_cost(placed)
         self.assertIn(sourcing.format_cost(lo, hi),
                       self.by_key["cost"].lines[0])
-        band = build_maintenance_calendar(placed, []).bands[0]
+        # Its structures too, as the item counts them (the example has a
+        # brush pile and a bee hotel since V3.54).
+        band = build_maintenance_calendar(
+            placed, yi._gather(self.example, None).structures).bands[0]
         self.assertIn(f"{band.hours_low:,.0f}–{band.hours_high:,.0f} hours",
                       self.by_key["cost"].lines[1])
         gaps = w.month_by_month(ids)["gaps"]
         self.assertEqual(self.by_key["flowers"].status == yi.LOOK, bool(gaps))
 
     def test_the_example_reads_as_the_plan_says(self):
-        """§6.1, with the catalogue as it is now."""
-        self.assertIn("such as the Cedar Waxwing", self.by_key["food"].lines[0])
-        self.assertIn(yi.CAVEAT, self.by_key["food"].lines)
-        self.assertEqual(self.by_key["flowers"].action,
-                         "Find an October flower")
-        self.assertIn("about a third", self.by_key["cover"].lines[0])
-        self.assertEqual(self.by_key["cover"].target, "fill_gaps")
-        self.assertEqual(self.by_key["street"].action, "Draw a mown strip")
-        self.assertIn("taken to be the south side",
-                      self.by_key["street"].lines[1])
+        """§6.1, with the catalogue as it is now. The example has been the
+        owner's chosen lot since V3.54, planned by Plan My Yard front and back
+        (docs/plans/V3.54-the-example-lot.md); the old one read "about a
+        third" covered, a Cedar Waxwing and no October flower."""
+        # V3.55: named animals, not counts by group, and no "few birds"
+        # flag, which the catalogue's thin bird records raised on nearly
+        # every design, this one included (the owner: "drop the flag").
+        food = self.by_key["food"]
+        self.assertRegex(food.lines[0], r"^Recorded as food for \d+ kinds of "
+                                        r"wildlife, among them the ")
+        self.assertIn("Monarch", food.lines[0])
+        self.assertNotIn("Few birds", " ".join(food.lines))
+        self.assertEqual(food.status, yi.GOOD)
+        self.assertIn("Enough caterpillars for a nest of chickadees.",
+                      food.lines)
+        self.assertEqual(food.target, yi.YEAR)
+        self.assertIn(yi.CAVEAT, food.lines)
+        self.assertEqual(self.by_key["flowers"].status, yi.GOOD)
+        self.assertIn("about three quarters", self.by_key["cover"].lines[0])
+        self.assertEqual(self.by_key["street"].status, yi.GOOD)
+        self.assertIn("4 of 4 signs of care", self.by_key["street"].lines[0])
         self.assertIn("at Edmonton native nurseries",
                       self.by_key["cost"].lines[0])
         self.assertIn(yi.heading(self.example).split(" · ")[-1],
-                      "19 plants, 14 kinds")
+                      "399 plants, 16 kinds")
+
+    def test_the_street_item_leads_to_the_3d_preview(self):
+        """The owner's M2 (V3.44): one door from the Overview to the 3D
+        preview, on the item that asks how it will look from the street,
+        whatever that item's status. It is a link beside the item's one
+        action, and its target turns no switch (D1)."""
+        from unittest import mock
+        from src import cues_to_care
+
+        class Cue:                 # no sign of care: the item has a step
+            def __init__(self, key):
+                self.key, self.present = key, False
+        cues = [Cue(k) for k in yi._CUES]
+        with mock.patch.object(cues_to_care, "assess", lambda *a, **k: cues):
+            street = next(it for it in yi.overview(self.example)
+                          if it.key == "street")
+        self.assertEqual(street.more, yi.SEE_3D)
+        self.assertEqual(yi.SEE_3D, ("See it in 3D", "view3d:street"))
+        self.assertEqual(street.action, "Draw a mown strip",
+                         "the item keeps its own next step")
+        others = [it.more for it in self.items if it.key != "street"]
+        self.assertFalse([m for m in others if m and "view3d" in m[1]])
+
+    def test_a_street_item_that_looks_good_has_the_door_too(self):
+        from unittest import mock
+        from src import cues_to_care
+
+        class Cue:
+            def __init__(self, key):
+                self.key, self.present = key, True
+        cues = [Cue(k) for k in yi._CUES]
+        with mock.patch.object(cues_to_care, "assess", lambda *a, **k: cues):
+            street = next(it for it in yi.overview(self.example)
+                          if it.key == "street")
+        self.assertEqual(street.status, yi.GOOD)
+        self.assertEqual(street.action, "")
+        self.assertEqual(street.more, yi.SEE_3D)
 
     def test_no_bylaw_sentence(self):
         """O5: Edmonton's pack carries no street rule."""

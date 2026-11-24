@@ -35,12 +35,30 @@ class TestTheVocabulary(unittest.TestCase):
         real = set(inspect.signature(search_plants).parameters)
         self.assertEqual(pf.facet_params() - real, set())
 
-    def test_nine_facets_and_ten_qualities(self):
-        # Ten since V3.12: Edmonton native (F220) beside Native.
-        self.assertEqual(len(pf.FACETS), 9)
-        self.assertEqual(len(pf.QUALITIES), 10)
+    def test_eight_facets_and_eight_qualities(self):
+        # V3.57 (the owner: "drop what isn't useful"): Availability, Perennial
+        # and Leaves out known spreaders went; Easy to buy became Sold locally.
+        self.assertEqual(len(pf.FACETS), 8)
+        self.assertEqual(len(pf.QUALITIES), 7)        # Has a photo, V3.58
         self.assertEqual(len({f.key for f in pf.FACETS}
-                             | {q.key for q in pf.QUALITIES}), 19)
+                             | {q.key for q in pf.QUALITIES}), 15)
+
+    def test_the_region_list_is_the_catalogue(self):
+        """V3.58, the owner: "Edmonton only, even in Advanced"."""
+        self.assertEqual(pf.catalogue_scope(), {"local_native": True})
+        self.assertEqual(set(pf.SCOPED_OUT),
+                         {"local_native", "native_only", "ecoregion"})
+
+    def test_old_criteria_still_read(self):
+        """A filter saved before V3.57 reads as what it became."""
+        self.assertEqual(pf.criteria_to_kwargs({"common_only": True}),
+                         {"stock_in": ["available"]})
+        self.assertEqual(pf.criteria_to_kwargs({"availability": ["available"]}),
+                         {"stock_in": ["available"]})
+
+    def test_grasses_and_sedges_are_one_kind(self):
+        self.assertEqual(pf.criteria_to_kwargs({"type": ["grass_like"]}),
+                         {"plant_type": ["grass", "sedge", "rush"]})
 
     def test_edmonton_native_asks_for_the_edmonton_list(self):
         """F220: the quality reaches search_plants as native_near, alongside
@@ -101,8 +119,8 @@ class TestTheSummary(unittest.TestCase):
         bits = pf.summary({"type": ["shrub", "tree"],
                            "use": ["pollinator", "bird_food"]})
         # In the dropdown's order, whatever order they were ticked in.
-        self.assertIn("Type: Tree or Shrub", bits)
-        self.assertIn("What it does: Pollinator Support and Bird Food", bits)
+        self.assertIn("Kind: Shrubs or Trees", bits)
+        self.assertIn("What it does: Bees and butterflies and Bird food", bits)
 
     def test_many_values_name_two_and_count_the_rest_by_the_rule(self):
         """Until V3.01 a box read "3 selected": a count, with the rule gone."""
@@ -111,7 +129,7 @@ class TestTheSummary(unittest.TestCase):
         self.assertTrue(bits[0].endswith(" or 1 more"), bits)
         role = pf.facet("use")
         self.assertTrue(pf.phrase(role, ["bird_food", "host_plant",
-                                         "pollinator", "aquatic"])
+                                         "pollinator", "hedge"])
                         .endswith(" and 2 more"))
 
     def test_a_region_is_named_once_by_its_outermost_tick(self):
@@ -125,7 +143,7 @@ class TestTheSummary(unittest.TestCase):
 
     def test_qualities_are_named(self):
         self.assertEqual(pf.summary({"native_only": True, "pet_safe_only": True}),
-                         ["Native to Alberta", "Not known to be poisonous to pets"])
+                         ["Not known to harm pets", "Native to Alberta"])
 
 
 class TestTheFace(unittest.TestCase):
@@ -133,9 +151,9 @@ class TestTheFace(unittest.TestCase):
     it read "Shrub", and with the placeholder gone so was the word "Type"."""
 
     def test_the_dimension_comes_first(self):
-        self.assertEqual(pf.face(pf.facet("type"), ["shrub"]), "Type: Shrub")
+        self.assertEqual(pf.face(pf.facet("type"), ["shrub"]), "Kind: Shrubs")
         self.assertEqual(pf.face(pf.facet("bloom_months"), ["6", "7"]),
-                         "Blooms in: June or July")
+                         "Flowers in: June or July")
 
     def test_restoring_toward_reads_on_into_its_value(self):
         self.assertEqual(pf.face(pf.facet("ecoregion"), ["aspen_parkland"]),
@@ -182,7 +200,7 @@ class TestWhatIsOn(unittest.TestCase):
 
     def test_each_restriction_in_the_order_it_is_drawn_search_last(self):
         self.assertEqual(pf.filters_on(self.CRITERIA), [
-            ("type", "Type: Fern"), ("bloom_months", "Blooms in: January"),
+            ("type", "Kind: Ferns"), ("bloom_months", "Flowers in: January"),
             ("native_only", "Native to Alberta"), ("query", "aster")])
 
     def test_without_takes_off_one_and_leaves_the_rest(self):
@@ -224,8 +242,8 @@ class TestWhatEmptied(unittest.TestCase):
         count, _calls = self._count(rule)
         on, options = pf.what_emptied(criteria, count)
         self.assertEqual([k for k, _w in on], ["type", "bloom_months", "query"])
-        self.assertEqual(options, [(3, "type", "Type: Fern"),
-                                   (1, "bloom_months", "Blooms in: January")])
+        self.assertEqual(options, [(3, "type", "Kind: Ferns"),
+                                   (1, "bloom_months", "Flowers in: January")])
 
     def test_the_soil_is_removed_by_searching_without_it(self):
         count, calls = self._count(lambda c, soil: 0 if soil else 5)

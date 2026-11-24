@@ -40,6 +40,15 @@ COULD_NOT = {
     "over_budget": "It is over your budget: plants about {cost}.",
     "no_goal_plant": "No plant does everything you asked at once, so it may "
                      "not do all of it.",
+    "shade_left": "Nothing that grows here takes the shade of {what}, so "
+                  "{names} was left out there.",
+}
+
+#: Codes whose note is a line of what the plan did (V3.52, F264), in the
+#: summary's own lines.
+DID = {
+    "shade_swap": "Where {what} shades the ground for much of the day, it "
+                  "chose plants that take shade: {names}.",
 }
 
 #: Codes that stay in the advanced Design notes, with why.
@@ -71,7 +80,7 @@ MAX_COULD_NOT = 2
 
 
 def known_codes() -> set:
-    return set(COULD_NOT) | set(ADVANCED_ONLY)
+    return set(COULD_NOT) | set(DID) | set(ADVANCED_ONLY)
 
 
 def _names(names) -> str:
@@ -81,11 +90,12 @@ def _names(names) -> str:
     return ", ".join(names[:-1]) + " and " + names[-1]
 
 
-def could_not(notes: list) -> list:
-    """The *What I could not do* lines for ``notes``, at most two, each once."""
+def could_not(notes: list, table: Optional[dict] = None) -> list:
+    """The *What I could not do* lines for ``notes``, at most two, each once
+    (``table`` another table of the same shape, :data:`DID`)."""
     out = []
     for note in notes or []:
-        words = COULD_NOT.get(note.get("code"))
+        words = (COULD_NOT if table is None else table).get(note.get("code"))
         if not words:
             continue
         fields = {k: v for k, v in note.items() if k != "code"}
@@ -96,6 +106,8 @@ def could_not(notes: list) -> list:
             if "{names} is" in words and len(set(note.get("names") or [])) > 1:
                 words = words.replace("is rarely sold", "are rarely sold") \
                     .replace("on it", "on them")
+            if "{names} was" in words and len(set(note.get("names") or [])) > 1:
+                words = words.replace("{names} was", "{names} were")
         try:
             line = words.format(**fields)
         except (KeyError, IndexError):
@@ -149,6 +161,7 @@ def summary(project: dict, notes: list, *, where: str = "",
         lines.append(items.item_flowers(d).lines[0])
         lines.append(items.item_food(d).lines[0])
         lines.append(_cost_line(d))
+        lines += could_not(notes, DID)
     return {"heading": heading, "lines": lines[:MAX_LINES],
             "could_not": could_not(notes)}
 

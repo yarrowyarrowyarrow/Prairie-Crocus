@@ -22,6 +22,8 @@ module:
   to *Not native around …*, both after the rest, because each is a fact about
   the yard rather than a score. A restoration plant no seller lists is at most
   a *Good pick* (the owner, V3.25).
+* **The bands rank; since V3.58 no screen names them** (the owner: a grade
+  implies the rest are not good). Only *For a pond* shows, as a warning.
 * **No size words without an outline** (L3): a plant is "too big for this
   yard" only against a measured area.
 * **Nothing about spreading until it is checked** (L5): a blank
@@ -53,7 +55,14 @@ WIND_POLLINATED = frozenset({"grass", "sedge", "rush"})
 #: Wind-pollinated wetland genera filed under other types (cattails,
 #: bur-reeds, bulrushes, spikerushes, reeds).
 WIND_GENERA = frozenset({"Typha", "Sparganium", "Schoenoplectus", "Scirpus",
-                         "Eleocharis", "Phragmites"})
+                         "Eleocharis", "Phragmites",  # and since V3.56 the
+                         # catkin trees, conifers, sages and winterfat (never
+                         # willows, whose catkins bees work):
+                         "Betula", "Alnus", "Populus", "Corylus", "Quercus",
+                         "Ulmus", "Fraxinus", "Picea", "Pinus", "Larix",
+                         "Abies", "Pseudotsuga", "Juniperus", "Artemisia",
+                         "Krascheninnikovia"})
+WIND_SPECIES = frozenset({"Acer negundo"})
 #: Impact at or above which a plant is a Top pick (about the top 40 of the
 #: 250 Edmonton natives on the shipped data), and a Good pick.
 TOP_PICK = 5
@@ -85,6 +94,7 @@ class Assessment:
     cautions: list = field(default_factory=list)
     buy: str = ""             # the local_stock tier, "" outside the region
     tie: int = 0              # within one Impact, higher first
+    who: dict = field(default_factory=dict)   # {reason: fauna ids} (V3.56)
 
 
 @dataclass
@@ -95,6 +105,7 @@ class Record:
     nectar_birds: set = field(default_factory=set)   # hummingbirds
     shelter_birds: set = field(default_factory=set)  # cover or a nest
     specialist: list = field(default_factory=list)
+    bird_food: str = ""       # "fruit", "seed" or "both" (V3.56)
 
 
 def load_records(conn=None) -> dict:
@@ -120,6 +131,9 @@ def load_records(conn=None) -> dict:
                 {"nectar": r.nectar_birds, "pollen": r.nectar_birds,
                  "cover": r.shelter_birds, "nesting": r.shelter_birds}.get(
                     rel, r.birds).add(fid)
+                kind = {"fruit_food": "fruit", "seed_food": "seed"}.get(rel)
+                if kind and r.bird_food != "both":
+                    r.bird_food = kind if r.bird_food in ("", kind) else "both"
             if spec == "specialist" and fname:
                 r.specialist.append(fname)
     except Exception:                                      # noqa: BLE001
@@ -182,15 +196,18 @@ def assess(plant: Mapping, records: Optional[dict] = None, *,
         "bees": _steps(n_bees, BEE_STEPS),
         "season": 1 if (_months(plant) & SHOULDER_MONTHS
                         and ptype not in WIND_POLLINATED
-                        and genus not in WIND_GENERA) else 0,
+                        and genus not in WIND_GENERA
+                        and " ".join(sci.split()[:2]) not in WIND_SPECIES)
+                   else 0,
     }
     impact = sum(parts.values())
 
-    reasons = []
+    reasons, who = [], {}
     if n_lep:
         reasons.append(_kinds(n_lep, "Caterpillar food for one kind of moth "
                               "or butterfly", "Caterpillar food for {n} kinds "
                               "of moth and butterfly"))
+        who[reasons[-1]] = rec.lep
     if floor and n_lep < 6:
         reasons.append(f"{_KEYSTONE_WORDS[genus]} feed more kinds of "
                        "caterpillar than almost any other plant")
@@ -198,19 +215,24 @@ def assess(plant: Mapping, records: Optional[dict] = None, *,
         reasons.append("Food that " + _join(sorted(set(rec.specialist))[:2])
                        + " depend on")
     if rec.birds:
-        reasons.append(_kinds(len(rec.birds), "Berries or seed for one kind "
-                              "of bird", "Berries or seed for {n} kinds of "
-                              "bird"))
+        food = {"fruit": "Berries", "seed": "Seed"}.get(rec.bird_food,
+                                                         "Berries or seed")
+        reasons.append(_kinds(len(rec.birds), f"{food} for one kind of bird",
+                              food + " for {n} kinds of bird"))
+        who[reasons[-1]] = rec.birds
     elif "bird_food" in tags:
         reasons.append("Seed or berries for birds")
     if rec.shelter_birds:
         reasons.append(_kinds(len(rec.shelter_birds), "Shelter or a nest site "
                               "for one kind of bird", "Shelter or a nest site "
                               "for {n} kinds of bird"))
+        who[reasons[-1]] = rec.shelter_birds
     if rec.nectar_birds:
         reasons.append("Nectar for hummingbirds")
+        who[reasons[-1]] = rec.nectar_birds
     if n_bees >= 5:
         reasons.append(f"Visited by {n_bees} kinds of native bee")
+        who[reasons[-1]] = rec.bees
     if parts["season"]:
         months = _months(plant)
         reasons.append("Flowers in April or May, when early bees need it"
@@ -233,7 +255,7 @@ def assess(plant: Mapping, records: Optional[dict] = None, *,
         band = AWAY
     return Assessment(impact=impact, band=band, parts=parts, reasons=reasons,
                       cautions=cautions, buy=buy,
-                      tie={"available": 2, "seed": 1}.get(buy, 0))
+                      tie={"available": 2, "seed": 1}.get(buy, 0), who=who)
 
 
 def _cautions(plant, wet, area_m2, buy) -> list:

@@ -63,84 +63,2531 @@
   },
   "example": {
     "centre": [
-      53.5461,
-      -113.4938
+      53.4874917,
+      -113.5426451
     ],
-    "name": "Example — Front Yard Lawn Conversion",
-    "width_m": 11.0,
-    "depth_m": 8.0,
+    "name": "Example — A city lot, front and back",
+    "width_m": 41.7,
+    "depth_m": 53.65,
     "planting": [
       [
         [
-          "Saskatoon Berry"
+          "Pussy Willow"
         ],
         [
-          2.6,
-          6.2
+          33.52,
+          32.86
         ]
       ],
       [
         [
-          "Chokecherry"
+          "Wild Raspberry"
         ],
         [
-          7.9,
-          6.6
+          8.19,
+          24.31
         ]
       ],
       [
         [
-          "Red Osier Dogwood"
+          "Wild Raspberry"
         ],
         [
-          5.2,
-          6.9
+          7.29,
+          24.31
         ]
       ],
       [
         [
-          "Golden Bean",
-          "Purple Prairie Clover"
+          "Wild Raspberry"
         ],
         [
-          1.4,
-          4.4
+          9.09,
+          24.31
         ]
       ],
       [
         [
-          "Wild Bergamot"
+          "Wild Raspberry"
         ],
         [
-          3.5,
-          4.7
+          9.99,
+          24.31
         ]
       ],
       [
         [
-          "Wild Bergamot"
+          "Wild Raspberry"
         ],
         [
-          4.4,
-          3.9
+          40.51,
+          25.09
         ]
       ],
       [
         [
-          "Oval-leaf Milkweed"
+          "Wild Raspberry"
         ],
         [
-          6.4,
-          4.5
+          40.06,
+          24.31
         ]
       ],
       [
         [
-          "Oval-leaf Milkweed"
+          "Wild Vetch"
         ],
         [
-          7.2,
-          5.1
+          33.52,
+          32.26
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          8.19,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          7.29,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          9.09,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          9.99,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          40.51,
+          24.84
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          40.06,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          32.92,
+          32.86
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          17.13,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          38.96,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.46,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.96,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.46,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.96,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.71,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.93,
+          31.79
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.7,
+          31.04
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.31,
+          30.58
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.15,
+          27.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.1,
+          31.64
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.57,
+          32.12
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.45,
+          26.46
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.38,
+          25.92
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.02,
+          30.52
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          34.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          34.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          35.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          35.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          36.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          36.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          38.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.76,
+          30.66
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.6,
+          27.61
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.18,
+          32.3
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.11,
+          27.73
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.07,
+          30.41
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.76,
+          31.11
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.5,
+          31.2
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.43,
+          27.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.11,
+          26.47
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.06,
+          32.8
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          14.16,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          12.16,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.59,
+          27.48
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          12.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          14.66,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.16,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.34,
+          27.05
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          14.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.99,
+          30.84
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.16,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.09,
+          30.49
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.48,
+          30.7
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          39.1,
+          31.3
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.51,
+          31.46
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          9.91,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          9.08,
+          29.6
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          9.94,
+          29.55
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          8.67,
+          29.54
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          10.88,
+          29.71
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          9.74,
+          30.28
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.3,
+          29.45
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          10.51,
+          30.32
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          8.22,
+          30.01
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.04,
+          30.14
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.45,
+          29.2
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.78,
+          29.54
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          12.82,
+          29.32
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.14,
+          29.91
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.91,
+          30.29
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.07,
+          33.31
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          37.7,
+          32.76
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.29,
+          33.81
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          15.48,
+          24.55
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          16.23,
+          24.18
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          15.03,
+          23.91
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          16.98,
+          24.6
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          14.03,
+          24.36
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          11.66,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          8.19,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          12.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.66,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          13.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          13.66,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          12.66,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.97,
+          30.94
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          37.1,
+          30.92
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.4,
+          30.59
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.44,
+          31.17
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          38.18,
+          31.17
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          34.93,
+          30.39
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          38.05,
+          30.73
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          36.84,
+          31.85
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.9,
+          31.79
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          7.77,
+          29.58
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          8.69,
+          29.36
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          8.29,
+          30.14
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          9.54,
+          29.73
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.41,
+          29.45
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.3,
+          30.3
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          11.19,
+          30.25
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          33.99,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          31.97,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.52,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          34.49,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          33.99,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.0,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          16.87,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          33.48,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          32.98,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.5,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          32.48,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          32.48,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          37.51,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          32.98,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          31.97,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          31.97,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          9.32,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          8.81,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          40.53,
+          26.62
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          36.51,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          39.53,
+          25.11
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          17.88,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          24.1
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          37.01,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          36.51,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          39.02,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.01,
+          33.17
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          36.0,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          38.52,
+          25.11
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.52,
+          26.12
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          35.5,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          36.0,
+          33.17
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          38.52,
+          24.1
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          17.88,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.03,
+          26.12
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          40.03,
+          25.62
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          40.03,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.02,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          26.12
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          25.62
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          27.13
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          40.53,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          10.83,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          11.33,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          11.83,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          10.32,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          12.34,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          12.84,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          13.34,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          13.85,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          14.35,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          7.3,
+          30.15
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.53,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          39.02,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          18.38,
+          24.1
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          7.8,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          11.83,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          31.97,
+          33.17
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          15.86,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          33.48,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          9.82,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.0,
+          33.17
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          12.34,
+          29.64
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          8.31,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          39.02,
+          25.62
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          32.98,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          7.3,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.53,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          7.3,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          33.99,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          39.53,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          27.63
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          32.48,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          36.51,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          41.04,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          40.53,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          32.98,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          39.53,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.02,
+          27.13
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          40.53,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          33.99,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          39.53,
+          24.1
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          9.32,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          38.02,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.51,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          35.0,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.01,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          18.38,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          18.38,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Pussy Willow"
+        ],
+        [
+          32.02,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          8.19,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          7.29,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          9.09,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          9.99,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          40.96,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          40.51,
+          25.09
+        ]
+      ],
+      [
+        [
+          "Wild Raspberry"
+        ],
+        [
+          40.06,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Basket Willow"
+        ],
+        [
+          17.13,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          32.62,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          8.19,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          7.29,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          9.09,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          9.99,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          40.96,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          40.51,
+          24.84
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          40.06,
+          24.06
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          17.13,
+          23.71
+        ]
+      ],
+      [
+        [
+          "Wild Vetch"
+        ],
+        [
+          32.02,
+          30.86
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          38.96,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.46,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          39.96,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.46,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.96,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          40.71,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          10.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          11.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          11.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          12.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          12.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          13.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          13.66,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          14.16,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          9.91,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          34.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          34.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          35.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          35.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          36.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          36.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          37.99,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          38.49,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          12.16,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          12.66,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Wild Strawberry"
+        ],
+        [
+          13.16,
+          24.31
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          7.19,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          7.69,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          8.19,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          8.69,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          9.19,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          9.69,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          10.19,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          10.69,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          11.19,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          38.47,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          38.97,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          39.47,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          39.97,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          40.47,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          40.97,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          38.72,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          40.22,
+          27.28
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          32.01,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          32.51,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          33.01,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          33.51,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          34.01,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          34.51,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          35.01,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          35.51,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          33.26,
+          33.24
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          38.97,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          39.47,
+          30.26
+        ]
+      ],
+      [
+        [
+          "Early Blue Violet"
+        ],
+        [
+          39.97,
+          30.26
         ]
       ],
       [
@@ -148,108 +2595,1620 @@
           "Stiff Goldenrod"
         ],
         [
-          9.3,
-          4.8
+          9.74,
+          28.82
         ]
       ],
       [
         [
-          "Blanketflower",
-          "Prairie Coneflower"
+          "Stiff Goldenrod"
         ],
         [
-          8.5,
-          3.6
+          9.17,
+          28.83
         ]
       ],
       [
         [
-          "Purple Prairie Clover",
-          "Wild Blue Flax"
+          "Stiff Goldenrod"
         ],
         [
-          2.2,
-          3.1
+          9.4,
+          29.06
         ]
       ],
       [
         [
-          "Wild Blue Flax",
-          "Harebell"
+          "Stiff Goldenrod"
         ],
         [
-          6.0,
-          3.2
+          10.16,
+          28.93
         ]
       ],
       [
         [
-          "Prairie Crocus",
-          "Harebell"
+          "Stiff Goldenrod"
         ],
         [
-          1.2,
-          1.5
+          9.93,
+          29.13
         ]
       ],
       [
         [
-          "Blue Grama Grass",
-          "Rough Fescue"
+          "Stiff Goldenrod"
         ],
         [
-          3.0,
-          1.7
+          9.59,
+          29.7
         ]
       ],
       [
         [
-          "Blue Grama Grass",
-          "Rough Fescue"
+          "Stiff Goldenrod"
         ],
         [
-          5.6,
-          1.3
+          10.2,
+          29.33
         ]
       ],
       [
         [
-          "Blue Grama Grass",
-          "Rough Fescue"
+          "Stiff Goldenrod"
         ],
         [
-          8.2,
-          1.6
+          9.16,
+          29.46
         ]
       ],
       [
         [
-          "Wild Strawberry"
+          "Stiff Goldenrod"
         ],
         [
-          4.2,
-          0.9
+          8.78,
+          29.04
         ]
       ],
       [
         [
-          "Wild Strawberry"
+          "Stiff Goldenrod"
         ],
         [
-          7.0,
-          0.8
+          14.06,
+          28.91
         ]
       ],
       [
         [
-          "Boreal Yarrow"
+          "Stiff Goldenrod"
+        ],
+        [
+          13.59,
+          28.91
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          14.03,
+          29.31
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          13.66,
+          29.49
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          14.2,
+          29.65
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          13.12,
+          29.19
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          13.18,
+          29.7
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          13.58,
+          30.11
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          14.06,
+          30.32
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          37.96,
+          33.26
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          37.54,
+          33.55
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          38.04,
+          33.83
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          37.91,
+          32.89
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          38.31,
+          32.97
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          37.46,
+          32.92
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          38.42,
+          33.35
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          37.21,
+          33.44
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          38.62,
+          33.92
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          11.25,
+          24.16
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          10.6,
+          24.26
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          11.73,
+          24.22
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.44,
+          29.69
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.39,
+          29.56
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          12.01,
+          29.8
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          10.91,
+          30.33
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.04,
+          29.31
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          13.17,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.12,
+          29.95
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          8.76,
+          29.25
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          9.32,
+          29.87
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          13.83,
+          29.37
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          8.15,
+          29.89
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          8.49,
+          30.34
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          14.18,
+          30.29
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          7.23,
+          29.5
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          12.22,
+          24.24
+        ]
+      ],
+      [
+        [
+          "Fireweed"
         ],
         [
           9.6,
-          2.0
+          24.29
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          10.38,
+          24.05
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          13.07,
+          24.32
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          11.26,
+          23.86
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          8.68,
+          24.43
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          13.94,
+          24.28
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          12.64,
+          23.63
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          13.59,
+          23.87
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          14.41,
+          24.1
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          15.4,
+          23.93
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          15.84,
+          24.11
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          17.32,
+          24.88
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          39.47,
+          31.75
+        ]
+      ],
+      [
+        [
+          "Giant Hyssop"
+        ],
+        [
+          40.47,
+          32.35
+        ]
+      ],
+      [
+        [
+          "Smooth Aster"
+        ],
+        [
+          38.47,
+          32.45
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          39.97,
+          30.75
+        ]
+      ],
+      [
+        [
+          "Prairie Crocus"
+        ],
+        [
+          38.87,
+          30.85
+        ]
+      ],
+      [
+        [
+          "Heart-leaved Alexanders (Golden Alexanders)"
+        ],
+        [
+          40.77,
+          31.25
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          38.07,
+          31.55
+        ]
+      ],
+      [
+        [
+          "June Grass"
+        ],
+        [
+          39.67,
+          33.05
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          32.48,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          37.51,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          33.99,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          39.53,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          33.99,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          36.0,
+          33.67
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          41.04,
+          26.62
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          11.83,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          36.0,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          14.85,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          38.02,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          39.02,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.0,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          36.0,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          39.02,
+          24.1
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          37.51,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          35.0,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          37.01,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          33.99,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          40.53,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          32.98,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          31.97,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          39.53,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          35.0,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          40.53,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          41.04,
+          32.16
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          7.8,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          33.48,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          33.48,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          38.52,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          36.51,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          36.51,
+          34.18
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          31.97,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          35.5,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Stiff Goldenrod"
+        ],
+        [
+          34.49,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          41.04,
+          25.62
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          36.51,
+          33.17
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          8.81,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          14.85,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          40.03,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Purple-stemmed Tall Aster (Swamp Aster)"
+        ],
+        [
+          11.83,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          40.03,
+          31.66
+        ]
+      ],
+      [
+        [
+          "Oval-leaf Milkweed"
+        ],
+        [
+          37.01,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          7.8,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Fireweed"
+        ],
+        [
+          9.82,
+          23.6
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          38.52,
+          31.15
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          12.34,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          39.02,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          34.49,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          41.04,
+          30.65
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          32.98,
+          32.66
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          11.33,
+          29.14
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          11.33,
+          24.61
+        ]
+      ],
+      [
+        [
+          "Meadow Blazingstar"
+        ],
+        [
+          10.83,
+          29.14
         ]
       ]
-    ]
+    ],
+    "own_place": true,
+    "outline": [
+      [
+        0.0,
+        23.26
+      ],
+      [
+        41.7,
+        23.26
+      ],
+      [
+        41.7,
+        38.46
+      ],
+      [
+        0.0,
+        38.46
+      ]
+    ],
+    "features": [
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "House",
+          "shape_type": "Building (OSM)",
+          "height_m": 5.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            30.91,
+            38.02
+          ],
+          [
+            30.91,
+            24.16
+          ],
+          [
+            19.19,
+            24.16
+          ],
+          [
+            19.19,
+            38.02
+          ]
+        ]
+      },
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "Garage",
+          "shape_type": "Building (OSM)",
+          "height_m": 3.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            6.39,
+            38.37
+          ],
+          [
+            14.57,
+            38.37
+          ],
+          [
+            14.57,
+            30.56
+          ],
+          [
+            6.39,
+            30.56
+          ]
+        ]
+      },
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "House next door",
+          "shape_type": "Building (OSM)",
+          "height_m": 5.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            19.9,
+            8.88
+          ],
+          [
+            19.9,
+            17.41
+          ],
+          [
+            20.96,
+            17.41
+          ],
+          [
+            20.96,
+            22.74
+          ],
+          [
+            30.56,
+            22.74
+          ],
+          [
+            30.56,
+            15.28
+          ],
+          [
+            29.85,
+            15.28
+          ],
+          [
+            29.49,
+            8.88
+          ]
+        ]
+      },
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "Garage next door",
+          "shape_type": "Building (OSM)",
+          "height_m": 3.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            5.68,
+            8.53
+          ],
+          [
+            5.68,
+            16.34
+          ],
+          [
+            13.86,
+            16.34
+          ],
+          [
+            13.86,
+            8.53
+          ]
+        ]
+      },
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "Garage next door",
+          "shape_type": "Building (OSM)",
+          "height_m": 3.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            5.33,
+            7.82
+          ],
+          [
+            12.79,
+            7.82
+          ],
+          [
+            12.79,
+            0.0
+          ],
+          [
+            5.33,
+            0.0
+          ]
+        ]
+      },
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "Garage next door",
+          "shape_type": "Building (OSM)",
+          "height_m": 3.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            14.57,
+            53.65
+          ],
+          [
+            14.57,
+            46.55
+          ],
+          [
+            6.39,
+            46.55
+          ],
+          [
+            6.39,
+            53.65
+          ]
+        ]
+      },
+      {
+        "kind": "canopy_footprint",
+        "props": {
+          "label": "House next door",
+          "shape_type": "Building (OSM)",
+          "height_m": 5.5,
+          "cast_shade": true,
+          "caster_kind": "building"
+        },
+        "ring": [
+          [
+            19.54,
+            53.3
+          ],
+          [
+            31.98,
+            53.3
+          ],
+          [
+            31.98,
+            45.48
+          ],
+          [
+            30.56,
+            45.48
+          ],
+          [
+            30.56,
+            39.8
+          ],
+          [
+            19.54,
+            39.8
+          ]
+        ]
+      },
+      {
+        "kind": "existing_tree",
+        "props": {
+          "label": "Tree next door",
+          "height_m": 9.0,
+          "canopy_radius_m": 3.3,
+          "tree_foliage": "evergreen"
+        },
+        "at": [
+          39.2,
+          41.86
+        ]
+      },
+      {
+        "kind": "existing_tree",
+        "props": {
+          "label": "Tree (canopy map)",
+          "height_m": 8.0,
+          "canopy_radius_m": 3.5,
+          "tree_foliage": "evergreen"
+        },
+        "at": [
+          34.1,
+          24.36
+        ]
+      },
+      {
+        "kind": "existing_tree",
+        "props": {
+          "label": "Tree next door",
+          "height_m": 11.0,
+          "canopy_radius_m": 4.0,
+          "tree_foliage": "evergreen"
+        },
+        "at": [
+          15.0,
+          40.46
+        ]
+      },
+      {
+        "kind": "existing_tree",
+        "props": {
+          "label": "Tree (canopy map)",
+          "height_m": 11.0,
+          "canopy_radius_m": 3.5,
+          "tree_foliage": "deciduous"
+        },
+        "at": [
+          2.5,
+          23.46
+        ]
+      },
+      {
+        "kind": "existing_tree",
+        "props": {
+          "label": "Tree (canopy map)",
+          "height_m": 10.0,
+          "canopy_radius_m": 3.8,
+          "tree_foliage": "deciduous"
+        },
+        "at": [
+          3.3,
+          31.46
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Front walk",
+          "shape_type": "Pathway"
+        },
+        "ring": [
+          [
+            30.9,
+            28.46
+          ],
+          [
+            41.7,
+            28.46
+          ],
+          [
+            41.7,
+            29.56
+          ],
+          [
+            30.9,
+            29.56
+          ]
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Front bed",
+          "shape_type": "Garden Bed"
+        },
+        "ring": [
+          [
+            31.7,
+            30.16
+          ],
+          [
+            41.1,
+            30.16
+          ],
+          [
+            41.1,
+            34.36
+          ],
+          [
+            31.7,
+            34.36
+          ]
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Bed by the walk",
+          "shape_type": "Garden Bed"
+        },
+        "ring": [
+          [
+            38.1,
+            23.76
+          ],
+          [
+            41.1,
+            23.76
+          ],
+          [
+            41.1,
+            27.86
+          ],
+          [
+            38.1,
+            27.86
+          ]
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Deck",
+          "shape_type": "Patio / Deck"
+        },
+        "ring": [
+          [
+            16.9,
+            25.36
+          ],
+          [
+            19.2,
+            25.36
+          ],
+          [
+            19.2,
+            35.56
+          ],
+          [
+            16.9,
+            35.56
+          ]
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Lawn",
+          "shape_type": "Lawn Area"
+        },
+        "ring": [
+          [
+            6.9,
+            25.16
+          ],
+          [
+            16.5,
+            25.16
+          ],
+          [
+            16.5,
+            28.56
+          ],
+          [
+            6.9,
+            28.56
+          ]
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Sunny bed by the garage",
+          "shape_type": "Garden Bed"
+        },
+        "ring": [
+          [
+            6.9,
+            28.76
+          ],
+          [
+            14.3,
+            28.76
+          ],
+          [
+            14.3,
+            30.36
+          ],
+          [
+            6.9,
+            30.36
+          ]
+        ]
+      },
+      {
+        "kind": "custom_shape",
+        "props": {
+          "label": "Bed by the south fence",
+          "shape_type": "Garden Bed"
+        },
+        "ring": [
+          [
+            6.9,
+            23.56
+          ],
+          [
+            18.5,
+            23.56
+          ],
+          [
+            18.5,
+            24.96
+          ],
+          [
+            6.9,
+            24.96
+          ]
+        ]
+      },
+      {
+        "kind": "hedgerow",
+        "props": {
+          "style": "fence",
+          "species": "",
+          "color": "#8d6e63",
+          "width_m": 0.2,
+          "spacing_m": 1.0
+        },
+        "points": [
+          [
+            0.0,
+            23.26
+          ],
+          [
+            19.2,
+            23.26
+          ]
+        ]
+      },
+      {
+        "kind": "hedgerow",
+        "props": {
+          "style": "fence",
+          "species": "",
+          "color": "#8d6e63",
+          "width_m": 0.2,
+          "spacing_m": 1.0
+        },
+        "points": [
+          [
+            14.6,
+            38.46
+          ],
+          [
+            19.2,
+            38.46
+          ]
+        ]
+      },
+      {
+        "kind": "structure",
+        "props": {
+          "struct_id": "brush_pile",
+          "name": "Brush Pile",
+          "size_m": 2.5
+        },
+        "at": [
+          39.5,
+          25.96
+        ]
+      },
+      {
+        "kind": "structure",
+        "props": {
+          "struct_id": "bee_hotel",
+          "name": "Bee Hotel / Nest Box",
+          "size_m": 0.6
+        },
+        "at": [
+          32.5,
+          31.96
+        ]
+      }
+    ],
+    "notes": "This is a worked example, not a recommendation for your yard.\n\nIt holds 399 plants of 16 kinds, every one native around Edmonton. Design → Overview says what it feeds, when it flowers and how full it is.",
+    "street_side": "east"
   },
   "overview": {
     "price_note": "at Edmonton native nurseries"

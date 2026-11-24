@@ -72,6 +72,7 @@ const _FORM_ALIAS = {
   jointed: 'grassy',     // horsetails route to 14-layers.js first (V2.89)
   submerged: 'mat',      // wetland bodies route to 23-pond.js first (V2.90)
   pads: 'mat', globose: 'mat',   // cacti route to 24-succulents.js first (V2.93)
+  colony: 'erect',       // a read one is drawn by 03c-leafy.js first (V3.48)
 };
 function herbFormFor(p) {
   if (p.plant_type === 'fern') return 'fern';
@@ -118,11 +119,13 @@ function _leafWidth(shape, t) {
   if (shape === 'cordate') return sinp(0.55) * (1.35 - 0.6 * tc);         // heart
   // Arrowhead: flared basal lobes, then a long taper.
   if (shape === 'sagittate') return t < 0.16 ? 1.15 : Math.max(0.08, sinp(0.9) * 0.95);
-  if (shape === 'lobed' || shape === 'pinnatifid' || shape === 'bipinnate') {
+  if (shape === 'lobed' || shape === 'pinnatifid' || shape === 'bipinnate'
+      || shape === 'palmately_lobed') {
     // Deeply cut blades read as a lobed silhouette on a flat ribbon: a sinusoid
     // on the base profile. True notches would need a triangulated outline, which
     // costs 2-3x the triangles for a sub-centimetre effect.
-    const lobes = shape === 'lobed' ? 3 : (shape === 'pinnatifid' ? 5 : 7);
+    const lobes = shape === 'lobed' || shape === 'palmately_lobed' ? 3
+      : (shape === 'pinnatifid' ? 5 : 7);
     const wobble = 1 - (shape === 'bipinnate' ? 0.45 : 0.32)
       * (0.5 - 0.5 * Math.cos(2 * Math.PI * lobes * tc));
     return Math.max(0.06, sinp(0.7) * wobble);
@@ -140,7 +143,7 @@ const LEAF_WIDTH_RATIO = {
   elliptic: 0.45, ovate: 0.62, obovate: 0.55, spatulate: 0.40, orbicular: 0.95,
   cordate: 0.85, reniform: 1.25, sagittate: 0.55, lobed: 0.75,
   pinnatifid: 0.42, bipinnate: 0.35, trifoliate: 0.85, compound_pinnate: 0.45,
-  compound_palmate: 0.9, strap: 0.06,
+  compound_palmate: 0.9, strap: 0.06, palmately_lobed: 1.0, ternate: 1.0,
 };
 function leafWidthFor(shape, len) {
   const r = LEAF_WIDTH_RATIO[shape];
@@ -151,7 +154,7 @@ function leafWidthFor(shape, len) {
 // leaflet pairs (plus a terminal) each carries (mesh_ops COMPOUND_SHAPES /
 // _LEAFLET_PAIRS).
 const LEAFLET_PAIRS = { trifoliate: 1, compound_pinnate: 3, compound_palmate: 2,
-                        bipinnate: 4 };
+                        bipinnate: 4, ternate: 1 };
 function isCompoundShape(shape) { return LEAFLET_PAIRS[shape] != null; }
 
 // A compound leaf is a rachis plus 2n+1 leaflets, so it costs 3-9x a simple

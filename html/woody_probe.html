@@ -1,0 +1,205 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#101815;color:#dfe;font:13px system-ui}
+iframe{width:640px;height:480px;border:0;display:block}
+#out{padding:8px;white-space:pre-wrap;font-family:ui-monospace,monospace}</style>
+</head><body>
+<div id="out">working…</div>
+<iframe id="v" src="scene3d.html"></iframe>
+<script src="probe_watch.js"></script>
+<script>
+// A shrub built from its own numbers, read back from the real viewer
+// (V3.49): the gate behind tests/test_woody_render.py.
+//
+//   ?job=URL   one JSON {scenes: {name: scene}, shapes: [...], forms: [...]}.
+//
+// For each scene it pushes it and reports, for every shrub's leaves and stems,
+// whether the body is one of html/scene3d/03d-woody.js's, its triangles, its
+// plan (the sprays, how much larger than life, the budget), its extent and the
+// scale it was placed at, whether the leaves wear a cut-out and cast its
+// shadow, where the flowers were put and the flower clusters drawn as cards
+// (15c-woodybloom.js). Then it builds every form with
+// every leaf outline, off the scene, and reports each one's triangles and
+// whether any coordinate is not a number. The result goes into document.title
+// as "MEASURED {...}", as the other probes' does.
+
+const out = document.getElementById('out');
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function until(test, ms) {
+  for (let t = 0; t < ms; t += 100) { if (test()) return true; await sleep(100); }
+  return false;
+}
+function viewer() { return document.getElementById('v').contentWindow; }
+
+function plain(plan) {
+  // The plan without its spray's texture and material.
+  const o = {};
+  for (const k in plan) if (k !== 'spray') o[k] = plan[k];
+  if (plan.spray) o.spray = { key: plan.spray.key, cover: plan.spray.cover, w: plan.spray.w,
+                              h: plan.spray.h, leaves: plan.spray.leaves, test: plan.spray.test };
+  return o;
+}
+
+function bodies(w) {
+  const found = [];
+  w.eval('plantsGroup').traverse((o) => {
+    if (!o.isInstancedMesh || !o.userData.pickId || o.userData.part) return;
+    const g = o.geometry, u = g.userData || {};
+    g.computeBoundingBox();
+    const m = new w.THREE.Matrix4(), p = new w.THREE.Vector3(),
+      q = new w.THREE.Quaternion(), s = new w.THREE.Vector3();
+    o.getMatrixAt(0, m); m.decompose(p, q, s);
+    const pos = g.attributes.position;
+    let bad = 0, half = 0;
+    for (let i = 0; i < pos.count * 3; i++) if (!Number.isFinite(pos.array[i])) bad++;
+    for (let i = 0; i < pos.count; i++) half = Math.max(half, Math.hypot(pos.getX(i), pos.getZ(i)));
+    // How far out the body reaches, band by band up it (unit frame).
+    const bands = Array.from({ length: 10 }, () => []);
+    for (let i = 0; i < pos.count; i++) {
+      const y = pos.getY(i), b = Math.max(0, Math.min(9, Math.floor(y * 10)));
+      bands[b].push(Math.hypot(pos.getX(i), pos.getZ(i)));
+    }
+    const profile = bands.map((r) => { r.sort((a, b) => a - b); return r.length ? [r[Math.floor(r.length * 0.5)], r[Math.floor(r.length * 0.9)]] : [0, 0]; });
+    found.push({
+      id: o.userData.pickId[0], name: o.userData.pick[0], profile,
+      leaves: !!u.woody, woody: !!(u.woody || u.crown),
+      triangles: g.index ? g.index.count / 3 : pos.count / 3,
+      whole: u.woody ? u.woody.triangles : null, shoots: u.woody ? u.woody.shoots : null,
+      plan: u.woody ? plain(u.woody.plan) : null, crown: (u.crown || []).length,
+      top: g.boundingBox.max.y, bottom: g.boundingBox.min.y, half,
+      unit_half_width: u.unitHalfWidth, scale: [s.x, s.y, s.z],
+      colours: !!g.attributes.color, uv: !!g.attributes.uv,
+      cut: !!(o.material && o.material.alphaMap), alpha_test: o.material ? o.material.alphaTest : 0,
+      shadow_cut: !!(o.customDepthMaterial && o.customDepthMaterial.alphaMap),
+      mips: o.material && o.material.alphaMap ? o.material.alphaMap.mipmaps.length : 0, bad,
+    });
+  });
+  return found;
+}
+
+function blooms(w) {
+  // The flower clusters drawn as cards (15c-woodybloom.js), and whether any
+  // flower was built a floret at a time as well.
+  const cards = [];
+  let florets = 0;
+  w.eval('plantsGroup').traverse((o) => {
+    if (!o.isInstancedMesh) return;
+    if (o.userData.part === 'floret') florets += o.count;
+    if (o.userData.part !== 'bloom_card') return;
+    const m = new w.THREE.Matrix4(), p = new w.THREE.Vector3();
+    const at = [];
+    for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, m); p.setFromMatrixPosition(m); at.push([p.x, p.y, p.z]); }
+    cards.push({ count: o.count, at, sizes: o.userData.clusterSizes,
+                 triangles: o.geometry.index.count / 3,
+                 cut: !!o.material.alphaMap, alpha_test: o.material.alphaTest,
+                 mips: o.material.alphaMap ? o.material.alphaMap.mipmaps.length : 0,
+                 shadow: o.castShadow, name: o.userData.pick[0] });
+  });
+  return { cards, florets };
+}
+
+function fruits(w) {
+  // A shrub's fruit as cut-out bunches (15d-woodyfruit.js, V3.63), and any
+  // fruit still drawn as points (11-fruit.js).
+  const cards = [];
+  let points = 0;
+  w.eval('plantsGroup').traverse((o) => {
+    if (o.isPoints && o.material && o.material.map) points += o.geometry.attributes.position.count;
+    if (!o.isInstancedMesh || o.userData.part !== 'fruit_card') return;
+    const m = new w.THREE.Matrix4(), p = new w.THREE.Vector3(), q = new w.THREE.Quaternion(),
+      s = new w.THREE.Vector3(), c = new w.THREE.Color();
+    o.getMatrixAt(0, m); m.decompose(p, q, s);
+    if (o.instanceColor) o.getColorAt(0, c);
+    cards.push({ count: o.count, form: o.userData.fruitForm, name: o.userData.pick[0],
+                 size: s.y, colour: '#' + c.getHexString(), cut: o.material.alphaTest > 0,
+                 shadow: o.castShadow });
+  });
+  return { cards, points };
+}
+
+function vines(w) {
+  // A read vine's leafy shoots (22b-vineleaves.js): one mesh a vine.
+  const out = [];
+  w.eval('plantsGroup').traverse((o) => {
+    if (!o.isInstancedMesh || o.userData.part !== 'vine') return;
+    out.push({ name: o.userData.pick[0], cards: o.userData.vineCards || 0,
+               cut: !!(o.material && o.material.alphaMap),
+               shadow_cut: !!(o.customDepthMaterial && o.customDepthMaterial.alphaMap),
+               triangles: o.geometry.index ? o.geometry.index.count / 3 : 0 });
+  });
+  return out;
+}
+
+function anchors(w, sc) {
+  // What the flower layer is handed for the first plant, in the scene.
+  const p = w.eval('lastSceneObj').plants[0];
+  const a = w.bloomAnchors(p, 400, sc.month || 7) || [];
+  return a.map((q) => [q.x, q.y, q.z]);
+}
+
+async function run(w, job) {
+  const res = { scenes: {}, matrix: [], sprays: [] };
+  for (const name in job.scenes || {}) {
+    const sc = job.scenes[name];
+    w.permaSetQuality(sc.quality == null ? 1 : sc.quality);
+    w.permaSetScene(sc);
+    await until(() => w.permaModelsReady(), 60000);
+    await sleep(400);
+    res.scenes[name] = { bodies: bodies(w), anchors: anchors(w, sc), blooms: blooms(w), fruits: fruits(w), vines: vines(w),
+                         budget: w.eval('WOODY_BUDGET'), gain_max: w.eval('WOODY_GAIN_MAX') };
+  }
+  // A cluster's size at life size, for the flowers the tests name.
+  res.clusters = (job.clusters || []).map((c) => w.woodyClusterSize(c[0], c[1], c[2]));
+  res.bloom = { per_m2: w.eval('WOODY_BLOOM_PER_M2'), max: w.eval('WOODY_BLOOM_MAX'),
+                gain_max: w.eval('WOODY_BLOOM_GAIN_MAX') };
+  // Every form with every outline, built off the scene.
+  w.permaSetQuality(1);
+  for (const form of job.forms || []) {
+    for (const shape of job.shapes || []) {
+      for (const arrangement of ['alternate', 'opposite', 'whorled']) {
+        const p = { genus: 'Testus', species: shape,
+                    drawn: { body: 'woody', form, mature_h: 1.5, mature_w: 1.2, stems: 9,
+                             leaf_m: 0.05, leaf_shape: shape, arrangement } };
+        let row = { form, shape, arrangement };
+        try {
+          const a = w.buildWoodyGeo(p, 0), bad = [0, 0];
+          [a.foliageGeo, a.stemGeo].forEach((g, k) => {
+            const pos = g.attributes.position;
+            for (let i = 0; i < pos.count * 3; i++) if (!Number.isFinite(pos.array[i])) bad[k]++;
+          });
+          a.foliageGeo.computeBoundingBox();
+          const u = a.foliageGeo.userData;
+          row = Object.assign(row, { triangles: u.woody.triangles, bad: bad[0] + bad[1],
+                                     crown: u.crown.length, gain: u.woody.plan.gain,
+                                     cards: u.woody.plan.cards, budget: u.woody.plan.budget,
+                                     cover: u.cut.cover, top: a.foliageGeo.boundingBox.max.y,
+                                     key: w.woodyKeyFor(p) });
+          a.foliageGeo.dispose(); a.stemGeo.dispose();
+        } catch (e) { row.error = String(e && e.message || e); }
+        res.matrix.push(row);
+      }
+    }
+  }
+  return res;
+}
+
+(async function () {
+  const q = new URLSearchParams(location.search);
+  try {
+    if (!q.get('job')) {
+      out.textContent = 'Run this through tests/test_woody_render.py: it needs the job it serves.';
+      return;
+    }
+    const ok = await until(() => {
+      const w = viewer();
+      return w && typeof w.permaSetScene === 'function' && typeof w.permaShowView === 'function';
+    }, 60000);
+    if (!ok) throw new Error('the viewer never finished loading its chunks');
+    const res = await run(viewer(), await (await fetch(q.get('job'))).json());
+    document.title = 'MEASURED ' + JSON.stringify(res);
+    out.textContent = JSON.stringify(res, null, 1);
+  } catch (e) {
+    document.getElementById('probe-errors').textContent += 'probe: ' + (e && e.stack || e) + '\n';
+    document.title = 'FAILED';
+  }
+})();
+</script></body></html>

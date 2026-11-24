@@ -231,11 +231,11 @@ class TestStarterCommunities(unittest.TestCase):
                 pc = polycultures.get_polyculture_by_name(name)
                 self.assertIsNotNone(pc, f"{name} not seeded")
                 n = conn.execute(
-                    "SELECT COUNT(*) FROM polyculture_members WHERE polyculture_id=?",
-                    (pc["id"],)).fetchone()[0]
-                # each starter defines six members; all must resolve to real
-                # catalogue rows (0 silently-skipped names)
-                self.assertEqual(n, 6, f"{name} resolved {n}/6 members")
+                    "SELECT COUNT(DISTINCT plant_id) FROM polyculture_members "
+                    "WHERE polyculture_id=?", (pc["id"],)).fetchone()[0]
+                # each starter defines six kinds, planted in drifts since
+                # V3.59; all must resolve to real catalogue rows
+                self.assertEqual(n, 6, f"{name} resolved {n}/6 kinds")
         finally:
             conn.close()
 
@@ -491,10 +491,14 @@ class TestCommunityCoverage(unittest.TestCase):
         for rel in ("data/plants_master.json", "data/garden_plants.json"):
             with open(os.path.join(self._ROOT, rel), encoding="utf-8") as fh:
                 plants += json.load(fh)
+        # Edmonton's natives since V3.59, when the communities became the
+        # region's: a garden-centre native of the mountains has none.
+        from src import native_here
+        local = native_here.native_names("edmonton")
         return {
             p["common_name"] for p in plants
             if p.get("availability_class") in self._RETAIL
-            and str(p.get("native_to_alberta", 0)) in ("1", "True", "true")
+            and p.get("scientific_name") in local
         }
 
     def test_retail_native_coverage(self):

@@ -35,6 +35,10 @@ class TestTheLicence(unittest.TestCase):
     def test_the_file_is_the_gpl_v3_verbatim(self):
         with open(os.path.join(_ROOT, "LICENSE"), "rb") as fh:
             data = fh.read()
+        # Git for Windows checks text out with CRLF by default (and so do
+        # GitHub's Windows runners, which build the installer): the words are
+        # the licence's either way, so the line endings are not compared.
+        data = data.replace(b"\r\n", b"\n")
         self.assertEqual(hashlib.sha256(data).hexdigest(), GPL3_SHA256)
         head = data[:200].decode("utf-8")
         self.assertIn("GNU GENERAL PUBLIC LICENSE", head)

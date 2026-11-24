@@ -173,15 +173,16 @@ def row_description(plant: dict, placed: int = 0, province: str = "AB",
     """What a screen reader is given for a row: "Saskatoon Berry, Amelanchier
     alnifolia. Shrub. Native to Alberta. Hardy in zones 2 to 7. 2 in this
     design." Until V3.00 it was given the common name alone. With ``place``
-    (the simple app, PR-3) the band and the first reason follow the names:
-    "Top pick. Caterpillar food for 15 kinds of moth and butterfly"."""
+    the first reason follows the names: "Caterpillar food for 15 kinds of
+    moth and butterfly" (the band's name went with the chips, V3.58)."""
     head = plant.get("common_name") or ""
     if plant.get("scientific_name"):
         head += f", {plant['scientific_name']}"
     band = []
     if place is not None:
         name, reasons = band_of(plant, place)
-        band = [name, reasons[0] if reasons else ""]
+        band = [_BAND_TEXT.get(name, "") if name in _BAND_CHIP else "",
+                reasons[0] if reasons else ""]
     parts = [head, *band, type_words(plant), native_words(plant, province),
              zone_words(plant),
              placed_words(placed)]
@@ -368,13 +369,16 @@ _ROW_H_COMPACT  = 26
 _ROW_H_WRAPPED  = 44    # two-line variant for very long common names
 _ZONE_BADGE_W   = 56
 _NATIVE_BADGE_W = 22    # the AB badge, wide enough for 12 px text
-_BAND_W         = 70    # the simple app's "Good pick", 12 px (PR-3, V3.26)
+_BAND_W         = 84    # "Needs a pond", 12 px (V3.58; PR-3's chip was 70)
 #: The simple app's chip per band, as (background, text); a band not here
 #: draws no chip. Every pair clears 4.5:1.
-_BAND_CHIP = {"Top pick": ("#1b5e20", "#e8f5e9"),
-              "Good pick": ("#37474f", "#e8f5e9"),
-              "For a pond": ("#0d47a1", "#e3f2fd")}
-_BAND_TEXT = {"For a pond": "Pond"}
+#: Since V3.58 a row is never graded (the owner: "Top pick" and "Good pick"
+#: imply the rest are not good, and every plant here is a good native). The
+#: list's order still leads with what feeds the most; the one chip left is a
+#: warning a person needs before placing, and an off-list plant's.
+_BAND_CHIP = {"For a pond": ("#0d47a1", "#e3f2fd"),
+              "Not native here": ("#5d4037", "#efebe9")}
+_BAND_TEXT = {"For a pond": "Needs a pond", "Not native here": "Not native"}
 
 
 class PlantRowDelegate(QStyledItemDelegate):
@@ -387,7 +391,8 @@ class PlantRowDelegate(QStyledItemDelegate):
 
     Every part has its own tooltip (:meth:`helpEvent`). In the simple app
     (``place`` set, PR-3, V3.26) the zone and native badges give way to the
-    band's chip ("Top pick"), whose tooltip lists the reasons.
+    reasons in the chip's place's tooltip; a chip only for a plant that needs
+    a pond or is not native here (V3.58: no grades).
     """
 
     #: The region whose band the chip shows, or None for the advanced row.
@@ -434,11 +439,17 @@ class PlantRowDelegate(QStyledItemDelegate):
             fm_b.boundingRect(common).width(),
         ) + 32
         lean_budget = max(40, panel_w - self.LEFT_PAD - self.DOT_W
-                          - (self._right_w() + self.RIGHT_PAD + 8))
+                          - (self._right_w(plant) + self.RIGHT_PAD + 8))
         return _ROW_H_COMPACT if common_render <= lean_budget else _ROW_H_WRAPPED
 
-    def _right_w(self) -> int:
-        return _NATIVE_BADGE_W if self.place is None else _BAND_W
+    def _right_w(self, plant: Optional[dict] = None) -> int:
+        """The right-hand chip's width: none on an ungraded row (V3.58), so
+        the Latin name has the room."""
+        if self.place is None:
+            return _NATIVE_BADGE_W
+        if plant is not None and band_of(plant, self.place)[0] not in _BAND_CHIP:
+            return 0
+        return _BAND_W
 
     def _layout(self, plant: dict, rect: QRect, placed: int) -> dict:
         """Where each part of the row goes. Painting and the tooltips both read
@@ -454,9 +465,9 @@ class PlantRowDelegate(QStyledItemDelegate):
         dot = QRect(dot_x, dot_centre_y - 5, 10, 10)
         x = dot_x + self.DOT_W
 
-        native = QRect(compact.right() - self.RIGHT_PAD - self._right_w(),
+        native = QRect(compact.right() - self.RIGHT_PAD - self._right_w(plant),
                        compact.bottom() - line_h + (line_h - 16) // 2,
-                       self._right_w(), 16)
+                       self._right_w(plant), 16)
         zone_rect = QRect(native.left() - 4 - _ZONE_BADGE_W,
                           compact.bottom() - line_h + (line_h - 16) // 2,
                           _ZONE_BADGE_W, 16)
@@ -602,7 +613,8 @@ class PlantRowDelegate(QStyledItemDelegate):
             return zone_words(plant)
         if lay["native"].contains(pos) and self.place is not None:
             band, reasons = band_of(plant, self.place)
-            return ". ".join([band, *reasons]) + "."
+            head = [_BAND_TEXT[band]] if band in _BAND_CHIP else []
+            return ". ".join([*head, *reasons]) + "."
         if lay["native"].contains(pos):
             return native_words(plant, getattr(self, "province", "AB"))
         text = (f"{plant.get('common_name', '')} "

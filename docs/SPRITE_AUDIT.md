@@ -413,6 +413,23 @@ stiffness class — a spruce barely moves in wind that has a grass lying flat.
 - **Fruit and flower sprites are still flat billboards**, oriented since V2.29
   but not modelled.
 
+## Seventh pass — V3.48 (each species against its photographs)
+
+Plan: [`V3.48-models-against-photographs`](plans/V3.48-models-against-photographs.md).
+
+The first pass to hold each plant's model beside photographs of that plant: the
+250 natives of the Edmonton region, 3,288 research-grade photographs, one sheet
+a plant, each read and recorded in `data/fetched/model_review.json`. **Mean 3.2
+of 10; five plants at 7 or more.** The bodies given a rule of their own since
+V2.89 (horsetails, pond plants) score highest.
+
+Four causes fixed, each reaching many plants: a petal seen from behind drew near
+black; herbs, grass tufts and mats kept the dark bake the crowns gave up in
+V2.94; a grass blade's shaded side drew black; and flowers and fruit were placed
+at random in the air over a plant, where they are now put on its stem tips or
+the outside of its crown. No body was redrawn. What is next, by plants reached,
+is in the plan.
+
 ## Verification note
 
 Scores in the per-archetype table come from close inspection of individual

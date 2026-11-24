@@ -123,5 +123,30 @@ class TestLessonIntegration(unittest.TestCase):
         self.assertTrue(hasattr(api, "lesson_track"))
 
 
+class TestALongDesignNameDoesNotWidenThePage(unittest.TestCase):
+    """V3.67: the About box widened to its longest item, and on the owner's
+    PC a saved design's name made Learn › Lessons need 622 px of 416."""
+
+    def test_the_page_keeps_its_width(self):
+        try:
+            from PyQt6.QtWidgets import QApplication
+        except ImportError:                                # pragma: no cover
+            self.skipTest("PyQt6 not installed in this env")
+        os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+        _app = QApplication.instance() or QApplication(["tests"])  # noqa: F841
+        from unittest import mock
+        from src import saves
+        from src.lesson_track_widget import LessonTrackWidget
+        name = ("A back yard with a very long name indeed "
+                "(unsaved changes from 12 Oct)")
+        with mock.patch.object(saves, "your_designs",
+                               return_value=[{"name": name, "path": "x"}]):
+            page = LessonTrackWidget()
+        self.assertLess(page.minimumSizeHint().width(), 400)
+        widest = page._about.fontMetrics().horizontalAdvance("Saved: " + name)
+        self.assertGreaterEqual(page._about.view().minimumWidth(), widest,
+                                "the open list must show the whole name")
+
+
 if __name__ == "__main__":
     unittest.main()

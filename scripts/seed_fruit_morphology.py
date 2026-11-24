@@ -82,6 +82,10 @@ FRUIT_FORM = {
     "Shepherdia canadensis":       "berry",
     "Symphoricarpos albus":        "berry",   # waxy white
     "Symphoricarpos occidentalis": "berry",
+    # V3.63, read off their photographs: a juniper's dusty blue berry-cones
+    # and a silverberry's silvery drupes stay on the bare twigs all winter.
+    "Juniperus communis":          "berry",
+    "Elaeagnus commutata":         "berry",
     "Vaccinium myrtilloides":      "berry",
     "Vaccinium myrtillus":         "berry",
     "Vaccinium oxycoccos":         "berry",
@@ -99,6 +103,7 @@ FRUIT_FORM = {
     # ── pomes with a calyx eye ──────────────────────────────────────────
     "Amelanchier alnifolia":       "pome",
     "Crataegus douglasii":         "pome",
+    "Crataegus chrysocarpa":       "pome",    # V3.63: the region's hawthorn
     # ── rose hips ───────────────────────────────────────────────────────
     "Rosa acicularis":             "hip",
     "Rosa arkansana":              "hip",
@@ -128,6 +133,17 @@ FRUIT_FORM = {
 # separates the two species at a glance — which was the reported complaint.
 FRUIT_COLOR_FIX = {
     "Prunus pensylvanica": "#d8322b",   # bright translucent red, not near-black
+    # V3.63, read off the reference photographs of the region's shrubs
+    # (docs/plans/V3.63-shrubs-you-can-tell-apart.md). The three below were
+    # drawn red; every photograph of them shows black.
+    "Ribes americanum":      "#1c1a22",   # wild black currant
+    "Ribes lacustre":        "#1c1a22",   # bristly black currant
+    "Lonicera involucrata":  "#1c1a22",   # shiny black, in red bracts
+    "Ribes oxyacanthoides":  "#3e2236",   # gooseberry: ripens dark purple
+    "Ribes triste":          "#c8202a",   # wild red currant: bright, translucent
+    # Fruit nothing recorded, which is what these two are in winter.
+    "Juniperus communis":    "#4a5a7a",   # dusty blue berry-cones
+    "Elaeagnus commutata":   "#b5b6a4",   # silvery mealy drupes
 }
 
 

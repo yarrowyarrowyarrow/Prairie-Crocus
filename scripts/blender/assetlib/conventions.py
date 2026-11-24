@@ -397,11 +397,12 @@ def blade_class(leaf_shape):
     """Construction class for a recorded ``leaf_shape``. Unknown → 'broad',
     which is the profile the herb forms carried before there was any data."""
     sh = (leaf_shape or "").lower()
-    if sh in ("trifoliate", "compound_pinnate", "compound_palmate", "bipinnate"):
+    if sh in ("trifoliate", "compound_pinnate", "compound_palmate", "bipinnate",
+              "ternate"):
         return "compound"
     if sh in ("linear", "strap", "needle", "awl", "scale", "lanceolate"):
         return "narrow"
-    if sh in ("lobed", "pinnatifid", "sagittate"):
+    if sh in ("lobed", "pinnatifid", "sagittate", "palmately_lobed"):
         return "cut"
     return "broad"
 
@@ -616,7 +617,11 @@ HERB_FORM_ALIAS = {"cushion": "mat", "succulent": "mat", "sprawling": "mat",
                    # the alias only keeps a herb-typed one resolvable here.
                    "jointed": "grassy",
                    # So are the cacti (V2.93, 24-succulents.js).
-                   "pads": "mat", "globose": "mat"}
+                   "pads": "mat", "globose": "mat",
+                   # V3.48: shoots spread over the ground. A read plant is
+                   # drawn from its own numbers (03c-leafy.js); Stylised and an
+                   # older viewer draw each shoot as the upright figure.
+                   "colony": "erect"}
 
 
 def herb_form_for(rec):

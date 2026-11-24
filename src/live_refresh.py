@@ -52,6 +52,10 @@ class LiveRefresh(QObject):
         and Planning's went into Design)."""
         self._tabs.currentChanged.disconnect(self._on_current)
         self._owner.removeEventFilter(self)
+        # Belong to the panel now watched, or the one left behind deletes this
+        # filter while the new one still uses it: under Python 3.14 that
+        # corrupted memory and the next test crashed (V3.67).
+        self.setParent(owner)
         self._owner, self._tabs, self._pages = owner, tabs, dict(pages)
         tabs.currentChanged.connect(self._on_current)
         owner.installEventFilter(self)
@@ -64,8 +68,16 @@ class LiveRefresh(QObject):
         self._timer.start()
 
     def eventFilter(self, obj, event) -> bool:                 # noqa: N802
-        if obj is self._owner and event.type() == QEvent.Type.Show:
-            self.poke()
+        # Qt can deliver one last event while the panel and this filter are
+        # being torn down. Reading a deleted wrapper raises RuntimeError there,
+        # and an exception out of a Qt virtual ends the process wherever
+        # main.py's handler is not installed: a Windows test run on Python 3.14
+        # died on it with no summary (V3.67). ``_run`` already guarded the same.
+        try:
+            if obj is self._owner and event.type() == QEvent.Type.Show:
+                self.poke()
+        except RuntimeError:            # deleted with its panel
+            pass
         return False
 
     def fill_now(self) -> bool:

@@ -47,7 +47,10 @@ _CLUSTERS = ("Scarlet Globemallow", "Canada Goldenrod", "Butte Primrose",
 #: A head was already drawn at its true diameter. It is the control: if this
 #: moves, the probe is measuring something other than the flower.
 _HEAD = "Wild Bergamot"
-_GROUNDCOVER = "Canada Anemone"            # 0.6 m recorded, drawn as an 18 cm mat
+#: Recorded 60 cm and drawn as an 18 cm mat until V3.48, when its leaves and
+#: habit were read off photographs (45 cm, a colony of stems): its body is now
+#: its own (src/herb_habit.py), as tall as it is, and its flowers sit on that.
+_GROUNDCOVER = "Canada Anemone"
 _SMALL_AQUATIC = "Ivy-leaved Duckweed"     # 2 cm recorded, drawn as a 0.5 m reed
 _BANDED_BEE = "American Bumble Bee"        # thorax black, so it rendered solid black
 #: V2.89: a vine beside a shrub climbs it; with nothing beside it, it lies low.
@@ -279,9 +282,16 @@ class AccuracyRenderTest(unittest.TestCase):
                 return p
         self.fail(f"{name}: the probe did not report it")
 
-    def _florets(self, name):
+    def _carded(self, name):
+        """A wildflower's dense cluster is carried as one card since V3.64
+        (15e-heads.js denseClusterApplies): no florets to measure."""
+        return any(q.get("part") == "bloom_card" for q in self._measured(name)["parts"])
+
+    def _florets(self, name, part="floret"):
+        if part == "floret" and self._carded(name):
+            part = "bloom_card"
         parts = [q for q in self._measured(name)["parts"]
-                 if q.get("part") == "floret"]
+                 if q.get("part") == part]
         self.assertTrue(
             parts, f"{name}: no florets were built in month "
                    f"{self._case(name)['month']} — is that inside its bloom "
@@ -292,6 +302,8 @@ class AccuracyRenderTest(unittest.TestCase):
         """How tall the viewer draws the body (04-quality.js bodyHeightOf)."""
         p = self._case(name)["plant"]
         h = p["height_m"]
+        if p.get("drawn"):                 # a body of its own (fullBodyHeightOf)
+            return max(0.02, float(p["drawn"].get("height_m") or 0))
         if p["plant_type"] == "groundcover":
             return min(h, scene_wildlife.GROUNDCOVER_DRAWN_MAX_M)
         return max(0.08, h)
@@ -310,6 +322,8 @@ class AccuracyRenderTest(unittest.TestCase):
 
     def test_a_cluster_is_drawn_from_flowers_of_their_own_size(self):
         for name in _CLUSTERS:
+            if self._carded(name):
+                continue                 # a card, not florets (V3.64)
             dia = self._case(name)["plant"]["flower_diameter_cm"] / 100
             drawn = max(q["s_med"] for q in self._florets(name))
             with self.subTest(name):
@@ -346,12 +360,16 @@ class AccuracyRenderTest(unittest.TestCase):
     # ── A6: the flowers and the body agree on how tall the plant is ──────────
 
     def test_groundcover_flowers_sit_on_the_mat(self):
-        cap = scene_wildlife.GROUNDCOVER_DRAWN_MAX_M
+        """On the body as it is drawn: a mat capped at
+        GROUNDCOVER_DRAWN_MAX_M, or a body of its own at its own height."""
+        h = self._drawn_height(_GROUNDCOVER)
+        if not self._case(_GROUNDCOVER)["plant"].get("drawn"):
+            self.assertLessEqual(h, scene_wildlife.GROUNDCOVER_DRAWN_MAX_M)
         top = max(q["top"] for q in self._florets(_GROUNDCOVER))
         self.assertLessEqual(
-            top, MAX_TOP_OVER_HEIGHT * cap + TOP_SLACK_M,
-            f"{_GROUNDCOVER}: flowers at {top:.2f} m over a mat drawn at most "
-            f"{cap} m tall — they are floating at the recorded height again")
+            top, MAX_TOP_OVER_HEIGHT * h + TOP_SLACK_M,
+            f"{_GROUNDCOVER}: flowers at {top:.2f} m over a body drawn "
+            f"{h:.2f} m tall — they are floating at the recorded height again")
 
     def test_a_small_aquatic_is_drawn_near_its_own_height(self):
         want = self._case(_SMALL_AQUATIC)["plant"]["height_m"]

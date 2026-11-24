@@ -206,29 +206,20 @@ class PlantPanel(QWidget):
         top_layout.setContentsMargins(8, 8, 8, 4)
         top_layout.setSpacing(4)
 
-        # Page header (V1.86) — a plain, non-collapsible title that mirrors the
-        # Plant Community Library page.
-        title_label = QLabel(
-            "<b>Plant Library</b>  "
-            "<span style='color:#90a4ae;font-weight:normal;'>(browse &amp; place)</span>"
-        )
-        title_label.setStyleSheet("font-size: 13px;")
-        top_layout.addWidget(title_label)
+        # No page title since V3.57: "Plant Library (browse & place)" said
+        # again what the Plants tab above it says.
 
         # Search, filters, order and the list (V3.00, src/plant_picker.py):
         # the same widget the Plant Directory and the community builder show,
         # over one vocabulary. Its filters start folded to the line that says
         # which are on; eighteen do not fit above a list in this column.
         from src.plant_picker import PlantPicker
-        # The region's list on from the start in the simple app (ED-10,
-        # V3.26): a cold start lists its 250 natives, not the 424. A chip
-        # says so, and one click takes it off.
-        from src import advanced_tools, region
-        local = (region.default().defaults.get("local_natives_only")
-                 and not advanced_tools.is_on())
+        # The region's list was on from the start in the simple app (ED-10,
+        # V3.26), with a chip to take it off. Since V3.58 the region's list is the catalogue in both apps (the
+        # owner: "Edmonton only, even in Advanced"), searched inside unseen.
+        from src.plant_filters import catalogue_scope
         self.picker = PlantPicker(self, draggable=True,
-                                  criteria={"local_native": True} if local
-                                  else None)
+                                  scope=catalogue_scope())
         self.picker.results_changed.connect(self._on_results)
         self._results_list = self.picker.view
         self._results_model = self.picker.model

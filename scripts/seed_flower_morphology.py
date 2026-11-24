@@ -572,6 +572,16 @@ def _flowers(rec):
     return (rec.get("flower_form") or "none") != "none"
 
 
+#: Habit characters this file seeds beside the flower: how a stem forks,
+#: whether leaves sit at the ground, how many flower clusters a grown plant
+#: carries. Since V3.48 they are read off photographs WITH the leaves
+#: (scripts/leaf_readings.py, the leaf provenance pair), so a row whose leaf
+#: pair says it was read keeps them even while its flower numbers are still
+#: this file's estimate.
+HABIT_FIELDS = ("stem_branching", "basal_rosette", "flowering_stems")
+_READ = ("photo", "flora", "measured")
+
+
 def apply(records, check=False):
     applied, uncovered = 0, []
     for rec in records:
@@ -587,7 +597,11 @@ def apply(records, check=False):
             # the catalogue on the next re-run. `estimated` and empty are fair
             # game; anything else is a human's answer and wins.
             if (rec.get("flower_data_source") or "estimated") == "estimated":
+                keep = ({f: rec.get(f) for f in HABIT_FIELDS}
+                        if (rec.get("leaf_data_source") or "").lower() in _READ
+                        else {})
                 rec.update(flower)
+                rec.update(keep)
         applied += 1
     return applied, uncovered
 

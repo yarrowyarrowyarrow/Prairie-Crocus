@@ -95,7 +95,7 @@
   #wild-roster .grp { margin-top: 7px; font-weight: 600; color: #b7d8ea; }
   #wild-roster .row { color: #d7e6d2; padding-left: 4px; }
   #wild-roster .on { color: #8fae86; }
-  #wild-roster .reach { margin: 2px 0 4px; padding: 4px 6px; font-size: 11.5px;
+  #wild-roster .reach { margin: 2px 0 4px; padding: 4px 6px; font-size: 12px;
     color: #eaf6df; background: rgba(90,140,70,.28); border-radius: 5px; }
   #wild-roster .reach b { color: #ffffff; }
   /* Creature speed (F121, V2.54): pause and slow the ambient wildlife so you
@@ -113,7 +113,7 @@
   #wild-speed button {
     font: inherit; color: #d7e6d2; cursor: pointer;
     background: rgba(90,140,70,.20); border: 1px solid #3a5a3a;
-    border-radius: 5px; padding: 2px 8px; min-width: 30px;
+    border-radius: 5px; padding: 2px 8px; min-width: 30px; min-height: 24px;
   }
   #wild-speed button:hover { background: rgba(90,140,70,.38); }
   /* The current step has to be readable at a glance and not only on hover: a
@@ -154,6 +154,7 @@
   #inspect-close {
     position: absolute; right: 8px; top: 6px; background: none; border: 0;
     color: #9fb096; font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 5px;
+    min-width: 24px; min-height: 24px;
   }
   #inspect-close:hover { color: #eaf1e6; }
   /* Species photo. The caption is not decoration: an open-licensed photo may
@@ -165,7 +166,7 @@
     border-radius: 7px; background: #223126;
   }
   #inspect-card .iphoto figcaption {
-    margin-top: 4px; font-size: 10px; line-height: 1.35; color: #90a389;
+    margin-top: 4px; font-size: 12px; line-height: 1.35; color: #9fb096;
   }
   #inspect-card .ihead { margin-right: 22px; }
   #inspect-card .iname { font-size: 16px; font-weight: 700; }
@@ -173,13 +174,13 @@
   #inspect-card .chips { margin: 8px 0 4px; }
   #inspect-card .chip {
     display: inline-block; margin: 0 4px 4px 0; padding: 2px 7px;
-    border-radius: 9px; font-size: 11px; background: #33452f; color: #d6e8cd;
+    border-radius: 9px; font-size: 12px; background: #33452f; color: #d6e8cd;
   }
   #inspect-card .chip.good { background: #35533a; color: #cdebd2; }
   #inspect-card .chip.warn { background: #5a3f27; color: #f0d9bd; }
   #inspect-card .ifacts { color: #b7c7b0; font-size: 12px; margin: 4px 0 2px; }
   #inspect-card .isec {
-    margin: 12px 0 5px; font-size: 11px; letter-spacing: .5px;
+    margin: 12px 0 5px; font-size: 12px; letter-spacing: .5px;
     text-transform: uppercase; color: #93a88b;
   }
   #inspect-card .ilist { list-style: none; margin: 0; padding: 0; }
@@ -187,11 +188,11 @@
     padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,.06);
   }
   #inspect-card .ilist.plain li { border: 0; color: #cbdac4; }
-  #inspect-card .ilist .how { color: #9fb096; font-size: 11px; display: block; }
+  #inspect-card .ilist .how { color: #9fb096; font-size: 12px; display: block; }
   /* F12 — the citation on an edge. Quiet on purpose: it has to be legible
      without competing with the animal's name, which is what the row is for. */
-  #inspect-card .ilist .cite { color: #7d8f77; font-size: 10px; display: block; }
-  #inspect-card .isrcs { margin-top: 8px; font-size: 11px; color: #9fb096; }
+  #inspect-card .ilist .cite { color: #8d9f87; font-size: 12px; display: block; }
+  #inspect-card .isrcs { margin-top: 8px; font-size: 12px; color: #9fb096; }
   #inspect-card .isrcs summary { cursor: pointer; color: #93a88b; }
   #inspect-card .isrcs ul { margin: 6px 0 0; padding-left: 16px; }
   #inspect-card .isrcs li { padding: 2px 0; }
@@ -201,36 +202,61 @@
     background: rgba(120, 80, 40, .35); font-size: 12px;
   }
   #inspect-card .isrc, #inspect-card .inotes {
-    margin-top: 9px; color: #a9bda2; font-size: 11.5px;
+    margin-top: 9px; color: #a9bda2; font-size: 12px;
   }
   /* season strip: one row per activity, twelve month cells */
   #inspect-card .season { margin: 10px 0 2px; }
   #inspect-card .srow { display: flex; align-items: center; gap: 2px; margin-bottom: 3px; }
   #inspect-card .slab {
-    width: 52px; flex: none; font-size: 10.5px; color: #93a88b; text-align: right;
+    width: 58px; flex: none; font-size: 12px; color: #93a88b; text-align: right;
     padding-right: 5px;
   }
   #inspect-card .srow i {
-    flex: 1; height: 9px; border-radius: 2px; background: rgba(255,255,255,.09);
-    font-style: normal; font-size: 9px; text-align: center; color: #8b9d84;
-    line-height: 9px;
+    flex: 1; height: 15px; border-radius: 2px; background: rgba(255,255,255,.09);
+    font-style: normal; font-size: 12px; text-align: center; color: #8b9d84;
+    line-height: 15px;
   }
   #inspect-card .srow i.nowm { outline: 1px solid #ffe89a; }
   /* growth strip: height at years 1 / 5 / 15 / 25 */
   #inspect-card .grow { margin: 11px 0 2px; }
   #inspect-card .ghead {
-    font-size: 11px; letter-spacing: .5px; text-transform: uppercase;
+    font-size: 12px; letter-spacing: .5px; text-transform: uppercase;
     color: #93a88b; margin-bottom: 4px;
   }
   #inspect-card .growrow { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
   #inspect-card .growrow.gnow { color: #ffe89a; }
-  #inspect-card .gy { width: 34px; flex: none; font-size: 11px; color: #93a88b; }
+  #inspect-card .gy { width: 38px; flex: none; font-size: 12px; color: #93a88b; }
   #inspect-card .gbar {
     flex: 1; height: 7px; background: rgba(255,255,255,.08); border-radius: 4px;
   }
   #inspect-card .gbar i { display: block; height: 7px; border-radius: 4px; background: #6f9a55; }
   #inspect-card .growrow.gnow .gbar i { background: #ffe89a; }
-  #inspect-card .gv { font-size: 10.5px; color: #a9bda2; white-space: nowrap; }
+  #inspect-card .gv { font-size: 12px; color: #a9bda2; white-space: nowrap; }
+  /* The V3.39 cards (25-cards.js): what it is food for first, animals as
+     links with a photograph or their group's sign, the rest folded. */
+  #inspect-card .does p { margin: 8px 0 0; font-size: 13.5px; color: #eef5ea; }
+  #inspect-card .arow, #inspect-card .prow, #wild-roster .link { cursor: pointer; }
+  #inspect-card .arow { display: flex; gap: 8px; align-items: flex-start; }
+  #inspect-card .arow:hover b, #inspect-card .prow:hover b,
+  #wild-roster .link:hover { color: #ffe89a; text-decoration: underline; }
+  #inspect-card .athumb { flex: none; width: 34px; height: 34px; border-radius: 6px;
+    overflow: hidden; background: #223126; text-align: center; line-height: 34px;
+    font-size: 18px; }
+  #inspect-card .athumb img { width: 34px; height: 34px; object-fit: cover; }
+  #inspect-card .atext { min-width: 0; }
+  #inspect-card .asign { font-size: 40px; line-height: 1; margin: 2px 0 6px; }
+  #inspect-card details { margin-top: 10px; }
+  #inspect-card details > summary { cursor: pointer; color: #b7d8a8; font-size: 12px; }
+  #inspect-card .iback, #inspect-card .plant-one {
+    font: inherit; font-size: 12px; cursor: pointer; border-radius: 5px; min-height: 24px;
+    color: #10200f; background: #8fc47e; border: 1px solid #b6dfa6; padding: 2px 8px; }
+  #inspect-card .iback { margin: 0 24px 8px 0; color: #d7e6d2;
+    background: rgba(90,140,70,.22); border-color: #3a5a3a; }
+  #inspect-card .idesc { margin-top: 9px; color: #c9d8c2; font-size: 12px; }
+  #inspect-card .dim { color: #7d8f77; font-style: italic; }
+  #wild-roster summary { cursor: pointer; color: #b7d8ea; margin-top: 4px; }
+  /* An open card takes the right; the walk's hint steps left of it. */
+  body.card-open #bee-hint { left: calc(50% - 175px); max-width: calc(100% - 400px); }
 </style>
 </head>
 <body>
@@ -315,6 +341,7 @@ The bundled 3D engine failed to load. The 2D map is unaffected.</div></div>
   });
 </script>
 
+<script src="scene3d/chunks.js"></script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -333,55 +360,12 @@ window._pinglog && window._pinglog('module-eval-start (three OK)');
 // the global-scope declarations accumulate in the same order the old
 // single script evaluated them.
 (function () {
-  const FILES = [
-    'scene3d/01-core.js',
-    // Surfaces + plantMaterial: before 02-plants because everything downstream
-    // of it builds geometry that wants a material.
-    'scene3d/01b-surface.js',
-    'scene3d/01c-leaves.js',   // V2.94: leaves let light through (F186)
-    'scene3d/02-plants.js',
-    'scene3d/03-herbs.js',
-    'scene3d/03b-trees.js',   // V2.92: the procedural trees, split from 03-herbs
-    'scene3d/04-quality.js',
-    'scene3d/05-flowers.js',
-    'scene3d/06-fly.js',
-    'scene3d/07-wildlife.js',
-    'scene3d/08-modes.js',
-    'scene3d/09-models.js',
-    'scene3d/10-inspect.js',
-    'scene3d/11-fruit.js',
-    'scene3d/12-seedheads.js',
-    'scene3d/13-stylised.js',
-    'scene3d/14-layers.js',
-    'scene3d/15-florets.js',
-    // V2.43: click-to-plant in the reference sandboxes, and the QWebChannel
-    // the viewer never had. Last on purpose — its pointer handlers must
-    // register after 10-inspect.js's so both see the same click.
-    'scene3d/16-editing.js',
-    // V2.44: the tween registry and the plant / pull / catch animations.
-    // 16-editing.js only calls into these at click time, long after every
-    // chunk has loaded, so it does not need to load first.
-    'scene3d/17-anim.js',
-    'scene3d/18-flight.js',   // V2.45: real wingbeats (src/flight_model.py)
-    // V2.46: the roster / labels / spotlight, split out of 07-wildlife.js when
-    // life-size scaling and creature collision took it past its ceiling.
-    'scene3d/19-roster.js',
-    // V2.46b: the walker's body and his net, split out of 08-modes.js when the
-    // held net took it past its ceiling. Nothing here is called from the
-    // animation loop — see the load-order note in the file.
-    'scene3d/20-walker.js',
-    // V2.46d: the procedural creature bodies, split out of 07-wildlife.js when
-    // the bird flight attitude took it past its ceiling. Nothing here is called
-    // from the animation loop — see 08-modes.js:_loopFault.
-    'scene3d/21-critters.js',
-    // V2.89: vines on the tree or shrub beside them (F179). Called from
-    // buildPlants after the trees and shrubs have noted where they stand.
-    'scene3d/22-vines.js',
-    // V2.90: the pond (F175) — floating leaves on a pond's water, submerged
-    // plants showing what reaches the surface, broad leaves on stalks.
-    'scene3d/23-pond.js',
-    'scene3d/24-succulents.js',   // V2.93: cacti, yucca and roseroot (F177)
-  ];
+  // The chunks, in load order, are listed in scene3d/chunks.js (V3.39): the
+  // page was at its 400-line ceiling and the next chunk needed the room.
+  const FILES = window.SCENE3D_CHUNKS || [];
+  if (!FILES.length && window._showViewerError) {
+    window._showViewerError('failed to load scene3d/chunks.js');
+  }
   let i = 0;
   (function next() {
     if (i >= FILES.length) { window._pinglog && window._pinglog('chunks loaded'); return; }

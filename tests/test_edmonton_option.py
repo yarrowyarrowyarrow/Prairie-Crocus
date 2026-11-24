@@ -96,17 +96,29 @@ class TestTheSearch(unittest.TestCase):
         self.assertLess(len(shrubs), len(search_plants(plant_type=["shrub"])))
 
 
+def _outsider_community():
+    """A person's own community holding one plant from elsewhere (Bur Oak):
+    since V3.59 no seeded community has one to test with."""
+    from src.db import polycultures as P
+    oak = P._get_plant_by_name("Bur Oak")
+    rose = P._get_plant_by_name("Prickly Wild Rose")
+    cid = P.create_polyculture("Test oak corner", "", oak["id"])
+    P.add_polyculture_member(cid, oak["id"], "overstory", 0.0, 0.0)
+    P.add_polyculture_member(cid, rose["id"], "shrub_layer", 3.0, 0.0)
+    return cid
+
+
 class TestTheCommunityLibrary(unittest.TestCase):
 
     def test_a_community_with_one_outsider_is_hidden(self):
         from src.db import polycultures as P
+        cid = _outsider_community()
+        self.addCleanup(P.delete_polyculture, cid)
         index = P.get_library_index()
-        by_name = {e["name"]: cid for cid, e in index.items()}
-        # Bur Oak Community holds Saskatchewan's oak; the index names it.
-        oak = index[by_name["Bur Oak Community"]]
+        oak = index[cid]
         self.assertIn("Bur Oak", oak["not_around"]["edmonton"])
         shown = P.filter_library(index, native_near="edmonton")
-        self.assertNotIn(by_name["Bur Oak Community"], shown)
+        self.assertNotIn(cid, shown)
         for cid in shown:
             self.assertEqual(index[cid]["not_around"]["edmonton"], [],
                              index[cid]["name"])
@@ -140,8 +152,9 @@ class TestTheCommunityLibrary(unittest.TestCase):
     def test_the_page_names_the_plants_that_are_not_native_here(self):
         from src.community_page import around_line
         from src.db import polycultures as P
-        oak = P.get_polyculture_by_id(
-            P.get_polyculture_by_name("Bur Oak Community")["id"])
+        cid = _outsider_community()
+        self.addCleanup(P.delete_polyculture, cid)
+        oak = P.get_polyculture_by_id(cid)
         line = around_line(oak["members"])
         self.assertTrue(line.startswith("Not native around Edmonton: "), line)
         self.assertIn("Bur Oak", line)

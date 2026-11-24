@@ -307,11 +307,15 @@ class VertexColourFlagTest(unittest.TestCase):
         self.assertGreaterEqual(len(calls), 15, "the surfaceMaterial calls moved")
         for name, line, args in calls:
             with self.subTest(f"{name}:{line}"):
-                self.assertEqual(
-                    len(args), 3,
+                # A fourth argument is a leaf cut-out (03d-woody.js, V3.49);
+                # the third is still the caller's word on colours.
+                self.assertIn(
+                    len(args), (3, 4),
                     f"{name}:{line} calls surfaceMaterial({', '.join(args)}) "
                     f"without saying whether the geometry carries colours, so "
                     f"any it carries are silently not drawn")
+                if len(args) == 4:
+                    self.assertEqual(args[3], "cut", f"{name}:{line}")
 
     def test_the_shrub_leaves_ask_for_their_colours(self):
         """Both shrub paths carry them: a baked model's shade (09-models.js
@@ -322,7 +326,7 @@ class VertexColourFlagTest(unittest.TestCase):
         self.assertTrue(shrub, "the shrub layer no longer asks for MAT_PRESETS.shrubLeaf")
         for name, line, args in shrub:
             with self.subTest(f"{name}:{line}"):
-                self.assertEqual(args[2:], ["true"])
+                self.assertEqual(args[2], "true")
 
 
 class StylisedModeTest(unittest.TestCase):

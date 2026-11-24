@@ -19,21 +19,64 @@ Scene schema (``SCENE_VERSION`` = 1)::
       "month": int,                    # 1–12, drives 3D seasonal foliage colour
       "origin": {"lat": .., "lng": ..},# projection origin (WGS-84)
       "bounds": {"min_x","min_y","max_x","max_y"},   # metres, scene extent
+      "focus": {"min_x","min_y","max_x","max_y"} | None,
+                                       # the design's own extent: outline,
+                                       #   placed plants, structures, padded,
+                                       #   with no ±25 m floor. What the orbit
+                                       #   frames (src/scene_views.py, V3.43);
+                                       #   None = frame `bounds`
+      "views": {"street": {"eye": [x, y], "look": [x, y], "bearing": deg,
+                           "behind"?: true},
+                "house": {"eye": [x, y], "look": [x, y]}},
+                                       # street: where a neighbour stands,
+                                       #   outside the edge facing the street,
+                                       #   clear of trunks. The sidewalk camera
+                                       #   and the walker start there; behind
+                                       #   when a building hides the planting
+                                       #   or all of it is at the back (a
+                                       #   back-yard plan), so a window does not
+                                       #   open on it: opening_view. house
+                                       #   (V3.44): at the wall of the building
+                                       #   inside the outline, looking out at
+                                       #   the planting; absent when no
+                                       #   building stands in it. A yard with
+                                       #   no outline uses its own extent and
+                                       #   the building under its pin. {} for an
+                                       #   empty design and for a walk through a
+                                       #   wild community
       "boundary": [[x, y], ...] | None,              # property outline
       "plants": [{plant_id, x, y, height_m, canopy_m, plant_type,
                   foliage_type, scale_factor, spread_factor, spread_rate,
                   growth_curve, color, opacity, health, health_state,
                   common_name, bark_color, fall_color, leaf_size_cm,
                   leaf_shape, leaf_arrangement, growth_form,
-                  existing?, recruit?, drawn?}, ...],
+                  existing?, recruit?, drawn?, gone?, season?}, ...],
+                                       # season (V3.46, src/scene_season.py), on
+                                       #   every plant that is not evergreen:
+                                       #   {look: dry | young | green | turning |
+                                       #   bare | held, t?: 0-1 through young or
+                                       #   turning, up?: the share of its height
+                                       #   a herb coming up stands at}. Absent =
+                                       #   drawn by the month's number, as before
+                                       # gone (V3.43): why a placed plant is
+                                       #   not drawn this year, "shade" or
+                                       #   "short_lived"; opacity is 0 then.
+                                       #   Read standing_plants(), not the list
                                        # drawn: where and how the plant is DRAWN
                                        #   when that is not its own x/y/height,
                                        #   decided once for the viewer and the
                                        #   wildlife alike. A vine's habit and
                                        #   host (src/vine_habit.py, V2.89); a
                                        #   wetland plant's body and the water
-                                       #   under it (src/pond_habit.py, V2.90).
-                                       #   Both carry x, y, height_m, canopy_m
+                                       #   under it (src/pond_habit.py, V2.90);
+                                       #   a wildflower's own leaves and stems
+                                       #   once its numbers were read
+                                       #   (src/herb_habit.py, V3.48); a
+                                       #   shrub's own stems and leaves
+                                       #   (src/shrub_habit.py, V3.49); a
+                                       #   tree's own crown
+                                       #   (src/tree_habit.py, V3.50).
+                                       #   All carry x, y, height_m, canopy_m
                                        # bark_color / fall_color / leaf_size_cm:
                                        #   botanical morphology (schema v47) —
                                        #   the species' real trunk colour, its
@@ -54,7 +97,10 @@ Scene schema (``SCENE_VERSION`` = 1)::
                                        #   — src.succession_engine, the growing
                                        #   canopy shading understory out over
                                        #   the timeline (opacity already folds
-                                       #   it in: dead → 0, declining dimmed)
+                                       #   it in: dead → 0, declining dimmed).
+                                       #   Since V3.43 opacity carries nothing
+                                       #   else: 1 standing, 0.5–1 declining,
+                                       #   0 gone
                                        # foliage_type: deciduous|evergreen|
                                        #   herbaceous|semi-evergreen (3D crown
                                        #   shape + seasonal colour)
@@ -63,8 +109,48 @@ Scene schema (``SCENE_VERSION`` = 1)::
                                        # spread_factor: ≥1.0 colony widening
                                        # spread_rate: 0–1 aggressiveness (3D
                                        #   continuous year-by-year spread)
-      "buildings": [{ring: [[x, y], ...], height_m, kind}, ...],
+      "buildings": [{ring: [[x, y], ...], height_m, kind, roof?}, ...],
                                        # kind: "building" | "canopy"
+                                       # roof (V3.45), on a building: {"form":
+                                       #   "gable", "ridge": [[x, y], [x, y]],
+                                       #   "rise_m"} on a clean four-corner
+                                       #   footprint of house size, its ridge
+                                       #   AT height_m; else {"form": "flat"}
+      "ground": "pale" | "meadow",     # V3.45 (src/scene_site.py, the owner's
+                                       #   D3): what the ground is where nothing
+                                       #   is drawn. pale for a yard, meadow for
+                                       #   a walk through a wild community. A
+                                       #   scene without it draws meadow
+      "surfaces": [{kind, ring: [[x, y], ...], color?, label?, base?}, ...],
+                                       # the ground's surfaces, bottom first:
+                                       #   the outline's inside as lawn (base),
+                                       #   then every drawn area that lies flat.
+                                       #   kind: scene_site.KINDS; "custom"
+                                       #   carries the person's color
+      "lines": [{kind, points: [[x, y], ...], width_m, height_m}, ...],
+                                       # kind: hedge | fence | living_fence |
+                                       #   windbreak. height_m is an estimate by
+                                       #   kind: no design records one
+      "season": {snow: bool, ground: snow | dormant | waking | green |
+                 turning, leaves, herbs, known: bool, basis: str},
+                                       # V3.46: the season, decided once from
+                                       #   the region pack's frost dates. basis
+                                       #   is the sentence that says so
+      "timeline_notes": {when, about, notes: [{kind: shade | short_lived |
+                 self_seeded, text, plants: [[name, n]], kinds, spots: [[x, y]],
+                 where?, lost?, of?, struggling?, by?}]} | None,
+                                       # V3.46 (src/scene_timeline.py): what
+                                       #   the years took, by the drawn area
+                                       #   the plants are in, and what shades
+                                       #   them. None at year 0 and when
+                                       #   nothing is lost
+      "street": {bearing, how: "told" | "measured", sidewalk?: ring,
+                 road?: ring, roads?: [{points, width_m, name}]} | None,
+                                       # a pale sidewalk and road on the street
+                                       #   side, ONLY where that side is known
+                                       #   (None where it is assumed, and with
+                                       #   no outline). roads: the recorded
+                                       #   lines, where there are any
       "structures": [{x, y, struct_id, name, size_m, height_m}, ...],
       "terrain": {rows, cols, min_x, min_y, max_x, max_y, base_m,
                   heights: [[m above base_m, row 0 = north], ...]} | None,
@@ -80,11 +166,12 @@ Plant sizing/presence comes from :mod:`src.scene3d` so the 3D scene matches
 the 2D growth timeline exactly; colours come from the shared
 ``_TYPE_COLORS`` so the 3D plants match the map's markers.
 
-Not yet in the scene (future versions): hedgerow lines, annotation labels.
+Not yet in the scene (future versions): annotation labels.
 """
 
 from __future__ import annotations
 
+import zlib
 from datetime import datetime, timedelta
 from typing import Callable, Optional
 
@@ -171,6 +258,27 @@ def _species_of(plant: dict) -> str:
     parts = (plant.get("scientific_name") or "").replace("'", " ").split()
     return " ".join(parts[:2]).lower() if len(parts) >= 2 else ""
 
+def _still_there(plant_id, lat, lng, share: float) -> bool:
+    """Whether this one plant of a short-lived kind still stands when ``share``
+    of them do (V3.43). A fixed number per plant against a falling share, so a
+    plant gone one year is gone every year after it."""
+    if share >= 1.0:
+        return True
+    key = f"{plant_id}:{round(float(lat), 7)}:{round(float(lng), 7)}"
+    return zlib.crc32(key.encode("utf-8")) / 4294967296.0 < share
+
+
+def standing_plants(scene: dict) -> list:
+    """The scene's plants that are drawn: not shaded out, not lived out.
+
+    The one read side for "what is in this yard this year" (V3.43). The animals
+    and the cards had read every plant in the scene, so a bee was sent to a
+    plant the same scene had marked dead, and "recorded as food for N kinds"
+    counted plants no longer there."""
+    return [p for p in (scene or {}).get("plants") or []
+            if not p.get("gone") and p.get("health_state") != "dead"]
+
+
 _MONTHS = {
     "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7,
     "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
@@ -183,6 +291,9 @@ def _foliage_color(plant: dict) -> str:
     marker = plant.get("marker_color")
     if marker:
         return marker
+    # The species' own, read off its photographs (schema v101, V3.51).
+    if plant.get("leaf_color"):
+        return plant["leaf_color"]
     genus = _genus_of(plant)
     if genus in _SILVER_FOLIAGE_GENERA:
         return "#9aa890"
@@ -223,7 +334,10 @@ def _fruit_window(plant: dict) -> dict:
     Only fleshy-fruited species carry a ``fruit_color`` (curated), so dry-fruited
     plants (acorns, cones, catkins) never grow berries even if they 'fruit'."""
     fs, fe = _bloom_months(plant.get("fruit_period"))
-    return {"fruit_start": fs, "fruit_end": fe}
+    # The last month the fruit is still on the bare twigs (schema v104, V3.63):
+    # 0 when it goes with the season.
+    held = int(plant.get("fruit_held_until") or 0) if fs else 0
+    return {"fruit_start": fs, "fruit_end": fe, "fruit_held_until": held}
 
 
 def _boundary_ring(project: dict) -> Optional[list]:
@@ -326,11 +440,73 @@ def _wind_block(project, when, year, bounds, proj):
         return None
 
 
+def _succession_engine(memo, placed_recs, get_plant, casters, origin):
+    """The shade simulation for these plants, from ``memo`` when it was made
+    for the same ones (V3.44).
+
+    ``SuccessionEngine`` keeps what it has worked out per plant and year, and
+    a new engine for every scene threw that away: on a 367-plant lot a scene
+    cost 0.24 s at year 0 and 0.86 s at year 25, and stepping from year 24 to
+    25 cost the same as starting at 25. The key is everything the engine is
+    built from, so an edit to the design, a moved pin or another ``get_plant``
+    makes a new one.
+    """
+    from src.succession_engine import SuccessionEngine
+    if memo is None:
+        return SuccessionEngine(placed_recs, get_plant=get_plant,
+                                static_casters=casters, origin=origin)
+    key = (tuple((r.get("plant_id"), r.get("lat"), r.get("lng"),
+                  r.get("planted_year")) for r in placed_recs),
+           repr(casters), origin)
+    held = memo.get("succession")
+    if held and held[0] == key and held[1] is get_plant:
+        return held[2]
+    engine = SuccessionEngine(placed_recs, get_plant=get_plant,
+                              static_casters=casters, origin=origin)
+    memo["succession"] = (key, get_plant, engine)
+    return engine
+
+
+def _timeline_notes(memo, engine, year, placed, plants, surfaces, buildings,
+                    boundary, focus, street, house):
+    """``scene["timeline_notes"]`` (:mod:`src.scene_timeline`), kept in
+    ``memo`` per year while the shade simulation and the ground are what they
+    were: naming what shades each lost plant is the one part of a scene that
+    costs more with every plant lost. Best-effort, like the simulation."""
+    if int(year) <= 0 or not placed:
+        return None
+    try:
+        from src import scene3d_stops, scene_timeline
+        words = scene3d_stops.when_words(year)
+        when = ("the " if not words.startswith("Year") else "") + words.lower()
+
+        def build():
+            return scene_timeline.notes(
+                year=year, when_words=when, engine=engine, placed=placed,
+                plants=plants, surfaces=surfaces, buildings=buildings,
+                boundary=boundary, focus=focus,
+                street_bearing=street[0] if street[1] else None, house=house)
+        if memo is None or engine is None:
+            return build()
+        key = (year, repr(surfaces), repr(boundary), street,
+               tuple((p.get("gone"), p.get("health_state"))
+                     for p in placed.values()), len(plants))
+        held = memo.get("timeline")
+        if not held or held[0] is not engine:
+            held = memo["timeline"] = (engine, {})
+        if key not in held[1]:
+            held[1][key] = build()
+        return held[1][key]
+    except Exception:                                      # noqa: BLE001
+        return None
+
+
 def build_scene(project: dict, *, year: int = 0,
                 get_plant: Optional[Callable] = None,
                 elevation: Optional[dict] = None,
                 when: Optional[datetime] = None,
-                wind: Optional[bool] = True) -> dict:
+                wind: Optional[bool] = True,
+                memo: Optional[dict] = None) -> dict:
     """Build the Scene JSON for ``project`` at growth-timeline ``year``.
 
     ``get_plant`` is injectable for tests (defaults to the DB);
@@ -339,6 +515,11 @@ def build_scene(project: dict, *, year: int = 0,
     ``wind`` set False skips the site's wind block (:mod:`src.wind_scene`),
     which is the one part of the scene that can touch the DB cache — tests and
     headless callers that want a pure function pass False.
+    ``memo`` (V3.44) is a dict the caller keeps between calls for one design:
+    the shade simulation is kept in it and reused while the placed plants, the
+    shade casters and the origin are what they were, so a window moving its
+    year slider pays for each year once. Without it every call starts over,
+    as before.
     """
     if get_plant is None:
         from src.db.plants import get_plant as _gp
@@ -359,7 +540,8 @@ def build_scene(project: dict, *, year: int = 0,
         return cache[pid]
 
     def _plant_scene_dict(plant_id, common_name, plant, x, y, st, *,
-                          opacity, health, health_state, recruit=False):
+                          opacity, health, health_state, recruit=False,
+                          gone=None):
         """One plant's Scene JSON record. Shared by placed plants and the
         regeneration recruits so the two can never drift. ``st`` is a
         ``scene3d.plant_3d_state`` result; ``plant`` the DB record.
@@ -449,6 +631,28 @@ def build_scene(project: dict, *, year: int = 0,
             # single-leadered paper birch were the same sprite.
             "branching": plant.get("branching") or "",
             "growth_form": plant.get("growth_form") or "",
+            # Whether leaves sit at the ground too, and whether the leaf and
+            # habit numbers were read or are the seeder's estimate (V3.48):
+            # what src/herb_habit.py decides a wildflower's body from.
+            "basal_rosette": 1 if plant.get("basal_rosette") else 0,
+            "stem_leaf_nodes": plant.get("stem_leaf_nodes"),
+            # The stems a grown shrub sends up (schema v99, V3.49): with the
+            # leaf numbers, what src/shrub_habit.py decides a shrub's body from.
+            "woody_stems": plant.get("woody_stems"),
+            # A tree's crown as read (schema v100, V3.50): src/tree_habit.py.
+            "crown_shape": plant.get("crown_shape") or "",
+            "crown_clear": plant.get("crown_clear"),
+            "limb_habit": plant.get("limb_habit") or "",
+            # A graminoid's blades and seed head as read (schema v101,
+            # V3.51): what src/grass_habit.py decides its body from.
+            "blade_width_mm": plant.get("blade_width_mm"),
+            "blade_habit": plant.get("blade_habit") or "",
+            "head_length_cm": plant.get("head_length_cm"),
+            "head_width_cm": plant.get("head_width_cm"),
+            "head_count": plant.get("head_count"),
+            "head_color": plant.get("head_color") or "",
+            "head_attitude": plant.get("head_attitude") or "",
+            "leaf_data_source": plant.get("leaf_data_source") or "",
             "opacity": opacity,
             "health": health,
             "health_state": health_state,
@@ -458,6 +662,11 @@ def build_scene(project: dict, *, year: int = 0,
             # out (V2.24). Additive flag — the viewer may style it, old viewers
             # just draw it as the young plant it is.
             d["recruit"] = True
+        if gone:
+            # Why a placed plant is not drawn this year (V3.43): "shade" (the
+            # succession engine's dead) or "short_lived" (a pioneer past its
+            # years). Additive; see standing_plants().
+            d["gone"] = gone
         return d
 
     # ── Temporal succession (V2.21) ──────────────────────────────────────────
@@ -468,6 +677,8 @@ def build_scene(project: dict, *, year: int = 0,
     # withered render. Best-effort — a data hiccup must never break the scene.
     health_by_index: dict = {}
     recruit_list: list = []
+    engine = None
+    placed_scene: dict = {}      # the engine's plant index -> its scene record
     try:
         from src.succession_engine import (
             SuccessionEngine, static_casters_from_project)
@@ -476,10 +687,9 @@ def build_scene(project: dict, *, year: int = 0,
                         for f in project.get("features", []))
                        if r is not None]
         if placed_recs:
-            engine = SuccessionEngine(
-                placed_recs, get_plant=get_plant,
-                static_casters=static_casters_from_project(project),
-                origin=(lat0, lng0))
+            engine = _succession_engine(
+                memo, placed_recs, get_plant,
+                static_casters_from_project(project), (lat0, lng0))
             for info in engine.evaluate_year(int(year))["plants"]:
                 health_by_index[info["index"]] = info
             # Regeneration (V2.24): self-seeders that fill the gaps left by
@@ -488,6 +698,7 @@ def build_scene(project: dict, *, year: int = 0,
     except Exception:  # noqa: BLE001 — succession is best-effort
         health_by_index = {}
         recruit_list = []
+        engine = None
     _placed_i = 0
 
     for f in project.get("features", []):
@@ -511,19 +722,32 @@ def build_scene(project: dict, *, year: int = 0,
             _placed_i += 1
             health = info["health"] if info else 1.0
             health_state = info["state"] if info else "healthy"
-            presence = st["presence_opacity"]
+            # `presence_opacity` (succession.presence_factor) is one number
+            # with two meanings, and the 2D timeline's faint marker suits both.
+            # A solid cannot be 20% there, and until V3.43 the viewer blended
+            # the plant toward the sky instead: pale ghosts. So in 3D a climax
+            # species "starting faint" is drawn whole (a young oak is all there,
+            # only small, and its size already says so), and a pioneer "fading
+            # to a remnant" is fewer plants: the share still standing.
+            gone = None
             if health_state == "dead":
-                opacity = 0.0
+                opacity, gone = 0.0, "shade"
+            elif (st.get("successional_role") == "pioneer"
+                  and not _still_there(rec["plant_id"], rec["lat"], rec["lng"],
+                                       st["presence_opacity"])):
+                opacity, gone = 0.0, "short_lived"
             elif health_state == "declining":
-                opacity = round(presence * (0.5 + 0.5 * health), 3)
+                opacity = round(0.5 + 0.5 * health, 3)
             else:
-                opacity = presence
+                opacity = 1.0
             # Succession health (V2.21) folds into opacity above; the shared
             # builder emits the rest of the record (genus geometry, scale/spread
             # tier, foliage colour, seasonal flower/berry layer).
             plants.append(_plant_scene_dict(
                 rec["plant_id"], rec.get("common_name", ""), plant, x, y, st,
-                opacity=opacity, health=health, health_state=health_state))
+                opacity=opacity, health=health, health_state=health_state,
+                gone=gone))
+            placed_scene[_placed_i - 1] = plants[-1]
             continue
 
         if etype == "existing_tree" and geom.get("type") == "Point":
@@ -587,11 +811,16 @@ def build_scene(project: dict, *, year: int = 0,
             if len(ring) > 1 and ring[0] == ring[-1]:
                 ring = ring[:-1]
             if len(ring) >= 3:
+                # A footprint is a tree's crown only when it says so, the
+                # way src/shade.py reads it. Every scanned or drawn building is
+                # a canopy_footprint too, and until V3.43 each was sent as a
+                # canopy: the house a see-through green box.
+                crown = (props.get("caster_kind") == "tree"
+                         or props.get("shape_type") == "Tree canopy")
                 buildings.append({
                     "ring": ring,
                     "height_m": float(props.get("height_m")),
-                    "kind": ("canopy" if etype == "canopy_footprint"
-                             else "building"),
+                    "kind": "canopy" if crown else "building",
                 })
 
         elif etype == "structure" and geom.get("type") == "Point":
@@ -617,9 +846,15 @@ def build_scene(project: dict, *, year: int = 0,
         # advances.
         st = plant_3d_state(plant, rc["lat"], rc["lng"], int(rc["age"]) + 1)
         rx, ry = proj.to_xy(rc["lat"], rc["lng"])
+        # A recruit that has lived out its years is not drawn, by the rule the
+        # placed plants follow above (V3.43).
+        if (st.get("successional_role") == "pioneer"
+                and not _still_there(rc["plant_id"], rc["lat"], rc["lng"],
+                                     st["presence_opacity"])):
+            continue
         plants.append(_plant_scene_dict(
             rc["plant_id"], plant.get("common_name", ""), plant, rx, ry, st,
-            opacity=st["presence_opacity"], health=1.0, health_state="healthy",
+            opacity=1.0, health=1.0, health_state="healthy",
             recruit=True))
 
     boundary_xy = None
@@ -664,6 +899,76 @@ def build_scene(project: dict, *, year: int = 0,
     # (V2.93, F177). Additive; an older viewer draws the mat or bush it did.
     from src.succulent_habit import apply_succulent_habits
     apply_succulent_habits(plants)
+    # A wildflower whose leaves somebody read is drawn from those numbers, at
+    # their size (V3.48, F268). Additive; an older viewer, and a plant whose
+    # numbers are still an estimate, keep the baked figure.
+    from src.herb_habit import apply_herb_habits
+    apply_herb_habits(plants)
+    # And a shrub whose leaves were read and stems counted: its own number of
+    # slender stems, leafy to their ends (V3.49, F268). Additive in the same way.
+    from src.shrub_habit import apply_shrub_habits
+    apply_shrub_habits(plants)
+    # And a tree whose crown was read: its trunks, its bare bole, its limbs
+    # and its outline (V3.50, F268).
+    from src.tree_habit import apply_tree_habits
+    apply_tree_habits(plants)
+    # And a grass, sedge or rush whose blades and seed head were read: its
+    # blades at their size and as they are held, its head by its form
+    # (V3.51, F268). Additive; an unread one keeps the baked tuft.
+    from src.grass_habit import apply_grass_habits
+    apply_grass_habits(plants)
+    # The season (V3.46, F263): how far up a herb is, whether a woody plant is
+    # in leaf, whether snow lies, from the region pack's frost dates. Last,
+    # because a body decides whether a season applies to it. Additive; a
+    # viewer that ignores it draws by the month's number, as before.
+    from src import scene_season
+    props = project.get("properties") or {}
+    season = scene_season.apply_seasons(
+        plants, when or _DEFAULT_WHEN, props.get("site_config"))
+
+    # What the camera frames and where a neighbour stands (V3.43): decided
+    # here, once, for the orbit, the stills and the walker alike.
+    from src import scene_views
+    views = {}
+    house_at = None              # the house's own outline, for the notes
+    focus = scene_views.focus_box(boundary_xy, plants, structures)
+    # A yard with no outline drawn is still a yard (V3.44): the simple app's
+    # usual design is a pin and a bed, and until now it had no street view at
+    # all. Its own extent stands in for the outline. A walk through a wild
+    # community is not a yard: no street, and its walker keeps his centre.
+    yard = boundary_xy
+    if yard is None and "reference_version" not in props:
+        yard = scene_views.extent_ring(focus)
+    if yard:
+        street = scene_views.street_view(
+            yard, plants, buildings, scene_views.street_bearing(project)[0])
+        if street:
+            views["street"] = street
+        # From the house (V3.44): the building in the outline, or the one the
+        # yard's pin stands on when nothing is outlined.
+        site = props.get("site_config") or {}
+        pin = None
+        if site.get("latitude") is not None and site.get("longitude") is not None:
+            pin = proj.to_xy(float(site["latitude"]), float(site["longitude"]))
+        house = scene_views.house_view(boundary_xy, plants, buildings,
+                                       pin=pin, extent=yard)
+        if house:
+            views["house"] = house
+        house_at = scene_views.house_ring(boundary_xy, buildings, pin)
+
+    # What the ground is (V3.45, the owner's D3): the drawn areas, the lines,
+    # the street where its side is known, and a roof hint on each building.
+    from src import scene_site
+    site = scene_site.site_fields(project, proj, boundary_xy, buildings)
+
+    # What the years took, said where and which (V3.46, F263, decision D4):
+    # the shade model's own results, by the drawn area the plants are in.
+    # A walk through a wild community is not a plan: nothing was planned, so
+    # nothing is said to be lost.
+    timeline = None if scene_site.is_walk(project) else _timeline_notes(
+        memo, engine, int(year), placed_scene, plants, site["surfaces"],
+        buildings, boundary_xy, focus, scene_views.street_bearing(project),
+        house_at)
 
     return {
         "version": SCENE_VERSION,
@@ -671,10 +976,15 @@ def build_scene(project: dict, *, year: int = 0,
         "month": (when or _DEFAULT_WHEN).month,
         "origin": {"lat": lat0, "lng": lng0},
         "bounds": bounds,
+        "focus": focus,
+        "views": views,
         "boundary": boundary_xy,
         "plants": plants,
         "buildings": buildings,
         "structures": structures,
+        **site,
+        "season": season,
+        "timeline_notes": timeline,
         "terrain": _terrain_block(elevation, proj),
         "sun": _sun_for(lat0, lng0, when or _DEFAULT_WHEN),
         # Night when the sun is down (V2.12): the 3D view renders a moonlit

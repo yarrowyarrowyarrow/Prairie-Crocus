@@ -169,16 +169,27 @@ function makeFruitTexture(form) {
   return t;
 }
 
-// How big a fruit sprite is drawn, in metres. A cluster form is one sprite
-// carrying several fruits, so it has to be bigger than a single berry or the
-// individual fruits inside it shrink below a pixel.
-const _FRUIT_SIZE = { berry: 0.17, strig: 0.30, raceme: 0.34, cherry: 0.26,
-                      pome: 0.19, hip: 0.21, strawberry: 0.20,
-                      aggregate: 0.20, flat_cluster: 0.28 };
-// …and how many of them a plant wears. A raceme is already eight cherries, so
-// eighteen racemes is a solid purple cloud; single berries need more.
-const _FRUIT_COUNT = { strig: 0.45, raceme: 0.35, cherry: 0.5,
-                       flat_cluster: 0.45, aggregate: 0.7 };
+// How big a fruit sprite is drawn, in metres. Until V3.43 these ran 17 to 34 cm
+// whatever the plant (F117): a wild strawberry's fruit was wider than its
+// leaves, and a bed of them in June was a carpet of red hearts. Each is now the
+// form's usual size times at most 3, the trade the florets made in V2.88: a
+// drawn fruit stands in for several real ones. Estimates by form, until a
+// fruit's own size is recorded (F117); a cluster form is one sprite carrying
+// several fruits, so it is the cluster's size.
+const _FRUIT_SIZE = { berry: 0.03,          // 1 cm, x3
+                      strawberry: 0.04,     // 1.5 cm
+                      aggregate: 0.04,      // a raspberry, 1.5 cm
+                      hip: 0.05,            // 2 cm
+                      cherry: 0.07,         // two or three on their stalks
+                      pome: 0.08,           // 3 to 6 cm
+                      strig: 0.12,          // a hanging string, 6 to 8 cm
+                      flat_cluster: 0.15,   // a flat bunch, 8 to 12 cm
+                      raceme: 0.16 };       // a hanging bunch, 8 to 12 cm
+// …and how many of them a plant wears: more of the small ones, so a shrub in
+// fruit still shows its colour from across the yard.
+const _FRUIT_COUNT = { berry: 3, hip: 1.5, aggregate: 1.5, cherry: 1.5,
+                       strawberry: 0.75, strig: 0.9, raceme: 0.7,
+                       flat_cluster: 0.6 };
 
 function fruitFormOf(p) {
   const f = (p.fruit_form || '').trim();
@@ -186,12 +197,16 @@ function fruitFormOf(p) {
 }
 
 function buildFruit(plants, month, terrain) {
-  const byForm = {};
+  const byForm = {}, carded = [];
   for (const p of plants || []) {
     if (!p.fruit_color) continue;
     if ((p.opacity ?? 1) < 0.25) continue;
-    const fs = p.fruit_start || 0, fe = p.fruit_end || 0;
-    if (!fs || month < fs || month > fe) continue;     // not in fruit this month
+    // A shrub or tree with its own body carries its fruit as cards, and into
+    // the winter where that was read (15d-woodyfruit.js, V3.63).
+    if (window.woodyFruitApplies && woodyFruitApplies(p)) { carded.push(p); continue; }
+    // In its season, or still held after it (15d-woodyfruit.js fruitInSeason).
+    if (window.fruitInSeason ? !fruitInSeason(p, month)
+        : (!p.fruit_start || month < p.fruit_start || month > p.fruit_end)) continue;
     const form = fruitFormOf(p);
     (byForm[form] || (byForm[form] = [])).push(p);
   }
@@ -212,13 +227,12 @@ function buildFruit(plants, month, terrain) {
       const base = p.plant_type === 'tree' ? 18 : p.plant_type === 'shrub' ? 15 : 8;
       const n = Math.max(2, qn(Math.round(base * (_FRUIT_COUNT[form] || 1))));
       // A climbing vine's fruit hangs on its own leaves, up its host (V2.89).
-      const va = (window.vineAnchorsFor && vineAnchorsFor(p))
-        || (window.succulentAnchorsFor && succulentAnchorsFor(p));   // V2.93
+      const va = window.bloomAnchors && bloomAnchors(p, n, month);   // 15b-anchors.js
       for (let k = 0; k < n; k++) {
         const a = ((seed + k * 97) % 628) / 100;
         const rr = rad * (0.2 + 0.7 * (((seed + k * 61) % 100) / 100));
         const yy = gy + h * (0.4 + 0.45 * (((seed + k * 37) % 100) / 100));
-        const q = va && va[(k * 11 + (seed >>> 0)) % va.length];
+        const q = va && va[(k * (va.length % 11 ? 11 : 1) + (seed >>> 0)) % va.length];
         if (q) pos.push(q.x + q.nx * 0.03, q.y - 0.02, q.z + q.nz * 0.03);
         else pos.push(p.x + Math.cos(a) * rr, yy, -(p.y + Math.sin(a) * rr));
         col.push(_c.r, _c.g, _c.b);
@@ -231,8 +245,9 @@ function buildFruit(plants, month, terrain) {
     const mat = clampPointSize(new THREE.PointsMaterial({
       map: FRUIT_TEX[form], color: 0xffffff, vertexColors: true,
       transparent: true, alphaTest: 0.5, depthWrite: false,
-      sizeAttenuation: true, size: _FRUIT_SIZE[form] || 0.19,
+      sizeAttenuation: true, size: _FRUIT_SIZE[form] || 0.03,
     }), 72);
     plantsGroup.add(new THREE.Points(geo, mat));
   }
+  if (carded.length && window.buildWoodyFruit) buildWoodyFruit(carded, month, terrain);
 }

@@ -97,6 +97,7 @@ class FilterLine(QWidget):
         self._flow.setContentsMargins(0, 0, 0, 0)
         self._entries: list = []
         self._chips: list = []
+        self._folded = True
 
         self.filters_button = QToolButton()
         self.filters_button.setCheckable(True)
@@ -161,13 +162,23 @@ class FilterLine(QWidget):
             tip = tips.get(key, "Remove this filter")
             chip.setToolTip(wrapped(tip))
             chip.setAccessibleDescription(tip)
-        self.none_label.setVisible(not entries)
+        self._show_chips()
         cleared = not entries and self.window().focusWidget() is self.clear_button
         self.clear_button.setVisible(bool(entries))
         if cleared:
             # Clear all hides itself once nothing is on; Qt would hand the
             # keyboard to the next control in the window, on the map's toolbar.
             self.filters_button.setFocus(Qt.FocusReason.OtherFocusReason)
+
+    def set_folded(self, folded: bool) -> None:
+        """Chips only while the filters are folded (V3.57)."""
+        self._folded = bool(folded)
+        self._show_chips()
+
+    def _show_chips(self) -> None:
+        for chip in self._chips:
+            chip.setVisible(self._folded)
+        self.none_label.setVisible(self._folded and not self._entries)
 
     def texts(self) -> list:
         """The chips' words without their ×: what is on, as drawn."""

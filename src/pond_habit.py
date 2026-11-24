@@ -70,6 +70,11 @@ def body_for(plant: dict) -> Optional[str]:
     form = (plant.get("growth_form") or "").lower()
     if form == "jointed" or ptype in _GRAMINOIDS:
         return None
+    # A grass-like water plant whose blades and head were read (a cattail, a
+    # bulrush, a bur-reed, sweet flag) is drawn from them (V3.51).
+    from src import grass_habit                          # noqa: PLC0415
+    if grass_habit.form_for(plant):
+        return None
     if form in ("floating", "submerged"):
         return form
     if form == "emergent":
@@ -80,7 +85,12 @@ def body_for(plant: dict) -> Optional[str]:
         return "reed" if ptype == "aquatic" else None
     if ptype != "aquatic":
         return None
-    return "herb" if form in _HERB_FORMS else "reed"
+    if form in _HERB_FORMS:
+        # A herb whose leaves and habit were read is drawn from them by the
+        # leafy body (src/herb_habit.py, V3.67b: water parsnip).
+        from src import herb_habit                       # noqa: PLC0415
+        return None if herb_habit.form_for(plant) else "herb"
+    return "reed"
 
 
 def water_at(x: float, y: float, structures) -> float:

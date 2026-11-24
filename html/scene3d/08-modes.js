@@ -15,8 +15,13 @@ let walkFacing = 0;                       // avatar heading (eased toward motion
 const walkKeys = new Set();
 let walkDragging = false, walkLastX = 0, walkLastY = 0;
 let walkPrevT = 0, walkStride = 0;
-let walkObstacles = [];                    // {x, z, r} trunks/buildings to not walk through
-const _WALK_DIST = 6.5;
+let walkObstacles = [];                    // {x, z, r} trunks, {ring} building walls
+// How far behind the walker the camera follows. The wheel moves it (V3.38,
+// F255): walk mode turns OrbitControls off, which is what owned the wheel,
+// and this was a constant, so the owner's "use the scroll wheel to zoom out
+// or in" did nothing while walking.
+const _WALK_DIST_MIN = 2, _WALK_DIST_MAX = 30;
+let _walkDist = 6.5;
 const _WALKER_R = 0.35;                     // the walker's body radius
 
 // Solid things the walker shouldn't pass through: tree/tall-shrub trunks and
@@ -27,21 +32,34 @@ function buildWalkObstacles() {
   walkObstacles = [];
   const sc = lastSceneObj;
   if (!sc) return;
-  for (const p of sc.plants || []) {
+  for (const p of (sc.plants || []).filter(standing)) {
     const h = p.height_m || 0;
     if (p.plant_type === 'tree') walkObstacles.push({ x: p.x, z: -p.y, r: 0.45 });
     else if (p.plant_type === 'shrub' && h > 1.2) walkObstacles.push({ x: p.x, z: -p.y, r: 0.4 });
   }
+  // A building stops him at its walls (V3.43). It was a circle reaching 90% of
+  // the way to its farthest corner: a 10.8 x 12 m house on a 15 m lot closed
+  // both side yards, and there was no way from the front yard to the back. A
+  // drawn tree canopy is not a wall: he walks under it, as under any crown.
   for (const b of sc.buildings || []) {
     const ring = b.ring || [];
-    if (ring.length < 3) continue;
-    let cx = 0, cy = 0;
-    for (const pt of ring) { cx += pt[0]; cy += pt[1]; }
-    cx /= ring.length; cy /= ring.length;
-    let r = 0;
-    for (const pt of ring) r = Math.max(r, Math.hypot(pt[0] - cx, pt[1] - cy));
-    walkObstacles.push({ x: cx, z: -cy, r: r * 0.9 });
+    if (ring.length >= 3 && b.kind !== 'canopy')
+      walkObstacles.push({ ring: ring.map((pt) => [pt[0], -pt[1]]) });
   }
+}
+// The nearest point on a ring's edge to (x, z), how far it is, and whether
+// (x, z) is inside the ring.
+function ringNearest(ring, x, z) {
+  let best = null, inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [ax, az] = ring[j], [bx, bz] = ring[i];
+    if ((az > z) !== (bz > z) && x < (bx - ax) * (z - az) / (bz - az) + ax) inside = !inside;
+    const ex = bx - ax, ez = bz - az;
+    const t = Math.max(0, Math.min(1, ((x - ax) * ex + (z - az) * ez) / (ex * ex + ez * ez || 1)));
+    const qx = ax + ex * t, qz = az + ez * t, d = Math.hypot(x - qx, z - qz);
+    if (!best || d < best.d) best = { x: qx, z: qz, d };
+  }
+  return { x: best.x, z: best.z, d: best.d, inside };
 }
 // ── Solid things, for the animals too (V2.46) ────────────────────────────────
 //
@@ -70,7 +88,7 @@ function buildCritterObstacles() {
   critterObstacles = [];
   const sc = lastSceneObj;
   if (!sc) return;
-  for (const p of sc.plants || []) {
+  for (const p of (sc.plants || []).filter(standing)) {
     const h = p.height_m || 0;
     if (p.plant_type === 'tree') critterObstacles.push({ x: p.x, z: -p.y, r: 0.32, top: Math.max(1, h) });
     else if (p.plant_type === 'shrub' && h > 1.2) critterObstacles.push({ x: p.x, z: -p.y, r: 0.3, top: h });
@@ -123,7 +141,7 @@ function resolveCritterCollision(pos, radius, target) {
 // building, and returns that z.
 function clearOfCrowns(x, z) {
   const sc = lastSceneObj || {};
-  const solid = (sc.plants || []).filter((p) => (p.height_m || 0) > 1.2)
+  const solid = (sc.plants || []).filter((p) => standing(p) && (p.height_m || 0) > 1.2)
     .map((p) => ({ x: p.x, z: -p.y, r: (p.canopy_m || 1) / 2 + 0.6 }));
   for (const b of sc.buildings || []) {
     const ring = b.ring || [];
@@ -144,6 +162,13 @@ function clearOfCrowns(x, z) {
 function resolveWalkCollision(x, z) {
   for (let pass = 0; pass < 2; pass++) {
     for (const o of walkObstacles) {
+      if (o.ring) {                    // a wall: out through it, or back off it
+        const q = ringNearest(o.ring, x, z);
+        if (!q.inside && q.d >= _WALKER_R) continue;
+        const k = (q.inside ? -1 : 1) * _WALKER_R / (q.d || 1e-4);
+        x = q.x + (x - q.x) * k; z = q.z + (z - q.z) * k;
+        continue;
+      }
       const dx = x - o.x, dz = z - o.z;
       const rr = o.r + _WALKER_R;
       const d2 = dx * dx + dz * dz;
@@ -167,11 +192,21 @@ function resolveWalkCollision(x, z) {
 function groundAt(x, z) { return terrainHeightAt(x, -z, lastTerrain); }
 
 function walkSpawn() {
-  const cx = lastBounds ? (lastBounds.min_x + lastBounds.max_x) / 2 : 0;
-  const cz = lastBounds ? -(lastBounds.min_y + lastBounds.max_y) / 2 : 0;
+  let cx = lastBounds ? (lastBounds.min_x + lastBounds.max_x) / 2 : 0;
+  let cz = lastBounds ? -(lastBounds.min_y + lastBounds.max_y) / 2 : 0;
+  walkYaw = 0;
+  // In a yard he starts where a neighbour stands, facing the planting (V3.43,
+  // scene.views): the centre of the stage is inside the house on most lots. A
+  // walk through a wild community has no street and keeps its centre, which
+  // its layout leaves clear for him (src/reference_layout.py).
+  const st = lastViews && lastViews.street;
+  if (st) {
+    cx = st.eye[0]; cz = -st.eye[1];
+    walkYaw = Math.atan2(st.look[0] - st.eye[0], st.look[1] - st.eye[1]);
+  }
   walkAvatar.position.set(cx, groundAt(cx, cz), cz);
-  walkYaw = 0; walkPitch = 0.22; walkFacing = 0;
-  walkAvatar.rotation.y = 0;
+  walkPitch = 0.22; walkFacing = walkYaw;
+  walkAvatar.rotation.y = walkYaw;
   walkPrevT = 0;
 }
 
@@ -180,8 +215,8 @@ function setWalkHintUI(on) {
   if (!h) return;
   h.style.display = on ? 'block' : 'none';
   if (on) h.innerHTML = '🚶 <b>Walk the garden</b> — WASD / arrows to walk · '
-    + 'right-drag to look around · <b>left-click a plant</b> to learn about it · '
-    + 'the creatures are the wildlife your plants support'
+    + 'right-drag to look around · scroll to zoom · '
+    + '<b>left-click a plant</b> to see who uses it'
     // V2.46: the net is held, and it has a reach. Say so here, because
     // "I clicked the butterfly and nothing happened" is otherwise the
     // first thing that happens. V2.46c: and it no longer asks you to hit a
@@ -213,7 +248,7 @@ function exitWalkMode() {
   if (typeof hideReachRing === 'function') hideReachRing();
   setWalkHintUI(false);
   controls.enabled = true;
-  if (lastBounds) frameCamera(lastBounds); else controls.update();
+  if (lastBounds) frameCamera(frameBox()); else controls.update();
 }
 
 function walkStep(t) {
@@ -269,7 +304,7 @@ function walkStep(t) {
   const head = walkAvatar.position.clone().add(new THREE.Vector3(0, 1.5, 0));
   const cp = Math.cos(walkPitch);
   const cam = new THREE.Vector3(-Math.sin(walkYaw) * cp, Math.sin(walkPitch), Math.cos(walkYaw) * cp);
-  const desired = head.clone().addScaledVector(cam, _WALK_DIST);
+  const desired = head.clone().addScaledVector(cam, _walkDist);
   const gy = groundAt(desired.x, desired.z) + 0.4;
   if (desired.y < gy) desired.y = gy;          // don't clip through terrain
   camera.position.lerp(desired, Math.min(1, dt * 8));
@@ -293,6 +328,18 @@ renderer.domElement.addEventListener('pointerdown', (e) => {
   walkDragging = true; walkLastX = e.clientX; walkLastY = e.clientY;
 });
 addEventListener('pointerup', () => { walkDragging = false; });
+// Each notch of a mouse wheel (deltaY about 100) is about 16% nearer or
+// farther; a trackpad's small deltas move it smoothly. Not passive, so the
+// page does not scroll as well.
+renderer.domElement.addEventListener('wheel', (e) => {
+  if (!walkMode) return;
+  e.preventDefault();
+  _walkDist = walkZoom(_walkDist, e.deltaY || 0);
+}, { passive: false });
+function walkZoom(dist, deltaY) {
+  const next = dist * Math.exp(deltaY * 0.0015);
+  return Math.max(_WALK_DIST_MIN, Math.min(_WALK_DIST_MAX, next));
+}
 renderer.domElement.addEventListener('pointermove', (e) => {
   if (!walkMode || !walkDragging) return;
   walkYaw -= (e.clientX - walkLastX) * 0.005;
@@ -328,7 +375,7 @@ window.permaSetCinematic = function (on) {
   document.body.classList.toggle('cinematic', cinematic);
   const tip = document.getElementById('plant-tip'); if (tip) tip.style.display = 'none';
   if (cinematic) {
-    if (lastBounds) frameCamera(lastBounds);
+    if (lastBounds) frameCamera(frameBox());
     _cineBaseR = camera.position.distanceTo(controls.target);
     _cinePrevAuto = controls.autoRotate;
     controls.autoRotate = true; controls.autoRotateSpeed = 0.5;
@@ -337,7 +384,7 @@ window.permaSetCinematic = function (on) {
     controls.autoRotate = _cinePrevAuto;
     controls.enableRotate = true; controls.enablePan = true;
     setCinematicCaption('', '');
-    if (lastBounds) frameCamera(lastBounds);
+    if (lastBounds) frameCamera(frameBox());
   }
 };
 // The host sets the lower-third caption for the current beat ("Year 5", "October").
@@ -367,9 +414,23 @@ const _CAMERA_PRESETS = {
 };
 
 window.permaSetCameraPreset = function (name) {
-  const b = lastBounds;
+  const b = frameBox();          // the design, not the 50 m stage (V3.43)
   const P = _CAMERA_PRESETS[name] || _CAMERA_PRESETS.overview;
   if (!b) return;
+  // Where a neighbour stands (scene.views, src/scene_views.py), and for `walk`
+  // a few steps on from there into the yard. The formulas below stood the
+  // sidewalk camera 22 m outside a 37 m lot with a trunk in front of it.
+  const st = lastViews && lastViews.street;
+  if (st && (name === 'sidewalk' || name === 'walk')) {
+    const [ex, ey] = st.eye, [lx, ly] = st.look, len = Math.hypot(lx - ex, ly - ey) || 1;
+    const ux = (lx - ex) / len, uy = (ly - ey) / len, inYard = name === 'walk';
+    const px = inYard ? lx - ux * Math.min(3, len) : ex, py = inYard ? ly - uy * Math.min(3, len) : ey;
+    const tx = inYard ? lx + ux * 4 : lx, ty = inYard ? ly + uy * 4 : ly;
+    camera.position.set(px, groundAt(px, -py) + 1.65, -py);
+    controls.target.set(tx, groundAt(tx, -ty) + 1.0, -ty);
+    controls.update();
+    return;
+  }
   const w = b.max_x - b.min_x, d = b.max_y - b.min_y;
   const g = { b, w, d, r: Math.max(w, d) * 0.75,
               cx: (b.min_x + b.max_x) / 2, cz: -(b.min_y + b.max_y) / 2 };

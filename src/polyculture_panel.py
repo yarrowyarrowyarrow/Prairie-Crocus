@@ -56,12 +56,15 @@ def community_facts(entry: dict) -> str:
     V3.05). Unknown sun or moisture is left out rather than printed as
     "Unknown"."""
     n = int(entry.get("member_count") or 0)
-    parts = [f"{n} plant{'s' if n != 1 else ''}"]
+    kinds = int(entry.get("species_count") or n)
+    parts = [f"{n} plant{'s' if n != 1 else ''}"
+             + (f" of {kinds} kinds" if 1 < kinds < n else "")]
     facets = entry.get("facets") or {}
+    from src.community_filters import facts_word
     for key in ("sun", "moisture"):
         value = facets.get(key)
         if value and value not in ("Unknown", "Mixed"):
-            parts.append(value)
+            parts.append(facts_word(key, value))   # the filters' words, V3.58
     # Members rarely sold at all, counted, so a community you cannot buy is
     # visible as one before it is placed (V3.14).
     hard = len(entry.get("hard_to_find") or ())
@@ -142,47 +145,8 @@ _TREE_MIN_ROWS = 6
 # The community mix scrolls past this many rows instead of growing without end.
 _MIX_ROWS_VISIBLE = 4
 
-# "Group By" lenses for the community library (V1.88). Each key (other than
-# "none") matches a facet from polycultures.get_community_facets(); the panel
-# buckets communities under bold, unselectable category nodes.
-_GROUP_BY_OPTIONS = [
-    ("none",      "No grouping"),
-    ("function",  "By Function"),
-    ("habitat",   "By Habitat"),
-    ("structure", "By Structure"),
-    ("sun",       "By Sun"),
-    ("moisture",  "By Moisture"),
-]
-_GROUP_COMBO_STYLE = (
-    "QComboBox { background: #1e2e1e; color: #c8e6c9; border: 1px solid #2e4a2e; "
-    "border-radius: 3px; padding: 1px 6px; font-size: 12px; }"
-    "QComboBox:hover { border-color: #4a7a4a; }"
-    "QComboBox QAbstractItemView { background: #1e2e1e; color: #c8e6c9; "
-    "border: 1px solid #2e4a2e; selection-background-color: #2e5a2e; }"
-)
-
-# Sort orders for the community library (V2.13). Keys match
-# polycultures.sort_community_ids; label prefix keeps the closed combo legible
-# next to the facet dropdowns.
-_SORT_BY_OPTIONS = [
-    ("best",     "Sort: Best picks first"),     # PR-9 (V3.26), the default
-    ("name",     "Sort: A–Z"),
-    ("members",  "Sort: Most members"),
-    ("wildlife", "Sort: Most wildlife"),
-    ("native",   "Sort: Most native"),
-    ("modified", "Sort: Recently changed"),
-    ("easiest",  "Sort: Easiest to buy"),
-]
-
-# Facet filter dropdowns (V2.13): (facet key, placeholder). Facet keys match
-# polycultures.facet_filter_choices() / the entry["facets"] labels.
-_FACET_FILTER_SPECS = [
-    ("sun",       "Any sun"),
-    ("moisture",  "Any moisture"),
-    ("structure", "Any structure"),
-    ("habitat",   "Any habitat"),
-    ("function",  "Any function"),
-]
+# The library's filters, orders and their words are src/community_filters.py
+# since V3.58; Group by, Structure and four of the seven orders went.
 
 
 def _habitat_combo(placeholder: str, on_change):
@@ -562,12 +526,15 @@ class PolycultureBuilderDialog(QDialog):
         # search, the filters and the list the Browse tab and the Plant
         # Directory show. Until V3.00 this was a checkbox, four single-choice
         # dropdowns and a list of plain strings, filtered here in Python. It
-        # starts on natives only, as the checkbox did, and the layer and
+        # lists the region's catalogue (V3.58), and the layer and
         # functions chosen below lift matching plants to the top.
         from src.plant_picker import PlantPicker
         picker_col = QVBoxLayout()
         picker_col.addWidget(QLabel("<b>Plants</b>"))
-        self.picker = PlantPicker(self, criteria={"native_only": True})
+        from src.plant_filters import catalogue_scope
+        scope = catalogue_scope()        # the region's list (V3.58)
+        self.picker = PlantPicker(self, criteria=None if scope
+                                  else {"native_only": True}, scope=scope)
         self.picker.setMinimumWidth(240)
         picker_col.addWidget(self.picker, 1)
 
@@ -1057,173 +1024,29 @@ class PolyculturePanel(QWidget):
         layout = scroll_column(self)
         layout.setContentsMargins(8, 8, 8, 8)
 
-        # Library title with an inline "show / hide variations" toggle on
-        # the right. State persisted in QSettings; default hidden.
-        settings = QSettings()
-        self._show_variations = settings.value(
-            "plant_communities/show_variations", False, type=bool
-        )
-
-        title_row = QHBoxLayout()
-        title_row.setSpacing(6)
-        title_label = QLabel(
-            "<b>Plant Community Library</b>  "
-            "<span style='color:#90a4ae;font-weight:normal;'>(saved communities)</span>"
-        )
-        # Wraps rather than widening the panel: beside the variations toggle
-        # it needed 454 px at 12 px in DejaVu Sans, in a 424 px panel (V3.03).
-        title_label.setWordWrap(True)
-        title_row.addWidget(title_label, 1)
-        self.variations_toggle_btn = QPushButton(
-            "▾ Hide variations" if self._show_variations else "▸ Show variations"
-        )
-        self.variations_toggle_btn.setStyleSheet(
-            "QPushButton { background: transparent; color: #90a4ae; "
-            "border: 1px solid #2e4a2e; border-radius: 3px; "
-            "padding: 1px 8px; font-size: 12px; }"
-            "QPushButton:hover { color: #c8e6c9; border-color: #4a7a4a; }"
-        )
-        self.variations_toggle_btn.setToolTip(
-            "Show or hide variations (children) of each plant community."
-        )
-        self.variations_toggle_btn.clicked.connect(self._on_toggle_variations)
-        title_row.addWidget(self.variations_toggle_btn)
-        layout.addLayout(title_row)
-
-        # Search box + a compact "Group By" lens dropdown beside it: pivot the
-        # library between a flat list and category folders along an ecological
-        # lens (Habitat / Structure / Sun / Moisture) without losing vertical
-        # space (V1.88). Typing is debounced 200 ms (same rhythm as the Plant
-        # Library) so the batched refresh runs once per pause, not per key.
-        self._group_by = settings.value(
-            "plant_communities/group_by", "none", type=str)
-        self._sort_by = settings.value(
-            "plant_communities/sort_by", "best", type=str)
-        self._search_timer = QTimer(self)
-        self._search_timer.setSingleShot(True)
-        self._search_timer.setInterval(200)
-        self._search_timer.timeout.connect(self._refresh_polyculture_list)
-        search_row = QHBoxLayout()
-        search_row.setSpacing(4)
-        self._search_box = QLineEdit()
-        self._search_box.setPlaceholderText("Search communities...")
-        self._search_box.setAccessibleName("Search communities")
-        self._search_box.setClearButtonEnabled(True)
-        self._search_box.textChanged.connect(
-            lambda _t: self._search_timer.start())
-        search_row.addWidget(self._search_box, 1)
-
-        self._group_combo = QComboBox()
-        self._group_combo.setToolTip(
-            "Group the library by an ecological lens — pivot between\n"
-            "environmental views (Habitat / Sun / Moisture) and spatial\n"
-            "structure (Canopy / Understory / …)."
-        )
-        self._group_combo.setStyleSheet(_GROUP_COMBO_STYLE)
-        self._group_combo.setAccessibleName("Group communities by")
-        for key, label in _GROUP_BY_OPTIONS:
-            self._group_combo.addItem(label, key)
-        _gi = self._group_combo.findData(self._group_by)
-        if _gi >= 0:
-            self._group_combo.setCurrentIndex(_gi)   # before connecting → no early refresh
-        self._group_combo.currentIndexChanged.connect(self._on_group_by_changed)
-        search_row.addWidget(self._group_combo)
-        layout.addLayout(search_row)
-
-        # ── Facet filters + sort (V2.13) ──────────────────────────────────
-        # Same multi-select UX as the Plant Library: OR within a facet, AND
-        # across facets. Values are derived from each community's member
-        # plants (polycultures.get_library_index), so a community shows up
-        # under what it actually is, not what it was named.
-        choices = polycultures.facet_filter_choices()
-        self._facet_combos: dict = {}
-        for facet, placeholder in _FACET_FILTER_SPECS:
-            combo = (_habitat_combo(placeholder, self._refresh_polyculture_list)
-                     if facet == "habitat" else make_multi_combo(
-                         placeholder, {label: label for label in choices[facet]},
-                         on_change=self._refresh_polyculture_list))
-            # Named for a screen reader, which read all five as "combo box"
-            # (V3.02); the placeholder is not a name.
-            combo.setAccessibleName(f"{facet.capitalize()} filter")
-            combo.lineEdit().setAccessibleName(f"{facet.capitalize()} filter")
-            self._facet_combos[facet] = combo
-        self._facet_combos["sun"].setToolTip(
-            "Dominant sun need across the community's members.")
-        self._facet_combos["moisture"].setToolTip(
-            "What most of the community's plants need: dry ground, medium\n"
-            "moisture (neither dry nor wet), or wet ground.")
-        self._facet_combos["structure"].setToolTip(
-            "Tallest vegetation layer the community reaches.")
-        self._facet_combos["habitat"].setToolTip(
-            "Ecoregions where every plant in the community has been recorded,\n"
-            "so it can appear under several. Mixed regions: no one ecoregion\n"
-            "has records of all its plants.")
-        self._facet_combos["function"].setToolTip(
-            "Ecological functions the community serves (from its members'\n"
-            "use tags). A community can serve several.")
-
-        filter_row1 = QHBoxLayout()
-        filter_row1.setSpacing(4)
-        filter_row1.addWidget(self._facet_combos["sun"], 1)
-        filter_row1.addWidget(self._facet_combos["moisture"], 1)
-        layout.addLayout(filter_row1)
-
-        filter_row2 = QHBoxLayout()
-        filter_row2.setSpacing(4)
-        filter_row2.addWidget(self._facet_combos["structure"], 1)
-        filter_row2.addWidget(self._facet_combos["habitat"], 1)
-        layout.addLayout(filter_row2)
-
-        filter_row3 = QHBoxLayout()
-        filter_row3.setSpacing(4)
-        filter_row3.addWidget(self._facet_combos["function"], 1)
-        self._sort_combo = QComboBox()
-        self._sort_combo.setToolTip(
-            "Order the library — alphabetical, biggest communities, most\n"
-            "wildlife supported, most Alberta-native, or recently changed."
-        )
-        self._sort_combo.setStyleSheet(_GROUP_COMBO_STYLE)
-        self._sort_combo.setAccessibleName("Order communities by")
-        for key, label in _SORT_BY_OPTIONS:
-            self._sort_combo.addItem(label, key)
-        _si = self._sort_combo.findData(self._sort_by)
-        if _si >= 0:
-            self._sort_combo.setCurrentIndex(_si)  # before connecting → no early refresh
-        self._sort_combo.currentIndexChanged.connect(self._on_sort_changed)
-        filter_row3.addWidget(self._sort_combo, 1)
-        self._result_count = QLabel("")
-        self._result_count.setStyleSheet("color: #90a4ae; font-size: 12px;")
-        filter_row3.addWidget(self._result_count)
-        layout.addLayout(filter_row3)
-
-        # F220 (V3.12), the owner's ask: communities "containing non native (to
-        # Edmonton) plants not showing up". Remembered, like the sort.
-        # Named by the region pack since V3.24 (ED-3). The setting stores
-        # "1" or "", and reads a V3.12 "edmonton" as on.
+        # The search, the Filters line and the folded filters, the count and
+        # the order: the plant list's shape and words (V3.58,
+        # src/community_filters.py). Gone: the title, Show variations (each
+        # community's arrow opens them), Group by, Structure, the seven-way
+        # sort and, with the region's list as the catalogue, the Habitat tree
+        # and the box for the region's natives with its count of the hidden.
         from src import region
-        from src.native_here import around_tip
+        from src.community_filters import CommunityFilters
+        from src.plant_filters import catalogue_scope
         self._home = region.default()
-        local_row = QHBoxLayout()
-        local_row.setSpacing(6)
-        label = f"{self._home.short} natives only"
-        self._edmonton_only = QCheckBox(label)
-        # On by default where the pack says so (ED-10, V3.26).
-        on = "1" if self._home.defaults.get("local_natives_only") else ""
-        self._edmonton_only.setChecked(bool(QSettings().value(
-            "plant_communities/native_near", on, type=str)))
-        self._edmonton_only.setToolTip(
-            f"Only communities whose every plant is native around "
-            f"{self._home.short}. One plant from elsewhere and the community "
-            "is hidden; its page says which.\n\n"
-            + around_tip(self._home.key))
-        self._edmonton_only.setAccessibleName(label)
-        self._edmonton_only.toggled.connect(self._on_edmonton_only)
-        local_row.addWidget(self._edmonton_only)
-        self._local_hidden = QLabel("")
-        self._local_hidden.setStyleSheet("color: #90a4ae; font-size: 12px;")
-        self._local_hidden.setWordWrap(True)
-        local_row.addWidget(self._local_hidden, 1)
-        layout.addLayout(local_row)
+        self._scoped = bool(catalogue_scope())
+        self._show_variations = False
+        self._group_by = "none"
+        self._filters = CommunityFilters(
+            polycultures.facet_filter_choices(), scoped=self._scoped,
+            habitat_combo=_habitat_combo)
+        self._filters.changed.connect(self._refresh_polyculture_list)
+        self._search_box = self._filters.search_box
+        self._facet_combos = self._filters.combos
+        self._sort_combo = self._filters.order_combo
+        self._result_count = self._filters.count_label
+        self._sort_by = self._filters.order()
+        layout.addWidget(self._filters)
 
         # Polyculture tree (parent polycultures + variations as children)
         self.polyculture_tree = _CommunityTree()
@@ -1818,6 +1641,8 @@ class PolyculturePanel(QWidget):
         search = (self._search_box.text().strip().lower()
                   if hasattr(self, '_search_box') else "")
         group_by = getattr(self, "_group_by", "none")
+        if hasattr(self, "_filters"):
+            self._sort_by = self._filters.order()
 
         # One batched index for the whole refresh (V2.13) — search, facet
         # filters and sorting are pure-Python passes over it; no per-community
@@ -1890,17 +1715,11 @@ class PolyculturePanel(QWidget):
             group_node.setExpanded(True)
 
     def _native_near(self) -> str:
-        """The region's key while its "natives only" switch is ticked, else
-        ``""``."""
-        box = getattr(self, "_edmonton_only", None)
+        """The region's key when its list is the catalogue (V3.58), else
+        ``""``. It had been a box to tick, on by default."""
         home = getattr(self, "_home", None)
-        return home.key if (box is not None and box.isChecked()
+        return home.key if (getattr(self, "_scoped", False)
                             and home is not None) else ""
-
-    def _on_edmonton_only(self, checked: bool):
-        QSettings().setValue("plant_communities/native_near",
-                             "1" if checked else "")
-        self._refresh_polyculture_list()
 
     def _active_facet_filters(self) -> dict:
         """Facet name → checked labels, for facets with anything checked."""
@@ -1917,9 +1736,10 @@ class PolyculturePanel(QWidget):
         roles_summary = ", ".join(
             f"{name} ({(role or '').replace('_', ' ')})"
             for name, role in entry["members_brief"][:5])
-        if entry["member_count"] > 5:
-            roles_summary += f", +{entry['member_count'] - 5} more"
-        return (f"{entry['name']}\n{(entry['description'] or '')[:120]}"
+        if len(entry["members_brief"]) > 5:
+            roles_summary += f", +{len(entry['members_brief']) - 5} more"
+        return (f"{entry['name']}\n{community_facts(entry)}"
+                f"\n{(entry['description'] or '')[:120]}"
                 f"\n\nMembers: {roles_summary}")
 
     def _make_community_item(self, index, cid, passinfo, filtering):
@@ -1927,7 +1747,11 @@ class PolyculturePanel(QWidget):
         variations nested. When the parent only got in because a variation
         matched, just the matching variations are shown (and expanded)."""
         entry = index[cid]
-        item = QTreeWidgetItem([entry["name"], community_facts(entry)])
+        # Names only since V3.60 (the owner: the facts beside the names were
+        # "not very useful/necessary for selecting them"); they stay on the
+        # community's page and in the tooltip, and sun is a filter. The empty
+        # second column takes a few pixels (two_line_rows.fit).
+        item = QTreeWidgetItem([entry["name"], ""])
         item.setData(0, Qt.ItemDataRole.UserRole, cid)
         item.setToolTip(0, self._community_tooltip(entry))
         item.setForeground(1, QColor(_FACTS_GREY))
@@ -1939,8 +1763,7 @@ class PolyculturePanel(QWidget):
             child_ids = [k for k in child_ids
                          if not index[k]["not_around"].get(near)]
         for kid in child_ids:
-            child_item = QTreeWidgetItem([index[kid]["name"],
-                                          community_facts(index[kid])])
+            child_item = QTreeWidgetItem([index[kid]["name"], ""])
             child_item.setForeground(1, QColor(_FACTS_GREY))
             child_item.setData(0, Qt.ItemDataRole.UserRole, kid)
             child_item.setToolTip(0, self._community_tooltip(index[kid]))
@@ -1965,38 +1788,18 @@ class PolyculturePanel(QWidget):
         if clear_others:
             for combo in self._facet_combos.values():
                 combo.set_checked_keys([])
-        # Keys since V3.14: the habitat dropdown is the ecoregion tree.
-        self._facet_combos["habitat"].set_checked_keys(keys)
+        # Keys since V3.14: the habitat dropdown is the ecoregion tree. With
+        # the region's list as the catalogue there is none (V3.58): the list
+        # is already the region's communities.
+        if "habitat" in self._facet_combos:
+            self._facet_combos["habitat"].set_checked_keys(keys)
+        self._filters._refresh_chips()
         self._refresh_polyculture_list()
 
     def clear_filters(self):
         """Uncheck every facet filter (search text and grouping untouched)."""
         for combo in self._facet_combos.values():
             combo.set_checked_keys([])
-        self._refresh_polyculture_list()
-
-    def _on_sort_changed(self, _idx=0):
-        """Re-order the library by the chosen sort key and persist it."""
-        self._sort_by = self._sort_combo.currentData() or "best"
-        QSettings().setValue("plant_communities/sort_by", self._sort_by)
-        self._refresh_polyculture_list()
-
-    def _on_group_by_changed(self, _idx=0):
-        """Pivot the library to a new grouping lens and rebuild the tree."""
-        self._group_by = self._group_combo.currentData() or "none"
-        QSettings().setValue("plant_communities/group_by", self._group_by)
-        self._refresh_polyculture_list()
-
-    def _on_toggle_variations(self):
-        """Flip the show-variations preference and re-render the tree."""
-        self._show_variations = not self._show_variations
-        QSettings().setValue(
-            "plant_communities/show_variations", self._show_variations
-        )
-        self.variations_toggle_btn.setText(
-            "▾ Hide variations" if self._show_variations
-            else "▸ Show variations"
-        )
         self._refresh_polyculture_list()
 
     def _build_description_toggle_btn(self) -> QPushButton:
@@ -2081,11 +1884,13 @@ class PolyculturePanel(QWidget):
     def _on_list_choose(self, index):
         """A finished click or an arrow key onto a community. While this panel
         is placing, the list is a palette: what you choose is placed next."""
+        # A click is looking, in both states since V3.60: while placing, the
+        # owner clicked other communities and saw nothing, because a click
+        # only changed what the next map click would place (the V2.99
+        # palette). Now it opens the page, and placing stops
+        # (community_flyout); Enter or a double-click places.
         _item, pid = self._community_at(index)
-        if self._armed and pid is not None and (
-                self._armed_mix or pid != self._armed_community_id):
-            self._place_community(pid)
-        elif not self._armed and pid is not None:
+        if pid is not None:
             self.page_requested.emit(int(pid))
 
     #: Set by ``community_flyout.wire``: a chosen community is shown on its

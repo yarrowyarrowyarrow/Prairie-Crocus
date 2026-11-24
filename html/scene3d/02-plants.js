@@ -11,12 +11,22 @@
 // dry-grass accents and fine dark speckle, so the ground reads as meadow
 // rather than a flat colour swatch. Built once; each blob is stamped at the
 // eight wrap offsets too, so the tile repeats seamlessly.
-function makeMeadowTexture() {
+const _MEADOW_GREEN = { base: '#87a56c', seed: 20250621,
+  mottle: ['142,160,88', '112,142,86'], accent: ['158,164,92', '96,124,78'],
+  speck: 'rgba(70,96,60,0.5)' };
+// A dormant meadow: last year's thatch, before green-up and after the frost.
+// Its own painting (V3.46). Until then October multiplied the GREEN texture
+// by a straw colour, which gives dark olive, not straw.
+const _MEADOW_DORMANT = { base: '#b6a476', seed: 20251021,
+  mottle: ['198,180,126', '162,146,100'], accent: ['214,200,148', '138,124,88'],
+  speck: 'rgba(104,90,62,0.5)' };
+function makeMeadowTexture(pal) {
+  pal = pal || _MEADOW_GREEN;
   const s = 256, cv = document.createElement('canvas');
   cv.width = cv.height = s;
   const g = cv.getContext('2d');
-  g.fillStyle = '#87a56c'; g.fillRect(0, 0, s, s);
-  const rng = mulberry32(20250621);
+  g.fillStyle = pal.base; g.fillRect(0, 0, s, s);
+  const rng = mulberry32(pal.seed);
   const blob = (x, y, r, rgb, a) => {
     for (const ox of [-s, 0, s]) for (const oy of [-s, 0, s]) {
       const grd = g.createRadialGradient(x + ox, y + oy, 0, x + ox, y + oy, r);
@@ -28,11 +38,11 @@ function makeMeadowTexture() {
   };
   for (let i = 0; i < 46; i++)              // broad warm/cool meadow mottling
     blob(rng() * s, rng() * s, 18 + rng() * 34,
-         rng() < 0.5 ? '142,160,88' : '112,142,86', 0.16 + rng() * 0.18);
+         pal.mottle[rng() < 0.5 ? 0 : 1], 0.16 + rng() * 0.18);
   for (let i = 0; i < 26; i++)              // dry-grass / clover accents
     blob(rng() * s, rng() * s, 5 + rng() * 10,
-         rng() < 0.6 ? '158,164,92' : '96,124,78', 0.12 + rng() * 0.14);
-  g.fillStyle = 'rgba(70,96,60,0.5)';       // fine soil/shadow speckle
+         pal.accent[rng() < 0.6 ? 0 : 1], 0.12 + rng() * 0.14);
+  g.fillStyle = pal.speck;                  // fine soil/shadow speckle
   for (let i = 0; i < 420; i++) {
     g.beginPath();
     g.arc(rng() * s, rng() * s, 0.5 + rng() * 0.9, 0, Math.PI * 2);
@@ -93,11 +103,10 @@ function ensureGroundMat() {
   return GROUND_MAT;
 }
 
-// A second cached material for snow, plus a seasonal picker: deep winter
-// (Nov–Mar) lays snow on the ground; the Oct / Apr shoulders tint the meadow
-// toward straw / a waking green rather than swapping it. Driven by the scene
-// month — the same signal the plants' seasonalColor uses — so ground, foliage
-// and bare branches turn together.
+// A second cached material for snow and a third for the dormant meadow, plus
+// a seasonal picker. What the ground is doing is the scene's to say
+// (seasonGround, 01d-season.js: scene.season.ground, or the month for a scene
+// that does not say), so ground, foliage and bare branches turn together.
 let GROUND_SNOW_MAT = null;
 function ensureGroundSnowMat() {
   if (!GROUND_SNOW_MAT)
@@ -105,14 +114,22 @@ function ensureGroundSnowMat() {
       map: makeSnowTexture(), roughness: 0.82 });
   return GROUND_SNOW_MAT;
 }
+let GROUND_DORMANT_MAT = null;
+function ensureGroundDormantMat() {
+  if (!GROUND_DORMANT_MAT)
+    GROUND_DORMANT_MAT = new THREE.MeshStandardMaterial({
+      map: makeMeadowTexture(_MEADOW_DORMANT), roughness: 1 });
+  return GROUND_DORMANT_MAT;
+}
+// .color multiplies the texture: white = the painting untouched. Waking is the
+// dormant painting with green coming into it; turning is the green one yellowing.
+const _MEADOW_TINT = { waking: 0xdfe8c0, turning: 0xe6dca6 };
 function groundMatFor(month) {
-  const m = month || 0;
-  if (m >= 11 || m <= 3) return ensureGroundSnowMat();   // snow on the ground
-  const mat = ensureGroundMat();
-  // .color multiplies the texture: white = untouched growing-season green.
-  if (m === 10) mat.color.setHex(0xbfa878);              // October straw
-  else if (m === 4) mat.color.setHex(0xc7cba2);          // April, still waking
-  else mat.color.setHex(0xffffff);
+  const g = seasonGround(month);
+  if (g === 'snow') return ensureGroundSnowMat();        // snow on the ground
+  const asleep = g === 'dormant' || g === 'waking';
+  const mat = asleep ? ensureGroundDormantMat() : ensureGroundMat();
+  mat.color.setHex(_MEADOW_TINT[g] || 0xffffff);
   return mat;
 }
 
@@ -153,7 +170,10 @@ function buildGround(group, sc) {
     }
   }
   geo.computeVertexNormals();
-  const mesh = new THREE.Mesh(geo, groundMatFor(sc.month));
+  // Pale where nothing is recorded (a yard, the owner's D3: 02c-site.js);
+  // meadow for a walk and for any scene that does not say.
+  const pale = typeof sitePaleGround === 'function' ? sitePaleGround(sc) : null;
+  const mesh = new THREE.Mesh(geo, pale || groundMatFor(sc.month));
   mesh.name = 'ground';
   mesh.receiveShadow = true;
   group.add(mesh);
@@ -170,64 +190,9 @@ function buildGround(group, sc) {
 // to make it look full works against the thing the view is for. Texture is the
 // right place to say "there is lawn here"; geometry is not.
 
-// Draped over the ground (V3.04): each edge cut into steps of a metre, each
-// 12 cm above the ground under it. A ring at a flat 12 cm ran under a slope.
-function buildBoundary(group, ring, terrain) {
-  if (!ring || ring.length < 3) return;
-  const pts = [], closed = ring.concat([ring[0]]);
-  for (let i = 0; i + 1 < closed.length; i++) {
-    const [x0, y0] = closed[i], [x1, y1] = closed[i + 1];
-    const n = terrain ? Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0))) : 1;
-    for (let k = 0; k < n; k++) {
-      const x = x0 + (x1 - x0) * k / n, y = y0 + (y1 - y0) * k / n;
-      pts.push(new THREE.Vector3(x, terrainHeightAt(x, y, terrain) + 0.12, -y));
-    }
-  }
-  pts.push(pts[0].clone());
-  const line = new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints(pts),
-    new THREE.LineBasicMaterial({ color: 0xf9a825 }));
-  line.name = 'boundary';
-  group.add(line);
-}
-
-// ── buildings / footprints ─────────────────────────────────────────────────
-
-// Static footprints (spec idea 2): extrude each ring, then merge all same-kind
-// geometries into one mesh so N buildings cost ≤2 draw calls. The −90° rotation
-// is baked into each geometry (so merged parts share orientation) rather than
-// set on the mesh: shape (x,y) → (x, −z), extrude depth → +y. On a slope
-// (V3.04) each stands on the lowest ground under its ring, so no side hangs in
-// the air, and keeps its height above the highest, so none is buried.
-function buildBuildings(group, buildings, terrain) {
-  const byKind = { building: [], canopy: [] };
-  for (const bld of buildings || []) {
-    const ring = bld.ring || [];
-    if (ring.length < 3) continue;
-    const shape = new THREE.Shape(ring.map(p => new THREE.Vector2(p[0], p[1])));
-    const hs = ring.map(p => terrainHeightAt(p[0], p[1], terrain));
-    const lo = Math.min(...hs), hi = Math.max(...hs);
-    const geo = new THREE.ExtrudeGeometry(shape, {
-      depth: Math.max(0.3, bld.height_m || 3) + (hi - lo), bevelEnabled: false });
-    geo.rotateX(-Math.PI / 2);
-    geo.translate(0, lo, 0);
-    byKind[bld.kind === 'canopy' ? 'canopy' : 'building'].push(geo);
-  }
-  const mats = {
-    building: new THREE.MeshStandardMaterial({ color: 0xb0a18c, roughness: 0.9 }),
-    canopy: new THREE.MeshStandardMaterial({ color: 0x4e6e52, roughness: 1,
-                                             transparent: true, opacity: 0.85 }),
-  };
-  for (const kind of ['building', 'canopy']) {
-    const geos = byKind[kind];
-    if (!geos.length) continue;
-    const merged = geos.length === 1 ? geos[0] : mergeGeometries(geos, false);
-    const mesh = new THREE.Mesh(merged, mats[kind]);
-    mesh.name = kind + 's';
-    mesh.castShadow = mesh.receiveShadow = true;
-    group.add(mesh);
-  }
-}
+// The outline (buildBoundary), the buildings (buildBuildings) and everything
+// else that lies on the ground are in 02c-site.js since V3.45: this file was
+// at 687 of its 700 lines, and they belong with the surfaces drawn there.
 
 // ── plants (procedural instanced archetypes) ───────────────────────────────
 
@@ -291,7 +256,7 @@ function setInst2(mesh, i, x, h0, z, sx, sy, sz, rotY, color) {
 
 function fadeColor(col, opacity) {
   const o = Math.max(0, Math.min(1, opacity ?? 1));
-  return col.clone().lerp(_skyCol, 1 - o);
+  return col.clone().lerp(_dryCol, 1 - o);   // straw, not sky (V3.43)
 }
 
 // Plant materials, their GPU wind sway and their surface detail (bark grain,
@@ -568,10 +533,10 @@ function shrubProfileFor(p) {
 // to the neutral one, silently losing the species' identity).
 const BLADE_CLASSES = ['narrow', 'broad', 'cut', 'compound'];
 const _COMPOUND_SHAPES = ['trifoliate', 'compound_pinnate', 'compound_palmate',
-                          'bipinnate'];
+                          'bipinnate', 'ternate'];
 const _NARROW_SHAPES = ['linear', 'strap', 'needle', 'awl', 'scale',
                         'lanceolate'];
-const _CUT_SHAPES = ['lobed', 'pinnatifid', 'sagittate'];
+const _CUT_SHAPES = ['lobed', 'pinnatifid', 'sagittate', 'palmately_lobed'];
 function bladeClassFor(leafShape) {
   const sh = (leafShape || '').toLowerCase();
   if (_COMPOUND_SHAPES.indexOf(sh) >= 0) return 'compound';

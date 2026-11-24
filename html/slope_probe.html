@@ -57,6 +57,16 @@ function scene(terrain) {
     buildings: [{ kind: 'building', height_m: 3, ring: [[-8, 4], [-4, 4], [-4, 8], [-8, 8]] }],
     structures: [{ x: 5, y: 5, size_m: 1, height_m: 1 }],    // no struct_id: the box
     terrain: terrain, plants: PLANTS.map(plant),
+    // V3.45: what lies on the ground (src/scene_site.py's fields).
+    ground: 'pale',
+    surfaces: [{ kind: 'lawn', base: true, ring: [[-9, -9], [9, -9], [9, 9], [-9, 9]] },
+               { kind: 'bed', ring: [[1, -8], [8, -8], [8, -1], [4, 1], [1, -1]] }],
+    lines: [{ kind: 'fence', points: [[-9, -9], [9, -9], [9, 2]], width_m: 0.1, height_m: 1.2 },
+            { kind: 'hedge', points: [[-9, 0], [-9, 9]], width_m: 1.5, height_m: 1.2 }],
+    // V3.46: what the years took (src/scene_timeline.py), for its rings.
+    timeline_notes: { when: 'the fifth summer', about: '', notes: [
+      { kind: 'shade', text: 'Two.', spots: [[-7, -7], [7, 6]] },
+      { kind: 'short_lived', text: 'One.', spots: [[0, 8]] }] },
   };
 }
 
@@ -135,14 +145,61 @@ function measure(w) {
   }
 
   // 4. The building: standing on the lowest ground under it, its height above the highest.
-  const bld = group.children.find(o => o.isMesh && o.material && o.material.color
-                                  && o.material.color.getHex() === 0xb0a18c);
+  const bld = group.children.find(o => o.isMesh && o.name === 'buildings');
   if (bld) {
     const box = new THREE.Box3().setFromObject(bld);
     const hs = [[-8, 4], [-4, 4], [-4, 8], [-8, 8]].map(([x, y]) => H(x, y));
     out.building = { base_m: +box.min.y.toFixed(3), top_m: +box.max.y.toFixed(3),
                      low_ground_m: +Math.min(...hs).toFixed(3),
                      high_ground_m: +Math.max(...hs).toFixed(3), height_m: 3 };
+  }
+
+  // 4b. What lies on the ground (V3.45): a surface follows the slope at its
+  // corners and between them; a fence and a hedge stand on it and never in it.
+  out.surfaces = {};
+  for (const o of group.children) {
+    if (!o.isMesh || !/^surface:/.test(o.name)) continue;
+    const a = o.geometry.attributes.position, idx = o.geometry.index.array;
+    const lift = (i) => a.getY(i) - H(a.getX(i), -a.getZ(i));
+    let lo = 9, hi = -9, mid = 0;
+    for (let i = 0; i < a.count; i++) { lo = Math.min(lo, lift(i)); hi = Math.max(hi, lift(i)); }
+    for (let i = 0; i < idx.length; i += 3) for (const [p, q] of [[0, 1], [1, 2], [2, 0]]) {
+      const u = idx[i + p], v = idx[i + q];
+      const x = (a.getX(u) + a.getX(v)) / 2, z = (a.getZ(u) + a.getZ(v)) / 2;
+      mid = Math.max(mid, Math.abs((a.getY(u) + a.getY(v)) / 2 - H(x, -z) - lo));
+    }
+    out.surfaces[o.name] = { lowest_lift_m: +lo.toFixed(4), highest_lift_m: +hi.toFixed(4),
+                             worst_between_m: +mid.toFixed(3), triangles: idx.length / 3,
+                             look: o.material.userData.look || '' };
+  }
+  out.lines = {};
+  for (const o of group.children) {
+    if (!o.isMesh || !/^(fences|hedges:)/.test(o.name)) continue;
+    const a = o.geometry.attributes.position;
+    let lo = 9, hi = -9;
+    for (let i = 0; i < a.count; i++) {
+      const up = a.getY(i) - H(a.getX(i), -a.getZ(i));
+      lo = Math.min(lo, up); hi = Math.max(hi, up);
+    }
+    out.lines[o.name] = { foot_m: +lo.toFixed(3), top_m: +hi.toFixed(3) };
+  }
+  const gm = group.children.find(o => o.name === 'ground');
+  out.ground.look = gm && gm.material.userData.look || 'meadow';
+
+  // 4c. The rings round what the years took (V3.46, 25b-timeline.js): each
+  // lies a few centimetres over the ground where it is, tilted with it.
+  out.rings = null;
+  if (typeof w.showTimeline === 'function') {
+    E('TL_OPEN = true; showTimeline()');
+    out.rings = [];
+    const rg = group.getObjectByName('timeline-rings');
+    const m4 = new THREE.Matrix4(), p3 = new THREE.Vector3(), up = new THREE.Vector3();
+    for (const o of rg ? rg.children : []) for (let i = 0; i < o.count; i++) {
+      o.getMatrixAt(i, m4); p3.setFromMatrixPosition(m4);
+      up.set(0, 1, 0).transformDirection(m4);
+      out.rings.push({ lift_m: +(p3.y - H(p3.x, -p3.z)).toFixed(3), tilt: +up.y.toFixed(4) });
+    }
+    E('TL_OPEN = false; showTimeline()');
   }
 
   // 5. The structure drawn as a box (no model for it): its foot on the ground.

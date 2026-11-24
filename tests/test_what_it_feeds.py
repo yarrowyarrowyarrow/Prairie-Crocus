@@ -40,9 +40,10 @@ class TestTheWords(unittest.TestCase):
     def test_a_planted_species_line(self):
         line = feeds.eaters_line({"animals": {"bird": 1, "bee": 2},
                                   "bloom": [7, 8], "fruit": [9]})
-        # Groups in the page's order (bees first), whatever order they came.
-        self.assertEqual(line, "food for 3 kinds: 2 bees, 1 bird · flowers Jul–Aug · "
-                               "fruit Sep")
+        # The months first (V3.55, the owner), then the groups in the page's
+        # order (bees first), whatever order they came.
+        self.assertEqual(line, "flowers Jul–Aug · fruit Sep · "
+                               "food for 3 kinds: 2 bees, 1 bird")
 
     def test_nothing_recorded_says_so_rather_than_nothing(self):
         """P9: an empty line would read as "feeds nothing", which the
@@ -127,6 +128,45 @@ class TestAgainstTheCatalogue(unittest.TestCase):
                       for e in plan["elsewhere"]]
         self.assertEqual(food_first, sorted(food_first, reverse=True))
 
+    def test_many_animals_at_once_give_each_one_s_answer(self):
+        """V3.39: the walk's cards ask about four hundred animals each push;
+        the batch is ``animal_plan``, not a second answer to its question."""
+        fed = [a["fauna_id"] for a in feeds.animals_fed(self.ids)][:12]
+        batch = feeds.animal_plans(fed, self.ids, elsewhere=5)
+        for fid in fed:
+            self.assertEqual(batch[fid], feeds.animal_plan(fid, self.ids,
+                                                           elsewhere=5))
+
+    def test_a_caterpillar_host_comes_first_for_a_butterfly(self):
+        fed = feeds.animals_fed([self.rows["Chokecherry"]["id"]])
+        for a in fed:
+            if a["taxon"] != "lepidoptera":
+                continue
+            plan = feeds.animal_plan(a["fauna_id"], [], elsewhere=500)
+            food = [e for e in plan["elsewhere"]
+                    if any(k in feeds.FOOD_KINDS for k in e["kinds"])]
+            hosts = ["larval_host" in e["kinds"] for e in food]
+            self.assertEqual(hosts, sorted(hosts, reverse=True), a["name"])
+
+    def test_preferred_plants_and_a_province(self):
+        fid = next(a["fauna_id"] for a in feeds.animals_fed(self.ids)
+                   if a["food"])
+        plan = feeds.animal_plans([fid], [], elsewhere=500)[fid]
+        food = [e for e in plan["elsewhere"]
+                if any(k in feeds.FOOD_KINDS for k in e["kinds"])]
+        if len(food) < 2:
+            self.skipTest("this animal has one plant")
+        last = food[-1]["plant_id"]
+        again = feeds.animal_plans([fid], [], elsewhere=500,
+                                   prefer=[last])[fid]
+        firsts = [e["plant_id"] for e in again["elsewhere"]]
+        hosts_first = plan["fauna"]["taxon"] == "lepidoptera"
+        if not hosts_first:
+            self.assertEqual(firsts[0], last)
+        nowhere = feeds.animal_plans([fid], [], elsewhere=500,
+                                     province="ZZ")[fid]
+        self.assertEqual(nowhere["elsewhere"], [])
+
     def test_an_animal_the_design_does_not_feed_is_a_shopping_list(self):
         prairie = [self.rows["Rough Fescue"]["id"]]
         fed_by_chokecherry = {a["fauna_id"] for a in
@@ -162,9 +202,8 @@ class TestAgainstTheCatalogue(unittest.TestCase):
     def test_the_planted_line_for_a_real_plant(self):
         pid = self.rows["Chokecherry"]["id"]
         line = feeds.eaters_line(feeds.plant_food([pid])[pid])
-        self.assertRegex(line, r"^food for \d+ kinds?: \d+ bees?, ")
-        self.assertIn("· flowers ", line)
-        self.assertIn("· fruit ", line)
+        self.assertRegex(line, r"^flowers .* · food for \d+ kinds?: \d+ bees?, ")
+        self.assertIn(" · fruit ", line)
 
 
 if __name__ == "__main__":
