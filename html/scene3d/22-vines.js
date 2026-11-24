@@ -35,6 +35,11 @@ const _VP_A = 16, _VP_H = 24;    // bearings x height bands per profile
 // covered the vine: a clematis' 156 bells were drawn and none was seen. A vine
 // in leaf drapes OVER its host; these two are an estimate of how far.
 const VINE_PROUD = 0.14, VINE_PROUD_M = 0.06;
+// A herbaceous vine (a peavine, a vetch) leans a few unbranched stems on its
+// host over this much of the arc either side (radians), where a woody one's
+// branching stems wrap the side it is on (V3.67c: the pair read as one mound
+// of vine). An estimate.
+const VINE_SOFT_ARC = 0.8;
 const _VUP = new THREE.Vector3(0, 1, 0);
 
 function vinesReset() { VINE_HOSTS = new Map(); VINE_ANCHORS = new Map(); }
@@ -170,7 +175,8 @@ function _climbPaths(p, d, H, gy, rng) {
   const spread = Math.max(0.2, (d.canopy_m || 1) / 2);
   // Half the arc of the crown it covers: a big vine on a small shrub wraps
   // most of one side of it; on a tree it is a strip.
-  const half = Math.max(0.4, Math.min(1.5, (spread + 0.3) / R));
+  const soft = (p.foliage_type || '') === 'herbaceous';
+  const half = Math.max(0.4, Math.min(soft ? VINE_SOFT_ARC : 1.5, (spread + 0.3) / R));
   const dv = Math.hypot(vx - H.x, vz - H.z);        // the root, off the host's axis
   const top = H.gy + d.height_m;
   const n = qn(Math.max(3, Math.min(9, Math.round(3 + d.height_m * 0.9))));
@@ -242,7 +248,7 @@ function _climbPaths(p, d, H, gy, rng) {
       surf.push({ a, y, r: rr });
     }
     if (pts.length >= 3) paths.push({ pts, nrm, gnd });
-    _sideShoots(H, surf, rng, paths);
+    if (!soft) _sideShoots(H, surf, rng, paths);
   }
   return paths;
 }

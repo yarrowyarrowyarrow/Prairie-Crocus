@@ -297,6 +297,8 @@ function _lbSet(B, at, az, elev, L, shape, lod, rng, shade, stalk) {
 // leaves there). `rays`: the width of a flat cluster's fan of stalks, or 0.
 function _leafyBloom(p, H) {
   if (!p || !p.bloom_start) return { top: H * 0.04, rays: 0 };
+  // Flowers that hang carry their own stalks (15f-nodding.js, V3.67c): no fan.
+  if (p.drawn && p.drawn.hangs) return { top: H * 0.06, rays: 0 };
   if (typeof floretsApply !== 'function' || !floretsApply(p)) return { top: H * 0.1, rays: 0 };
   const arch = FLORET_ARCHITECTURES.indexOf(p.flower_arch) >= 0 ? p.flower_arch : 'cyme';
   const reach = _inflorescence(p, arch, _drawnFlorets(p.florets_per_head), H).reach;
@@ -335,7 +337,7 @@ function _leafyPlan(d, bloom, budget) {
   const gap = L * (INTERNODE[d.arrangement] || INTERNODE.alternate);
   const P = { H, R, L, W, shape, perNode, form: d.form, stems: Math.max(1, d.stems), budget,
               nodes: 0, basal: 0, groups: 1, lod: 2, branching: d.branching,
-              habit: d.habit, forkLeaves: 2, bladeW: d.blade_m || 0 };
+              habit: d.habit, forkLeaves: 2, bladeW: d.blade_m || 0, hangs: !!d.hangs };
   // An umbrella's or a fern's fronds (03h-leafyforms.js): the plainer leaves where the budget is low.
   if (d.form === 'umbrella' || d.form === 'fronds') return Object.assign(P, { lod: budget >= 3000 ? 2 : 1 });
   const leafy = d.form === 'stems' || d.form === 'colony';
@@ -477,14 +479,25 @@ function _leafyStems(B, P, bloom, rng) {
 // it lies.
 const MAT_COVER = 1.1;
 const MAT_GAIN_MAX = 2.5;
+// A whorled sprawler (a bedstraw) covers less of its ground, so its trailing
+// shoots read one by one, the share of MAT_COVER; and lies deeper, its leafy
+// stems up to this share of its height (V3.67c, both estimates).
+const MAT_WHORL_COVER = 0.6, MAT_WHORL_DEEP = 0.55;
 function _leafyMat(B, P, bloom, rng, C) {
   const { R, L, H } = P, rot = rng() * 6.283, ends = [];
+  // A mat of whorled leaves wears its whorls (a bedstraw's, 03h-leafyforms.js, V3.67b).
+  const sp = (P.perNode >= 3 && !/needle|awl|scale/.test(P.shape) && window.whorlSpray && whorlSpray(P.shape))
+    || _wdSpray(P.shape, P.perNode);                                 // 03d-woody.js
+  const whorls = sp !== _wdSpray(P.shape, P.perNode);                  // a bedstraw's
   // As deep as a few leaves are long, and never more than 40% of its height,
-  // which is mostly its flower stalks (also an estimate).
-  const thick = Math.max(0.008, Math.min(H * 0.4, L * 3, 0.06));
+  // which is mostly its flower stalks (also an estimate). A whorled sprawler's
+  // height is its leafy stems' (V3.67c): MAT_WHORL_DEEP of it, the flowers on
+  // short stalks over them.
+  const thick = Math.max(0.008, Math.min(H * (whorls ? MAT_WHORL_DEEP : 0.4), L * 3, 0.06));
   const lift = (f) => 0.0015 + thick * Math.max(0, 1 - f * f) * 0.8;   // the outer runners on the ground
-  // The runners: thin stems from the root outward, lying on the mat.
-  for (let i = 0; i < P.shoots; i++) {
+  // The runners: thin stems from the root outward, lying on the mat. A whorl
+  // card carries its own stem, and bare runners past it read as grass (V3.67c).
+  for (let i = 0; i < (whorls ? 0 : P.shoots); i++) {
     const f = Math.sqrt((i + 0.5) / P.shoots), a0 = rot + i * 2.39996;
     const sx = Math.cos(a0) * R * 0.85 * f, sz = Math.sin(a0) * R * 0.85 * f;
     const a = a0 + (rng() - 0.5) * 1.2, len = P.sprig * (0.7 + 0.6 * rng());
@@ -494,15 +507,15 @@ function _leafyMat(B, P, bloom, rng, C) {
     ends.push(at(1));
   }
   for (let i = 0; i < P.stems; i++) {
-    const e = ends[(i * 7) % ends.length];
+    // A whorled sprawler flowers from inside its leaves, not off its runners' ends.
+    const f = Math.sqrt((i + 0.5) / P.stems) * 0.55, a = rot + 1.3 + i * 2.39996;
+    const e = whorls ? [Math.cos(a) * R * f, lift(f) * 0.6, Math.sin(a) * R * f]
+      : ends[(i * (ends.length % 7 ? 7 : 1)) % ends.length];
     _leafyStalk(B, P, [e[0], e[1], e[2]], (H - e[1]) * (i ? 0.8 + 0.2 * rng() : 1), 0.01, bloom, rng);
   }
   // The leafy shoots: as many as cover the mat, on what the budget leaves.
-  // A mat of whorled leaves wears its whorls (a bedstraw's, 03h-leafyforms.js, V3.67b).
-  const sp = (P.perNode >= 3 && !/needle|awl|scale/.test(P.shape) && window.whorlSpray && whorlSpray(P.shape))
-    || _wdSpray(P.shape, P.perNode);                                 // 03d-woody.js
   const card = sp.w * sp.h * L * L * (sp.leafCover || sp.cover);
-  let n = Math.ceil(MAT_COVER * Math.PI * R * R / Math.max(1e-6, card));
+  let n = Math.ceil(MAT_COVER * (whorls ? MAT_WHORL_COVER : 1) * Math.PI * R * R / Math.max(1e-6, card));
   const room = Math.max(60, Math.floor((P.budget - B.idx.length / 3) / 2));
   const gain = n > room ? Math.min(MAT_GAIN_MAX, Math.sqrt(n / room)) : 1;
   n = Math.min(room, Math.ceil(n / (gain * gain)));
@@ -512,9 +525,16 @@ function _leafyMat(B, P, bloom, rng, C) {
     const r = Math.max(0, R - h * 0.6) * f;
     const at = [Math.cos(a0) * r, lift(f) + rng() * thick * 0.3, Math.sin(a0) * r];
     // Outward along a runner, a little up, a little either way.
-    const a = a0 + (rng() - 0.5) * 1.6, up = 0.12 + 0.3 * rng() * (1 - f);
+    const k = 0.85 + 0.3 * rng(), a = a0 + (rng() - 0.5) * 1.6;
+    // A whorled sprawler's shoots ascend (V3.67c), their tips under 0.72 of its
+    // height, where its flower stalks rise from.
+    let up = whorls ? 0.3 + 0.4 * rng() : 0.12 + 0.3 * rng() * (1 - f);
+    if (whorls) {
+      const room = Math.max(0.02, (0.72 * H - at[1]) / (0.75 * h * k));
+      up = Math.min(up, room / Math.sqrt(Math.max(1e-4, 1 - Math.min(0.95, room) ** 2)));
+    }
     const T = _lbUnit([Math.cos(a), up, Math.sin(a)]);
-    const S = _lbUnit(_lbCross([0, 1, 0], T)), k = 0.85 + 0.3 * rng();
+    const S = _lbUnit(_lbCross([0, 1, 0], T));
     _wdCard(C, _lbAdd(at, T, -h * 0.25 * k), T, S, w * k, h * k, 0.6 + 0.32 * rng());
   }
   C.cut = sp;
@@ -531,7 +551,7 @@ function leafyKeyFor(p) {
   const b = _leafyBloom(p, d.mature_h);
   return ['leafy', d.form, d.mature_h, d.mature_w, d.stems, d.leaf_m, d.leaf_shape,
           d.arrangement, d.branching, d.habit, d.nodes || 0, d.basal ? 1 : 0, b.top.toFixed(3),
-          b.rays.toFixed(3), d.blade_m || 0].join('|');
+          b.rays.toFixed(3), d.blade_m || 0, d.hangs ? 1 : 0].join('|');
 }
 
 // The body for the plants sharing `key`, in the unit frame every herb is placed

@@ -2840,7 +2840,7 @@
     "flower_colours": "",
     "leaf_data_source": "photo",
     "leaf_data_citation": "iNaturalist photographs 475351, 67645158, 291349345, 8289105, 352545465, 697503146, 8289052, 293610777 (read V3.67b)",
-    "leaf_color": "#70935a",
+    "leaf_color": "#5e7440",
     "head_attitude": "nodding"
   },
   {
@@ -22265,7 +22265,7 @@
     "flower_color": "#f2f2ea",
     "flower_form": "cluster",
     "native_provinces": "AB,SK",
-    "leaf_shape": "obovate",
+    "leaf_shape": "lanceolate",
     "leaf_size_cm": 2.5,
     "leaf_arrangement": "whorled",
     "growth_form": "sprawling",
@@ -22286,8 +22286,8 @@
     "native_provinces_source": "flora",
     "flower_colours": "",
     "leaf_data_source": "photo",
-    "leaf_data_citation": "iNaturalist photographs 306561775, 135415693, 302518857, 71056052, 342768632, 300006401, 71056102, 50130712 (read V3.67b)",
-    "leaf_color": "#78985d",
+    "leaf_data_citation": "iNaturalist photographs 306561775, 135415693, 302518857, 71056052, 342768632, 300006401, 71056102, 50130712 (read V3.67c)",
+    "leaf_color": "#76a248",
     "head_length_cm": 2.5,
     "head_width_cm": 2.5
   },

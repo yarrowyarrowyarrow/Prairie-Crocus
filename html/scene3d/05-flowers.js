@@ -378,7 +378,7 @@ function buildFlowers(plants, month, terrain) {
         const rr = isCattail ? rad * 0.22 * j2
                              : rad * (0.12 + 0.9 * Math.sqrt(j2));  // even areal spread
         const dy = isCattail ? 0 : (j3 - 0.5) * Math.max(0.14, h * 0.3);
-        const q = va && va[(k * 7 + (seed >>> 0)) % va.length];
+        const q = va && va[(k * (va.length % 7 ? 7 : 1) + (seed >>> 0)) % va.length];   // never 2 of 14 (V3.67c)
         const sz = isCattail ? 1
                  : pscale * (0.6 + 0.85 * (((seed + k * 17) % 100) / 100));
         // Attitude, jittered per bloom so a plant is not a rank of clones.

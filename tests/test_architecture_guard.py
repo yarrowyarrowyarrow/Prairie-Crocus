@@ -513,17 +513,17 @@ class TestStructuralCeilings(unittest.TestCase):
         # V3.48 (F268): a wildflower built from its own leaf, arrangement and
         # stem count once those were read. When this trips, the leaf outlines
         # (_lbBlade, _lbLeaf) are the seam: they know nothing of the forms.
-        (_HTML / "scene3d" / "03c-leafy.js", 680),     # 583 now
+        (_HTML / "scene3d" / "03c-leafy.js", 680),     # 626 now (V3.67c)
         # V3.49 (F268): a shrub built from its own stem count and leaf, with
         # the shrub layer moved here from 04-quality.js (899 of 900). When
         # this trips, the leafy shoot's mask (_wdSpray and its painters) is
         # the seam: 15c-woodybloom.js already shares its smaller-copy rule.
-        (_HTML / "scene3d" / "03d-woody.js", 700),     # 630 now
+        (_HTML / "scene3d" / "03d-woody.js", 700),     # 700 now (V3.67c): split before adding
         # V3.50 (F268): a tree built from its own crown on 03d-woody.js's
         # shoots. When this trips, the needle masks (_crNeedles) are the seam.
         (_HTML / "scene3d" / "03e-crowns.js", 520),    # 420 now
         # V3.50: a read vine's leafy shoots along its stems.
-        (_HTML / "scene3d" / "22b-vineleaves.js", 160),  # 100 now
+        (_HTML / "scene3d" / "22b-vineleaves.js", 160),  # 147 now (V3.67c)
         # V3.51 (F268): a grass, sedge or rush from its own blades and head.
         # When this trips, the head builders (_tfHead) are the seam.
         (_HTML / "scene3d" / "03f-tufts.js", 520),     # 430 now
@@ -546,7 +546,7 @@ class TestStructuralCeilings(unittest.TestCase):
         # V2.89: vines fitted to the host they climb (F179). The profile
         # measurement and the path/leaf builders; when this trips, the host
         # profile half is the seam.
-        (_HTML / "scene3d" / "22-vines.js", 520),      # ~433 now
+        (_HTML / "scene3d" / "22-vines.js", 520),      # 452 now (V3.67c)
         # V2.90: the pond (F175) — floating leaves, submerged plants, broad
         # leaves on stalks. Its own chunk because 04-quality.js had no room;
         # when this trips, the three body builders are the seam.

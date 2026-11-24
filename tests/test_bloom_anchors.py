@@ -30,6 +30,20 @@ class OnThePlant(unittest.TestCase):
         self.assertIn("bloomAnchors(p, heads, month)", _read(_JS, "15-florets.js"))
         self.assertIn("bloomAnchors(p, n, month)", _read(_JS, "11-fruit.js"))
 
+    def test_flowers_spread_over_every_anchor(self):
+        """V3.67c: a cluster at anchor (k * 7 + seed) % n visits two spots when n
+        is 14, so a purple peavine with 14 anchors drew 27 racemes in two
+        stacks and showed two. A stride of 7 is kept only where it is coprime."""
+        found = 0
+        for name in sorted(os.listdir(_JS)):
+            if not name.endswith(".js"):
+                continue
+            src = _read(_JS, name)
+            for m in re.finditer(r"\[\([a-z] \* ([^)+]+?)\)?(?: \+ [^\]]*?)?\)? % (\w+)\.length\]", src):
+                found += 1
+                self.assertRegex(m.group(1), r"% (\d+) \? \1 : 1", f"{name}: {m.group(0)}")
+        self.assertGreaterEqual(found, 4, "the flower layers no longer step through anchors")
+
     def test_the_bodies_say_where_they_are(self):
         quality = _read(_JS, "04-quality.js")
         self.assertIn("noteBloomBody(p, arch,", quality, "herbs do not note their body")

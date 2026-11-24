@@ -143,8 +143,13 @@ class TheViewer(unittest.TestCase):
         self.assertIn("it.nx * it.ox * it.out", bloom)
 
     def test_a_read_vine_clothes_its_side(self):
-        m = re.search(r"const VINE_SHOOT_GAP = ([\d.]+);", _js("22b-vineleaves.js"))
+        src = _js("22b-vineleaves.js")
+        m = re.search(r"const VINE_SHOOT_GAP = ([\d.]+);", src)
         self.assertLessEqual(float(m.group(1)), 0.3)
+        # V3.67c: but a herbaceous one (a peavine, a vetch) is a few stems with
+        # a leaf at each node, and blanketing its host made the pair one mound.
+        soft = re.search(r"const VINE_SOFT_GAP = ([\d.]+);", src)
+        self.assertGreater(float(soft.group(1)), float(m.group(1)))
 
 
 @unittest.skipUnless(shutil.which("node") or shutil.which("nodejs"), "needs node")

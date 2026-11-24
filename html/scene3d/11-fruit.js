@@ -232,7 +232,7 @@ function buildFruit(plants, month, terrain) {
         const a = ((seed + k * 97) % 628) / 100;
         const rr = rad * (0.2 + 0.7 * (((seed + k * 61) % 100) / 100));
         const yy = gy + h * (0.4 + 0.45 * (((seed + k * 37) % 100) / 100));
-        const q = va && va[(k * 11 + (seed >>> 0)) % va.length];
+        const q = va && va[(k * (va.length % 11 ? 11 : 1) + (seed >>> 0)) % va.length];
         if (q) pos.push(q.x + q.nx * 0.03, q.y - 0.02, q.z + q.nz * 0.03);
         else pos.push(p.x + Math.cos(a) * rr, yy, -(p.y + Math.sin(a) * rr));
         col.push(_c.r, _c.g, _c.b);

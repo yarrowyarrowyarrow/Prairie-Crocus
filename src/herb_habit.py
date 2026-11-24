@@ -167,6 +167,9 @@ def drawn_block(plant: dict, form: str) -> dict:
         # A narrow leaf measured across (V3.67b): wild chives' 3 mm tubes,
         # where the linear outline's ratio drew a 1.5 cm strap. 0: not measured.
         "blade_m": round(float(plant.get("blade_width_mm") or 0) / 1000.0, 4),
+        # Flowers that hang (V3.67c): the viewer draws their bare stalks with
+        # them, in the flowers' own colour (15f-nodding.js), not the body's green.
+        "hangs": (plant.get("head_attitude") or "").lower() in ("nodding", "hanging"),
     }
 
 

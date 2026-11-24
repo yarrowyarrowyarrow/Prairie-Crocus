@@ -5787,13 +5787,12 @@
     "435127408"
    ]
   },
-  "score": 3,
+  "score": 5,
   "faults": [
-   "sparse",
    "stems"
   ],
-  "note": "V3.67b: Low now (10 cm), and its mat is whorls of narrow leaves; but it is a faint, flat, pale disc under short bare flower stalks, where the photographs show distinct trailing stems with bright whorls of six.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Its leaves are the narrow ones the photographs show now, six to a whorl, and the whorls read one by one as bright stars in a low mat, as the photographs' trailing stems carry them; the flower stalks rise a few centimetres from inside the mat, not out of the lawn beyond it. Still bare pins tipped with a white dot, where the photographs' flowers are tiny clusters of three among the whorls.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -5848,6 +5847,15 @@
      "flower_arch"
     ],
     "note": "Photographs: a low, trailing woodland plant of weak stems with whorls of five or six bright green elliptic leaves, and tiny greenish-white flowers in threes on thin stalks. Model: a flat green octagonal plate with sprigs round its edge and tall bare stalks hung with white specks; nothing of the trailing whorled stems. V3.64: Its tiny flowers now drawn as white panicles, too big for flowers in threes; still a plate. V3.65: The plate is gone: a faint leafy mat under tall bare stalks, where the plant is low and trailing. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 3,
+    "faults": [
+     "sparse",
+     "stems"
+    ],
+    "note": "V3.67b: Low now (10 cm), and its mat is whorls of narrow leaves; but it is a faint, flat, pale disc under short bare flower stalks, where the photographs show distinct trailing stems with bright whorls of six."
    }
   ]
  },
@@ -6091,8 +6099,8 @@
    "flower_colour",
    "leaf_shape"
   ],
-  "note": "V3.67b: The flowers now nod as bells on curved stalks, the water avens shape; drawn in the recorded lilac (the owner's) where the photographs' are dusky purple sepals round cream petals, and the leaves are small sparse fronds.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Unchanged to the eye: nodding bells on curved stalks over branched stems, in the recorded lilac (the owner's) where the photographs' are dusky pink and brown, and the basal leaves finer than the photographs' broad lobed ones.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6124,6 +6132,15 @@
      "flower_colour"
     ],
     "note": "Photographs: a clump of large pinnate basal leaves with a big end leaflet, under hairy purple stems with nodding bell-like flowers of dusky purple sepals and cream-pink petals, then bristly seed heads. Model: thin branched stems over small sparse fronds, with flat upturned lilac stars; the nodding purple bells, which make it water avens, are not there. V3.66: As before: thin stems with small pale flowers."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 5,
+    "faults": [
+     "flower_colour",
+     "leaf_shape"
+    ],
+    "note": "V3.67b: The flowers now nod as bells on curved stalks, the water avens shape; drawn in the recorded lilac (the owner's) where the photographs' are dusky purple sepals round cream petals, and the leaves are small sparse fronds."
    }
   ]
  },
@@ -6154,8 +6171,8 @@
   "faults": [
    "flower_shape"
   ],
-  "note": "V3.67b: A rosette of finely cut leaves under stalks of nodding pink bells in threes, which reads as prairie smoke; the bells are open and smooth where the photographs' urns are closed and hairy, and no plumes.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Its stalks are the reddish purple of the photographs' now, over the rosette of finely cut leaves, the nodding pink bells in threes; the bells are open and smooth where the photographs' are closed and hairy.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -6186,6 +6203,14 @@
      "sparse"
     ],
     "note": "Photographs: a low rosette of soft, finely cut, fern-like grey-green leaves under short stalks of nodding dusty-pink to maroon bell flowers in threes, then pink feathery plumes. Model: a sparse ring of pinnate fronds under tall bare stalks with small upturned pale pink stars; the nodding maroon bells and the feathery plumes, which make prairie smoke, are not there. V3.66: As before: bare stalks over a few leaves."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 6,
+    "faults": [
+     "flower_shape"
+    ],
+    "note": "V3.67b: A rosette of finely cut leaves under stalks of nodding pink bells in threes, which reads as prairie smoke; the bells are open and smooth where the photographs' urns are closed and hairy, and no plumes."
    }
   ]
  },
@@ -7290,13 +7315,12 @@
     "112894772"
    ]
   },
-  "score": 4,
+  "score": 6,
   "faults": [
-   "sparse",
-   "leaf_colour"
+   "proportion"
   ],
-  "note": "V3.67b: The broad-bladed star is gone: long flat branches of scale-leaved shoots lying on the ground, blue-grey, which is a creeping juniper's habit. Too few branches for the carpet the photographs show, and the branches near the root read darker than the photographs' even grey-green.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: A continuous carpet now: its runners carry leafy shoots to the root and its branchlets spread every way and lie level, so the bare hub and its wheel of spokes are gone, and the blue-grey is even, as photograph 2's. Still a thin skin on the ground where the photographs' mats stand a hand's breadth deep.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7340,6 +7364,15 @@
      "dense"
     ],
     "note": "Photographs: a flat, spreading carpet of long trailing branches covered in short scale and awl leaves, blue-grey to grey-green, bronze-purple in winter, with dusty blue berries. Model: a flat starburst of broad plain green blades, like a small agave; nothing of a juniper. V3.64: Grey now, still a star of broad blades. V3.66: As before: a grey star on the ground."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 4,
+    "faults": [
+     "sparse",
+     "leaf_colour"
+    ],
+    "note": "V3.67b: The broad-bladed star is gone: long flat branches of scale-leaved shoots lying on the ground, blue-grey, which is a creeping juniper's habit. Too few branches for the carpet the photographs show, and the branches near the root read darker than the photographs' even grey-green."
    }
   ]
  },
@@ -7482,13 +7515,12 @@
     "22556007"
    ]
   },
-  "score": 4,
+  "score": 6,
   "faults": [
-   "proportion",
-   "leaf_shape"
+   "proportion"
   ],
-  "note": "V3.67b: Its sprays now lie over the snowberry on the near side, its cream racemes a little larger among them; still read as one round shrub of fine pinnate fronds, where the photographs show a low, sprawling plant of few broad oval leaflets.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Its leaves are few broad oval leaflets with a tendril now, as the photographs show, and it is a few stems over the snowberry's near side with cream racemes along them, the shrub's own leaves showing round it. It still climbs its host to the top, where the photographs' plants mostly sprawl low among others.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7528,6 +7560,15 @@
      "proportion"
     ],
     "note": "Photographs: a sprawling, climbing herb about a metre long, with pinnate leaves of a few broad oval leaflets, tendrils, and short racemes of cream pea flowers. Model: drawn over a host shrub with red stems, the pair is one dense rounded shrub of pinnate fronds with white specks; the peavine cannot be seen as a plant of its own. V3.65: On a low snowberry its leaflet sprays show over the host; the cream flowers barely. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 4,
+    "faults": [
+     "proportion",
+     "leaf_shape"
+    ],
+    "note": "V3.67b: Its sprays now lie over the snowberry on the near side, its cream racemes a little larger among them; still read as one round shrub of fine pinnate fronds, where the photographs show a low, sprawling plant of few broad oval leaflets."
    }
   ]
  },
@@ -7553,12 +7594,12 @@
     "550424440"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "proportion"
+   "flower_size"
   ],
-  "note": "V3.67b: On the near side of the snowberry now, its purple racemes larger and plain to see over its pinnate leaves; the pair still reads as one rounded shrub.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Its leaves are five pairs of oval leaflets now, as the photographs show, and it is a few stems over the snowberry's near side with its purple racemes all along them, the shrub showing round it. The racemes are drawn about twice the photographs' length (the vines' bloom gain).",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -7597,6 +7638,14 @@
      "proportion"
     ],
     "note": "Photographs: a climbing or sprawling vine with pinnate leaves of several oval leaflets and dense racemes of purple pea flowers. Model: drawn on a host with red stems, the pair is one dense, rounded shrub of pinnate fronds with white specks; the peavine is lost, and its purple flowers show as white. V3.65: On a low snowberry: darker pinnate sprays with purple racemes, plain to see. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 5,
+    "faults": [
+     "proportion"
+    ],
+    "note": "V3.67b: On the near side of the snowberry now, its purple racemes larger and plain to see over its pinnate leaves; the pair still reads as one rounded shrub."
    }
   ]
  },
@@ -9866,8 +9915,8 @@
    "leaf_shape",
    "crown"
   ],
-  "note": "V3.67b: The crown is open now, the sky and crooked limbs seen through it, and darker; but it is still a slim tree of tufts that read as leaves at this distance, and no cones.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Its needles are drawn as bursts at the branch ends now, larger and facing out, so the crown is more open and its clumps spikier; but at this distance they still read as a broadleaf's leaf clusters, the crown is a slim column where photograph 7's are broad and irregular, and there are no cones.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -9906,6 +9955,15 @@
      "crown"
     ],
     "note": "Photographs: a scraggly, open, irregular pine with short yellow-green needles in pairs, crooked branches and many persistent curved cones. Model: a slim tree whose crown is clumps of broad lobed leaf cards, bright green; it reads as a poplar, not a pine; nothing needle-like at this distance and no cones. V3.64: Leaf colour a little yellower; still leaf cards. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 4,
+    "faults": [
+     "leaf_shape",
+     "crown"
+    ],
+    "note": "V3.67b: The crown is open now, the sky and crooked limbs seen through it, and darker; but it is still a slim tree of tufts that read as leaves at this distance, and no cones."
    }
   ]
  },
@@ -10206,13 +10264,12 @@
     "600059421"
    ]
   },
-  "score": 5,
+  "score": 6,
   "faults": [
-   "flower_colour",
-   "flower_shape"
+   "flower_colour"
   ],
-  "note": "V3.67b: The flowers now hang as swept-back darts with their beaks down, a shooting star's shape; the recorded pink (the owner's) is paler than the photographs' magenta, and they are small.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: The swept-back darts are larger now, their yellow beaks plain, on reddish scapes as the photographs show, over a rosette of spoon-shaped leaves. The recorded pink (the owner's) is paler than the photographs' magenta.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -10242,6 +10299,15 @@
      "flower_colour"
     ],
     "note": "Photographs: a basal rosette of spoon-shaped leaves under a leafless stalk with an umbel of nodding magenta flowers, petals swept back like a dart, with a yellow and dark beak. Model: a rosette under one stalk with an umbel of flat, pale pink stars facing up; the swept-back nodding darts that make a shooting star are not there, and the colour is much paler than the magenta. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 5,
+    "faults": [
+     "flower_colour",
+     "flower_shape"
+    ],
+    "note": "V3.67b: The flowers now hang as swept-back darts with their beaks down, a shooting star's shape; the recorded pink (the owner's) is paler than the photographs' magenta, and they are small."
    }
   ]
  },
@@ -14055,13 +14121,12 @@
     "345784030"
    ]
   },
-  "score": 4,
+  "score": 6,
   "faults": [
-   "stems",
-   "flower_size"
+   "dense"
   ],
-  "note": "V3.67b: Its flowers now hang as small pink swept-back darts on long stalks, the shooting-star shape the photographs show, and red berries in September; the darts are tiny at this distance, and the thread-thin red stems over the moss are still not drawn.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Pink swept-back flowers with yellow beaks on red stalks over a mat of tiny dark olive leaves, and red berries on it in September, as the photographs show. The mat is a solid round disc where the photographs show thin wiry stems straggling over moss.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -14103,6 +14168,15 @@
      "fruit"
     ],
     "note": "Photographs: thread-thin trailing stems over moss with tiny pointed leaves, nodding pink shooting-star flowers on long stalks, and large dark red berries lying on the moss. Model: a flat green octagonal plate with sprigs around it and a few bare vertical stalks; nothing reads as the plant. V3.65: The plate is gone: a faint carpet of tiny leaves with a few pink flowers; the thread-thin red stems are not drawn. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 4,
+    "faults": [
+     "stems",
+     "flower_size"
+    ],
+    "note": "V3.67b: Its flowers now hang as small pink swept-back darts on long stalks, the shooting-star shape the photographs show, and red berries in September; the darts are tiny at this distance, and the thread-thin red stems over the moss are still not drawn."
    }
   ]
  },
@@ -14338,13 +14412,12 @@
     "65285432"
    ]
   },
-  "score": 4,
+  "score": 5,
   "faults": [
-   "flower_size",
    "flower_colour"
   ],
-  "note": "V3.67b: Its stems now lie over the snowberry on the near side and its racemes show at the edges; they read pink and small where the photographs' are purple-blue (the recorded colour, the owner's), and the pair still reads as one mound.",
-  "read_in": "V3.67b",
+  "note": "V3.67c: Its leaves are many narrow leaflets in pairs ending in a tendril now, a vetch's, and it is a few stems over the snowberry's near side with racemes along them, so the shrub under it shows and the pair is no longer one mound. The racemes are drawn pink, the recorded colour (the owner's), where the photographs' are purple to blue-violet.",
+  "read_in": "V3.67c",
   "earlier": [
    {
     "read_in": "V3.48",
@@ -14385,6 +14458,15 @@
      "flower_colour"
     ],
     "note": "Photographs: a slender, scrambling vine with pinnate leaves of small paired oval leaflets ending in tendrils, and loose racemes of a few purple-blue pea flowers, tangling through grass and shrubs. Model: drawn over a red-stemmed host, the pair is a tall dense shrub of fronds with white specks; the vetch is lost in it, and its purple flowers show white. V3.65: On a low snowberry a few darker sprays; still mostly the host. V3.66: As before."
+   },
+   {
+    "read_in": "V3.67b",
+    "score": 4,
+    "faults": [
+     "flower_size",
+     "flower_colour"
+    ],
+    "note": "V3.67b: Its stems now lie over the snowberry on the near side and its racemes show at the edges; they read pink and small where the photographs' are purple-blue (the recorded colour, the owner's), and the pair still reads as one mound."
    }
   ]
  },

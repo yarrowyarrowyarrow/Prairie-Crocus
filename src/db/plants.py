@@ -582,7 +582,11 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # plants whose flower_form says none (that column untouched), the ostrich
 # fern's and creeping juniper's habits, the water plants' clusters, a few
 # heights, counts and cluster sizes, and wild chives' leaf width.
-_SCHEMA_VERSION = 107
+# v108 (V3.67, third sitting): no DDL. A reseed for three values read again
+# off the photographs of the six still at 4 or less: the bedstraw's leaves
+# (lanceolate, the narrow whorled leaves the photographs show, not obovate)
+# and the leaf colours of the bedstraw and the bog cranberry.
+_SCHEMA_VERSION = 108
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the

@@ -46,9 +46,10 @@ const WOODY_BUDGET_H = [1, 4];
 // shell the drawn leaves are asked to cover.
 const WOODY_GAIN_MAX = 3;
 const WOODY_COVER = 0.75;
-// A woody groundcover (creeping juniper, V3.67b) is all leaf from above: its budget grows
-// with its ground, to this many times, and its tiny shoots drawn this much larger. Estimates.
-const WOODY_GROUND_BUDGET = 3, WOODY_GROUND_GAIN = 2;
+// A woody groundcover (creeping juniper, V3.67b) is all leaf from above: its budget grows with
+// its ground, to this many times, and its tiny shoots drawn this much larger; V3.67c: its
+// branchlets run every way, level (_WD_GROUND_BIAS), leafy to the root, lit from above. Estimates.
+const WOODY_GROUND_BUDGET = 3, WOODY_GROUND_GAIN = 2, _WD_GROUND_BIAS = [0.06, 0];
 const WOODY_STEMS_MAX = 36;
 // A shrub part grown is built as a smaller shrub, not as a grown one shrunk:
 // at the first of these shares of its grown height that holds it, with fewer
@@ -320,7 +321,7 @@ function _woodyPlan(d, quality) {
   const crown = WOODY_CROWNS.indexOf(d.crown) >= 0 ? d.crown : '';
   const more = d.ground ? _wdClamp(area / 1.5, 1, WOODY_GROUND_BUDGET) : 1;
   const P = { H, R, L, shape, form: d.form, budget: Math.round(budget * more), area, need, spray,
-              gain: 1, cards: 0, tier, gainMax: WOODY_GAIN_MAX * (d.ground ? WOODY_GROUND_GAIN : 1),
+              gain: 1, cards: 0, tier, gainMax: WOODY_GAIN_MAX * (d.ground ? WOODY_GROUND_GAIN : 1), ground: !!d.ground,
               crown, clear: crown ? _wdClamp(d.clear || 0, 0, 0.6) : 0,
               // A young shrub has sent up fewer of its stems.
               stems: _wdClamp(Math.round((d.stems || 1) * (0.4 + 0.6 * tier)), 1, WOODY_STEMS_MAX) };
@@ -369,13 +370,13 @@ function _wdAxis(G, o, dir, len, r, quota) {
 // middle as its form says, and never out of the crown's outline.
 function _wdChild(G, p, tg, len, r, quota, psi) {
   // A tree (03e-crowns.js) passes its own outline, bias and droop on G.
-  const P = G.P, rng = G.rng, bias = G.bias || _WD_BIAS[P.form];
+  const P = G.P, rng = G.rng, bias = G.bias || (P.ground ? _WD_GROUND_BIAS : _WD_BIAS[P.form]);
   const env = G.env || ((t) => _wdEnvelope(P.form, t));
   const u = _lbUnit(_lbCross(tg, Math.abs(tg[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0])), w = _lbCross(tg, u);
   const a = psi + rng() * 0.6, th = 0.55 + rng() * 0.4;
   const e = _lbMix(u, w, Math.cos(a), Math.sin(a)), out = _lbUnit([p[0], 0, p[2]]);
   let c = _lbMix(tg, e, Math.cos(th), Math.sin(th));
-  if (P.form === 'mat') c = [c[0] * 0.5, Math.abs(c[1]) * 0.5, c[2] * 0.5];
+  if (P.form === 'mat') c = P.ground ? [c[0], Math.abs(c[1]) * 0.1, c[2]] : [c[0] * 0.5, Math.abs(c[1]) * 0.5, c[2] * 0.5];
   c = [c[0] + out[0] * bias[1], c[1] + bias[0], c[2] + out[2] * bias[1]];
   if (c[1] < -(G.droop || 0)) c[1] = -(G.droop || 0) + (-(G.droop || 0) - c[1]) * 0.3;
   c = _lbUnit(c);
@@ -439,15 +440,15 @@ function _woodyStems(G) {
     const pts = [0, 0.3, 0.6, 0.85, 1].map(at), tip = pts[4];
     const rs = r0 * (0.85 + 0.3 * rng());
     _lbTube(G.S, pts, rs, rs * 0.3, 0.6 + 0.3 * tip[1] / H);
-    G.shoots.push({ a: at(0.82), b: tip });
+    G.shoots.push({ a: at(P.ground ? 0.06 : 0.82), b: tip }, ...(P.ground ? [{ a: at(0), b: at(0.4) }] : []));
     const turn = rng() * 6.283;
     for (let j = 0; j < kids; j++) {
       const f = clear + (0.95 - clear) * (j + 0.3 + 0.4 * rng()) / kids;
       const tg = _lbUnit(_lbAdd(at(Math.min(1, f + 0.05)), at(Math.max(0, f - 0.05)), -1));
       const p = at(f);
       // A mat's shoots stand up from its limbs to the top of the mound there.
-      const len = P.form === 'mat'
-        ? Math.max(0.15 * H, H * _wdEnvelope('mat', Math.min(1, Math.hypot(p[0], p[2]) / R)) - p[1])
+      const len = P.ground ? Math.max(0.15 * R, 0.8 * 6.283 * Math.hypot(p[0], p[2]) / N)
+        : P.form === 'mat' ? Math.max(0.15 * H, H * _wdEnvelope('mat', Math.min(1, Math.hypot(p[0], p[2]) / R)) - p[1])
         : reach * (1 - 0.35 * f);
       _wdChild(G, p, tg, len * (0.8 + 0.4 * rng()), rs * (1 - 0.6 * f) * 0.55,
                (quota - 1) / kids, turn + j * 2.39996);
@@ -494,12 +495,13 @@ function _woodyLeaves(G) {
       const D = [dir[0] + e[0] * off, dir[1] + e[1] * off + (rng() - 0.65) * 0.35, dir[2] + e[2] * off];
       // In the crown's shade a leaf is darker: by how far out and up it is.
       const b0 = P.base == null ? 0.3 : P.base;
-      const rho = Math.hypot(Math.hypot(at[0], at[2]) / P.R, (at[1] - b0 * P.H) / ((1 - b0) * P.H));
+      const rho = P.ground ? 0.85 + 0.15 * at[1] / P.H        // a carpet's top is all in the light
+        : Math.hypot(Math.hypot(at[0], at[2]) / P.R, (at[1] - b0 * P.H) / ((1 - b0) * P.H));
       const shade = (0.5 + 0.45 * Math.pow(_wdClamp(rho, 0, 1), 2)) * (0.92 + 0.16 * rng());
       // It faces the sky and the open side of the crown, where its light comes from.
       const out = _lbUnit([at[0], 0.001, at[2]]);
       // How much a card faces the sky rather than out (a tree's are its own).
-      const up = P.faceUp == null ? 0.7 : P.faceUp, side = 1.3 - up;
+      const up = P.ground ? 1.3 : P.faceUp == null ? 0.7 : P.faceUp, side = 1.3 - up;
       const Nn = _lbUnit([out[0] * side + (rng() - 0.5) * 0.8, up + (rng() - 0.5) * 0.6,
                           out[2] * side + (rng() - 0.5) * 0.8]);
       const dn = D[0] * Nn[0] + D[1] * Nn[1] + D[2] * Nn[2];
@@ -567,7 +569,7 @@ function buildWoodyGeo(p, v) {
               tube: Math.max(0.004, P.H * 0.0022), twig: P.H * 0.0026 };
   if (P.crown) {                                  // its own outline (V3.63)
     G.env = (t) => _wdCrownEnvelope(P.crown, t, P.clear);
-    G.bias = _WD_CROWN_BIAS[P.crown];
+    G.bias = P.ground ? _WD_GROUND_BIAS : _WD_CROWN_BIAS[P.crown];   // a carpet spreads every way
   }
   _woodyStems(G);
   // The leaves get what the stems left of the budget.

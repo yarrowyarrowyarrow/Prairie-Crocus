@@ -39,6 +39,14 @@ const NOD_TILT = [0.25, 0.7];
 const NOD_PEDICEL = 0.7;
 const NOD_MIN_M = 0.024;
 const NOD_GAIN_MAX = 1.8;
+// A dart (a swept-back flower) may be drawn larger, up to NOD_DART_GAIN_MAX:
+// at 1.8 a bog cranberry's 1 cm darts were specks over its mat (V3.67c).
+const NOD_DART_GAIN_MAX = 2.4;
+// A hanging flower on a bare stalk from the ground (a rosette's scape, a mat's
+// pedicel) is drawn with it here, the stalk in the flower's colour mixed this
+// much toward a red-brown (SCAPE_TINT): prairie smoke's, a shooting star's and
+// a bog cranberry's stalks are red in their photographs. An estimate (V3.67c).
+const SCAPE_TINT = '#7a4636', SCAPE_MIX = 0.6;
 // Flowers on one stalk's tip, at most: a cyme's three, an umbel's few.
 const NOD_PER_CLUSTER_MAX = 7;
 
@@ -142,7 +150,8 @@ function _nodShape(kind, n) {
 function noddingSize(p) {
   const d = Math.max(0.15, Math.min(20, p.flower_diameter_cm || 2)) / 100;
   if (p.plant_type === 'vine') return d * woodyBloomGain(p);         // 15b-anchors.js
-  return Math.max(d, Math.min(NOD_MIN_M, d * NOD_GAIN_MAX));
+  const most = p.petal_shape === 'reflexed' ? NOD_DART_GAIN_MAX : NOD_GAIN_MAX;
+  return Math.max(d, Math.min(NOD_MIN_M, d * most));
 }
 
 // Flowers on one stalk's tip: a solitary flower's one, a cyme's or an umbel's
@@ -176,8 +185,12 @@ function buildNodding(plants, month, terrain) {
     if (!set) sets.set(key, set = { kind, petals, xf: [], col: [], beak: [], names: [], ids: [] });
     c.set(p.flower_color || '#ffffff');
     cc.set(p.flower_center_color || '#c9a23a');
-    // Its own stalk: the flower's colour, darkened toward a stem's green.
-    sc.copy(c).multiplyScalar(0.45).lerp(new THREE.Color('#4f6b34'), 0.45);
+    // Its own stalk: the flower's colour, darkened toward a stem's green; on a
+    // bare scape from the ground (the body draws none, 03c-leafy.js), red-brown.
+    const scape = !!(p.drawn && p.drawn.hangs && (p.drawn.form === 'rosette' || p.drawn.form === 'mat'));
+    if (scape) sc.copy(c).lerp(new THREE.Color(SCAPE_TINT), SCAPE_MIX);
+    else sc.copy(c).multiplyScalar(0.45).lerp(new THREE.Color('#4f6b34'), 0.45);
+    const gy = terrainHeightAt(p.x, p.y, terrain);
     const L = noddingSize(p), per = _nodPerCluster(p);
     const clusters = _nodClusters(p);
     const anchors = bloomAnchors(p, clusters, month);           // 15b-anchors.js
@@ -186,7 +199,16 @@ function buildNodding(plants, month, terrain) {
     const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
     const n = Math.min(clusters, p.plant_type === 'vine' ? anchors.length : clusters);
     for (let k = 0; k < n; k++) {
-      const a = anchors[(k * 7 + (s % 97)) % anchors.length];
+      const a = anchors[(k * (anchors.length % 7 ? 7 : 1) + (s % 97)) % anchors.length];   // never 2 of 14 (V3.67c)
+      if (scape) {                       // up from the ground to the tip, leaning in a little
+        const foot = [a.x + (p.x - a.x) * 0.15, gy + 0.002, a.z + (-p.y - a.z) * 0.15];
+        D.set(a.x - foot[0], a.y - foot[1], a.z - foot[2]);
+        const len = D.length(), w = Math.max(0.0012, noddingSize(p) * 0.06);
+        q.setFromUnitVectors(UP, D.normalize());
+        m.compose(v.set(foot[0], foot[1], foot[2]), q, s3.set(w, len, w));
+        stalks.xf.push(m.clone()); stalks.col.push(sc.clone());
+        stalks.names.push(p.common_name || ''); stalks.ids.push(p.plant_id);
+      }
       // Out from the plant: the anchor's own way out (a vine's), else from its middle.
       let ox = a.nx, oz = a.nz;
       if (!ox && !oz) {

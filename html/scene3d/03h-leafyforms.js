@@ -59,7 +59,8 @@ function _leafyStalk(B, P, c, h, lean, bloom, rng) {
   const tip = [c[0] + Math.cos(a) * lean, c[1] + top, c[2] + Math.sin(a) * lean];
   const mid = [(foot[0] + tip[0]) / 2 + Math.cos(a) * lean * 0.15, c[1] + top * 0.5,
                (foot[2] + tip[2]) / 2 + Math.sin(a) * lean * 0.15];
-  _lbTube(B, [foot, mid, tip], r, r * 0.6, shade);
+  // A hanging flower's bare stalk is drawn with it, in its colour (15f-nodding.js).
+  if (!P.hangs) _lbTube(B, [foot, mid, tip], r, r * 0.6, shade);
   _lbTip(B, [tip[0], c[1] + h, tip[2]], bloom, rng, shade);
 }
 

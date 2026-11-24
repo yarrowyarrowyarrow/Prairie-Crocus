@@ -356,7 +356,7 @@ function buildFlorets(plants, month, terrain) {
       for (let k = 0; k < heads; k++) {
         const a = rnd() * Math.PI * 2;
         const rr = rad * spread * Math.sqrt(rnd());
-        const q = va && va[(k * 7 + (seed >>> 0)) % va.length];    // on its leaves
+        const q = va && va[(k * (va.length % 7 ? 7 : 1) + (seed >>> 0)) % va.length];    // on its leaves
         const hx = q ? q.x + q.nx * 0.03 : p.x + Math.cos(a) * rr;
         const hz = q ? q.z + q.nz * 0.03 : -(p.y + Math.sin(a) * rr);
         // Where on the stem the inflorescence sits. flower_height_frac is the

@@ -167,7 +167,7 @@ function buildWoodyFruit(plants, month, terrain) {
     if (state === 'held' && _c.getHSL(_hsl).l < 0.6) _c.multiplyScalar(WOODY_FRUIT_WINTER);
     const n = Math.min(anchors.length, woodyFruitCards(p, state === 'held'));
     for (let k = 0; k < n; k++) {
-      const q = anchors[(k * 11 + seed) % anchors.length];
+      const q = anchors[(k * (anchors.length % 11 ? 11 : 1) + seed) % anchors.length];
       gr.push({ x: q.x, y: q.y, z: q.z, nx: q.nx, nz: q.nz, size: size * (0.8 + 0.4 * rnd()),
                 spin: rnd() * 6.283, r: _c.r, g: _c.g, b: _c.b,
                 name: p.common_name || '', id: p.plant_id });

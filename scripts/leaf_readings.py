@@ -85,7 +85,7 @@ from src import (grass_habit, herb_habit, native_here, photo_picks, shrub_habit,
 MASTER = ROOT / "data" / "plants_master.json"
 REVIEW = ROOT / "data" / "fetched" / "model_review.json"
 REFS = ROOT / "data" / "fetched" / "model_refs"
-READ_IN = "V3.67b"
+READ_IN = "V3.67c"
 
 #: A word from a vocabulary.
 WORDS = {

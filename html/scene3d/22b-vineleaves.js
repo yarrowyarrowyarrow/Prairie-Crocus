@@ -19,11 +19,61 @@
 // What nothing records, and is a stated estimate here: how closely the
 // shoots follow one another along a stem (VINE_SHOOT_GAP, in shoot lengths).
 // 0.55 until V3.65, when the peavines and vetch were still a few sprays lost
-// on the shrub they climb: a vine in leaf clothes the side it is on.
+// on the shrub they climb: a vine in leaf clothes the side it is on. Since
+// V3.67c a herbaceous vine is drawn on its host's near side, a few stems with
+// a leaf at each node (VINE_SOFT_GAP), not a blanket over it.
 
 const VINE_SHOOT_GAP = 0.3;
+const VINE_SOFT_GAP = 0.6;
 const VINE_CARDS_MAX = 900;
 const _VINE_READ = { photo: 1, flora: 1, measured: 1 };
+
+// Leaflets on a pinnate vine leaf, by genus, or by species where its
+// photographs differ from its genus's (V3.67c). The catalogue records
+// compound_pinnate for a peavine's few broad leaflets and a vetch's many narrow
+// ones alike, and one painting of both made the cream peavine a vetch. Pairs, a
+// leaflet's width as a share of its length, and its length as a share of the
+// leaf's: estimates read off the photographs, as a tree's leaflet_pairs are
+// (02-plants.js _PROF). Each leaf ends in a tendril.
+const VINE_LEAFLETS = { lathyrus: [3, 0.6, 0.46], 'lathyrus venosus': [5, 0.5, 0.34],
+                        vicia: [6, 0.3, 0.3] };
+const _VINE_SPRAYS = new Map();
+function vineLeafletSpray(p) {
+  const sp0 = (p.species || '').toLowerCase(), g0 = (p.genus || '').toLowerCase();
+  const genus = VINE_LEAFLETS[sp0] ? sp0 : g0;                      // the scene's, lowercased
+  const row = p.leaf_shape === 'compound_pinnate' && VINE_LEAFLETS[genus];
+  if (!row) return null;
+  let sp = _VINE_SPRAYS.get(genus);
+  if (sp) return sp;
+  const [pairs, ratio, size] = row, W = 192, H = 192, len = 64, cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const g = cv.getContext('2d', { willReadFrequently: true });
+  g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+  g.fillStyle = g.strokeStyle = '#fff'; g.lineCap = 'round';
+  const rnd = _lcg(71 + pairs * 13);                                    // 01b-surface.js
+  const leaf = (x, y, a) => {          // a rachis, its pairs of leaflets, a tendril
+    g.save(); g.translate(x, y); g.rotate(a);
+    g.lineWidth = 1.6; g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -len); g.stroke();
+    const lf = len * size, wf = lf * ratio;
+    for (let k = 0; k < pairs; k++) {
+      for (const sg of [-1, 1]) {
+        g.save(); g.translate(0, -len * (0.2 + 0.68 * k / Math.max(1, pairs - 1)));
+        g.rotate(sg * (0.85 + 0.3 * rnd()));
+        g.beginPath(); g.ellipse(0, -lf / 2, wf / 2, lf / 2, 0, 0, 6.2832); g.fill(); g.restore();
+      }
+    }
+    g.lineWidth = 1.1; g.beginPath(); g.moveTo(0, -len);
+    g.quadraticCurveTo(len * 0.2, -len * 1.15, len * 0.05, -len * 1.28); g.stroke();
+    g.restore();
+  };
+  g.lineWidth = 2.2; g.beginPath(); g.moveTo(W / 2, H); g.lineTo(W / 2, H - len * 1.35); g.stroke();
+  leaf(W / 2, H - len * 0.3, -1.0); leaf(W / 2, H - len * 0.75, 1.0);
+  leaf(W / 2, H - len * 1.35, (rnd() - 0.5) * 0.3);
+  const mk = woodyMask('vine-pinnate|' + genus, cv);                   // 03d-woody.js
+  sp = Object.assign(mk, { w: W / len, h: H / len, leaves: 3, cluster: true, leafCover: mk.cover });
+  _VINE_SPRAYS.set(genus, sp);
+  return sp;
+}
 
 function vineReadFor(p) {
   return !STYLISED && p && p.plant_type === 'vine' && !!_VINE_READ[p.leaf_data_source]
@@ -34,9 +84,10 @@ function vineReadFor(p) {
 // where its flowers may go onto `anchors` (above `floorY`).
 function buildVineSprays(p, paths, rng, floorY, anchors, month) {
   const per = p.leaf_arrangement === 'opposite' ? 2 : 1;
-  const cut = _wdSpray(p.leaf_shape, per), sp = cut;                // 03d-woody.js
+  const cut = vineLeafletSpray(p) || _wdSpray(p.leaf_shape, per), sp = cut;   // 03d-woody.js
   const L = Math.max(0.01, (p.leaf_size_cm || 6) / 100);
-  const w = sp.w * L, h = sp.h * L, gap = h * VINE_SHOOT_GAP;
+  const soft = (p.foliage_type || '') === 'herbaceous';
+  const w = sp.w * L, h = sp.h * L, gap = h * (soft ? VINE_SOFT_GAP : VINE_SHOOT_GAP);
   const F = Object.assign(_lbNew(), { uv: [] });
   let cards = 0, total = 0;
   for (const pa of paths) {
@@ -66,7 +117,7 @@ function buildVineSprays(p, paths, rng, floorY, anchors, month) {
         T = _lbUnit(_lbAdd(T, Nn, -dn));
         const S = _lbCross(Nn, T), k = 0.85 + 0.3 * rng();
         _wdCard(F, at, T, S, w * k, h * k, 0.62 + 0.3 * rng());       // 03d-woody.js
-        if (cards++ % 4 === 0 && !run && at[1] >= floorY) {
+        if (cards++ % (soft ? 2 : 4) === 0 && !run && at[1] >= floorY) {   // as many flowers on fewer shoots
           const tip = _lbAdd(at, T, h * k * 0.9);
           anchors.push({ x: tip[0], y: tip[1], z: tip[2], nx: N.x, nz: N.z });
         }

@@ -75,7 +75,11 @@ feature, skim where it sits in that philosophy. The sources of truth:
   or below by cause: hanging flowers (`head_attitude` on a wildflower, `15f-nodding.js`),
   umbrellas, fronds and thin tufts (`03h-leafyforms.js`, which now holds the rosettes and tufts),
   water plants by their parts (`23b-pondforms.js`), vines over their host's near side, a woody
-  mat filed as a groundcover (`shrub_habit.WOODY_MATS`); mean 5.82, the plan's table the ranking.
+  mat filed as a groundcover (`shrub_habit.WOODY_MATS`); a third sitting (`V3.67c`) took five of
+  the six left at 4 or less up (herbaceous vines as a few stems, `VINE_LEAFLETS` by genus; the
+  jack pine stays at 4); mean 5.86, the plan's tables the ranking. **A flower layer never steps
+  through anchors by a fixed stride** (`(k * 7 + seed) % n` stacked 14 anchors' clusters on two):
+  write `n % 7 ? 7 : 1`, which `tests/test_bloom_anchors.py` holds.
   **A flower recorded by its characters is drawn whatever its `flower_form`**, which stays the
   pollinator logic's: never change it to make a flower show.
   [V3.49](docs/plans/V3.49-shrubs-from-their-own-stems.md) did the shrubs and

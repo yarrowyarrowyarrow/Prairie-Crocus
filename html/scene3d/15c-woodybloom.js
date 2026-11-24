@@ -258,7 +258,7 @@ function buildWoodyBlooms(plants, month, terrain) {
     _c.set(p.flower_color || '#ffffff');
     const n = Math.min(anchors.length, woodyBloomCards(p));
     for (let k = 0; k < n; k++) {
-      const q = anchors[(k * 7 + seed) % anchors.length];
+      const q = anchors[(k * (anchors.length % 7 ? 7 : 1) + seed) % anchors.length];   // 7 visits 2 of 14 (V3.67c)
       // A stem tip says no way out (15b-anchors.js): out from the plant's middle.
       let nx = q.nx, nz = q.nz;
       if (!nx && !nz) { const a = Math.atan2(q.z + p.y, q.x - p.x) + (rnd() - 0.5) * 0.6; nx = Math.cos(a); nz = Math.sin(a); }

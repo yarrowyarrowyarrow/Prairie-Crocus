@@ -49,13 +49,13 @@ const TRUNK_PIPE = 0.0095;
 const LIMB_RISE = { ascending: 0.8, spreading: 0.12, drooping: -0.28 };
 const LIMB_BIAS = { ascending: [0.38, 0.25], spreading: [0.06, 0.3], drooping: [-0.04, 0.35] };
 const LIMB_DROOP = { ascending: 0, spreading: 0.12, drooping: 0.4 };
-// A needle spray's length, in needles: a spruce frond, a pine shoot's tuft, a
-// tamarack twig with its rosettes.
-const SPRAY_UNIT = { frond: 16, tuft: 8, rosette: 10 };
+// A needle spray's length, in needles: a spruce frond, a pine's branch end (8
+// until V3.67c, one shoot's tuft), a tamarack twig with its rosettes.
+const SPRAY_UNIT = { frond: 16, tuft: 18, rosette: 10 };
 // How much a tree's sprays face the sky rather than out from the crown: a
 // conifer's fronds lie level but hang and turn at their ends, so from a
 // person's height they are seen more from the side than a shrub's.
-const CROWN_FACE_UP = { leaf: 0.5, frond: 0.32, tuft: 0.4, rosette: 0.4 };
+const CROWN_FACE_UP = { leaf: 0.5, frond: 0.32, tuft: 0.25, rosette: 0.4 };
 // How much of WOODY_COVER a crown of each spray fills (V3.67b, an estimate read
 // off the photographs): a pine's and a tamarack's crowns are open, the sky and
 // their branches seen through them; filled as a spruce's, a jack pine read as a
@@ -90,7 +90,7 @@ const _CR_NEEDLES = new Map();
 function _crNeedles(kind) {
   let sp = _CR_NEEDLES.get(kind);
   if (sp) return sp;
-  const W = 128, H = 256, cv = document.createElement('canvas');
+  const W = kind === 'tuft' ? 256 : 128, H = 256, cv = document.createElement('canvas');
   cv.width = W; cv.height = H;
   const g = cv.getContext('2d', { willReadFrequently: true });
   g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
@@ -117,21 +117,19 @@ function _crNeedles(kind) {
       const f = 0.08 + 0.84 * j / 15, side = j % 2 ? 1 : -1;
       brush(W / 2, H - L * f, side * (0.9 - 0.2 * f), (W * 0.46) * (1 - 0.6 * f), 2.6);
     }
-  } else if (kind === 'tuft') {     // a pine's: long needles in bundles, crowded at the shoots' ends
-    const tuft = (x0, y0, a0, L) => {
-      line(x0, y0, a0, L, 2.6);
-      for (let i = 0; i < 46; i++) {
-        const f = Math.pow(rnd(), 0.6), s = L * (0.3 + 0.7 * f);
-        const x = x0 + Math.sin(a0) * s, y = y0 - Math.cos(a0) * s;
-        line(x, y, a0 + (rnd() - 0.5) * (1.1 + 0.8 * (1 - f)), n * (0.85 + 0.25 * rnd()), 1.5);
-      }
-    };
-    line(W / 2, H, 0, H * 0.45, 3);
-    tuft(W / 2, H * 0.55, 0, H * 0.22);
-    tuft(W / 2, H * 0.62, -0.6, H * 0.2);
-    tuft(W / 2, H * 0.6, 0.6, H * 0.2);
-    tuft(W / 2, H * 0.82, -0.9, H * 0.18);
-    tuft(W / 2, H * 0.8, 0.9, H * 0.18);
+  } else if (kind === 'tuft') {     // a pine's: a branch end, its needles bursting round its tip
+    // V3.67c: across a yard a pine's foliage is bursts of needles at its branch
+    // ends; painted as fine brushes (and before as five fanned tufts) they read
+    // as leaves. The bursts' bundles are a few needles long (SPRAY_UNIT.tuft).
+    line(W / 2, H, 0, H * 0.44, 4);
+    for (let i = 0; i < 34; i++) {
+      const a = (rnd() - 0.5) * 2.9;
+      line(W / 2, H * 0.57, a, H * (0.26 + 0.2 * rnd()) * (1 - 0.3 * Math.abs(a) / 1.45), 2.6);
+    }
+    for (let i = 0; i < 16; i++) {  // and last years' needles, back down the shoot
+      const y = H * (0.62 + 0.3 * rnd()), side = rnd() < 0.5 ? -1 : 1;
+      line(W / 2, y, side * (0.6 + 0.7 * rnd()), n * (1.2 + 0.8 * rnd()), 2.2);
+    }
   } else {                          // a tamarack's: soft rosettes on spurs along the twigs
     const twig = (x0, y0, a0, L, k) => {
       line(x0, y0, a0, L, 1.8);
