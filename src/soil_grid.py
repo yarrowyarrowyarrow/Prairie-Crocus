@@ -39,7 +39,7 @@ def soil_pack_dir() -> str:
     """Directory holding the downloaded soil GeoTIFFs (sibling of the DB).
 
     Under the shared per-user data folder (V1.69-renamed from ``PermaDesign`` to
-    ``Site & Pattern`` — see ``src/user_paths.py``)."""
+    ``Site & Pattern``, a name it keeps — see ``src/user_paths.py``)."""
     from src import user_paths
     d = os.path.join(str(user_paths.user_data_dir()), "soil")
     os.makedirs(d, exist_ok=True)

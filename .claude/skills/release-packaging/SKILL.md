@@ -30,7 +30,7 @@ push to a V<major>.<minor> branch
                builds the NSIS EXE → publishes to the SAME GitHub Release
       │
       ▼
-GitHub PRERELEASE  (tag release-V3.18, assets: SiteAndPattern-V3.18.dmg + ...-Setup.exe)
+GitHub PRERELEASE  (tag release-V3.68, assets: PrairieCrocus-V3.68.dmg + ...-Setup.exe)
       │   since V3.18 (FN-7): the updater skips prereleases, so nobody is offered it yet
       ▼
 the owner PROMOTES it: release page → Edit → untick "Set as a pre-release"
@@ -93,7 +93,7 @@ pyinstaller scripts/packaging/permadesign.spec      # from the repo root
 
 | File | What it does |
 |---|---|
-| `permadesign.spec` | PyInstaller one-dir spec. Bundles `data/`, `html/`, `src/db/schema.sql` (and `version.txt` when present) via `datas`; artifact base name `SiteAndPattern` (no spaces), display name "Site & Pattern". |
+| `permadesign.spec` | PyInstaller one-dir spec. Bundles `data/`, `html/`, `src/db/schema.sql` (and `version.txt` when present) via `datas`; artifact base name `SiteAndPattern` (no spaces; the Windows program keeps it), display name "Prairie Crocus", Mac bundle `Prairie Crocus.app` (V3.68). |
 | `build_installer.sh` | macOS/Linux build: clean, write `version.txt`, run PyInstaller, package DMG/archive. Called by `release-macos.yml`. |
 | `build_installer.bat` | Windows equivalent; runs PyInstaller then NSIS. Called by `release-windows.yml`. |
 | `installer.nsi` | NSIS script for the Windows installer: shortcuts, Start menu, an uninstaller listed in Settings → Apps, and the `/UPDATE` mode the in-app updater runs (V3.15, F228: skip the pages, wait for the app to let go of its files, replace `_internal`, reopen through Explorer). `AllowSkipFiles off`: a locked file is never skipped. `tests/test_installer_script.py` pins the contract with `update_flow` and compiles it with `-WX`. |
@@ -106,7 +106,7 @@ it **only when present** (absent in a plain checkout). `src/app_version.py`
 `build_version()` reads it via `resource_path("version.txt")`; a source
 checkout returns `None` and the updater falls back to the live git branch.
 `running_version()` (V3.16) is what a person sees: the main window's title
-(`Site & Pattern V3.16 — …`, through `branding.window_title`) and Help →
+(`Prairie Crocus V3.16 — …`, through `branding.window_title`) and Help →
 About / Version, from `version.txt` or a source checkout's `.git/HEAD`, only
 when it is a `V<major>.<minor>`.
 
@@ -153,7 +153,7 @@ a silently-missing release asset. See `run` (deps) and `offline-packs`.
 2. Launch from the shortcut / Applications folder.
 3. Confirm the plant browser and community panels are populated, the Leaflet
    map loads, and no error dialogs appear.
-4. **Read the title bar** (V3.16): `Site & Pattern V<x.y> — …` names the build.
+4. **Read the title bar** (V3.16): `Prairie Crocus V<x.y> — …` names the build.
    After an in-app update, a title with no number while Help reads the new
    version means the old program is running beside the new `version.txt`
    (the program is inside the `.exe`, `version.txt` in `_internal`): an update
@@ -169,7 +169,7 @@ a silently-missing release asset. See `run` (deps) and `offline-packs`.
 | Installed app: empty panels / "no such table" | A data file missing from `datas` or not read via `resource_path` (see `debugging` §1). |
 | Installed app: "Missing module" | Add to `hiddenimports` in the spec. |
 | "NSIS makensis not found" (Windows) | Falls back to ZIP; install NSIS and rebuild for the 1-click installer. |
-| CI, Windows job: *SiteAndPattern-Installer.exe was not produced*, after "NSIS not found" in the build step | `choco install nsis` failed on the runner (a 504 from community.chocolatey.org, V3.18) and the script fell back to a zip. Not the code: re-run the failed job once. |
+| CI, Windows job: *PrairieCrocus-Installer.exe was not produced* (*SiteAndPattern-Installer.exe* before V3.68), after "NSIS not found" in the build step | `choco install nsis` failed on the runner (a 504 from community.chocolatey.org, V3.18) and the script fell back to a zip. Not the code: re-run the failed job once. |
 | Network features dead in the frozen app | Certs — `src/ssl_bootstrap.py` / `certifi`; see `debugging` §6. |
 | Updater doesn't see a new version | Not promoted yet: it is a prerelease until promoted on the release page or by "Promote a release" (V3.18). Otherwise the branch/tag is not `V<major>.<minor>`, or no Release was published — check the workflow run. |
 | Windows: *Error opening file for writing: …SiteAndPattern.exe* | The app was still running; Windows will not let a running program's files be written. Copies before V3.15 started the installer and stayed open. From V3.15 the app closes and the installer waits for it (`/UPDATE`); if something else holds a file, close it and Retry. There is no Ignore any more: it left the old program carrying the new `version.txt`, which the updater then read as up to date. |
@@ -198,7 +198,7 @@ a silently-missing release asset. See `run` (deps) and `offline-packs`.
   same GitHub Release; divergent notes get clobbered by whichever finishes
   last.
 - The artifact base name is `SiteAndPattern` (quoting-safe); the display name
-  is "Site & Pattern". Don't rename the artifact — NSIS/`.app`/shortcut paths
+  is "Prairie Crocus". Don't rename the artifact — NSIS/`.app`/shortcut paths
   depend on it.
 
 ## Key files

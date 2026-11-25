@@ -1,4 +1,4 @@
-// Part of the Site & Pattern 3D viewer. Loaded as an ordered CLASSIC
+// Part of the Prairie Crocus 3D viewer. Loaded as an ordered CLASSIC
 // script by the bootstrap in scene3d.html (the list is scene3d/chunks.js) —
 // it shares the global scope with its siblings, so load ORDER is dependency
 // order. Do not add ES `import`/`export` here.

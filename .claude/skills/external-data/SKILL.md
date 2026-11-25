@@ -3,7 +3,7 @@ name: external-data
 description: Use when adding or changing a networked data source (Open-Meteo, SoilGrids, Nominatim, Overpass/OSM, NRCan, iNaturalist images) or its cache/fallback — anything calling http_utils.http_get_json or urllib. Covers the offline-first discipline (graceful degradation, DB-cached results, regional fallback JSONs), the fetch-order chains in property_data.py, SSL bootstrap for frozen builds, timeout discipline, and testing network code without a network.
 ---
 
-# Networked data sources (Site & Pattern)
+# Networked data sources (Prairie Crocus)
 
 ## Purpose / when to use
 

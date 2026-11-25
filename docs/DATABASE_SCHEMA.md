@@ -1,6 +1,6 @@
-# Site & Pattern Database Schema
+# Prairie Crocus Database Schema
 
-Site & Pattern stores its plant catalogue and saved plant communities in a
+Prairie Crocus stores its plant catalogue and saved plant communities in a
 local SQLite database. This is **not** the project file (see
 [`PROJECT_FILE_FORMAT.md`](PROJECT_FILE_FORMAT.md)) — it's the shared,
 seeded reference data every project draws from.

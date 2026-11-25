@@ -1,6 +1,6 @@
 // html/scene3d/26-perf.js — how fast the 3D view is drawing (V3.43).
 //
-// Part of the Site & Pattern 3D viewer: a classic script sharing the global
+// Part of the Prairie Crocus 3D viewer: a classic script sharing the global
 // scope with its siblings (see any chunk's header). No ES import or export.
 //
 // No session has ever seen the preview on the laptop it is for: every render

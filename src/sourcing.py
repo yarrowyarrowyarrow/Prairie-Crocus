@@ -1,7 +1,7 @@
 """
 src/sourcing.py — cost / sourcing helpers for generated designs (V1.45).
 
-Plant prices in Site & Pattern are deliberately modelled as a **range** per single
+Plant prices in Prairie Crocus are deliberately modelled as a **range** per single
 nursery plant, not an exact figure: Alberta retail prices vary by nursery,
 region and year. A plant carries an explicit ``price_low_cad`` / ``price_high_cad``
 when we have one; otherwise a per-``plant_type`` default (below) is used so a

@@ -1,5 +1,5 @@
 """
-app.py — Main application window for Site & Pattern.
+app.py — Main application window for Prairie Crocus.
 
 Layout
 ------
@@ -653,7 +653,7 @@ class MainWindow(QMainWindow):
 
         act_about = help_menu.addAction(f"&About / Version: {version_disp}")
         act_about.setStatusTip(
-            "Show the current Site & Pattern version, schema version, and "
+            "Show the current Prairie Crocus version, schema version, and "
             "git commit hash"
         )
         act_about.triggered.connect(self._on_about)

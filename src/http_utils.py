@@ -36,13 +36,14 @@ def user_agent() -> str:
     Until V3.31 it was ``PermaDesign/1.0`` and the pre-rebrand repository,
     kept "for providers' allow-lists"; no provider has an entry for it (the
     app has no keys and no registration), so it only named a product that no
-    longer exists and a version that never changed."""
+    longer exists and a version that never changed. ``SiteAndPattern/`` until
+    the V3.68 rename."""
     try:
         from src.app_version import running_version
         version = (running_version() or "dev").lstrip("V")
     except Exception:                                      # noqa: BLE001
         version = "dev"
-    return f"SiteAndPattern/{version} (+{APP_URL})"
+    return f"PrairieCrocus/{version} (+{APP_URL})"
 
 
 _USER_AGENT = user_agent()

@@ -1,17 +1,26 @@
-; Site & Pattern Installer
+; Prairie Crocus Installer
 ; Built with NSIS 3.x
-; Display name is "Site & Pattern"; the bundled artifact base name is the
+; Display name is "Prairie Crocus"; the bundled artifact base name is the
 ; script-safe "SiteAndPattern" (matches scripts/packaging/permadesign.spec).
+;
+; THE V3.68 RENAME (Site & Pattern -> Prairie Crocus). What people see is
+; renamed: the installer, the shortcuts, the name in Settings -> Apps. What an
+; installed copy is found by keeps its old name: the program file
+; (SiteAndPattern.exe: a pinned taskbar icon points at it, and the program's
+; code is inside it), REG_KEY and UNINSTALL_KEY (so a later install finds this
+; one and Settings -> Apps lists one entry), and the folder an existing copy is
+; in (update mode installs into it). Only a fresh install goes to a folder with
+; the new name. OLD_NAME is the shortcuts' old name, which an install removes.
 ; NSIS chdir's to this .nsi file's own directory before processing, so the
 ; File/OutFile paths below are relative to scripts/packaging/ — "..\.." reaches
 ; the repo root, where PyInstaller wrote dist/ and where the workflow expects
-; SiteAndPattern-Installer.exe.
+; PrairieCrocus-Installer.exe.
 ;
 ; UPDATE MODE (V3.15, F228). Help -> Check for Updates runs this installer as
-;     SiteAndPattern-V3.xx-Setup.exe /UPDATE /D=<the folder the app runs from>
+; PrairieCrocus-V3.xx-Setup.exe /UPDATE /D=<the folder the app runs from>
 ; and then closes the app. With /UPDATE the folder and finish pages are
 ; skipped: the installer waits for the app to let go of its files, replaces
-; the program, closes itself and opens Site & Pattern again. Windows will not
+; the program, closes itself and opens Prairie Crocus again. Windows will not
 ; let a running program's files be opened for writing, which is the "Error
 ; opening file for writing" an update stopped on until V3.15, when the app
 ; started this and stayed open. The switch is spelled once in
@@ -25,10 +34,11 @@ Unicode true
 !include "FileFunc.nsh"
 
 ; General
-Name "Site & Pattern"
-OutFile "..\..\SiteAndPattern-Installer.exe"
-InstallDir "$PROGRAMFILES\Site & Pattern"
+Name "Prairie Crocus"
+OutFile "..\..\PrairieCrocus-Installer.exe"
+InstallDir "$PROGRAMFILES\Prairie Crocus"
 !define REG_KEY "Software\Site & Pattern"
+!define OLD_NAME "Site & Pattern"
 ; A later install run by hand proposes the folder the last one used.
 InstallDirRegKey HKLM "${REG_KEY}" "InstallDir"
 
@@ -47,7 +57,7 @@ AllowSkipFiles off
 ; wheel's own folder, which on Windows is bin (read from the 6.11 wheel in
 ; V3.15). A wrong path would only skip this half of the check.
 !define WEB_ENGINE_EXE "_internal\PyQt6\Qt6\bin\QtWebEngineProcess.exe"
-!define STILL_OPEN "Site & Pattern is still open (or still closing).$\r$\n$\r$\nSave your design and close Site & Pattern, then click Retry."
+!define STILL_OPEN "Prairie Crocus is still open (or still closing).$\r$\n$\r$\nSave your design and close Prairie Crocus, then click Retry."
 ; How long update mode waits for the app to close, in half-second checks,
 ; before asking: a minute. (Settable at build time so a test need not wait.)
 !define /ifndef WAIT_CHECKS 120
@@ -136,7 +146,7 @@ Function WaitForAppToClose
     ${If} $UpdateMode == 1
     ${AndIf} $2 < ${WAIT_CHECKS}
       ${If} $2 == 0
-        DetailPrint "Waiting for Site & Pattern to close..."
+        DetailPrint "Waiting for Prairie Crocus to close..."
       ${EndIf}
       IntOp $2 $2 + 1
       Sleep 500
@@ -149,7 +159,7 @@ Function WaitForAppToClose
   ${Loop}
 FunctionEnd
 
-; Open Site & Pattern as the person who ran the installer, not as
+; Open Prairie Crocus as the person who ran the installer, not as
 ; administrator. This installer runs elevated, and a program it started with
 ; Exec would be too, reading another account's data folder whenever someone
 ; else's password answered the Windows prompt. Explorer is already running as
@@ -165,12 +175,12 @@ Function .onInstSuccess
 FunctionEnd
 
 ; Installer sections
-Section "Site & Pattern"
+Section "Prairie Crocus"
   Call WaitForAppToClose
 
   ; Replace the program rather than layer the new one over the old: a module
   ; the new version no longer ships must not stay importable. Only now, with
-  ; nothing holding the files, and only where Site & Pattern is installed (a
+  ; nothing holding the files, and only where Prairie Crocus is installed (a
   ; folder typed on the folder page could hold another program's _internal).
   ; None of it is the person's own: designs and the plant database live in
   ; their data folder, which is never touched here.
@@ -182,7 +192,7 @@ Section "Site & Pattern"
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   WriteRegStr HKLM "${REG_KEY}" "InstallDir" "$INSTDIR"
-  WriteRegStr HKLM "${UNINSTALL_KEY}" "DisplayName" "Site & Pattern"
+  WriteRegStr HKLM "${UNINSTALL_KEY}" "DisplayName" "Prairie Crocus"
   WriteRegStr HKLM "${UNINSTALL_KEY}" "DisplayVersion" "${APP_VERSION}"
   WriteRegStr HKLM "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\${APP_EXE}"
   WriteRegStr HKLM "${UNINSTALL_KEY}" "InstallLocation" "$INSTDIR"
@@ -191,16 +201,20 @@ Section "Site & Pattern"
   WriteRegDWORD HKLM "${UNINSTALL_KEY}" "NoRepair" 1
 
   ; Desktop shortcut. An update leaves the desktop as the person left it: one
-  ; they deleted does not come back with every version.
+  ; they deleted does not come back with every version. A shortcut under the
+  ; old name (before V3.68) is replaced by one under the new name.
   ${If} $UpdateMode != 1
-  ${OrIf} ${FileExists} "$DESKTOP\Site & Pattern.lnk"
-    CreateShortCut "$DESKTOP\Site & Pattern.lnk" "$INSTDIR\${APP_EXE}"
+  ${OrIf} ${FileExists} "$DESKTOP\Prairie Crocus.lnk"
+  ${OrIf} ${FileExists} "$DESKTOP\${OLD_NAME}.lnk"
+    CreateShortCut "$DESKTOP\Prairie Crocus.lnk" "$INSTDIR\${APP_EXE}"
   ${EndIf}
+  Delete "$DESKTOP\${OLD_NAME}.lnk"
 
-  ; Create start menu shortcut
-  CreateDirectory "$SMPROGRAMS\Site & Pattern"
-  CreateShortCut "$SMPROGRAMS\Site & Pattern\Site & Pattern.lnk" "$INSTDIR\${APP_EXE}"
-  CreateShortCut "$SMPROGRAMS\Site & Pattern\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+  ; Create start menu shortcut, in place of the old name's folder
+  RMDir /r "$SMPROGRAMS\${OLD_NAME}"
+  CreateDirectory "$SMPROGRAMS\Prairie Crocus"
+  CreateShortCut "$SMPROGRAMS\Prairie Crocus\Prairie Crocus.lnk" "$INSTDIR\${APP_EXE}"
+  CreateShortCut "$SMPROGRAMS\Prairie Crocus\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 
   ; Windows keeps icons in a cache by file, and can go on drawing a replaced
   ; program's old icon on its shortcuts until the next sign-in. Tell the shell
@@ -229,8 +243,10 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\_internal"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"
-  RMDir /r "$SMPROGRAMS\Site & Pattern"
-  Delete "$DESKTOP\Site & Pattern.lnk"
+  RMDir /r "$SMPROGRAMS\Prairie Crocus"
+  Delete "$DESKTOP\Prairie Crocus.lnk"
+  RMDir /r "$SMPROGRAMS\${OLD_NAME}"
+  Delete "$DESKTOP\${OLD_NAME}.lnk"
   DeleteRegKey HKLM "${UNINSTALL_KEY}"
   DeleteRegKey HKLM "${REG_KEY}"
 SectionEnd

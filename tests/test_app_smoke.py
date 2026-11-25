@@ -966,7 +966,7 @@ class TestMainWindowSmoke(unittest.TestCase):
             win._on_new()
         # No name is asked for any more (V3.23, ST-6): the address gives one.
         self.assertEqual(win.windowTitle(),
-                         "Site & Pattern V9.99 — Untitled Design")
+                         "Prairie Crocus V9.99 — Untitled Design")
 
     def test_the_version_picker_is_gone_and_updates_stay(self):
         """V3.18 (RM-1): Help › Switch to a specific version… was a

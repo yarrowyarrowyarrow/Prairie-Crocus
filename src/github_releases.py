@@ -44,7 +44,7 @@ DEFAULT_REPO = "yarrowyarrowyarrow/Site-and-Pattern"
 _API_BASE = "https://api.github.com"
 #: Pages of 100 releases :func:`list_releases` reads at most.
 _MAX_PAGES = 5
-_USER_AGENT = "SiteAndPattern-Updater"
+_USER_AGENT = "PrairieCrocus-Updater"
 
 #: A release tag, in both spellings this repo has used.
 #:
@@ -131,7 +131,7 @@ def platform_asset_extensions(platform: Optional[str] = None) -> Tuple[str, ...]
 #: The switch that tells the Windows installer the app started it to update
 #: itself in place (V3.15, F228). With it the installer skips its folder and
 #: finish pages, waits for the running copy to close, replaces it, and opens
-#: Site & Pattern again. ``scripts/packaging/installer.nsi`` reads it;
+#: Prairie Crocus again. ``scripts/packaging/installer.nsi`` reads it;
 #: ``tests/test_installer_script.py`` keeps the two spellings equal.
 UPDATE_SWITCH = "/UPDATE"
 

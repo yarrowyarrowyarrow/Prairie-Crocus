@@ -1,4 +1,4 @@
-# pyproject.toml — packaging metadata for Site & Pattern's installable
+# pyproject.toml — packaging metadata for Prairie Crocus's installable
 # surfaces (the `permadesign` CLI and the MCP server). The pip project name and
 # the `permadesign` console command deliberately keep the legacy identifier:
 # they are part of the frozen headless scripting contract (alongside
@@ -16,7 +16,7 @@
 #
 # The core install pulls NO dependencies on purpose — src.permadesign_api
 # and src.cli are Qt-free and use only the stdlib + the repo's own code,
-# so an agent can drive Site & Pattern headlessly with a minimal footprint.
+# so an agent can drive Prairie Crocus headlessly with a minimal footprint.
 
 [build-system]
 requires = ["setuptools>=61"]

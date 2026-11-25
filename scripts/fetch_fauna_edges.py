@@ -69,7 +69,7 @@ _DATA = os.path.join(_ROOT, "data")
 _OUT_DIR = os.path.join(_DATA, "fetched")
 
 _API = "https://api.globalbioticinteractions.org/interaction"
-_UA = "Site-and-Pattern/2.59 (native plant habitat design; F125 data sourcing)"
+_UA = "PrairieCrocus/2.59 (native plant habitat design; F125 data sourcing)"
 
 #: Be a good citizen: GloBI is a free academic service.
 _PAUSE_S = 1.0

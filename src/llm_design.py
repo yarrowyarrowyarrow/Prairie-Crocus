@@ -52,7 +52,7 @@ _ALLOWED_FILTERS = {
 }
 
 _SYSTEM_PROMPT = """\
-You are a landscape design assistant for Site & Pattern, a tool for native-plant
+You are a landscape design assistant for Prairie Crocus, a tool for native-plant
 habitat gardens in Alberta and the Canadian prairies. Given a design brief,
 respond with ONLY a single JSON object (no prose, no markdown fences) of this
 shape:

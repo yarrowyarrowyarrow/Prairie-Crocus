@@ -1,4 +1,4 @@
-// Part of the Site & Pattern 3D viewer. Loaded as an ordered CLASSIC
+// Part of the Prairie Crocus 3D viewer. Loaded as an ordered CLASSIC
 // script by the bootstrap in scene3d.html — it shares the global scope
 // with its siblings (THREE and friends are globals set by the
 // bootstrap). Do not add ES `import`/`export` here.

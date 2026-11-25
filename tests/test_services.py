@@ -74,7 +74,7 @@ class TheAppSaysWhoItIs(unittest.TestCase):
     def test_one_user_agent(self):
         from src import http_utils
         ua = http_utils.user_agent()
-        self.assertTrue(ua.startswith("SiteAndPattern/"), ua)
+        self.assertTrue(ua.startswith("PrairieCrocus/"), ua)
         self.assertIn(http_utils.APP_URL, ua)
         for name in ("osm_features", "tree_detect", "tree_detect_chm",
                      "soil_downloader", "llm_design", "terrain_downloader"):

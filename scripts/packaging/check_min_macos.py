@@ -2,7 +2,7 @@
 check_min_macos.py — nothing inside the Mac app may need a newer macOS than
 the app says it runs on (V3.42).
 
-    python3 scripts/packaging/check_min_macos.py dist/SiteAndPattern.app
+    python3 scripts/packaging/check_min_macos.py "dist/Prairie Crocus.app"
 
 The bundle declares ``LSMinimumSystemVersion`` 11.0 (Big Sur) in its
 Info.plist, and the release notes promise the same. Every binary inside

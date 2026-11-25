@@ -160,7 +160,7 @@ const g = sheet.getContext('2d');
 g.fillStyle = '#16221a'; g.fillRect(0, 0, sheet.width, sheet.height);
 g.fillStyle = '#a5d6a7';
 g.font = '600 18px system-ui, sans-serif';
-g.fillText('Site & Pattern — 3D flower sprites (real makeFlowerTexture, in real flower colours)', 20, 28);
+g.fillText('Prairie Crocus — 3D flower sprites (real makeFlowerTexture, in real flower colours)', 20, 28);
 
 const cols = 5, sprite = 150, tile = 232, x0 = 24, y0 = 52;
 FLOWER_FORMS.forEach((form, i) => {{

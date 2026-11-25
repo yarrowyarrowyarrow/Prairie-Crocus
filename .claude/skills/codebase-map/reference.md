@@ -9,8 +9,8 @@ added; trust the source over this list).
 
 | Module | One line |
 |---|---|
-| `main.py` | Site & Pattern entry point |
-| `src/app.py` | Main application window for Site & Pattern |
+| `main.py` | Prairie Crocus entry point |
+| `src/app.py` | Main application window for Prairie Crocus |
 | `src/toolbar.py` | The Draw row (Boundary, Shape, Measure, Note, Select, Undo/Redo/Cancel) and the View row's layer toggles |
 | `src/ui_style.py` | shared Qt stylesheet snippets so panels look consistent |
 | `src/collapsible_panel.py` | Reusable header-with-chevron panel widget |
@@ -35,7 +35,7 @@ added; trust the source over this list).
 
 | Module | One line |
 |---|---|
-| `src/project.py` | Save/load Site & Pattern projects as GeoJSON (Step 4 implementation) |
+| `src/project.py` | Save/load Prairie Crocus projects as GeoJSON (Step 4 implementation) |
 | `src/project_store.py` | single write path for placed-plant state (V1.62) |
 | `src/errors.py` | Typed exception hierarchy for the PermaDesign scripting API |
 
@@ -44,7 +44,7 @@ added; trust the source over this list).
 | Module | One line |
 |---|---|
 | `src/db/plants.py` | SQLite database access layer for the plant catalogue |
-| `src/db/seed_data.py` | Plant catalogue seeding for Site & Pattern |
+| `src/db/seed_data.py` | Plant catalogue seeding for Prairie Crocus |
 | `src/db/polycultures.py` | (no module docstring) |
 | `src/db/fauna.py` | Query API for the fauna registry and plant ↔ fauna junction |
 | `src/db/nurseries.py` | Query API for the native-plant nursery directory (schema v44+) |
@@ -220,7 +220,7 @@ added; trust the source over this list).
 | Module | One line |
 |---|---|
 | `src/permadesign_api.py` | Public, Qt-free scripting facade for PermaDesign |
-| `src/cli.py` | Command-line interface for Site & Pattern's headless operations |
+| `src/cli.py` | Command-line interface for Prairie Crocus's headless operations |
 | `src/mcp_server.py` | Model Context Protocol server exposing PermaDesign to |
 | `src/version_branch.py` | Helpers for the V<major>.<minor> release-branch |
 | `src/github_releases.py` | GitHub Releases lookup for the in-app updater |

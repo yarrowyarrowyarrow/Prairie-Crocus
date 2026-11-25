@@ -218,7 +218,7 @@ class TestOneClickUpdateOnWindows(unittest.TestCase):
             ctl._offer_frozen_download(release, "V3.14")
             download.assert_called_once_with(asset, "release-V3.15")
         text = _Box.shown[-1].text
-        self.assertIn("closes Site & Pattern, installs it and opens it again",
+        self.assertIn("closes Prairie Crocus, installs it and opens it again",
                       text)
         self.assertIn("choose Yes", text)
         self.assertIn("Latest:      V3.15", text)

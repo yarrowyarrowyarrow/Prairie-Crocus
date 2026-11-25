@@ -115,7 +115,7 @@ PAGE_SIZE = 300
 #: `fetch_occurrences(truncated=...)` makes hitting the cap visible so this
 #: cannot go unnoticed again.
 MAX_RECORDS_PER_SPECIES = 6000
-USER_AGENT = ("SiteAndPattern-ecoregion-seeder/1.0 "
+USER_AGENT = ("PrairieCrocus-ecoregion-seeder/1.0 "
               "(https://github.com/yarrowyarrowyarrow/Site-and-Pattern)")
 
 # Seconds between GBIF calls. The first run of this script asked at ~3 req/s

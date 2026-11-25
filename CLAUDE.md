@@ -6,7 +6,7 @@ miss otherwise.
 
 ## Project at a glance
 
-**Site & Pattern** is a PyQt6 desktop app (Python 3.10+) for designing
+**Prairie Crocus** is a PyQt6 desktop app (Python 3.10+) for designing
 landscapes with native plants — focused on lawn-to-habitat conversion,
 pollinator gardens, and ecological restoration in Alberta and the
 Canadian prairies. Local SQLite storage; Leaflet inside QWebEngineView
@@ -14,9 +14,10 @@ for the map; PyInstaller + NSIS for the Windows installer.
 
 Entry point: `python main.py` → `src.app.MainWindow`.
 
-The product was named **PermaDesign** before the V1.69 rebrand; user-facing surfaces
-now read **Site & Pattern** (`src/branding.py`), while several internal identifiers keep
-the legacy name on purpose (see the Database-path note below). The design philosophy that
+The product was named **PermaDesign** until V1.69 and **Site & Pattern** until V3.68;
+user-facing surfaces now read **Prairie Crocus** (`src/branding.py`), while internal
+identifiers keep older names on purpose (see the Database-path note below and
+`docs/plans/V3.68-prairie-crocus.md`). The repository is still `Site-and-Pattern`. The design philosophy that
 drives the app lives in `docs/DESIGN_PHILOSOPHY.md` — strongly-aligned modules carry a
 one-line `Design principle P#` anchor pointing back to it, guarded by
 `tests/test_philosophy.py`.
@@ -620,6 +621,15 @@ only, doesn't affect real commits.
     go through it. The DB *filename* stays `permadesign.db` (internal). The display
     name lives in `src/branding.py` (`APP_NAME`); the QSettings org/app name, the repo,
     and the frozen `permadesign_api`/MCP symbols deliberately keep the legacy name.
+  - **The V3.68 rename to Prairie Crocus left the folder as `Site & Pattern`** (it
+    holds every design; a half-failed move would show an empty start screen), and
+    the Windows program `SiteAndPattern.exe`, the installer's registry keys, the
+    autosave file, the review pages' storage keys and `SITEANDPATTERN_ALLOW_NETWORK`.
+    Renamed: every string a person reads, the download files
+    (`PrairieCrocus-V*-Setup.exe`, `PrairieCrocus-V*.dmg`; the updater picks an asset
+    by extension, so this is safe), the Mac bundle (`Prairie Crocus.app`), the
+    shortcuts and the User-Agent. **Write the name as `branding.APP_NAME`**, not as
+    a literal, in any new user-facing string.
 - **FK constraints are ON at runtime** (`plants.py:get_connection`) but
   disabled temporarily during the bulk reseed (Python 3.14 enforces FKs
   at statement time rather than transaction-commit time).

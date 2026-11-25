@@ -66,8 +66,8 @@ from src.site_share import default_card as share_default
 #: page title, because the ``<title>`` path escapes and the header path did not.
 #: The website's own name, which is NOT the desktop app's.
 #:
-#: The app is Site & Pattern and stays that way: `src/branding.py` owns it, the
-#: installer carries it, and the user data folder is named after it. The public
+#: The app is Prairie Crocus (Site & Pattern until V3.68): `src/branding.py` owns
+#: that name and the installer carries it; the website does not. The public
 #: catalogue got its own domain in V2.70 and is named for what somebody typing
 #: it into a phone is trying to do. Two products from one catalogue, and the
 #: only thing they need to share is the data.

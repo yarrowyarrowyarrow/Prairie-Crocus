@@ -1,6 +1,6 @@
 name: Build & publish macOS DMG
 
-# Builds the Site & Pattern .dmg on a GitHub-hosted Mac and attaches it to a
+# Builds the Prairie Crocus .dmg on a GitHub-hosted Mac and attaches it to a
 # GitHub Release tagged with the branch name (e.g. V1.73). The in-app updater
 # (src/github_releases.py + src/controllers/update_flow.py) lists these
 # releases by tag and downloads the .dmg, so publishing here is what lets the
@@ -109,7 +109,7 @@ jobs:
         run: arch -x86_64 bash scripts/packaging/build_installer.sh
 
       - name: Name the DMG after the version
-        run: mv "dist/SiteAndPattern.dmg" "dist/SiteAndPattern-${{ github.ref_name }}.dmg"
+        run: mv "dist/PrairieCrocus.dmg" "dist/PrairieCrocus-${{ github.ref_name }}.dmg"
 
       - name: Publish to a GitHub Release
         uses: softprops/action-gh-release@v2
@@ -150,18 +150,18 @@ jobs:
           # publish to the same release, so whichever finishes last sets the
           # final notes — a shared combined body keeps them correct either way.
           body: |
-            **Site & Pattern** — a native-plant landscape designer for Alberta and the Canadian prairies.
+            **Prairie Crocus** — a native-plant landscape designer for Alberta and the Canadian prairies.
 
             ### Install on Windows
-            1. Download **`SiteAndPattern-${{ github.ref_name }}-Setup.exe`** below and run it.
+            1. Download **`PrairieCrocus-${{ github.ref_name }}-Setup.exe`** below and run it.
             2. **First run (one time only):** Windows SmartScreen may say *"Windows protected your PC"* because the app isn't code-signed yet — it's safe. Click **More info → Run anyway**.
             3. Follow the installer; it adds Desktop and Start-Menu shortcuts.
 
             To get future versions, use **Help → Check for Updates** inside the app — it downloads and runs the next installer for you.
 
             ### Install on macOS (Big Sur 11 or newer)
-            1. Download **`SiteAndPattern-${{ github.ref_name }}.dmg`** below and open it.
-            2. Drag **Site & Pattern** onto the **Applications** folder.
+            1. Download **`PrairieCrocus-${{ github.ref_name }}.dmg`** below and open it.
+            2. Drag **Prairie Crocus** onto the **Applications** folder.
             3. **First launch (one time only):** macOS will warn that the developer can't be verified — the app is safe, this is just because it isn't registered with Apple.
                - **macOS 11–14:** right-click (or Control-click) the app in Applications → **Open** → **Open**.
                - **macOS 15+:** double-click once (it gets blocked), then Apple menu → System Settings → Privacy & Security → **Open Anyway**.
@@ -169,6 +169,8 @@ jobs:
             After that first time it opens normally. To get future versions, use **Help → Check for Updates** inside the app — those install with no security warning.
 
             *Apple Silicon (M1–M4): if macOS offers to install **Rosetta** on first launch, click Install (one time).*
+
+            *Had an earlier version? The app was called Site & Pattern until V3.68. On a Mac the old copy stays in Applications as **SiteAndPattern**; once Prairie Crocus opens with your designs, move the old one to the Bin. On Windows the update replaces it.*
 
             ### Your first yard, in five steps
             1. **Find your yard:** type your address on the Site tab and press Find, or click your yard on the map.
@@ -186,4 +188,4 @@ jobs:
             ---
           generate_release_notes: true
           fail_on_unmatched_files: true
-          files: dist/SiteAndPattern-${{ github.ref_name }}.dmg
+          files: dist/PrairieCrocus-${{ github.ref_name }}.dmg

@@ -1,4 +1,4 @@
-/* Site & Pattern — 3D viewer: plant surfaces and the material that wears them.
+/* Prairie Crocus — 3D viewer: plant surfaces and the material that wears them.
  *
  * Design principle P5 — see docs/DESIGN_PHILOSOPHY.md
  *

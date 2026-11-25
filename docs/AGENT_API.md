@@ -1,6 +1,6 @@
-# Site & Pattern Agent / Scripting API
+# Prairie Crocus Agent / Scripting API
 
-Site & Pattern can be driven entirely without the GUI through a **Qt-free**
+Prairie Crocus can be driven entirely without the GUI through a **Qt-free**
 Python surface. Nothing here imports PyQt6 or needs a display, a
 `QApplication`, or the Leaflet map — so it runs in a plain interpreter,
 a CI job, a CLI, or an MCP tool an AI agent calls.
@@ -218,7 +218,7 @@ exposed here.
 
 ### Errors (`src.errors`)
 
-All subclass `Site & PatternError`, so a caller can catch the base:
+All subclass `Prairie CrocusError`, so a caller can catch the base:
 
 `ProjectError`, `PlantNotFoundError`, `PolycultureNotFoundError`,
 `AnalysisError`, `ExportError`.
@@ -258,7 +258,7 @@ python -m src.cli <subcommand> …      # or `permadesign <subcommand> …` once
 | `validate-data [--quiet --no-warnings]` | check shipped seed JSON |
 
 `--json` gives machine-readable output. Exit code is `0` on success, `2`
-on a `Site & PatternError` (e.g. missing project file), and argparse's `2`
+on a `Prairie CrocusError` (e.g. missing project file), and argparse's `2`
 for bad usage.
 
 ```bash

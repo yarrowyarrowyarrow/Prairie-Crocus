@@ -72,7 +72,7 @@ The module is `permadesign_api`, the CLI `prog` is `permadesign`, the MCP
 server name is `"permadesign"`. This is **deliberate** (see CLAUDE.md → the
 Database-path note): the frozen scripting/MCP API keeps the pre-V1.69
 `PermaDesign` name so existing agents/scripts don't break. User-facing
-strings read "Site & Pattern" (`src/branding.py`); these API symbols do not.
+strings read "Prairie Crocus" (`src/branding.py`); these API symbols do not.
 Don't "fix" them.
 
 ## The contract is a test — read this before extending

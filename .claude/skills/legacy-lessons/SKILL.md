@@ -198,6 +198,15 @@ The data *folder* did migrate (`PermaDesign` → `Site & Pattern`, once,
 in place — `src/user_paths.py:migrate_legacy_into`), and all
 user-facing strings flow from `src/branding.py` (guarded by
 `tests/test_philosophy.py`).
+**The second rename (V3.68): Site & Pattern became Prairie Crocus** on the same
+rule, and this time the data folder stayed `Site & Pattern`: designs live in its
+`saves` folder now, and a move that fails half way (a file held open, a synced
+folder) shows a person an empty start screen. Also kept: `SiteAndPattern.exe`
+(a pinned taskbar icon points at it, and the program's code is inside it), the
+installer's registry keys, the autosave file, the updater's stash label, the
+review pages' storage keys. The download files and the Mac bundle were renamed,
+which is safe only because the updater picks a release asset by its extension.
+`tests/test_app_name.py` holds both halves.
 **Rule:** a rebrand renames surfaces, not identities. Before "fixing" a
 legacy name, find out who depends on it. When you meet a weird name,
 check this table before renaming.

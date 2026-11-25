@@ -1,7 +1,7 @@
 """
 field_study.py — the Field Study quiz layer (F48).
 
-Site & Pattern only ever *answers* questions; this module is the first thing
+Prairie Crocus only ever *answers* questions; this module is the first thing
 that *asks* them. It generates retrieval-practice questions from data the app
 already holds — no new content — turning passive facts into active recall and
 doubling as plant-ID prep for a nursery or trail visit.

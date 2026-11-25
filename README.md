@@ -1,8 +1,10 @@
-# Site & Pattern — Native Habitat Designer
+# Prairie Crocus — Native Habitat Designer
 
 **Turn your lawn into native habitat.** A landscape design tool for native plants, ecological restoration, and pollinator/wildlife habitat in Alberta and the Canadian prairies.
 
-Site & Pattern is a desktop application for designing landscapes with native plants — focused on lawn-to-habitat conversion, pollinator gardens, and ecological restoration projects. It combines site analysis, plant community planning, plant companion relationships, native habitat structures, and a catalogue of over 400 plants native to Alberta and Saskatchewan. Search and filter by habitat value (keystone species, larval host plants, bird food) to prioritize the natives that do the most for local food webs.
+*Formerly **Site & Pattern** (until V3.68), and PermaDesign before that.*
+
+Prairie Crocus is a desktop application for designing landscapes with native plants — focused on lawn-to-habitat conversion, pollinator gardens, and ecological restoration projects. It combines site analysis, plant community planning, plant companion relationships, native habitat structures, and a catalogue of over 400 plants native to Alberta and Saskatchewan. Search and filter by habitat value (keystone species, larval host plants, bird food) to prioritize the natives that do the most for local food webs.
 
 > **Status:** nearly finished. The homeowner's path (find your yard, plan it, read how it is doing, print it) is built; the last step is watching five homeowners use it ([`tools/usability/`](tools/usability/README.md)). After that it is maintained for fixes, by the runbook in [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md).
 
@@ -14,12 +16,12 @@ Site & Pattern is a desktop application for designing landscapes with native pla
 
 ### Download
 
-Download the newest installer from the [Releases page](https://github.com/yarrowyarrowyarrow/Site-and-Pattern/releases): **`SiteAndPattern-V…-Setup.exe`** for Windows 10 or 11, **`SiteAndPattern-V….dmg`** for macOS 11 Big Sur or newer. The app is free and needs no account.
+Download the newest installer from the [Releases page](https://github.com/yarrowyarrowyarrow/Site-and-Pattern/releases): **`PrairieCrocus-V…-Setup.exe`** for Windows 10 or 11, **`PrairieCrocus-V….dmg`** for macOS 11 Big Sur or newer. The app is free and needs no account.
 
 The installers are not code-signed, so the first launch shows a warning once:
 
 - **Windows:** SmartScreen says *"Windows protected your PC"*. Click **More info**, then **Run anyway**. Then follow the installer.
-- **macOS:** open the `.dmg` and drag **Site & Pattern** onto **Applications**. Double-click it once; macOS blocks it. Then open the Apple menu → **System Settings → Privacy & Security**, scroll down and click **Open Anyway**. (On macOS 11 to 14, right-click the app → **Open** → **Open** also works.) On Apple Silicon, click Install if macOS offers Rosetta.
+- **macOS:** open the `.dmg` and drag **Prairie Crocus** onto **Applications**. Double-click it once; macOS blocks it. Then open the Apple menu → **System Settings → Privacy & Security**, scroll down and click **Open Anyway**. (On macOS 11 to 14, right-click the app → **Open** → **Open** also works.) On Apple Silicon, click Install if macOS offers Rosetta.
 
 After that it opens normally, and **Help → Check for Updates** installs new versions.
 
@@ -93,13 +95,13 @@ The same five steps open from **Help → How to Plan Your Yard**. The rest of th
    python main.py
    ```
 
-On first run, the database is seeded automatically with the included plant data. The database lives at `~/.local/share/Site & Pattern/permadesign.db`.
+On first run, the database is seeded automatically with the included plant data. The database lives at `~/.local/share/Site & Pattern/permadesign.db` (the folder keeps the app's name before V3.68, so existing designs stay where they are).
 
 ---
 
 ## Plant Database
 
-Site & Pattern ships with a catalogue of over 400 plants native to Alberta and Saskatchewan. The data covers:
+Prairie Crocus ships with a catalogue of over 400 plants native to Alberta and Saskatchewan. The data covers:
 
 - Common and scientific names, plant type
 - Hardiness zone range, sun and water requirements, soil pH range
@@ -114,7 +116,7 @@ Plant data loads from `data/plants_master.json` on first run. The hardiness zone
 
 ## AI agent usage (headless scripting, CLI, MCP)
 
-Site & Pattern can be driven entirely without the GUI through a Qt-free
+Prairie Crocus can be driven entirely without the GUI through a Qt-free
 scripting surface — useful for automation, batch design, and AI agents.
 None of the surfaces below need a display, PyQt6, or a `QApplication`.
 
@@ -239,7 +241,7 @@ were not re-checked one by one; the V2.83 plan lists them so none is lost.)*
 
 ## Project History
 
-Site & Pattern was built as a personal tool by Marci while studying ecological design in Alberta, with the goal of bringing native plant communities into landscape design more easily. The codebase has grown to include plant communities, site analysis, native habitat structures, planning tools, PDF export, and a headless scripting API (with CLI and MCP surfaces for AI agents), and now centres on lawn-to-habitat conversion for Alberta and prairie ecosystems.
+Prairie Crocus was built as a personal tool by Marci while studying ecological design in Alberta, with the goal of bringing native plant communities into landscape design more easily. The codebase has grown to include plant communities, site analysis, native habitat structures, planning tools, PDF export, and a headless scripting API (with CLI and MCP surfaces for AI agents), and now centres on lawn-to-habitat conversion for Alberta and prairie ecosystems.
 
 ---
 
@@ -263,7 +265,7 @@ Site & Pattern was built as a personal tool by Marci while studying ecological d
 
 ## License
 
-Site & Pattern is free software, licensed under the **[GNU General Public License, version 3](LICENSE)** (GPL-3.0-only).
+Prairie Crocus is free software, licensed under the **[GNU General Public License, version 3](LICENSE)** (GPL-3.0-only).
 
 In plain English, this means:
 
@@ -295,7 +297,7 @@ each licence obliges us to do and where the gaps still are. In short:
 If a photograph of yours is here and the credit is wrong — or you would rather it
 weren't here at all — open an issue and it will be fixed or removed.
 
-Site & Pattern was developed with significant assistance from AI coding tools.
+Prairie Crocus was developed with significant assistance from AI coding tools.
 
 ---
 

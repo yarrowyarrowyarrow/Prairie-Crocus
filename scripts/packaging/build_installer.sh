@@ -7,7 +7,7 @@ set -e
 # CI calls it as scripts/packaging/build_installer.sh.
 cd "$(dirname "$0")/../.." || exit 1
 
-echo "=== Site & Pattern Installer Builder ==="
+echo "=== Prairie Crocus Installer Builder ==="
 echo ""
 
 # Colors for output
@@ -57,7 +57,7 @@ pyinstaller scripts/packaging/permadesign.spec --clean
 # Create platform-specific installer
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS: package the .app bundle into a drag-to-install DMG
-    APP="dist/SiteAndPattern.app"
+    APP="dist/Prairie Crocus.app"
     if [ ! -d "$APP" ]; then
         echo "ERROR: $APP not found — the darwin BUNDLE step in permadesign.spec did not run." >&2
         exit 1
@@ -119,12 +119,12 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     ln -s /Applications "$STAGING/Applications"
     cat > "$STAGING/READ ME FIRST.txt" <<'EOF'
 =====================================================
-  Installing Site & Pattern  (please read — 2 minutes)
+  Installing Prairie Crocus  (please read — 2 minutes)
 =====================================================
 
 STEP 1 — Install the app
 ------------------------
-Drag the "Site & Pattern" icon onto the Applications folder shown in
+Drag the "Prairie Crocus" icon onto the Applications folder shown in
 this window. That copies the app into your Applications. You can now
 eject this disk (drag it to the Trash / Eject).
 
@@ -139,17 +139,17 @@ first time — follow the matching steps below ONCE:
   >> If you are on macOS 11, 12, 13 or 14 (Big Sur / Monterey /
      Ventura / Sonoma):
        1. Open your Applications folder.
-       2. RIGHT-CLICK (or hold Control and click) "Site & Pattern".
+       2. RIGHT-CLICK (or hold Control and click) "Prairie Crocus".
        3. Choose "Open" from the little menu.
        4. A box appears with an "Open" button — click it.
 
   >> If you are on macOS 15 (Sequoia) or newer, OR the steps above
      don't show an "Open" button:
-       1. Double-click "Site & Pattern" once. It gets blocked — that's
+       1. Double-click "Prairie Crocus" once. It gets blocked — that's
           expected. Click "Done" / "Cancel".
        2. Open the Apple menu  >  System Settings  >  Privacy & Security.
        3. Scroll down to the Security section. You'll see a line that
-          says "Site & Pattern was blocked..." with an
+          says "Prairie Crocus was blocked..." with an
           "Open Anyway" button. Click it (enter your password if asked).
        4. Click "Open Anyway" again in the confirmation box.
 
@@ -158,7 +158,7 @@ first time — follow the matching steps below ONCE:
 
 STEP 3 — That's it
 ------------------
-After this one time, "Site & Pattern" opens normally like any other app
+After this one time, "Prairie Crocus" opens normally like any other app
 forever after — just double-click it.
 
 
@@ -175,7 +175,7 @@ EOF
     # security scan still holds the staging folder: V3.06's DMG failed that
     # way after the app had built and its signature verified. Wait and retry.
     for attempt in 1 2 3 4 5; do
-        if hdiutil create -volname "Site & Pattern" -srcfolder "$STAGING" -ov -format UDZO dist/SiteAndPattern.dmg; then
+        if hdiutil create -volname "Prairie Crocus" -srcfolder "$STAGING" -ov -format UDZO dist/PrairieCrocus.dmg; then
             break
         fi
         if [ "$attempt" -eq 5 ]; then
@@ -186,7 +186,7 @@ EOF
         sleep $((attempt * 10))
     done
     rm -rf "$STAGING"
-    echo -e "${GREEN}✓ Created dist/SiteAndPattern.dmg${NC}"
+    echo -e "${GREEN}✓ Created dist/PrairieCrocus.dmg${NC}"
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Linux: Create AppImage (requires appimagetool)
     if command -v appimagetool &> /dev/null; then
@@ -211,10 +211,10 @@ echo "Installer location: $(pwd)/dist/"
 echo ""
 echo "To run the application:"
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "  open dist/SiteAndPattern.app"
+    echo "  open \"dist/Prairie Crocus.app\""
     echo ""
     echo "To share with other Macs (macOS 11 Big Sur or newer):"
-    echo "  send dist/SiteAndPattern.dmg"
+    echo "  send dist/PrairieCrocus.dmg"
 else
     echo "  ./dist/SiteAndPattern/SiteAndPattern"
 fi

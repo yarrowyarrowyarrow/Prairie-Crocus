@@ -65,7 +65,7 @@ after. If you hit a FK error:
 ## 4. Where the real user DB lives (per-OS) + inspecting it
 
 The single source of truth is `src/user_paths.py`. The per-user data folder
-is `<base>/Site & Pattern/`, where `<base>` is:
+is `<base>/Prairie Crocus/`, where `<base>` is:
 
 | OS | Base | Full DB path |
 |---|---|---|

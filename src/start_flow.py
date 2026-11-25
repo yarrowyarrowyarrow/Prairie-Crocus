@@ -107,7 +107,7 @@ def ask_for_design_file(parent) -> str:
     from PyQt6.QtWidgets import QFileDialog
     path, _ = QFileDialog.getOpenFileName(
         parent, "Open Design", "",
-        "Site & Pattern Files (*.perma.geojson);;GeoJSON (*.geojson);;"
+        "Prairie Crocus Files (*.perma.geojson);;GeoJSON (*.geojson);;"
         "All files (*)")
     return path or ""
 

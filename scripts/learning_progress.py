@@ -67,7 +67,7 @@ def _bar(done: int, total: int, blocks: tuple[str, str]) -> str:
 def render(phases, unicode_ok: bool = True) -> str:
     """The full report as one printable string."""
     blocks = ("█", "░") if unicode_ok else ("#", "-")
-    title = "Site & Pattern — learning progress"
+    title = "Prairie Crocus — learning progress"
     lines = ["", title, "=" * len(title), ""]
     width = max((len(t) for _n, t, _l in phases), default=0)
     total_done = total_all = 0

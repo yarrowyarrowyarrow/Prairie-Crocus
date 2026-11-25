@@ -196,7 +196,7 @@ class PersistenceController:
     def _on_save_as(self):
         path, _ = QFileDialog.getSaveFileName(
             self._main, "Save Design", "",
-            "Site & Pattern Files (*.perma.geojson);;GeoJSON (*.geojson)"
+            "Prairie Crocus Files (*.perma.geojson);;GeoJSON (*.geojson)"
         )
         if path:
             if not path.endswith('.perma.geojson') and not path.endswith('.geojson'):
@@ -312,7 +312,7 @@ class PersistenceController:
         self._recovery_checked = True
         r = QMessageBox.question(
             self._main, "Restore autosaved design?",
-            f"Site & Pattern closed without saving last time.\n\n"
+            f"Prairie Crocus closed without saving last time.\n\n"
             f"An autosaved copy of “{name}” was recovered"
             + (f" (last saved to:\n{source})" if source else "")
             + ".\n\nRestore it now?",

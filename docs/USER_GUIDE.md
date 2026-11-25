@@ -1,4 +1,4 @@
-# Site & Pattern — User Guide
+# Prairie Crocus — User Guide
 
 A 5-minute tour of the controls. Read top-to-bottom, or jump to a section.
 

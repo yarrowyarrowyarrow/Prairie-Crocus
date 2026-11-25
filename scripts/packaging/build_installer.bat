@@ -92,7 +92,7 @@ if exist "C:\Program Files (x86)\NSIS\makensis.exe" (
     "C:\Program Files (x86)\NSIS\makensis.exe" /V4 scripts\packaging\installer.nsi
 
     if !ERRORLEVEL! equ 0 (
-        echo Created SiteAndPattern-Installer.exe
+        echo Created PrairieCrocus-Installer.exe
     ) else (
         echo NSIS build failed. Creating zip archive instead...
         cd dist

@@ -1,4 +1,4 @@
-"""Headless GLB asset build for Site & Pattern.
+"""Headless GLB asset build for Prairie Crocus.
 
     blender --background --python scripts/blender/build_assets.py -- \
         --out html/assets/models [--only tree.spruce,fauna*] [--check]

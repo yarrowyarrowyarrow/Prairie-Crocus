@@ -1,9 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec for Site & Pattern (one-directory bundled mode)
+# PyInstaller spec for Prairie Crocus (one-directory bundled mode)
 # Build with: pyinstaller scripts/packaging/permadesign.spec  (from the repo root)
-# Display name is "Site & Pattern"; the artifact base name is the script-safe
+# Display name is "Prairie Crocus"; the artifact base name is the script-safe
 # "SiteAndPattern" (no spaces/ampersand) so the build scripts and NSIS paths
-# stay quoting-safe. Shortcuts/Start-Menu/.app show the display name.
+# stay quoting-safe. Shortcuts/Start-Menu/.app show the display name. Since
+# V3.68 the Mac bundle itself is "Prairie Crocus.app" (Finder shows its file
+# name); the Windows program keeps SiteAndPattern.exe (installer.nsi says why).
+# The bundle identifier keeps its old name: it is what macOS knows the app by.
 
 import fnmatch
 import os
@@ -142,12 +145,12 @@ if sys.platform == 'darwin':
     # matches the Qt 6.7 cap in requirements.txt (Big Sur 11 onwards).
     app = BUNDLE(
         coll,
-        name='SiteAndPattern.app',
+        name='Prairie Crocus.app',
         icon=_ICON_MAC,
         bundle_identifier='com.siteandpattern.app',
         info_plist={
-            'CFBundleName': 'Site & Pattern',
-            'CFBundleDisplayName': 'Site & Pattern',
+            'CFBundleName': 'Prairie Crocus',
+            'CFBundleDisplayName': 'Prairie Crocus',
             'NSHighResolutionCapable': True,
             'LSMinimumSystemVersion': '11.0',
         },

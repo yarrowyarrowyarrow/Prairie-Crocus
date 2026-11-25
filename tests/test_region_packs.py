@@ -135,12 +135,12 @@ class ThePinChoosesThePack(unittest.TestCase):
                          "Edmonton region.")
         far = region.message(region.coverage(52.27, -113.81))
         self.assertTrue(far.startswith("This pin is 144 km from Edmonton, "
-                                       "outside the area Site & Pattern is "
+                                       "outside the area Prairie Crocus is "
                                        "set up for."), far)
         self.assertIn("everything native to Alberta", far)
         self.assertEqual(
             region.message(region.coverage(43.65, -79.38)),
-            "This pin is outside Alberta and Saskatchewan. Site & Pattern "
+            "This pin is outside Alberta and Saskatchewan. Prairie Crocus "
             "knows the plants, climate and nurseries of the Edmonton region "
             "only, so it can't suggest plants for this yard.")
         self.assertEqual(region.message(region.coverage()), "")

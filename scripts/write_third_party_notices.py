@@ -115,16 +115,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-HEADER = """Site & Pattern: third-party notices
+HEADER = """Prairie Crocus: third-party notices
 
-Site & Pattern is free software under the GNU General Public License, version
+Prairie Crocus is free software under the GNU General Public License, version
 3 (the file LICENSE beside this one). It is built on the software below, each
 under its own licence, whose texts follow. Which version of each Python
 package this copy carries is listed in build-versions.txt, beside this file,
 in an installed copy.
 
 The data and photographs the app shows keep their own licences; Help > Where
-Site & Pattern's data comes from lists them, with the services the app asks.
+Prairie Crocus's data comes from lists them, with the services the app asks.
 """
 
 

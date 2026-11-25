@@ -1,4 +1,4 @@
-/* Site & Pattern — 3D viewer: graminoid seed heads (V2.33, F66).
+/* Prairie Crocus — 3D viewer: graminoid seed heads (V2.33, F66).
  *
  * Design principle P5 — see docs/DESIGN_PHILOSOPHY.md
  *

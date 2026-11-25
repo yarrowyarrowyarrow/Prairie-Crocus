@@ -89,7 +89,7 @@ Exact mechanics `tests/test_philosophy.py` checks:
   all trips the test).
 - The doc must document all twelve themes as `### N. ` headings, link
   `REFERENCES.md` and `PHILOSOPHY_ROADMAP.md`, and the app name must flow
-  from `src/branding.py` (`APP_NAME == "Site & Pattern"`), not a hard-coded
+  from `src/branding.py` (`APP_NAME == "Prairie Crocus"`), not a hard-coded
   title in `src/app.py`.
 
 **When to add an anchor:** only when the module is *strongly* aligned with a

@@ -104,7 +104,7 @@ class TestFeedbackCore(unittest.TestCase):
         self.assertTrue(url.startswith("mailto:feedback@example.org?subject="))
         q = parse_qs(urlparse(url).query)
         self.assertEqual(q["subject"][0],
-                         "Site & Pattern: Idea: Show bloom by week & month")
+                         "Prairie Crocus: Idea: Show bloom by week & month")
         self.assertIn("App version: V3.31", q["body"][0])
         self.assertNotIn("+", url, "spaces are %20 in a mailto link")
         self.assertEqual(feedback.mailto_url("", "idea", "x"), "")
@@ -167,7 +167,7 @@ class TestFeedbackDialog(unittest.TestCase):
         d._copy.click()
         from PyQt6.QtWidgets import QApplication
         copied = QApplication.clipboard().text()
-        self.assertTrue(copied.startswith("Subject: Site & Pattern: Confusing:"))
+        self.assertTrue(copied.startswith("Subject: Prairie Crocus: Confusing:"))
         self.assertIn("The map stayed grey", copied)
         self.assertIn("App version: V2.37", copied)
         self.assertIn("feedback@example.org", d._copied.text())

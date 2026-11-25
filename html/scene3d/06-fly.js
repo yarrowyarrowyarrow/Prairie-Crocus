@@ -1,4 +1,4 @@
-// Part of the Site & Pattern 3D viewer, split out of the former
+// Part of the Prairie Crocus 3D viewer, split out of the former
 // single html/scene3d.html <script> (V2.24). Loaded as an ordered
 // CLASSIC script by the bootstrap in scene3d.html — it shares the
 // global scope with its siblings (THREE/OrbitControls/mergeGeometries

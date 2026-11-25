@@ -1,7 +1,7 @@
 """
 tests/test_philosophy.py — keep the design philosophy woven into the code.
 
-The design philosophy ("Site & Pattern — Design Philosophy & Intellectual
+The design philosophy ("Prairie Crocus — Design Philosophy & Intellectual
 Foundation") is documented in docs/DESIGN_PHILOSOPHY.md, and the strongly-aligned
 modules carry a one-line ``Design principle P# — see docs/DESIGN_PHILOSOPHY.md``
 anchor. This test freezes that weave so it can't silently rot — the same
@@ -69,9 +69,9 @@ class TestCodeAnchors(unittest.TestCase):
 
 
 class TestBranding(unittest.TestCase):
-    def test_app_name_is_site_and_pattern(self):
+    def test_app_name_is_prairie_crocus(self):
         from src.branding import APP_NAME, APP_TITLE
-        self.assertEqual(APP_NAME, "Site & Pattern")
+        self.assertEqual(APP_NAME, "Prairie Crocus")
         self.assertTrue(APP_TITLE.startswith(APP_NAME))
 
     def test_window_title_flows_from_branding(self):

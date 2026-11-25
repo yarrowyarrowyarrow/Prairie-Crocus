@@ -1,4 +1,4 @@
-"""assetlib — Blender generators for Site & Pattern's 3D GLB assets.
+"""assetlib — Blender generators for Prairie Crocus's 3D GLB assets.
 
 Runs ONLY inside Blender (4.2 LTS+): `import bpy` everywhere. Nothing in
 the app, its tests, or requirements*.txt may import this package — the

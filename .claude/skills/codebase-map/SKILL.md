@@ -1,13 +1,13 @@
 ---
 name: codebase-map
-description: Orientation map of the Site & Pattern codebase. Use when starting a session, exploring the repo, finding where something lives, or deciding where new code goes (Qt-free core vs _flow glue vs widget vs controller vs db layer). Covers every subsystem — app shell, controllers, SQLite DB layer, Leaflet map JS, panels, generation/scoring, terrain/climate/soil/wind, 3D scene, import pipelines, agent API — plus a docs index, onboarding reading order, and a router to the other skills.
+description: Orientation map of the Prairie Crocus codebase. Use when starting a session, exploring the repo, finding where something lives, or deciding where new code goes (Qt-free core vs _flow glue vs widget vs controller vs db layer). Covers every subsystem — app shell, controllers, SQLite DB layer, Leaflet map JS, panels, generation/scoring, terrain/climate/soil/wind, 3D scene, import pipelines, agent API — plus a docs index, onboarding reading order, and a router to the other skills.
 ---
 
 # Codebase Map
 
 ## Purpose
 
-Site & Pattern is a PyQt6 desktop app for designing native-plant landscapes
+Prairie Crocus is a PyQt6 desktop app for designing native-plant landscapes
 (lawn-to-habitat conversion, Alberta/prairies focus). This skill is the router:
 read it to know where things live and where your change belongs, then jump to
 the specialist skill (see "Deeper dives" at the bottom). Full per-module

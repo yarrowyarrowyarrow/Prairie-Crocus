@@ -19,7 +19,7 @@ all reduce to the same dict.
 
 Database location (separate from the design DB and the terrain cache, under the
 shared per-user data folder, V1.69-renamed from ``PermaDesign`` to
-``Site & Pattern`` — see ``src/user_paths.py``):
+``Site & Pattern``, a name it keeps — see ``src/user_paths.py``):
   Linux   : ~/.local/share/Site & Pattern/buildings.db
   macOS   : ~/Library/Application Support/Site & Pattern/buildings.db
   Windows : %APPDATA%\\Site & Pattern\\buildings.db

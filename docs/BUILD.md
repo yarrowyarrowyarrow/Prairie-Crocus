@@ -1,6 +1,6 @@
-# Site & Pattern Build & Deployment Guide
+# Prairie Crocus Build & Deployment Guide
 
-This document explains how to run Site & Pattern locally and create a 1-click installer.
+This document explains how to run Prairie Crocus locally and create a 1-click installer.
 
 ## Quick Start: Run Locally
 
@@ -35,7 +35,7 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
-The Site & Pattern window should open. Create a new project to test functionality.
+The Prairie Crocus window should open. Create a new project to test functionality.
 
 ---
 
@@ -55,7 +55,7 @@ The Site & Pattern window should open. Create a new project to test functionalit
 #### Option A: Using build script (Recommended)
 
 ```cmd
-cd C:\path\to\Site & Pattern
+cd C:\path\to\Prairie Crocus
 scripts\packaging\build_installer.bat
 ```
 
@@ -66,7 +66,7 @@ The script will:
 4. Output location: `dist\` folder
 
 **Output files:**
-- `SiteAndPattern-Installer.exe` (NSIS installer, ~200-300 MB)
+- `PrairieCrocus-Installer.exe` (NSIS installer, ~200-300 MB)
 - OR `SiteAndPattern-Windows.zip` (if NSIS not installed, ~250 MB)
 
 #### Option B: Install NSIS for true 1-click installer
@@ -108,8 +108,8 @@ bash scripts/packaging/build_installer.sh
 ```
 
 **Output:**
-- `dist/SiteAndPattern.app` — the application bundle (run it with `open dist/SiteAndPattern.app`)
-- `dist/SiteAndPattern.dmg` — drag-and-drop installer for sharing (~200-300 MB)
+- `dist/Prairie Crocus.app` — the application bundle (run it with `open "dist/Prairie Crocus.app"`)
+- `dist/PrairieCrocus.dmg` — drag-and-drop installer for sharing (~200-300 MB)
 
 The DMG contains the app, an Applications shortcut for drag-to-install, and
 a `READ ME FIRST.txt` explaining the one-time unsigned-app launch step.
@@ -169,8 +169,8 @@ Run via: `./dist/SiteAndPattern/SiteAndPattern`
 
 ### For Users
 
-1. **Windows**: Send `SiteAndPattern-Installer.exe` — they double-click to install
-2. **macOS**: Send `SiteAndPattern.dmg` — they drag SiteAndPattern.app to Applications
+1. **Windows**: Send `PrairieCrocus-Installer.exe` — they double-click to install
+2. **macOS**: Send `PrairieCrocus.dmg` — they drag Prairie Crocus to Applications
    (the `READ ME FIRST.txt` inside the DMG covers the one-time first-launch step)
 3. **Linux**: Send `SiteAndPattern-Linux.zip` — they extract and run the binary
 
@@ -209,7 +209,7 @@ The script automatically falls back to creating a ZIP file. To enable true 1-cli
 ### Network features don't work (no plant photos / elevation / OSM import)
 Python needs root certificates to verify https connections. macOS Pythons
 and frozen builds ship none, so every web fetch fails silently while the
-map itself (Chromium, own cert store) keeps working. Site & Pattern wires up
+map itself (Chromium, own cert store) keeps working. Prairie Crocus wires up
 `certifi`'s CA bundle automatically at startup (`src/ssl_bootstrap.py`);
 if network features fail on a source install, update dependencies so
 certifi is present: `pip install -r requirements.txt`, then rebuild if
@@ -230,7 +230,7 @@ hiddenimports=[
 The installer includes all dependencies. If it fails to start:
 1. Run from command line to see error messages:
    - **Windows**: `"C:\Program Files\Site & Pattern\SiteAndPattern.exe"`
-   - **macOS**: `dist/SiteAndPattern.app/Contents/MacOS/SiteAndPattern`
+   - **macOS**: `"dist/Prairie Crocus.app/Contents/MacOS/SiteAndPattern"`
    - **Linux**: `./dist/SiteAndPattern/SiteAndPattern`
 2. Check that `data/` and `html/` directories are included
 
@@ -308,7 +308,7 @@ datas=[
 
 ### One-File vs. One-Folder
 
-Currently the spec creates a folder (`Site & Pattern/`). To make a single `.exe`:
+Currently the spec creates a folder (`Prairie Crocus/`). To make a single `.exe`:
 
 Edit `scripts/packaging/permadesign.spec` — change the `EXE` section from `COLLECT()` to use `--onefile`:
 ```bash
@@ -360,8 +360,8 @@ installed copy offers V3.18 under Help → Check for Updates. Until V3.18 every 
 
 | Platform | Build Command | Output | User Experience |
 |----------|---|---|---|
-| **Windows** | `scripts\packaging\build_installer.bat` | `SiteAndPattern-Installer.exe` (or ZIP) | Double-click, 1-click install |
-| **macOS** | `bash scripts/packaging/build_installer.sh` | `SiteAndPattern.dmg` | Drag to Applications |
+| **Windows** | `scripts\packaging\build_installer.bat` | `PrairieCrocus-Installer.exe` (or ZIP) | Double-click, 1-click install |
+| **macOS** | `bash scripts/packaging/build_installer.sh` | `PrairieCrocus.dmg` | Drag to Applications |
 | **Linux** | `bash scripts/packaging/build_installer.sh` | `SiteAndPattern-Linux.zip` | Extract & run binary |
 
 All builds are fully self-contained with zero external dependencies after install.

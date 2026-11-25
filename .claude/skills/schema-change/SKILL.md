@@ -3,7 +3,7 @@ name: schema-change
 description: Use when changing src/db/schema.sql, adding a table/column, bumping _SCHEMA_VERSION in src/db/plants.py, editing the reseed wipe list, writing a _migrate_to_vNN helper, or changing seeded data that must reach existing installs. Covers the migration-vs-reseed distinction, FK-off-during-reseed, the junction-backed permaculture_uses read synthesis, updating docs/DATABASE_SCHEMA.md, and the temp-DB test pattern.
 ---
 
-# Changing the SQLite schema (Site & Pattern)
+# Changing the SQLite schema (Prairie Crocus)
 
 ## Purpose / when to use
 

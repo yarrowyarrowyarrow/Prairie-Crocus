@@ -1,6 +1,6 @@
 ---
 name: add-feature
-description: End-to-end playbook for adding a feature to Site & Pattern. Use when adding a feature, extending MainWindow, adding a menu item, panel tab, overlay, analysis, or background fetch. Covers the philosophy-fit check, the Qt-free core + _flow + widget triad, the controller shim pattern, architecture-guard line/method ceilings (and what to do when one trips), signal/menu wiring from app.py, tests to add, and the docs to update.
+description: End-to-end playbook for adding a feature to Prairie Crocus. Use when adding a feature, extending MainWindow, adding a menu item, panel tab, overlay, analysis, or background fetch. Covers the philosophy-fit check, the Qt-free core + _flow + widget triad, the controller shim pattern, architecture-guard line/method ceilings (and what to do when one trips), signal/menu wiring from app.py, tests to add, and the docs to update.
 ---
 
 # Adding a Feature

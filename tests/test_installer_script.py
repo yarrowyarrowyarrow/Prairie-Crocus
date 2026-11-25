@@ -54,7 +54,7 @@ def _code_lines(text: str) -> list[str]:
 
 def _main_section(lines: list[str]) -> list[str]:
     start = next(i for i, s in enumerate(lines)
-                 if s.startswith('Section "Site & Pattern"'))
+                 if s.startswith('Section "Prairie Crocus"'))
     end = next(i for i in range(start, len(lines)) if lines[i] == "SectionEnd")
     return lines[start:end]
 
@@ -165,7 +165,7 @@ class TestTheInstallerCompiles(unittest.TestCase):
                 capture_output=True, text=True, encoding="utf-8",
                 errors="replace", timeout=120)
             self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
-            self.assertTrue((root / "SiteAndPattern-Installer.exe").exists())
+            self.assertTrue((root / "PrairieCrocus-Installer.exe").exists())
 
 
 if __name__ == "__main__":

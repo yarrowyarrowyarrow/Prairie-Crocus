@@ -69,7 +69,7 @@ def _user_agent() -> str:
         from src.http_utils import user_agent
         return user_agent()
     except Exception:                                      # noqa: BLE001
-        return "SiteAndPattern/dev"
+        return "PrairieCrocus/dev"
 
 
 def _context():

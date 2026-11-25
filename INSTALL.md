@@ -1,6 +1,6 @@
-# Installing Site & Pattern
+# Installing Prairie Crocus
 
-How to get Site & Pattern running, whether you're a non-technical user with a
+How to get Prairie Crocus running, whether you're a non-technical user with a
 one-click installer or running from source. Pick the section that matches you:
 
 - **[Windows — one-click installer](#windows--one-click-installer)** (easiest)
@@ -20,11 +20,11 @@ No Python, no command line.
 
 ### 1. Download
 Go to the project's **Releases** page (GitHub → "Releases" on the right sidebar)
-and download **`SiteAndPattern-Installer.exe`** from the latest release. If the
+and download **`PrairieCrocus-Installer.exe`** from the latest release. If the
 release only ships `SiteAndPattern-Windows.zip`, use the [zip fallback](#windows-zip-fallback).
 
 ### 2. Install
-1. Double-click **`SiteAndPattern-Installer.exe`** in Downloads.
+1. Double-click **`PrairieCrocus-Installer.exe`** in Downloads.
 2. Windows SmartScreen may warn ("Windows protected your PC"). Click
    **More info → Run anyway** — this appears only because the installer isn't
    code-signed; the file is safe.
@@ -32,13 +32,13 @@ release only ships `SiteAndPattern-Windows.zip`, use the [zip fallback](#windows
    **Create desktop shortcut** checked), then **Install → Finish**.
 
 ### 3. Launch
-Double-click the **Site & Pattern** desktop icon, or find it in the Start menu.
+Double-click the **Prairie Crocus** desktop icon, or find it in the Start menu.
 The first launch takes 5–10 seconds while the plant database is set up (one time).
 
 ### Windows zip fallback
 If the release only has `SiteAndPattern-Windows.zip`:
 1. Right-click the zip → **Extract All…** → choose your Desktop.
-2. Open the extracted **Site & Pattern** folder.
+2. Open the extracted **Prairie Crocus** folder.
 3. Double-click **`SiteAndPattern.exe`**. No installation needed — keep the whole
    folder together.
 
@@ -46,12 +46,12 @@ If the release only has `SiteAndPattern-Windows.zip`:
 
 ## macOS — `.dmg`
 
-You'll receive one file: **`SiteAndPattern.dmg`**. Big Sur (macOS 11) and newer
+You'll receive one file: **`PrairieCrocus.dmg`**. Big Sur (macOS 11) and newer
 are supported.
 
 ### 1. Install
-1. Double-click **`SiteAndPattern.dmg`**.
-2. Drag the **Site & Pattern** icon onto the **Applications** folder in the window.
+1. Double-click **`PrairieCrocus.dmg`**.
+2. Drag the **Prairie Crocus** icon onto the **Applications** folder in the window.
 3. Eject the disk image.
 
 ### 2. Open it the FIRST time (one time only)
@@ -60,13 +60,13 @@ The app isn't registered with Apple, so macOS blocks the first launch.
 
 **macOS 11–14 (Big Sur, Monterey, Ventura, Sonoma):**
 1. Open **Applications**.
-2. **Right-click** (or Control-click) **Site & Pattern** → **Open**.
+2. **Right-click** (or Control-click) **Prairie Crocus** → **Open**.
 3. Click **Open** in the dialog.
 
 **macOS 15 (Sequoia) or newer** (or if no "Open" button appears above):
-1. Double-click **Site & Pattern** once — it gets blocked. Click **Done**.
+1. Double-click **Prairie Crocus** once — it gets blocked. Click **Done**.
 2. Apple menu → **System Settings → Privacy & Security**.
-3. Under **Security**, next to "Site & Pattern was blocked…", click
+3. Under **Security**, next to "Prairie Crocus was blocked…", click
    **Open Anyway** (enter your password if asked), then **Open Anyway** again.
 
 > Not sure which macOS you have? Apple menu → **About This Mac**.
@@ -137,15 +137,15 @@ the bundled plant data (a few extra seconds, one time).
 ## Updating to the newest version
 
 ### Easiest — the in-app button
-Open Site & Pattern → **Help → Check for Updates…**:
+Open Prairie Crocus → **Help → Check for Updates…**:
 - **Installed on Windows** (`.exe`) — click **Update now**. The app downloads
   the new version, asks you to save if you have unsaved changes, closes, installs
   it and opens again by itself. Windows asks whether to let the installer make
   changes: choose **Yes**. Your designs and plant database are kept.
   (Copies older than V3.15 update the old way one last time: if the installer
-  says Site & Pattern is still open, close it and click **Retry**.)
+  says Prairie Crocus is still open, close it and click **Retry**.)
 - **Installed on macOS** (`.dmg`) — the app downloads the new version and opens
-  it: drag Site & Pattern onto **Applications**, choose **Replace**, then quit and
+  it: drag Prairie Crocus onto **Applications**, choose **Replace**, then quit and
   reopen the app. Because the app downloaded it itself, there is **no
   Gatekeeper warning**.
 - **Running from source** — the app switches its checkout to the newest version
@@ -171,8 +171,8 @@ On the first launch after an update, the database may take a few extra seconds t
 apply schema migrations and reseed new plant communities. That's normal.
 
 ### From the `.exe` installer
-Download the newest `SiteAndPattern-V<version>-Setup.exe` from the Releases page,
-close Site & Pattern, and run it. It updates the existing install in place; your
+Download the newest `PrairieCrocus-V<version>-Setup.exe` from the Releases page,
+close Prairie Crocus, and run it. It updates the existing install in place; your
 designs and database are kept. If the app is still open it says so and waits for
 you to close it and click **Retry**.
 
@@ -188,6 +188,8 @@ you to close it and click **Retry**.
   - Linux: `~/.local/share/Site & Pattern/permadesign.db`
 
   Deleting it forces a fresh seed on next launch. Settings live alongside it.
+  The folder is still called **Site & Pattern**, the app's name until V3.68:
+  it was left alone so nobody's designs had to move.
 
 ---
 
@@ -211,4 +213,4 @@ read the error message.
 
 **Network features fail (no plant photos / elevation / OSM import)** — Python
 needs root certificates; reinstall dependencies with
-`pip install -r requirements.txt` (Site & Pattern wires up `certifi` at startup).
+`pip install -r requirements.txt` (Prairie Crocus wires up `certifi` at startup).

@@ -63,7 +63,7 @@ from dataclasses import dataclass, field
 # Named so the operator of any server this touches can tell what it is and who
 # to complain to. An anonymous User-Agent is the mark of somebody who expects to
 # be objected to.
-USER_AGENT = ("Site-and-Pattern/1.0 (native-plant design app, noncommercial; "
+USER_AGENT = ("PrairieCrocus/1.0 (native-plant design app, noncommercial; "
               "one page per human click; "
               "https://github.com/yarrowyarrowyarrow/site-and-pattern)")
 

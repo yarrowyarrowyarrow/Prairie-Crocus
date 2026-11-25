@@ -31,13 +31,13 @@ class WindowTitleTest(unittest.TestCase):
     def test_a_copy_that_knows_no_version_reads_as_before(self):
         self.assertEqual(window_title(version=None), APP_TITLE)
         self.assertEqual(window_title("My Yard", version=None),
-                         "Site & Pattern — My Yard")
+                         "Prairie Crocus — My Yard")
 
     def test_the_version_follows_the_name(self):
         self.assertEqual(window_title(version="V3.16"),
-                         "Site & Pattern V3.16 — Native plant yards for Edmonton")
+                         "Prairie Crocus V3.16 — Native plant yards for Edmonton")
         self.assertEqual(window_title("My Yard", version="V3.16"),
-                         "Site & Pattern V3.16 — My Yard")
+                         "Prairie Crocus V3.16 — My Yard")
 
     def test_a_design_with_no_name_shows_the_tagline(self):
         self.assertEqual(window_title("", version="V3.16"),

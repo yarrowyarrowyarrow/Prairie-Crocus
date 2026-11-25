@@ -3,7 +3,7 @@ name: seed-data
 description: Use when editing shipped seed JSON in data/ (plants_master.json, garden_plants.json, fauna_master.json, plant_fauna_master.json, bee_attributes_master.json, lepidoptera_attributes_master.json, nurseries_master.json, *_fallback_prairie.json), adding a plant or fauna entry, running the data-quality gate, or applying provenance/safety/sourcing tags. Covers required fields, which file flows into which table, the mandatory schema-version bump, and the P12 Indigenous-knowledge hard rule.
 ---
 
-# Editing shipped seed data (Site & Pattern)
+# Editing shipped seed data (Prairie Crocus)
 
 ## Purpose / when to use
 

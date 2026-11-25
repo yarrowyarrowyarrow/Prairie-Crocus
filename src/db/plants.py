@@ -10,7 +10,8 @@ On first run the DB is created, schema applied, and seed data loaded.
 If an old DB exists next to the executable it is migrated automatically. The
 per-user folder was named ``PermaDesign`` before the V1.69 rebrand; it is renamed
 to ``Site & Pattern`` once, in place, by ``src/user_paths.py`` (the DB *filename*
-stays ``permadesign.db`` — internal, never shown to the user).
+stays ``permadesign.db`` — internal, never shown to the user). The app became
+Prairie Crocus in V3.68 and the folder kept its name (``src/branding.py``).
 """
 
 import os

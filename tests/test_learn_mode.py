@@ -468,7 +468,7 @@ class TestTheLearnScreens(_TempDataDir):
                                    (app_mode.QUIZZES, "Quizzes", "_field_study")):
             win = LearnStudioWindow([], "Aspen Parkland grove", page=page)
             self.assertEqual(win.windowTitle(),
-                             f"Site & Pattern: {title} — Aspen Parkland grove")
+                             f"Prairie Crocus: {title} — Aspen Parkland grove")
             tabs = win.panel._tabs
             self.assertTrue(tabs.currentWidget().isAncestorOf(
                 getattr(win.panel, shown)), page)

@@ -125,7 +125,7 @@ def issue_url(key: str, message: str, diag: dict | None = None,
 
 
 def email_subject(key: str, message: str) -> str:
-    return "Site & Pattern: " + build_title(key, message)
+    return "Prairie Crocus: " + build_title(key, message)
 
 
 def email_text(key: str, message: str, diag: dict | None = None) -> str:

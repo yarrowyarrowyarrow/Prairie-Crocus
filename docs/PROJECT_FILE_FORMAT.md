@@ -1,8 +1,8 @@
-# Site & Pattern Project File Format
+# Prairie Crocus Project File Format
 
-A Site & Pattern project is a single JSON file, conventionally named
+A Prairie Crocus project is a single JSON file, conventionally named
 `*.perma.geojson`. It is a [GeoJSON](https://geojson.org/)
-`FeatureCollection` with Site & Pattern-specific properties on the
+`FeatureCollection` with Prairie Crocus-specific properties on the
 collection and on each feature.
 
 Files written by the GUI, the scripting API
@@ -57,7 +57,7 @@ schema version (`_SCHEMA_VERSION` in `src/db/plants.py`) documented in
 ## Coordinate convention
 
 **GeoJSON geometry stores `[longitude, latitude]`** (X, Y order) — the
-spec's order, and the order on disk. Site & Pattern's internal map model and
+spec's order, and the order on disk. Prairie Crocus's internal map model and
 the scripting API use `[latitude, longitude]`; `project_to_map_data`
 does the swap. When hand-writing geometry, use `[lng, lat]`.
 

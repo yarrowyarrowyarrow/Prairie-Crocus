@@ -4,7 +4,7 @@ sent (FN-5, V3.31; docs/homeowner/10-finishing.md §4).
 
 Design principle P9 — see docs/DESIGN_PHILOSOPHY.md.
 
-One table. *Where Site & Pattern's data comes from* lists it (credit is the
+One table. *Where Prairie Crocus's data comes from* lists it (credit is the
 licence condition on most of these: Open-Meteo's and SoilGrids' CC BY 4.0,
 OpenStreetMap's ODbL), and ``tests/test_services.py`` reads every host a URL in
 ``src/`` or the map's scripts points at and fails on one that is neither here

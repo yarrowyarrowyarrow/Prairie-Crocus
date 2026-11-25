@@ -121,7 +121,7 @@ rm "$HOME/.local/share/Site & Pattern/permadesign.db"
 ```
 
 For a full reset (also clears downloaded terrain/building/soil packs and the
-image cache), remove the whole `Site & Pattern` folder. Never delete the
+image cache), remove the whole `Prairie Crocus` folder. Never delete the
 source-tree `data/` — that's the shipped seed, not user data.
 
 ## Satellite scripts

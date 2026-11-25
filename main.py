@@ -1,5 +1,5 @@
 """
-main.py — Site & Pattern entry point.
+main.py — Prairie Crocus entry point.
 
 Usage:
     python main.py
@@ -58,7 +58,7 @@ def main():
     )
 
     app = QApplication(sys.argv)
-    # The user-facing name is "Site & Pattern" (see src/branding.py and the
+    # The user-facing name is "Prairie Crocus" (see src/branding.py and the
     # window title), but the Qt application/organization name deliberately keeps
     # the legacy "PermaDesign" identifier: it keys QSettings (window geometry +
     # the one-time legacy-recipe migration flag), so renaming it would orphan

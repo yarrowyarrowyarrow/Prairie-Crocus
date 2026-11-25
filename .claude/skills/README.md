@@ -1,4 +1,4 @@
-# Site & Pattern — Skill Library
+# Prairie Crocus — Skill Library
 
 This library is the project's institutional memory. Each skill is a
 procedural playbook, grounded in the actual code, written so that a

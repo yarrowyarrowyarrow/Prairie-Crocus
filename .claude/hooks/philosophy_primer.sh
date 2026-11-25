@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SessionStart hook — inject the Site & Pattern design-philosophy primer into the session so
+# SessionStart hook — inject the Prairie Crocus design-philosophy primer into the session so
 # the spirit of the philosophy is woven through every session's work, even before CLAUDE.md is
 # consulted. The full source of truth is docs/DESIGN_PHILOSOPHY.md (the twelve principles); this
 # is the deliberately short reminder, not a re-statement of the whole doc.
@@ -8,7 +8,7 @@
 set -uo pipefail
 
 cat <<'PRIMER'
-[Site & Pattern — design-philosophy primer]
+[Prairie Crocus — design-philosophy primer]
 This project is guided by TWELVE design principles (see docs/DESIGN_PHILOSOPHY.md, with the
 feature map in docs/PHILOSOPHY_ROADMAP.md and the bibliography in docs/REFERENCES.md). Let them
 shape design decisions: encode generative rules over fixed layouts; model relationships over

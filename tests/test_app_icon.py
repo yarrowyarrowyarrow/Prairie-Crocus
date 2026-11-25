@@ -131,7 +131,7 @@ class WhereTheIconIsUsed(unittest.TestCase):
             # NSIS reads paths from the script's own folder.
             target = (packaging / m.group(1).replace("\\", os.sep)).resolve()
             self.assertEqual(target, _ICO.resolve(), name)
-        install = nsi.split('Section "Site & Pattern"', 1)[1].split("SectionEnd", 1)[0]
+        install = nsi.split('Section "Prairie Crocus"', 1)[1].split("SectionEnd", 1)[0]
         self.assertIn("SHChangeNotify(i 0x08000000", install,
                       "without it a replaced program can keep its old icon "
                       "on the desktop until the next sign-in")

@@ -284,8 +284,8 @@ class TestWhatTheMenuOffers(unittest.TestCase):
 
     def test_the_title_names_the_version(self):
         self.assertEqual(self._screen(version="V3.23").windowTitle(),
-                         "Site & Pattern V3.23")
-        self.assertEqual(self._screen().windowTitle(), "Site & Pattern")
+                         "Prairie Crocus V3.23")
+        self.assertEqual(self._screen().windowTitle(), "Prairie Crocus")
 
     def test_there_is_no_flowering_line(self):
         """The owner, V3.42: "can be removed" (it arrived on their word in

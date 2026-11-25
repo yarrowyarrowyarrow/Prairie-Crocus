@@ -1,6 +1,6 @@
-# Site & Pattern — Design Philosophy & Intellectual Foundation
+# Prairie Crocus — Design Philosophy & Intellectual Foundation
 
-> **About this document.** This is the source of truth for *why* Site & Pattern is
+> **About this document.** This is the source of truth for *why* Prairie Crocus is
 > built the way it is. The body below preserves the founding philosophy document in
 > full; what's added — interleaved after each theme — is a **"Where this lives in the
 > code"** note that ties the idea to the modules that implement it, with an honest
@@ -20,18 +20,20 @@
 >   **proposed thirteenth principle** on beauty as the mechanism by which a native planting
 >   survives contact with people. Proposed, not adopted — this document still carries twelve.
 >
-> **A note on the name.** The application is **Site & Pattern** (formerly PermaDesign).
-> What users see now reads "Site & Pattern"; a few internal identifiers keep the legacy
-> `PermaDesign` name on purpose — the GitHub repo, the QSettings keys, the on-disk
-> database *filenames*, and the frozen scripting/MCP API — so existing installs keep
-> their data and the update path keeps working. The on-disk data *folder* is migrated
-> from `PermaDesign` to `Site & Pattern` once, on first launch (see `src/user_paths.py`).
+> **A note on the name.** The application is **Prairie Crocus** (V3.68), after the native
+> flower on its icon; it was **Site & Pattern** from V1.69, a name drawn from this
+> document, and PermaDesign before that. What users see reads "Prairie Crocus"; internal
+> identifiers keep older names on purpose — the GitHub repo, the QSettings keys, the
+> on-disk database *filenames*, the data *folder* (still `Site & Pattern`, migrated once
+> from `PermaDesign` in V1.69, see `src/user_paths.py`), the Windows program file and the
+> frozen scripting/MCP API — so existing installs keep their data and the update path
+> keeps working (`src/branding.py` lists them).
 
 ---
 
 ## Introduction
 
-Site & Pattern is a native plant landscape design application for Alberta (hardiness zones 3b–4a) built on a simple conviction: the most effective landscape designs are the ones that work *with* ecological intelligence rather than against it. This philosophy is drawn from a synthesis of complexity science, ecological design, indigenous land stewardship, systems thinking, software architecture, and contemplative practice. The application treats landscapes not as static arrangements of individual plants but as dynamic, self-organizing communities operating across multiple timescales — from seasonal ground cover shifts to century-scale canopy succession. The design methodology encodes ecological archetypes (plant community patterns observed in natural systems) into repeatable, site-responsive planting formulas, supported by a relational data model that prioritizes connections between species (mycorrhizal associations, pollinator dependencies, competitive and complementary dynamics, successional sequences) over individual plant attributes. This document lays out the core themes and source material that inform the application's architecture, data modeling, user experience, and long-term development direction.
+Prairie Crocus is a native plant landscape design application for Alberta (hardiness zones 3b–4a) built on a simple conviction: the most effective landscape designs are the ones that work *with* ecological intelligence rather than against it. This philosophy is drawn from a synthesis of complexity science, ecological design, indigenous land stewardship, systems thinking, software architecture, and contemplative practice. The application treats landscapes not as static arrangements of individual plants but as dynamic, self-organizing communities operating across multiple timescales — from seasonal ground cover shifts to century-scale canopy succession. The design methodology encodes ecological archetypes (plant community patterns observed in natural systems) into repeatable, site-responsive planting formulas, supported by a relational data model that prioritizes connections between species (mycorrhizal associations, pollinator dependencies, competitive and complementary dynamics, successional sequences) over individual plant attributes. This document lays out the core themes and source material that inform the application's architecture, data modeling, user experience, and long-term development direction.
 
 ---
 
@@ -314,7 +316,7 @@ Ecological succession, Buddhist impermanence, Taleb's antifragility, Carse's inf
 
 ### 10. Design for relationships, not objects
 
-This is the synthesis of all preceding themes. Every other landscape application treats plants as individual items to be placed on a map. Site & Pattern treats them as nodes in a network — connected by mycorrhizal associations, pollinator dependencies, succession sequences, competitive dynamics, and complementary resource use. The 35-field species schema is a strong foundation, but the application's true value will come from modeling the edges between plants, not just the nodes themselves.
+This is the synthesis of all preceding themes. Every other landscape application treats plants as individual items to be placed on a map. Prairie Crocus treats them as nodes in a network — connected by mycorrhizal associations, pollinator dependencies, succession sequences, competitive dynamics, and complementary resource use. The 35-field species schema is a strong foundation, but the application's true value will come from modeling the edges between plants, not just the nodes themselves.
 
 > **Where this lives in the code:** the synthesis of #3 — `src/db/fauna.py`,
 > `src/db/polycultures.py`, the companion tables, and the `plant_uses` junction (the
@@ -364,7 +366,7 @@ Knowledge lives in hands, soil, wind, and direct observation — not only in abs
 
 ### 12. Indigenous knowledge is honoured through relationship, not extraction
 
-Several of this document's sources — notably Kimmerer's *Braiding Sweetgrass*, Yunkaporta's *Sand Talk*, and elements of Ohlsen's *The Regenerative Landscaper* — draw on Indigenous knowledge systems, land stewardship, and ecological worldviews developed over millennia by Indigenous peoples. This knowledge is consistently among the most sophisticated and empirically validated ecological design wisdom available, often anticipating findings Western ecology has only recently arrived at. But Indigenous knowledge is **not an open resource to be extracted, encoded, or productized** without the explicit involvement and consent of the communities it originates from — to do so would replicate the very colonial pattern of extraction these knowledge systems critique. The same ecological thinking that drives the rest of this document insists that knowledge, like an ecosystem, functions through relationship and reciprocity, not extraction. So this is a design principle, not a footnote: Site & Pattern will not incorporate Indigenous ecological knowledge, land-management practices, plant-use traditions, or design frameworks into its data model, recommendations, or interface without:
+Several of this document's sources — notably Kimmerer's *Braiding Sweetgrass*, Yunkaporta's *Sand Talk*, and elements of Ohlsen's *The Regenerative Landscaper* — draw on Indigenous knowledge systems, land stewardship, and ecological worldviews developed over millennia by Indigenous peoples. This knowledge is consistently among the most sophisticated and empirically validated ecological design wisdom available, often anticipating findings Western ecology has only recently arrived at. But Indigenous knowledge is **not an open resource to be extracted, encoded, or productized** without the explicit involvement and consent of the communities it originates from — to do so would replicate the very colonial pattern of extraction these knowledge systems critique. The same ecological thinking that drives the rest of this document insists that knowledge, like an ecosystem, functions through relationship and reciprocity, not extraction. So this is a design principle, not a footnote: Prairie Crocus will not incorporate Indigenous ecological knowledge, land-management practices, plant-use traditions, or design frameworks into its data model, recommendations, or interface without:
 
 - **Direct consultation** with Indigenous elders, knowledge keepers, and/or community leaders relevant to the specific knowledge in question and to the Treaty 6 territory (Alberta) context in which this application operates.
 - **Free, prior, and informed consent** from appropriate Indigenous community representatives, consistent with UNDRIP (the United Nations Declaration on the Rights of Indigenous Peoples) and the Truth and Reconciliation Commission's Calls to Action.

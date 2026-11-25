@@ -1,4 +1,4 @@
-# Keeping Site & Pattern going
+# Keeping Prairie Crocus going
 
 *The runbook (V3.32, FN-13 and FN-14; [`homeowner/10-finishing.md`](homeowner/10-finishing.md) §10).
 Short on purpose: for whoever looks after the app once its owner has moved on.

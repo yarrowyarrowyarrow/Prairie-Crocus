@@ -3,7 +3,7 @@ name: offline-packs
 description: Use when adding or changing a download-once offline data pack (SQLite tile store, GeoTIFF pack, or similar) — buildings, terrain/contours, soil — or wiring a bulk downloader + Qt worker + flow orchestration. Covers the shared tile_store primitives, user_paths as the single data-dir source, fetch-order conventions (pack → live → regional), the pure-loop-plus-Qt-worker split, and testing with stubbed downloads.
 ---
 
-# Offline data packs (Site & Pattern)
+# Offline data packs (Prairie Crocus)
 
 ## Purpose / when to use
 

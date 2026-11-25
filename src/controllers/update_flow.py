@@ -580,7 +580,7 @@ class UpdateFlowController:
         downloads = os.path.join(os.path.expanduser("~"), "Downloads")
         if not os.path.isdir(downloads):
             downloads = tempfile.gettempdir()
-        dest = os.path.join(downloads, asset.name or f"SiteAndPattern-{tag}")
+        dest = os.path.join(downloads, asset.name or f"PrairieCrocus-{tag}")
 
         progress = QProgressDialog(
             f"Downloading {label}…", "Cancel", 0, 100, self._main
@@ -661,9 +661,12 @@ class UpdateFlowController:
                     "The new version has been downloaded and its installer "
                     "window opened.\n\n"
                     "To finish:\n"
-                    "  1. Drag Site & Pattern onto the Applications folder and "
+                    "  1. Drag Prairie Crocus onto the Applications folder and "
                     "choose Replace.\n"
-                    "  2. Quit this older copy, then open Site & Pattern again.\n\n"
+                    "  2. Quit this older copy, then open Prairie Crocus again.\n"
+                    "  3. If an older copy named SiteAndPattern is still in "
+                    "Applications, move it to the Bin. Your designs are kept "
+                    "either way.\n\n"
                     "Because the app downloaded the update itself, macOS won't "
                     "show the usual “unverified developer” warning."
                 )
