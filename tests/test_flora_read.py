@@ -154,7 +154,7 @@ class TestRefusesRatherThanAsks(unittest.TestCase):
         objected to. The operator of any server this touches should be able to
         tell what it is and who to complain to."""
         ua = flora_read.USER_AGENT
-        self.assertIn("Site-and-Pattern", ua)
+        self.assertIn("PrairieCrocus", ua)
         self.assertIn("noncommercial", ua)
         self.assertIn("http", ua)
 
