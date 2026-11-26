@@ -507,6 +507,29 @@ almost none. Fifteen findings, eight increments, nine decisions, all in the
 
 ---
 
+## V · A new tester (the V3.69 plan)
+
+*A person new to the app tested it with the owner watching. Eighteen items,
+verbatim in [`USER_FEEDBACK.md`](USER_FEEDBACK.md); the code behind each and the
+recommended order are in [the V3.69 plan](plans/V3.69-a-new-tester.md). Each
+section is planned on its own before it is built.*
+
+| ID | Feature | Effort | Risk | P |
+|----|---------|--------|------|---|
+| **F276** | **Existing trees you can trust**: installed builds have no rasterio, so the scan never reads the canopy-height map; correctable conifer/broadleaf, height and species; a read crown in 3D. | M–L | Med (packaging) | P9 |
+| **F277** | **The scan in seconds**: the region's buildings, treetops and slope shipped with its pack. | L | Med (installer size, licences) | P8 |
+| **F278** | **Sun and shade as one path**: Features first, steps in order, the time scrubber on the map, the arc tied to the shade. | M | Low | P5, P11 |
+| **F279** | **Select everything, move everything**: a drag moves every selected kind, one undo step. | S–M | Low | — |
+| **F280** | **One way to put things on the map**: structures and shapes merged; path surfaces, doors, downspouts, mulch rings; a raised bed at its outline in 3D. | L | Med (file format) | P2 |
+| **F281** | **Water in the design**: downspouts, runoff by the slope, a rain garden planted, not kept out. | M | Med (local rules) | P1, P8 |
+| **F282** | **The bee game, refined**: a short picker of the region's known pollinators with photos and cards; focus on start; the orbs explained. | M | Low | P5 |
+| **F283** | **The walk as a game in the simple app**: net, plant, smell. | M | Low | P5, P13 |
+| **F284** | **The years passing, in every view**: a play button on When and Season. | S–M | Low | P4 |
+| **F285** | **Words a beginner can act on**: a visible Advanced switch; Edible narrowed; Food for a fussy eater explained. | S | Low (P12 on the records) | P12 |
+| **F286** | **The first launch says it is working**: no (Not Responding) at start. | S–M | Low (needs a Windows measurement) | — |
+
+---
+
 ## If you want a recommendation
 
 **The V3.17 homeowner-path plan's order**, if the owner wants to finish rather than add: its [increments](homeowner/11-work-plan.md#3-the-increments), trust fixes first (F233, shipped V3.19), then the simple app (F234–F236), the region (F237), the three new things the homeowner sees (F238–F240), the words (F241) and finishing (F242–F243). It supersedes the V2.83 order below for that goal.

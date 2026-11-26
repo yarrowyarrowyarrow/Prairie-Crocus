@@ -171,3 +171,41 @@ worse than the thing that prompted the look.
   spent a whole increment saying the region outlines were "hand-drawn boxes"
   after they had become surveyed polygons. It sounds humble, which is exactly
   why nobody re-read it.
+
+---
+
+## 2026-11 — a fourth tester, with the owner watching
+
+A person new to the app tested it while the owner watched. Their words, plus
+what the owner saw them do (marked *observed*), were recorded in V3.69. Nothing
+is fixed yet. [The overview plan](plans/V3.69-a-new-tester.md) groups the items
+into sections F276–F286, each to be planned before it is built.
+
+**The shape of this round:** reach again, as in round 1, but for a new reason.
+The simple app (V3.21) hides tools on purpose, and four of the complaints are
+tools that exist behind the switch the tester never found: the walker's net,
+planting from the walk, the Flyover and *Tour the year*. The other big theme is
+the site scan, which the tester trusted and which is weaker in an installed copy
+than anyone had noticed: **installed builds have no rasterio, so the tree scan
+never uses the canopy-height map** and always reads the satellite photo instead.
+
+| # | What they said (or what was observed) | Verdict | Where it went |
+|---|---|---|---|
+| 1 | *"Tree detection wrong/off the mark. Some trees missed. Height of trees not entirely correct. Some deciduous and coniferous trees mixed up. The 3D render should show models closer to the current deciduous and coniferous trees rather than the old placeholder."* | 🐞 + 🕳 | **F276.** Installed builds lack rasterio, so the scan always falls back to the satellite photo's colours. Unknown foliage is drawn as a spruce. An existing tree gets the pre-V3.50 generic tree, not a read crown. |
+| 2 | *"Building and tree detection took a long time. Possible it would be good just to include the building/slope data with the app rather than needing to do a live search which took over a minute to return and sometimes simply doesn't."* | 🕳 | **F277.** Three Overpass servers at 30 s each, with a retry, before the tile fallback. Offline building and contour packs exist but must be downloaded by hand. |
+| 3 | *Observed:* the user missed the shade slider. | 🔍 | **F278.** The time slider sits above *Show shade*, out of sight once the shade is drawn. |
+| 4 | *"The shade work flow of placing/scanning for existing features, generating the shade, then viewing it across the day is not intuitive. The walk trough steps/pointers did not do this effectively. I think the order of the tabs should have existing features before sun/shade. The sun path is not the most useful and would be cool to link with the shade data/visualisation to an extent."* | 🕳 | **F278.** Site tab order is Sun & Shade before Features. The sun arc and the shade know nothing of each other. |
+| 5 | *"Can't select all items for moving around such as water feature, brush pile."* | 🐞 | **F279.** Ctrl+A selects every kind, but a drag moves only the plants. |
+| 6 | *"Most excited about the bee game and the 'report card'."* | — | A question: the Report card was retired in V3.55. Which build, and what did they mean? |
+| 7 | *"Bee game could use some refinement. There are probably some more prominent native butterflies/bees, I'd like to include the picture of these insects and a little description of them when you click it which shows the plants and then you could click on"* | 🕳 | **F282.** 681 animals in genus order, 475 with only a Latin name, not filtered to the yard. 58 of 1,144 animals have a photo. The walk's cards already do the rest. |
+| 8 | *"Person walking the landscape game did not work in that he was not able to catch an insect. He suggested that the person could possible smell the flowers, plant more items."* | 🔍 + ✨ | **F283.** The Net and Plant buttons are in the 3D window's advanced rows. *Smell* is new. |
+| 9 | *Observed:* the app upon first loading read "(not responding)" but it did eventually load. *"This was slightly disconcerting to see and maybe could be addressed?"* | 🐞 | **F286.** The database is set up on the main thread before any window, then the web engine starts. To be measured on Windows. |
+| 10 | *"Wanted to be able to add pathways of different kinds (stone, mulch, gravel), doors, water spouts. Wanted mulch around the plants."* | ✨ | **F280.** One *Pathway*, no doors or spouts, mulch only as a drawn area. |
+| 11 | *"Wanted the water locations to be considered in the design and possible recommendations where to place things based on location of water (downspouts and rain gardens)."* | ✨ + 🐞 | **F281.** No downspouts anywhere. A placed rain garden is a keep-out, so the planner plants around it, never in it. |
+| 12 | *"There is some duplicity between the features one can place and the shapes one can draw."* | 🕳 | **F280.** Pond / Water Feature, Fence / Wall / Fence, Native Lawn Patch / Lawn Area, Raised Bed / Garden Bed. |
+| 13 | *"The timelapse feature works only in bee mode and should work from a landscape view too even in basic mode."* | 🕳 | **F284.** *Tour the year* runs only while flying. The Flyover is advanced. |
+| 14 | *Observed:* user did not find the advanced features button. | 🔍 | **F285.** It is View → Advanced tools and nowhere else. |
+| 15 | *"Edible filter includes any use, some of which are obscurely edible. Balsam Poplar (bark can be used for tea) vs Saskatoon Berry (edible berries)."* | 🕳 | **F285.** 180 of 424 plants pass. The filter reads any non-blank `edible_parts`. P12 applies to any change in the records themselves. |
+| 16 | *"Food for fussy eater doesn't show what this means."* | 🔍 | **F285.** The meaning is only in a tooltip. |
+| 17 | *"When raised bed feature is placed it does not appear the same way in the 3D view."* | 🐞 | **F280.** The 3D scene gets only the bed's length, not its width or turn, and draws a stock model. |
+| 18 | *"Fly as a bee mode - you need to click before you can use the keys to move. It isn't clear that you need to fly to the glowing orbs."* | 🐞 + 🔍 | **F282.** The viewer is not given keyboard focus. The HUD never says what the orbs are. |
