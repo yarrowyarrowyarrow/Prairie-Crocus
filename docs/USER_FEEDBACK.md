@@ -179,7 +179,7 @@ worse than the thing that prompted the look.
 A person new to the app tested it while the owner watched. Their words, plus
 what the owner saw them do (marked *observed*), were recorded in V3.69. Nothing
 is fixed yet. [The overview plan](plans/V3.69-a-new-tester.md) groups the items
-into sections F276–F286, each to be planned before it is built.
+into sections F276–F287, each to be planned before it is built.
 
 **The shape of this round:** reach again, as in round 1, but for a new reason.
 The simple app (V3.21) hides tools on purpose, and four of the complaints are
@@ -196,7 +196,7 @@ never uses the canopy-height map** and always reads the satellite photo instead.
 | 3 | *Observed:* the user missed the shade slider. | 🔍 | **F278.** The time slider sits above *Show shade*, out of sight once the shade is drawn. |
 | 4 | *"The shade work flow of placing/scanning for existing features, generating the shade, then viewing it across the day is not intuitive. The walk trough steps/pointers did not do this effectively. I think the order of the tabs should have existing features before sun/shade. The sun path is not the most useful and would be cool to link with the shade data/visualisation to an extent."* | 🕳 | **F278.** Site tab order is Sun & Shade before Features. The sun arc and the shade know nothing of each other. |
 | 5 | *"Can't select all items for moving around such as water feature, brush pile."* | 🐞 | **F279.** Ctrl+A selects every kind, but a drag moves only the plants. |
-| 6 | *"Most excited about the bee game and the 'report card'."* | — | A question: the Report card was retired in V3.55. Which build, and what did they mean? |
+| 6 | *"Most excited about the bee game and the 'report card'."* | — | **F287.** Answered: the tester ran V3.67, and the "report card" is the PDF's first page, *How your yard is doing*. |
 | 7 | *"Bee game could use some refinement. There are probably some more prominent native butterflies/bees, I'd like to include the picture of these insects and a little description of them when you click it which shows the plants and then you could click on"* | 🕳 | **F282.** 681 animals in genus order, 475 with only a Latin name, not filtered to the yard. 58 of 1,144 animals have a photo. The walk's cards already do the rest. |
 | 8 | *"Person walking the landscape game did not work in that he was not able to catch an insect. He suggested that the person could possible smell the flowers, plant more items."* | 🔍 + ✨ | **F283.** The Net and Plant buttons are in the 3D window's advanced rows. *Smell* is new. |
 | 9 | *Observed:* the app upon first loading read "(not responding)" but it did eventually load. *"This was slightly disconcerting to see and maybe could be addressed?"* | 🐞 | **F286.** The database is set up on the main thread before any window, then the web engine starts. To be measured on Windows. |
@@ -209,3 +209,6 @@ never uses the canopy-height map** and always reads the satellite photo instead.
 | 16 | *"Food for fussy eater doesn't show what this means."* | 🔍 | **F285.** The meaning is only in a tooltip. |
 | 17 | *"When raised bed feature is placed it does not appear the same way in the 3D view."* | 🐞 | **F280.** The 3D scene gets only the bed's length, not its width or turn, and draws a stock model. |
 | 18 | *"Fly as a bee mode - you need to click before you can use the keys to move. It isn't clear that you need to fly to the glowing orbs."* | 🐞 + 🔍 | **F282.** The viewer is not given keyboard focus. The HUD never says what the orbs are. |
+| 19 | *"Report is nice. Would be nice to utilize colour better. The plants colour can be changed manually but there ought to be an option to have each species show a different colour with a legend, or even have the type colour for the plants show."* | 🕳 | **F287.** On screen plants are coloured by type; the legend's Species mode keeps the type colour. The PDF planting map draws every plant the same pale green, ignoring type colours and hand-picked ones. |
+| 20 | *"The report card actually referred to the first word section of the pdf report. The user says the feedback 'Looks good' or 'worth a look' could be colour coded as they all appear green atm."* | 🐞 | **F287.** The screen colours each status; the PDF writes them all in the heading green. |
+| 21 | *"Planting plan portion could benefit from a sum total for cost."* | 🐞 | **F287.** The text planting plan ends with an estimated total; the PDF's *What to buy* page never adds its lines up. |

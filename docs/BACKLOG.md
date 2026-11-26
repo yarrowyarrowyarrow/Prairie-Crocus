@@ -509,7 +509,7 @@ almost none. Fifteen findings, eight increments, nine decisions, all in the
 
 ## V · A new tester (the V3.69 plan)
 
-*A person new to the app tested it with the owner watching. Eighteen items,
+*A person new to the app tested it with the owner watching. Twenty-one items,
 verbatim in [`USER_FEEDBACK.md`](USER_FEEDBACK.md); the code behind each and the
 recommended order are in [the V3.69 plan](plans/V3.69-a-new-tester.md). Each
 section is planned on its own before it is built.*
@@ -527,6 +527,7 @@ section is planned on its own before it is built.*
 | **F284** | **The years passing, in every view**: a play button on When and Season. | S–M | Low | P4 |
 | **F285** | **Words a beginner can act on**: a visible Advanced switch; Edible narrowed; Food for a fussy eater explained. | S | Low (P12 on the records) | P12 |
 | **F286** | **The first launch says it is working**: no (Not Responding) at start. | S–M | Low (needs a Windows measurement) | — |
+| **F287** | **The PDF report in colour, and adding up**: status words coloured, the planting map by type or species with a key, a total cost. | S–M | Low | P13 |
 
 ---
 
