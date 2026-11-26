@@ -6,11 +6,13 @@ world colours — wood, stone, water — nothing seasonal), so builders assign
 the shared palette from materials.structure_material; baked COLOR_0 AO
 multiplies through in three.js.
 
-Authored at the catalogue's default footprint (size_m = the LONG side; the
-scene sends no rotation or width, so aspect is baked in). The viewer scales
-placements uniformly in XZ by size_m/authored size; `scale_mode` in the
-manifest says whether Y follows ("uniform" — objects) or stays authored
-("footprint" — flat/linear features like ponds, lawns, fences).
+Authored at the catalogue's default footprint: size_m, the LONG side, along x
+(east) and a rectangle's width_m along y (STRUCTURE_WIDTHS). Since V3.70 the
+scene sends each rectangle's width and the bearing of its long side, and the
+viewer turns the model to it (the 2D map draws size_m north-south) and scales
+the long side by size_m and the short one by width_m over the authored ones;
+`scale_mode` in the manifest says whether Y follows the long side ("uniform" —
+objects) or stays authored ("footprint" — ponds, lawns, beds, fences, sheds).
 
 build_structure(struct_id, rng, coll) -> list of objects.
 """
@@ -38,9 +40,21 @@ STRUCTURE_SPECS = {
     "native_lawn_patch": (6.0, 0.10, "footprint"),
     "raised_bed":        (3.0, 0.45, "footprint"),
     "compost_bin":       (1.5, 1.00, "uniform"),
-    "shed":              (3.0, 2.40, "uniform"),
+    # A bigger shed is a longer and wider one, not a taller one (V3.70): until
+    # then a shed sized 6 m was drawn 4.8 m tall.
+    "shed":              (3.0, 2.40, "footprint"),
     "fence":             (5.0, 1.25, "footprint"),
     "fire_pit":          (2.0, 0.45, "footprint"),
+}
+
+#: struct_id -> authored short side, for the catalogue's rectangles: the model
+#: is authored at the catalogue's ``size_m`` along x and its ``width_m`` along y
+#: (V3.70). The manifest carries it so the viewer scales the two sides
+#: separately, as the 2D map draws them; ``tests/test_structure_scene.py``
+#: holds it equal to ``src/db/structures.py``.
+STRUCTURE_WIDTHS = {
+    "swale": 1.5, "native_bee_log": 0.4, "bee_hotel": 0.3,
+    "native_lawn_patch": 4.0, "raised_bed": 1.2, "shed": 2.5, "fence": 0.3,
 }
 
 
@@ -57,6 +71,27 @@ def _ring_of_stones(bm, rng, radius, n, r_lo, r_hi, z=0.0, squash=0.7):
         m = m @ Matrix.Rotation(rng.random() * math.pi, 4, "Z")
         add_ellipsoid(bm, r, (1.0 + rng.random() * 0.3,
                               0.8 + rng.random() * 0.3, squash), m, subdiv=1)
+
+
+def _gable(bm, length, half_width, z_eave, z_ridge):
+    """A closed triangular prism along x: the attic under a gable roof, so a
+    roof's two ends are walls and not open triangles (V3.70)."""
+    x0, x1 = -length / 2.0, length / 2.0
+    v = [bm.verts.new(p) for p in (
+        (x0, -half_width, z_eave), (x0, half_width, z_eave), (x0, 0.0, z_ridge),
+        (x1, -half_width, z_eave), (x1, half_width, z_eave), (x1, 0.0, z_ridge))]
+    for face in ((0, 2, 1), (3, 4, 5), (0, 1, 4, 3), (1, 2, 5, 4),
+                 (2, 0, 3, 5)):
+        bm.faces.new([v[i] for i in face])
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+
+
+#: A gable board is tilted so its OUTER edge is the low one: for the board on
+#: the +y side (s = +1) a rotation of -s * pitch about x. Until V3.70 both
+#: roofs used +s * pitch, which lifts the outer edges: the shed's and the bee
+#: hotel's roofs were a V, splayed open like a carton (the V3.69 review).
+def _roof_tilt(s, pitch):
+    return Matrix.Rotation(-s * pitch, 4, "X")
 
 
 def _disc(bm, rx, ry, z, segments=16):
@@ -154,10 +189,10 @@ def _bee_hotel(rng, coll):
     add_cone(pole, 0.035, 0.03, 1.0, 6, Matrix())
     house = bmesh.new()                        # box + gable roof
     add_box(house, (0.55, 0.28, 0.42), Matrix.Translation((0, 0, 1.21)))
+    _gable(house, 0.55, 0.14, 1.42, 1.495)     # the gable ends, closed
     roof = bmesh.new()
-    for s in (-1, 1):
-        m = (Matrix.Translation((0, s * 0.09, 1.50))
-             @ Matrix.Rotation(s * 0.6, 4, "X"))
+    for s in (-1, 1):                          # eaves resting on the box
+        m = (Matrix.Translation((0, s * 0.09, 1.46)) @ _roof_tilt(s, 0.6))
         add_box(roof, (0.62, 0.24, 0.03), m)
     holes = bmesh.new()                        # tube openings on the face
     for r in range(3):
@@ -281,10 +316,10 @@ def _compost_bin(rng, coll):
 def _shed(rng, coll):
     walls = bmesh.new()
     add_box(walls, (2.9, 2.4, 1.9), Matrix.Translation((0, 0, 0.95)))
+    _gable(walls, 2.9, 1.2, 1.9, 2.38)         # the gable ends, closed
     roof = bmesh.new()                         # gable with overhang
     for s in (-1, 1):
-        m = (Matrix.Translation((0, s * 0.66, 2.13))
-             @ Matrix.Rotation(s * 0.42, 4, "X"))
+        m = (Matrix.Translation((0, s * 0.66, 2.13)) @ _roof_tilt(s, 0.42))
         add_box(roof, (3.2, 1.48, 0.06), m)
     door = bmesh.new()
     add_box(door, (0.75, 0.05, 1.55), Matrix.Translation((-0.5, -1.21, 0.78)))

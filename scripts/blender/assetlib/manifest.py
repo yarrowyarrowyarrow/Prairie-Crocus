@@ -11,7 +11,7 @@ from .fauna_variants import BEE_VARIANTS, BIRD_VARIANTS, LEP_VARIANTS
 from .flora_herbs import HERB_FORMS, LAYER_KINDS, VARIANT_LAYERS
 from .flora_shrubs import SHRUB_FORMS
 from .flora_trees import TREE_ARCHETYPES
-from .structures import STRUCTURE_SPECS
+from .structures import STRUCTURE_SPECS, STRUCTURE_WIDTHS
 
 MANIFEST_NAME = "manifest.json"
 
@@ -183,6 +183,8 @@ def asset_table():
         table[f"structure.{sid}"] = {
             "kind": "structure", "file": f"struct_{sid}.glb",
             "size_m": size_m, "height_m": height_m, "scale_mode": scale_mode}
+        if sid in STRUCTURE_WIDTHS:              # a rectangle's short side
+            table[f"structure.{sid}"]["width_m"] = STRUCTURE_WIDTHS[sid]
     return table
 
 
@@ -205,6 +207,8 @@ def manifest_dict(generator="", half_widths=None):
             structures[key.split(".", 1)[1]] = {
                 "file": spec["file"], "size_m": spec["size_m"],
                 "height_m": spec["height_m"], "scale_mode": spec["scale_mode"]}
+            if "width_m" in spec:
+                structures[key.split(".", 1)[1]]["width_m"] = spec["width_m"]
         else:
             entry = {"file": spec["file"], "parts": spec["parts"]}
             if "tiers" in spec:

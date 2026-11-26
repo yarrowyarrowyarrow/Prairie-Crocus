@@ -1045,7 +1045,8 @@
    "file": "struct_bee_hotel.glb",
    "height_m": 1.6,
    "scale_mode": "uniform",
-   "size_m": 0.6
+   "size_m": 0.6,
+   "width_m": 0.3
   },
   "brush_pile": {
    "file": "struct_brush_pile.glb",
@@ -1063,7 +1064,8 @@
    "file": "struct_fence.glb",
    "height_m": 1.25,
    "scale_mode": "footprint",
-   "size_m": 5.0
+   "size_m": 5.0,
+   "width_m": 0.3
   },
   "fire_pit": {
    "file": "struct_fire_pit.glb",
@@ -1075,13 +1077,15 @@
    "file": "struct_native_bee_log.glb",
    "height_m": 0.45,
    "scale_mode": "uniform",
-   "size_m": 1.2
+   "size_m": 1.2,
+   "width_m": 0.4
   },
   "native_lawn_patch": {
    "file": "struct_native_lawn_patch.glb",
    "height_m": 0.1,
    "scale_mode": "footprint",
-   "size_m": 6.0
+   "size_m": 6.0,
+   "width_m": 4.0
   },
   "pond": {
    "file": "struct_pond.glb",
@@ -1105,7 +1109,8 @@
    "file": "struct_raised_bed.glb",
    "height_m": 0.45,
    "scale_mode": "footprint",
-   "size_m": 3.0
+   "size_m": 3.0,
+   "width_m": 1.2
   },
   "rock_xeriscape": {
    "file": "struct_rock_xeriscape.glb",
@@ -1116,8 +1121,9 @@
   "shed": {
    "file": "struct_shed.glb",
    "height_m": 2.4,
-   "scale_mode": "uniform",
-   "size_m": 3.0
+   "scale_mode": "footprint",
+   "size_m": 3.0,
+   "width_m": 2.5
   },
   "snag": {
    "file": "struct_snag.glb",
@@ -1129,7 +1135,8 @@
    "file": "struct_swale.glb",
    "height_m": 0.4,
    "scale_mode": "footprint",
-   "size_m": 10.0
+   "size_m": 10.0,
+   "width_m": 1.5
   }
  },
  "unit_frame": "base y=0, height 1, scaled UNIFORMLY so the authored aspect survives; each unit's half_width is published below and re-measured on load",

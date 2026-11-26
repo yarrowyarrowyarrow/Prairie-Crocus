@@ -21,6 +21,7 @@ from PyQt6.QtGui import QColor
 
 from src.db.structures import (
     STRUCTURES, STRUCTURE_CATEGORIES, get_structure, get_all_structures,
+    size_range, size_words,
 )
 
 
@@ -123,6 +124,7 @@ class StructurePanel(QWidget):
         # Size override
         size_row = QHBoxLayout()
         size_label = QLabel("Size (m):")
+        self._size_label = size_label            # says what it measures (V3.70)
         size_row.addWidget(size_label)
         self._size_spin = QDoubleSpinBox()
         size_label.setBuddy(self._size_spin)
@@ -209,6 +211,10 @@ class StructurePanel(QWidget):
         if s.get("maintenance_hours_year"):
             info_parts.append(f"Maintenance: ~{s['maintenance_hours_year']} hrs/year")
         self._detail_info.setText("  |  ".join(info_parts))
+        # Each kind its own range (V3.70); a rectangle's Size is its length,
+        # its width the catalogue's, as the map draws it.
+        self._size_label.setText(size_words(s))
+        self._size_spin.setRange(*size_range(sid))
         self._size_spin.setValue(s["size_m"])
 
     def _on_place_clicked(self):

@@ -528,7 +528,7 @@ section is planned on its own before it is built.*
 | **F285** | **Words a beginner can act on**: a visible Advanced switch; Edible narrowed; Food for a fussy eater explained. | S | Low (P12 on the records) | P12 |
 | **F286** | **The first launch says it is working**: no (Not Responding) at start. | S–M | Low (needs a Windows measurement) | — |
 | **F287** | **The PDF report in colour, and adding up**: status words coloured, the planting map by type or species with a key, a total cost. | S–M | Low | P13 |
-| **F288** | **Structures you can believe** ([review](plans/V3.69-structures-and-shapes-reviewed.md)): roofs the right way up, the 3D turned to the map and given its width, winter on the pond and lawn patch; then the objects that stay objects rebuilt, moved and turned. Feeds F280 and F281. | S, then M | Low | P9, P13 |
+| **F288** | **Structures you can believe** ([review](plans/V3.69-structures-and-shapes-reviewed.md)): part 1 ✅ V3.70 ([plan](plans/V3.70-structures-turned-to-the-map.md)): roofs, the turn to the map, the width, winter. Part 2: the objects that stay objects rebuilt, moved and turned, after F280. | M | Low | P9, P13 |
 
 ---
 

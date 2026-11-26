@@ -267,6 +267,43 @@ _INSTALL_COST_CAD: dict[str, list[float]] = {
 for _s in STRUCTURES:
     _s.setdefault("install_cost_cad", _INSTALL_COST_CAD.get(_s["id"], [0.0, 0.0]))
 
+# What Placement › Structures' Size box allows for each kind, in metres, as
+# [low, high] (V3.70). Until then it ran 0.5 to 50 m for everything, and a
+# bee hotel set to 50 m was drawn 133 m tall. **Estimates**, by form: a
+# backyard wildlife pond to a large one, one rain barrel to a big cistern, a
+# small stack of branches to a pile wildlife agencies call large. Kept out of
+# the definitions themselves, which are saved into every placed structure.
+_SIZE_RANGE_M: dict[str, tuple[float, float]] = {
+    "pond":             (1.5, 12.0),
+    "swale":            (3.0, 30.0),
+    "rain_garden":      (1.5, 10.0),
+    "rain_barrel":      (0.5, 1.2),
+    "native_bee_log":   (0.5, 2.5),
+    "bee_hotel":        (0.2, 1.2),
+    "brush_pile":       (1.0, 5.0),
+    "snag":             (0.3, 1.5),
+    "rock_xeriscape":   (1.0, 10.0),
+    "native_lawn_patch": (2.0, 30.0),
+    "raised_bed":       (1.0, 8.0),
+    "compost_bin":      (0.8, 3.0),
+    "shed":             (1.5, 6.0),
+    "fence":            (1.0, 50.0),
+    "fire_pit":         (1.0, 4.0),
+}
+
+
+def size_range(structure_id: str) -> tuple[float, float]:
+    """``(low, high)`` in metres for a structure's Size box (V3.70)."""
+    return _SIZE_RANGE_M.get(structure_id, (0.5, 50.0))
+
+
+def size_words(structure: dict) -> str:
+    """What the Size box measures for a structure: a rectangle's length (its
+    width stays the catalogue's, as the map draws it), else its width across."""
+    return "Length (m):" if structure.get("shape") == "rectangle" \
+        else "Across (m):"
+
+
 # Quick lookup by id
 _BY_ID: dict[str, dict] = {s["id"]: s for s in STRUCTURES}
 

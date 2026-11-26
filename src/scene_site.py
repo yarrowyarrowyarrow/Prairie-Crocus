@@ -199,7 +199,9 @@ def lines(project: dict, proj) -> list:
         out.append({"kind": kind, "points": pts,
                     "width_m": round(width, 2),
                     "height_m": LINE_HEIGHT_M[kind]})
-    return out
+    # A placed Fence / Wall is drawn as the same fence (V3.70).
+    from src.scene_structures import fence_lines
+    return out + fence_lines(project, proj)
 
 
 # ── the street ──────────────────────────────────────────────────────────────

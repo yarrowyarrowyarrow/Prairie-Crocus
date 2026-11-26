@@ -151,7 +151,12 @@ Scene schema (``SCENE_VERSION`` = 1)::
                                        #   (None where it is assumed, and with
                                        #   no outline). roads: the recorded
                                        #   lines, where there are any
-      "structures": [{x, y, struct_id, name, size_m, height_m}, ...],
+      "structures": [{x, y, struct_id, name, size_m, height_m,
+                      width_m?, bearing_deg?}, ...],  # V3.70: a rectangle's
+                                       #   short side and the bearing of its
+                                       #   long side, as the 2D map draws it
+                                       #   (src/scene_structures.py); a Fence /
+                                       #   Wall is a fence in "lines" instead
       "terrain": {rows, cols, min_x, min_y, max_x, max_y, base_m,
                   heights: [[m above base_m, row 0 = north], ...]} | None,
       # (scan_points and splat, the yard scan's, went with it in V3.22, RM-2:
@@ -178,6 +183,7 @@ from typing import Callable, Optional
 from src.member_colors import TYPE_COLORS as _TYPE_COLORS
 from src.projection import Projector
 from src.project_store import plant_record_from_feature
+from src import scene_structures
 from src.scene3d import plant_3d_state
 
 SCENE_VERSION = 1
@@ -824,16 +830,11 @@ def build_scene(project: dict, *, year: int = 0,
                 })
 
         elif etype == "structure" and geom.get("type") == "Point":
+            # Turned and sized as the map draws it (V3.70, src/scene_structures).
             lng, lat = geom["coordinates"]
-            x, y = proj.to_xy(lat, lng)
-            sd = props.get("struct_def", {}) or {}
-            structures.append({
-                "x": round(x, 2), "y": round(y, 2),
-                "struct_id": sd.get("id", ""),
-                "name": sd.get("name", ""),
-                "size_m": float(sd.get("size_m") or 1.0),
-                "height_m": float(sd.get("height_m") or 1.0),
-            })
+            rec = scene_structures.record(props, *proj.to_xy(lat, lng))
+            if rec is not None:
+                structures.append(rec)
 
     # Regeneration (V2.24): self-seeding herbaceous natives fill the gaps the
     # closing canopy has opened, so the mature scene shows recovery rather than

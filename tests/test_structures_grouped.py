@@ -62,3 +62,45 @@ class ThreeHeadings(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless(_HAVE_QT, "PyQt6 not installed in this env")
+class TheSizeBoxFollowsTheKind(unittest.TestCase):
+    """V3.70 (F288): the Size box ran 0.5 to 50 m for every structure and was
+    always called Size; a rectangle's Size is its length on the map."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls._app = QApplication.instance() or QApplication(["sp-structures"])
+
+    def _choose(self, panel, sid):
+        for i in range(panel._struct_list.count()):
+            item = panel._struct_list.item(i)
+            if item.data(Qt.ItemDataRole.UserRole) == sid:
+                panel._struct_list.setCurrentItem(item)
+                return
+        self.fail(f"{sid} is not in the list")
+
+    def test_a_raised_bed_asks_its_length_within_its_range(self):
+        from src.structure_panel import StructurePanel
+        panel = StructurePanel()
+        self.addCleanup(panel.close)
+        self._choose(panel, "raised_bed")
+        self.assertEqual(panel._size_label.text(), "Length (m):")
+        self.assertEqual((panel._size_spin.minimum(),
+                          panel._size_spin.maximum()), (1.0, 8.0))
+        self.assertEqual(panel._size_spin.value(), 3.0)
+        placed = []
+        panel.place_structure_requested.connect(placed.append)
+        panel._size_spin.setValue(50.0)              # held to the range
+        panel._on_place_clicked()
+        self.assertEqual(placed[0]["size_m"], 8.0)
+
+    def test_a_pond_asks_its_width_across(self):
+        from src.structure_panel import StructurePanel
+        panel = StructurePanel()
+        self.addCleanup(panel.close)
+        self._choose(panel, "pond")
+        self.assertEqual(panel._size_label.text(), "Across (m):")
+        self.assertEqual((panel._size_spin.minimum(),
+                          panel._size_spin.maximum()), (1.5, 12.0))

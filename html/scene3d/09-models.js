@@ -586,9 +586,13 @@ function glbCritter(kind, app) {
 
 // One placed structure as a clone of its GLB template — geometry AND
 // materials cloned so disposeDesignGroup's per-rebuild dispose stays correct.
-// Scaled uniformly in XZ by the placement's size_m over the authored size;
-// 'footprint' assets (ponds, lawns, fences) keep their authored height,
-// 'uniform' objects scale with it. `s` is the scene structure record.
+// The model's long side is authored along x (east). Since V3.70 a rectangle
+// comes with the bearing of its long side and its short side, as the 2D map
+// draws it (src/scene_structures.py): it is turned to the bearing, its long
+// side scaled by size_m and its short side by width_m over the authored ones.
+// Until then it lay a quarter turn from the map and grew as wide as it grew
+// long (the V3.69 review). 'footprint' assets keep their authored height,
+// 'uniform' objects scale it with the long side. `s` is the scene record.
 function glbStructure(s) {
   if (MODEL_STATE !== 'ready' || !s || !s.struct_id) return null;
   const rec = MODEL_STRUCTS.get(s.struct_id);
@@ -600,8 +604,11 @@ function glbStructure(s) {
     o.material = o.material.clone();
     o.castShadow = o.receiveShadow = true;
   });
-  const sxz = Math.max(0.05, (s.size_m || rec.spec.size_m) / rec.spec.size_m);
-  const sy = rec.spec.scale_mode === 'footprint' ? 1 : sxz;
-  g.scale.set(sxz, sy, sxz);
+  const sx = Math.max(0.05, (s.size_m || rec.spec.size_m) / rec.spec.size_m);
+  const sz = rec.spec.width_m && s.width_m
+    ? Math.max(0.05, s.width_m / rec.spec.width_m) : sx;
+  const sy = rec.spec.scale_mode === 'footprint' ? 1 : sx;
+  g.scale.set(sx, sy, sz);
+  if (s.bearing_deg != null) g.rotation.y = (90 - s.bearing_deg) * Math.PI / 180;
   return g;
 }

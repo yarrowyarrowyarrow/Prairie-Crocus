@@ -453,23 +453,47 @@ function buildFlowers(plants, month, terrain) {
 // The placed structures: bee hotel, brush pile, pond, rain barrel. V3.22 took
 // this out with the splat code it sat between, and every scene push threw here,
 // after the plants and before the sun, the shadows and the camera (V3.37).
-function buildStructures(group, structures) {
+function buildStructures(group, structures, month) {
   for (const s of structures || []) {
     // Blender GLB structure first (09-models.js), box as the fallback.
     const glb = window.glbStructure && window.glbStructure(s);
     if (glb) {
       glb.position.set(s.x, terrainHeightAt(s.x, s.y, lastTerrain), -s.y);
+      glb.userData.structId = s.struct_id;            // probes find it by this
+      structureWinter(glb, month);
       group.add(glb);
       continue;
     }
     const size = Math.max(0.3, s.size_m || 1), h = Math.max(0.3, s.height_m || 1);
     const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(size, h, size),
+      new THREE.BoxGeometry(size, h, Math.max(0.1, s.width_m || size)),
       new THREE.MeshStandardMaterial({ color: 0x8d6e63, roughness: 0.9 }));
     mesh.position.set(s.x, terrainHeightAt(s.x, s.y, lastTerrain) + h / 2, -s.y);
+    if (s.bearing_deg != null) mesh.rotation.y = (90 - s.bearing_deg) * Math.PI / 180;
     mesh.castShadow = mesh.receiveShadow = true;
+    mesh.userData.structId = s.struct_id;
     group.add(mesh);
   }
+}
+
+// Winter on a structure (V3.70): its water ices and its soft or flat parts take
+// the snow, as the drawn surfaces and the roofs do (02c-site.js). The models
+// carry fixed colours and no texture coordinates, so it is colour, not the
+// ground's snow painting. Until then a pond stayed open blue water and a native
+// lawn patch stayed green through January (the V3.69 review). By part name:
+// the Blender builders name them (scripts/blender/assetlib/structures.py).
+const _STRUCT_ICE = new Set(['water']);
+const _STRUCT_SNOW = new Set(['turf', 'soil', 'mulch', 'mound', 'ash', 'gravel', 'roof']);
+function structureWinter(g, month) {
+  if (!seasonSnow(month)) return;
+  g.traverse((o) => {
+    if (!o.isMesh || !o.material) return;
+    if (_STRUCT_ICE.has(o.name)) {
+      o.material.color.set(0xcbd9e4); o.material.roughness = 0.35;
+    } else if (_STRUCT_SNOW.has(o.name)) {
+      o.material.color.set(0xeef2f5); o.material.roughness = 0.85;
+    }
+  });
 }
 
 // Render the CURRENT scene from the CURRENT camera into an off-size frame and
@@ -611,7 +635,7 @@ window.permaSetScene = function (sc) {
   buildBoundary(designGroup, sc.boundary, sc.terrain);
   buildBuildings(designGroup, sc.buildings, sc.terrain, sc.month);
   buildPlants(designGroup, sc.plants, sc.month, sc.year, sc.terrain);
-  buildStructures(designGroup, sc.structures);
+  buildStructures(designGroup, sc.structures, sc.month);
   if (sc.is_night) setNight();
   else { setDay(); if (sc.sun) setSun(sc.sun.azimuth_deg, sc.sun.altitude_deg); }
   placeShadow(sc);

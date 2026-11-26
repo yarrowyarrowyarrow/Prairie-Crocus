@@ -296,7 +296,12 @@ def build_job(width: int, height: int) -> tuple:
     sc_map = scene(models_lot(True))
     routes["/__s/models.json"] = sc_models
     routes["/__s/map.json"] = sc_map
-    where = {s["struct_id"]: (s["x"], s["y"]) for s in sc_models["structures"]}
+    # Where each one stands, from the lot's own layout and the scene's origin
+    # (the boundary starts at the lot's corner): since V3.70 a Fence / Wall is
+    # a fence line, not an entry in the scene's structures.
+    ox, oy = sc_models["boundary"][0]
+    where = {sid: (cell(i)[0] + ox, cell(i)[1] + oy)
+             for i, sid in enumerate(ORDER)}
 
     model_tiles, map_tiles = [], []
     for sid in ORDER:
