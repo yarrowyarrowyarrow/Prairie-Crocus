@@ -255,13 +255,10 @@ class Project:
     @property
     def structures(self) -> list[dict]:
         """Placed structures as their ``struct_def`` dicts (each has ``id``)
-        — the same shape the GUI feeds the habitat scorer."""
-        out = []
-        for f in self._gen.project.get("features", []):
-            props = f.get("properties", {})
-            if props.get("element_type") == "structure":
-                out.append(props.get("struct_def", {}))
-        return out
+        — the same shape the GUI feeds the habitat scorer, so since V3.71 a
+        drawn pond is in it as a pond (``src/yard_kinds.structure_defs``)."""
+        from src.yard_kinds import structure_defs
+        return structure_defs(self._gen.project)
 
     def as_dict(self) -> dict:
         """Return the underlying project dict (GUI-compatible GeoJSON)."""

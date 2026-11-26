@@ -228,8 +228,14 @@ def needs_standing_water(plant: dict) -> bool:
     return ptype == "aquatic" or form in WATER_HABITS or water == {"high"}
 
 
-# Structures that belong in low / wet ground (the water-management group).
-WET_STRUCTURE_IDS = frozenset({"pond", "swale", "rain_garden", "rain_barrel"})
+# Structures that belong in low / wet ground (the water-management group): the
+# kinds ``src/yard_kinds.py`` calls wet ground (V3.71).
+def _wet_structure_ids() -> frozenset:
+    from src import yard_kinds
+    return frozenset(yard_kinds.struct_ids(ground=yard_kinds.WET))
+
+
+WET_STRUCTURE_IDS = _wet_structure_ids()
 
 
 def preferred_zone_for_structure(struct_id: str) -> str:

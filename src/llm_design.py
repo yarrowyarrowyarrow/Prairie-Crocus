@@ -1903,16 +1903,15 @@ def _too_big_for(plant: dict, area_m2: float) -> bool:
 
 
 def _beds_box(existing_features) -> Optional[list]:
-    """``[[lat, lng], ...]``: the box around the drawn beds, or ``None``."""
-    from src.yard_overview import BED_SHAPES
+    """``[[lat, lng], ...]``: the box around the drawn beds (and since V3.71 a
+    placed raised bed or rock garden's footprint), or ``None``."""
+    from src import yard_kinds
     pts = []
     for f in existing_features or []:
         props = f.get("properties") or {}
-        geom = f.get("geometry") or {}
-        if (props.get("element_type") == "custom_shape"
-                and props.get("shape_type") in BED_SHAPES
-                and geom.get("type") == "Polygon" and geom.get("coordinates")):
-            pts += geom["coordinates"][0]
+        if (props.get("element_type") in ("custom_shape", "structure")
+                and yard_kinds.is_fill(f)):
+            pts += yard_kinds.footprint_ring(f) or []
     if len(pts) < 3:
         return None
     lngs, lats = [p[0] for p in pts], [p[1] for p in pts]

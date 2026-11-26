@@ -359,10 +359,12 @@ class GenerationController:
 
 
 def _is_bed(feature) -> bool:
-    from src.yard_overview import BED_SHAPES
+    """A drawn bed, or since V3.71 a placed raised bed or rock garden: ground
+    the plan plants into (``src/yard_kinds.py``)."""
+    from src import yard_kinds
     props = feature.get("properties") or {}
-    return (props.get("element_type") == "custom_shape"
-            and props.get("shape_type") in BED_SHAPES)
+    return (props.get("element_type") in ("custom_shape", "structure")
+            and yard_kinds.is_fill(feature))
 
 
 def _iter_generated_structures(project):

@@ -33,18 +33,20 @@ from __future__ import annotations
 
 from typing import Optional
 
+from src import yard_kinds
+
 #: Shapes a person plants in: their union is the planting area when any exists.
 #: Plan My Yard plants exactly here (V3.28, PY-2; ``exclusion`` reads these).
 #: *Lawn — to convert* is one since V3.28: a person who draws it and asks for a
 #: plan means "turn this into garden" (part 07 §2); V3.20 had counted it as lawn.
-BED_SHAPES = ("Garden Bed", "Mulch Area", "Lawn — to convert",
-              "Restoration — Year 1", "Restoration — Year 3",
-              "Established native")
+#: Read from ``src/yard_kinds.py`` since V3.71, which also makes a placed raised
+#: bed or rock garden one (:func:`_parts`).
+BED_SHAPES = yard_kinds.shape_types(planting=yard_kinds.FILL)
 
 #: Shapes nobody plants in, taken off the boundary when no bed is drawn, and
-#: kept out of a plan (the remnant is left undisturbed).
-NOT_PLANTED = ("Lawn Area", "Pathway", "Patio / Deck", "Water Feature",
-               "Existing remnant")
+#: kept out of a plan (the remnant is left undisturbed). Since V3.71 a placed
+#: pond, rain garden, native lawn patch, shed or object is one too.
+NOT_PLANTED = yard_kinds.shape_types(planting=yard_kinds.KEEP_OUT)
 
 
 def _ring(feature) -> Optional[list]:
@@ -72,6 +74,16 @@ def _parts(project: dict) -> tuple:
             holes.append(ring)
         elif et == "canopy_footprint" and kind.startswith("Building"):
             holes.append(ring)
+    # A placed structure is what its kind is (V3.71): a raised bed or a rock
+    # garden is a bed, a pond or a shed is not planted, at the footprint the
+    # map draws for it.
+    for f in (project or {}).get("features", []) or []:
+        if (f.get("properties") or {}).get("element_type") != "structure":
+            continue
+        if yard_kinds.is_fill(f):
+            beds.append(yard_kinds.footprint_ring(f))
+        elif yard_kinds.is_keep_out(f):
+            holes.append(yard_kinds.footprint_ring(f))
     return bounds, beds, holes
 
 

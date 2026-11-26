@@ -56,15 +56,20 @@ class TestKeepoutCircles(unittest.TestCase):
         proj = _project(_pt_feature("existing_tree", _LAT, _LNG, size_m=8.0))
         self.assertEqual(X.keepout_circles(proj)[0][2], 4.0)   # size/2
 
-    def test_water_structure_excludes_others_dont(self):
+    def test_structures_kept_out_by_their_kind(self):
+        """V3.71: every structure whose kind Plan My Yard keeps out of, a bee
+        hotel as well as a pond (until then only the water structures and a
+        brush pile were); an id the table does not know is not."""
         proj = _project(
             _pt_feature("structure", _LAT, _LNG,
                         struct_def={"id": "pond", "size_m": 6.0}),
             _pt_feature("structure", _LAT, _LNG,
                         struct_def={"id": "bee_hotel", "size_m": 0.6}),
+            _pt_feature("structure", _LAT, _LNG,
+                        struct_def={"id": "herb_spiral", "size_m": 2.0}),
         )
         circles = X.keepout_circles(proj)
-        self.assertEqual(len(circles), 1)        # only the pond
+        self.assertEqual(len(circles), 2)        # the pond and the bee hotel
         self.assertEqual(circles[0][2], 3.0)     # 6 / 2
 
     def test_building_counted(self):

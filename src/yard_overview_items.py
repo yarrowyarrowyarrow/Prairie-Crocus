@@ -117,10 +117,9 @@ def _gather(project: dict, get_plant: Optional[Callable]) -> Design:
         if pid not in rows:
             rows[pid] = get_plant(pid) or {}
     site = ((project or {}).get("properties") or {}).get("site_config") or {}
-    structures = [(f.get("properties") or {}).get("struct_def") or {}
-                  for f in (project or {}).get("features", []) or []
-                  if (f.get("properties") or {}).get("element_type")
-                  == "structure"]
+    # A drawn pond is a pond to the cost and the hours (V3.71, yard_kinds).
+    from src.yard_kinds import structure_defs
+    structures = structure_defs(project or {})
     return Design(project, placed, list(rows), rows, site, structures,
                   get_plant)
 

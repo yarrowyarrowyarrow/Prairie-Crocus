@@ -116,13 +116,16 @@ def layer_for_plant(plant_type: str, height_m: Optional[float] = None) -> str:
         return layer
     return "groundcover" if h < _GROUNDCOVER_MAX_M else layer
 
-# Structure ids that contribute to habitat value (Water + Habitat
-# categories from src/db/structures.py).
-HABITAT_STRUCTURE_IDS: frozenset[str] = frozenset({
-    "pond", "swale", "rain_garden", "rain_barrel",
-    "native_bee_log", "bee_hotel", "brush_pile", "snag",
-    "rock_xeriscape", "native_lawn_patch",
-})
+# Structure ids that contribute to habitat value: the kinds
+# ``src/yard_kinds.py`` marks as habitat (V3.71; the Water and Habitat
+# categories of src/db/structures.py). A drawn pond counts as a pond: the
+# callers hand this module ``yard_kinds.structure_defs``.
+def _habitat_structure_ids() -> frozenset:
+    from src import yard_kinds
+    return frozenset(yard_kinds.struct_ids(habitat=True))
+
+
+HABITAT_STRUCTURE_IDS: frozenset[str] = _habitat_structure_ids()
 
 # Growing-season months Apr(4)..Oct(10) used for bloom continuity.
 GROWING_SEASON_MONTHS: frozenset[int] = frozenset(range(4, 11))

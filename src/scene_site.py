@@ -49,20 +49,14 @@ GROUND_MEADOW = "meadow"
 #: One vocabulary with ``yard_overview.BED_SHAPES`` / ``NOT_PLANTED``,
 #: ``shape_tool.AREA_PRESETS`` and ``lawn_zones.ZONE_TYPES``: a test fails on a
 #: type any of them offers that is not here.
-SURFACE_KINDS = {
-    "Garden Bed": "bed",
-    "Mulch Area": "mulch",
-    "Lawn Area": "lawn",
-    "Lawn — to convert": "lawn",          # it is lawn today
-    "Pathway": "path",
-    "Patio / Deck": "patio",
-    "Water Feature": "water",
-    "Restoration — Year 1": "seeded",     # prepared ground, newly seeded
-    "Restoration — Year 3": "young_meadow",
-    "Established native": "meadow",
-    "Existing remnant": "meadow",
-    "Custom": "custom",
-}
+#: Read from ``src/yard_kinds.py`` since V3.71 (each kind's ``look``): a lawn to
+#: convert is lawn today, a year-1 restoration prepared ground newly seeded.
+def _surface_kinds() -> dict:
+    from src import yard_kinds
+    return yard_kinds.surface_looks()
+
+
+SURFACE_KINDS = _surface_kinds()
 
 #: What a type the table does not know is drawn as: the person's own colour.
 CUSTOM = "custom"

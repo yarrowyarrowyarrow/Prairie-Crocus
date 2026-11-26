@@ -429,6 +429,8 @@ def _reader_cases() -> list:
          yard(shape("Garden Bed", _rect(c, c, 3, 1.2), height_m=0.45))),
         ("Tool Shed (structure)", yard(structure("shed", c, c))),
         ("Rain Garden (structure)", yard(structure("rain_garden", c, c))),
+        ("Rock Xeriscape (structure)", yard(structure("rock_xeriscape", c, c))),
+        ("Fire Pit (structure)", yard(structure("fire_pit", c, c))),
         ("Mulch Area (drawn 4x4)",
          yard(shape("Mulch Area", _rect(c, c, 4, 4)))),
     ]
@@ -449,8 +451,8 @@ def readers_table() -> list:
 
     rows = []
     for name, p in _reader_cases():
-        defs = [f["properties"]["struct_def"] for f in p["features"]
-                if f["properties"].get("element_type") == "structure"]
+        from src.yard_kinds import structure_defs
+        defs = structure_defs(p)        # what the app hands the score (V3.71)
         hs = compute_habitat_score([], defs)
         keep = keepout_areas(p)
         sc = build_scene(p, year=0)

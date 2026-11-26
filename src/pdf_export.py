@@ -218,12 +218,9 @@ def export_pdf(
         printer.newPage()
         try:
             from src.planting_plan import build_planting_plan
-            structs = [
-                f["properties"]["struct_def"]
-                for f in project.get("features", [])
-                if f.get("properties", {}).get("element_type") == "structure"
-                and f.get("properties", {}).get("struct_def")
-            ]
+            # A drawn pond is bought as a pond (V3.71, yard_kinds).
+            from src.yard_kinds import structure_defs
+            structs = [sd for sd in structure_defs(project) if sd]
             plan_bed_area = bed_area_m2(project)
             plan = build_planting_plan(
                 placed_plants, structures=structs, bed_area_m2=plan_bed_area,
@@ -273,12 +270,8 @@ def export_pdf(
         # ── Page 6: Maintenance calendar (F42) ────────────────────────────
         try:
             from src.maintenance_calendar import build_maintenance_calendar
-            structs_for_cal = [
-                f["properties"]["struct_def"]
-                for f in project.get("features", [])
-                if f.get("properties", {}).get("element_type") == "structure"
-                and f.get("properties", {}).get("struct_def")
-            ]
+            from src.yard_kinds import structure_defs
+            structs_for_cal = [sd for sd in structure_defs(project) if sd]
             cal = build_maintenance_calendar(placed_plants, structs_for_cal)
         except Exception:
             cal = None

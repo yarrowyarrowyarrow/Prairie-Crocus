@@ -34,22 +34,19 @@ from __future__ import annotations
 
 import math
 
+from src import yard_kinds
+
 _M_PER_DEG = 111320.0
 
-# Design-placed structures that should exclude planting on top (the water-
-# management group; mirrors zoning.WET_STRUCTURE_IDS but kept local so exclusion
-# has no import cycle and can diverge if needed).
-# A brush pile too since V3.29: a back-yard plan seats one and plants around it.
-EXCLUDING_STRUCTURE_IDS = frozenset({"pond", "swale", "rain_garden", "rain_barrel",
-                                     "brush_pile"})
+# Design-placed structures that exclude planting on top: since V3.71 every one
+# whose kind Plan My Yard keeps out of (``src/yard_kinds.py``), at the footprint
+# the map draws for it. Until then only the water structures and a brush pile
+# were (V3.29), and a plan put plants inside a shed or a fire pit.
+EXCLUDING_STRUCTURE_IDS = frozenset(
+    yard_kinds.struct_ids(planting=yard_kinds.KEEP_OUT))
 
-
-def _struct_id_of(props: dict) -> str:
-    """A structure feature stores its id either directly (``struct_id``, the
-    interactive path) or inside ``struct_def`` (the generator path)."""
-    return (props.get("struct_id")
-            or (props.get("struct_def") or {}).get("id")
-            or "")
+#: A structure feature's id, wherever it was stored.
+_struct_id_of = yard_kinds.struct_id_of
 
 
 # Drawn custom_shape shape_types the generator plants AROUND, not on, and the
@@ -68,8 +65,9 @@ def _fill_zone_shape_types() -> set:
 
 
 def fill_regions(project_dict: dict) -> list:
-    """Rings ``[[lng, lat], …]`` of the drawn beds and conversion zones: the
-    areas the generator plants INTO. Empty when none is drawn."""
+    """Rings ``[[lng, lat], …]`` of the drawn beds and conversion zones, and
+    since V3.71 of a placed raised bed or rock garden at its map footprint:
+    the areas the generator plants INTO. Empty when there are none."""
     want = _fill_zone_shape_types()
     out: list = []
     for f in (project_dict or {}).get("features", []) or []:
@@ -79,6 +77,8 @@ def fill_regions(project_dict: dict) -> list:
             ring = (f.get("geometry", {}) or {}).get("coordinates") or []
             if ring and ring[0] and len(ring[0]) >= 3:
                 out.append(ring[0])
+        elif props.get("element_type") == "structure" and yard_kinds.is_fill(f):
+            out.append(yard_kinds.footprint_ring(f))
     return out
 
 
@@ -222,7 +222,11 @@ def _keepout_items(project_dict: dict):
             if sid in EXCLUDING_STRUCTURE_IDS:
                 size = props.get("size_m") or (
                     props.get("struct_def") or {}).get("size_m") or 4.0
-                yield ("circle", (lat, lng, max(0.5, float(size) / 2.0)))
+                circle = (lat, lng, max(0.5, float(size) / 2.0))
+                # The footprint the map draws (V3.71): a swale is its 10 x
+                # 1.5 m strip, not a circle 10 m across.
+                ring = yard_kinds.footprint_ring(f)
+                yield ("shape", ring, circle) if ring else ("circle", circle)
 
 
 def keepout_areas(project_dict: dict) -> KeepOut:

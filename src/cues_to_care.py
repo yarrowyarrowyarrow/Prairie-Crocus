@@ -58,14 +58,17 @@ REPEAT_MIN = 3
 GRADED_HIGH = 0.55
 GRADED_LOW = 0.45
 
-#: Shapes and structures that ARE a cue, by the vocabulary the drawer already
-#: uses (src/shape_tool.py presets + src/lawn_zones.py labels). Restated
-#: nowhere: the zone labels are imported so the drawer and this cannot drift.
-_LAWN_SHAPES = ("Lawn Area",)
-_BED_SHAPES = ("Garden Bed", "Mulch Area")
-_PATH_SHAPES = ("Pathway", "Patio / Deck")
-_LAWN_STRUCTURES = ("native_lawn_patch",)
-_BORDER_STRUCTURES = ("fence",)
+#: Shapes and structures that ARE a cue: each kind's ``cue`` in
+#: ``src/yard_kinds.py`` since V3.71, the one vocabulary the drawer, the
+#: structures and this read, so they cannot drift.
+from src import yard_kinds as _yk                       # noqa: E402
+_LAWN_SHAPES = _yk.shape_types(cue="lawn")
+_BED_SHAPES = _yk.shape_types(cue="bed")
+_PATH_SHAPES = _yk.shape_types(cue="path")
+_LAWN_STRUCTURES = _yk.struct_ids(cue="lawn")
+#: A fence, and since V3.71 a placed raised bed: a bed's edge like a drawn
+#: bed's.
+_BORDER_STRUCTURES = _yk.struct_ids(cue="border") + _yk.struct_ids(cue="bed")
 
 
 class Cue(NamedTuple):
@@ -103,7 +106,7 @@ def _structure_ids(project: dict) -> set:
         props = f.get("properties") or {}
         if props.get("element_type") != "structure":
             continue
-        sid = props.get("structure_id") or (props.get("struct_def") or {}).get("id")
+        sid = _yk.struct_id_of(props)
         if sid:
             out.add(sid)
     return out

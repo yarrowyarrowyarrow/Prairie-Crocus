@@ -15,12 +15,17 @@ Qt-free; ``planning_panel`` and ``app._sync_planning_panel`` are the callers.
 from __future__ import annotations
 
 #: Structure ids (``src/db/structures.py``) that hold or slow water, by the
-#: Water page's input they answer.
-WATER_STRUCTURES: dict = {
-    "rain_barrel": "rain_barrels",
-    "pond": "ponds",
-    "swale": "swales",
-}
+#: Water page's input they answer: the kinds ``src/yard_kinds.py`` gives one
+#: (V3.71). A drawn pond reaches the page as a pond through
+#: ``yard_kinds.structure_defs``.
+def _water_structures() -> dict:
+    from src import yard_kinds
+    return {sid: yard_kinds.kind_of({"properties": {
+        "element_type": "structure", "struct_id": sid}}).water
+        for sid in yard_kinds.struct_ids(water=True)}
+
+
+WATER_STRUCTURES: dict = _water_structures()
 
 
 def boundary_area_m2(project: dict) -> float:

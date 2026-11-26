@@ -88,14 +88,15 @@ def _has_pin(project: dict) -> bool:
 
 
 def _has_boundary(project: dict) -> bool:
-    """An outline, or a bed (V3.28, PY-10): either is somewhere to plant."""
-    from src.yard_overview import BED_SHAPES                 # noqa: PLC0415
+    """An outline, or a bed (V3.28, PY-10): either is somewhere to plant. A
+    placed raised bed is a bed since V3.71 (``src/yard_kinds.py``)."""
+    from src import yard_kinds                               # noqa: PLC0415
     for f in (project or {}).get("features") or []:
         props = f.get("properties") or {}
         if props.get("element_type") == "property_boundary":
             return True
-        if (props.get("element_type") == "custom_shape"
-                and props.get("shape_type") in BED_SHAPES):
+        if (props.get("element_type") in ("custom_shape", "structure")
+                and yard_kinds.is_fill(f)):
             return True
     return False
 

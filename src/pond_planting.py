@@ -139,20 +139,99 @@ class Pond:
         return math.hypot(x, y) <= self.size_m / 2.0
 
 
+class DrawnPond:
+    """A pond drawn on the map (V3.71): its water is its outline. The seats are
+    asked the way a placed :class:`Pond`'s are, as fractions of the way from
+    the middle to the water's edge, along the ray through them; on an ellipse
+    that is exactly where :class:`Pond` puts them."""
+
+    def __init__(self, ring: list):
+        pts = [(float(p[1]), float(p[0])) for p in ring or []]
+        if len(pts) > 1 and pts[0] == pts[-1]:
+            pts = pts[:-1]
+        if len(pts) < 3:
+            raise ValueError("a pond needs three corners")
+        lat0 = sum(p[0] for p in pts) / len(pts)
+        lng0 = sum(p[1] for p in pts) / len(pts)
+        rough = Projector(lat0, lng0)
+        xy = [rough.to_xy(la, ln) for la, ln in pts]
+        a = cx = cy = 0.0
+        for (x0, y0), (x1, y1) in zip(xy, xy[1:] + xy[:1]):
+            cross = x0 * y1 - x1 * y0
+            a += cross
+            cx += (x0 + x1) * cross
+            cy += (y0 + y1) * cross
+        if abs(a) < 1e-9:
+            raise ValueError("a pond with no area")
+        self.lat, self.lng = rough.to_latlng(cx / (3.0 * a), cy / (3.0 * a))
+        self._proj = Projector(self.lat, self.lng)
+        self._ring = [self._proj.to_xy(la, ln) for la, ln in pts]
+        self._area = abs(a) / 2.0
+        self.size_m = 2.0 * math.sqrt(self._area / math.pi)
+
+    @property
+    def water_m2(self) -> float:
+        return self._area
+
+    def _edge(self, dx: float, dy: float) -> float:
+        """How far the water's edge is from the middle along ``(dx, dy)``."""
+        best = 0.0
+        for (ax, ay), (bx, by) in zip(self._ring, self._ring[1:] + self._ring[:1]):
+            ex, ey = bx - ax, by - ay
+            den = dx * ey - dy * ex
+            if abs(den) < 1e-12:
+                continue
+            t = (ax * ey - ay * ex) / den           # along the ray
+            s = (ax * dy - ay * dx) / den           # along the side
+            if t > 0 and 0.0 <= s <= 1.0 and (best == 0.0 or t < best):
+                best = t
+        return best
+
+    def at(self, u: float, v: float) -> tuple[float, float]:
+        f = math.hypot(u, v)
+        if f == 0:
+            return self.lat, self.lng
+        dx, dy = u / f, v / f
+        d = f * self._edge(dx, dy)
+        return self._proj.to_latlng(d * dx, d * dy)
+
+    def xy(self, lat: float, lng: float) -> tuple[float, float]:
+        return self._proj.to_xy(lat, lng)
+
+    def holds(self, lat: float, lng: float) -> bool:
+        x, y = self._proj.to_xy(lat, lng)
+        inside = False
+        ring = self._ring
+        for i in range(len(ring)):
+            (ax, ay), (bx, by) = ring[i - 1], ring[i]
+            if (ay > y) != (by > y) and x < (bx - ax) * (y - ay) / (by - ay) + ax:
+                inside = not inside
+        return inside
+
+
 def ponds_in(features: Iterable[dict]) -> list:
-    """The ponds among a project's features, in their order."""
+    """The ponds among a project's features, in their order: placed ones, and
+    since V3.71 drawn ones (a Water Feature is a pond, ``src/yard_kinds``)."""
+    from src import yard_kinds
     out = []
     for f in features or []:
         props = f.get("properties", {}) or {}
-        if props.get("element_type") != "structure":
-            continue
-        sd = props.get("struct_def") or {}
-        if (props.get("struct_id") or sd.get("id")) != "pond":
+        kind = yard_kinds.kind_of(f)
+        if kind is None or kind.key != "pond":
             continue
         geom = f.get("geometry", {}) or {}
         coords = geom.get("coordinates") or []
+        if props.get("element_type") == "custom_shape":
+            try:
+                out.append(DrawnPond((coords or [None])[0]))
+            except (TypeError, ValueError, IndexError):
+                pass
+            continue
+        if props.get("element_type") != "structure":
+            continue
         if geom.get("type") != "Point" or len(coords) < 2:
             continue
+        sd = props.get("struct_def") or {}
         size = props.get("size_m") or sd.get("size_m") or 6.0
         try:
             out.append(Pond(coords[1], coords[0], float(size)))

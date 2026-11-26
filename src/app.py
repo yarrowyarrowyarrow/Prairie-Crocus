@@ -2011,12 +2011,9 @@ class MainWindow(QMainWindow):
 
         from src.planting_plan import build_planting_plan
 
-        structs = [
-            f["properties"]["struct_def"]
-            for f in self._project.get("features", [])
-            if f.get("properties", {}).get("element_type") == "structure"
-            and f.get("properties", {}).get("struct_def")
-        ]
+        # A drawn pond is bought as a pond (V3.71, src/yard_kinds.py).
+        from src.yard_kinds import structure_defs
+        structs = [sd for sd in structure_defs(self._project) if sd]
         bed_area = bed_area_m2(self._project)
         plan = build_planting_plan(
             self._placed_plants, structures=structs, bed_area_m2=bed_area,
@@ -2084,12 +2081,9 @@ class MainWindow(QMainWindow):
                     pass
                 enriched.append(entry)
 
-            # Gather structures from project
-            structs = [
-                f["properties"].get("struct_def", {})
-                for f in self._project.get("features", [])
-                if f.get("properties", {}).get("element_type") == "structure"
-            ]
+            # The structures, a drawn pond as a pond (V3.71, yard_kinds).
+            from src.yard_kinds import structure_defs
+            structs = structure_defs(self._project)
 
             notes = self.planning_panel.get_notes()
 
@@ -2154,12 +2148,10 @@ class MainWindow(QMainWindow):
             enriched.append(entry)
         self.planning_panel.set_placed_plants(enriched)
 
-        structs = []
-        for f in self._project.get("features", []):
-            props = f.get("properties", {})
-            if props.get("element_type") == "structure":
-                sd = props.get("struct_def", {})
-                structs.append(sd)
+        # The structures the score, the Water page, the hours and the Learn
+        # pages read: a drawn pond is a pond (V3.71, src/yard_kinds.py).
+        from src.yard_kinds import structure_defs
+        structs = structure_defs(self._project)
         self.planning_panel.set_structures(structs)
         from src.design_inputs import boundary_area_m2
         self.planning_panel.set_site_area(boundary_area_m2(self._project))

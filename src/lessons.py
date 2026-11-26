@@ -400,10 +400,9 @@ def from_project(project: dict, *, name: str = "",
     from src.project_store import ProjectStore
     project = project or {}
     feats = project.get("features") or []
-    structures = [(f.get("properties") or {}).get("struct_def") or {}
-                  for f in feats
-                  if (f.get("properties") or {}).get("element_type")
-                  == "structure"]
+    # A drawn pond is a pond to the lessons too (V3.71, yard_kinds).
+    from src.yard_kinds import structure_defs
+    structures = structure_defs(feats)
     props = project.get("properties") or {}
     return landscape(ProjectStore(project).placed_plants,
                      structures=structures,
