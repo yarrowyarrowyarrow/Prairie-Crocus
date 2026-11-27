@@ -105,7 +105,9 @@ class TestPortMatchesTheJs(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         src = _JS.read_text(encoding="utf-8")
-        start = src.index("function terrainHeightAt(")
+        # The bilinear sample is groundHeightAt since V3.73; terrainHeightAt
+        # adds a raised bed's soil to it (02d-kinds.js, siteRiseAt).
+        start = src.index("function groundHeightAt(")
         cls.fn = src[start:src.index("\n}", start)]
 
     def test_both_fractions_are_clamped(self):
@@ -128,10 +130,11 @@ class TestPortMatchesTheJs(unittest.TestCase):
         callers = [p.name for p in sorted(base.glob("*.js"))
                    if "terrainHeightAt(" in p.read_text(encoding="utf-8")]
         self.assertGreaterEqual(len(callers), 5, callers)
-        defs = [p.name for p in sorted(base.glob("*.js"))
-                if "function terrainHeightAt(" in p.read_text(encoding="utf-8")]
-        self.assertEqual(defs, ["02-plants.js"],
-                         f"terrain height is defined in more than one place: {defs}")
+        for fn in ("terrainHeightAt", "groundHeightAt"):
+            defs = [p.name for p in sorted(base.glob("*.js"))
+                    if f"function {fn}(" in p.read_text(encoding="utf-8")]
+            self.assertEqual(defs, ["02-plants.js"],
+                             f"{fn} is defined in more than one place: {defs}")
 
 
 if __name__ == "__main__":
