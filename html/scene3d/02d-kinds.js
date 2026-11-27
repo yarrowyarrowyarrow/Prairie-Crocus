@@ -168,6 +168,7 @@ function buildKindExtras(group, sc) {
       _surfaceMesh(group, s.floor, 'rain_floor', siteMat('rain_floor', m), t, 'floor');
     for (const [x, y, r] of s.rocks || []) rocks.push(_rock(x, y, r, t));
   }
+  _mulchRings(group, sc.mulch_rings, t, m);       // V3.76
   for (const ln of sc.lines || [])
     if (ln.kind === 'strip' && ln.floor_m)
       for (const ring of _ribbonRings(ln.points || [], ln.floor_m))
@@ -234,4 +235,69 @@ const HEDGE_LOOK = {
 function hedgeColour(key, month) {
   const look = HEDGE_LOOK[key] || HEDGE_LOOK.other;
   return (!look.evergreen && seasonLeavesDown(month)) ? 0x6f6a55 : look.green;
+}
+
+// ── a door, a downspout, a spigot on a building's wall (V3.76) ──────────────
+// Python stands each one out from the wall by half its doorstep, splash block
+// or reach (src/wall_objects.py) and says which way is out (facing_deg); this
+// stands it against the wall. No models: a plain panel, a pipe, a tap.
+const _WALL_OBJ = { door: 0x6b5443, downspout: 0xa9b0b4, spigot: 0x8f969b };
+function buildWallObject(group, s, month) {
+  const colour = _WALL_OBJ[s.struct_id];
+  if (colour === undefined) return false;
+  const f = ((s.facing_deg != null ? s.facing_deg : 0) * Math.PI) / 180;
+  const ox = Math.sin(f), oy = Math.cos(f);              // out of the building
+  const back = (s.width_m || 0.3) / 2;                   // to the wall face
+  const wx = s.x - ox * back, wy = s.y - oy * back;
+  const g0 = groundHeightAt(wx, wy, lastTerrain);
+  const parts = [], mat = new THREE.MeshStandardMaterial({ color: colour, roughness: 0.8 });
+  const box = (w, h, d, up, out) => {
+    const b = new THREE.BoxGeometry(w, h, d);
+    b.translate(0, up + h / 2, out);
+    parts.push(b);
+  };
+  if (s.struct_id === 'door') {
+    box(s.size_m || 0.9, 2.05, 0.06, 0, 0.04);                       // the door
+    box((s.size_m || 0.9) + 0.2, 0.15, 0.06, 2.05, 0.04);            // its head
+    box((s.size_m || 0.9) + 0.3, 0.18, 0.9, 0, 0.45);                // the step
+  } else if (s.struct_id === 'downspout') {
+    const top = Math.max(2.4, (s.wall_h_m || 3) * 0.75);             // to the eave
+    box(0.08, top, 0.08, 0.15, 0.08);                                // the pipe
+    box(0.08, 0.08, 0.35, 0.12, 0.25);                               // the elbow
+    box(0.3, 0.05, 0.6, 0, 0.35);                                    // splash block
+  } else {
+    box(0.06, 0.06, 0.12, 0.5, 0.06);                                // the tap
+    box(0.04, 0.12, 0.04, 0.44, 0.1);                                // its spout
+  }
+  const geo = mergeGeometries(parts, false);
+  geo.rotateY(Math.atan2(ox, -oy));                     // local +z, out
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(wx, g0, -wy);
+  mesh.castShadow = mesh.receiveShadow = true;
+  mesh.name = 'wall:' + s.struct_id;
+  mesh.userData.structId = s.struct_id;
+  group.add(mesh);
+  return true;
+}
+
+// ── a ring of mulch under a plant (V3.76, src/mulch_rings.py) ───────────────
+// One draped disc a ring, all in one mesh in the mulch's own look, a little
+// over the lawn and under a bed.
+function _mulchRings(group, rings, terrain, month) {
+  if (!rings || !rings.length) return;
+  const look = SURFACE_LOOK.mulch, geos = [];
+  for (const [x, y, r] of rings) {
+    const ring = [];
+    for (let i = 0; i < 16; i++) {
+      const a = 2 * Math.PI * i / 16;
+      ring.push([x + r * Math.cos(a), y + r * Math.sin(a)]);
+    }
+    geos.push(drapedShape(ring, terrain, _SITE_LIFT_M * (look.rank + 1), look.tile));
+  }
+  const mesh = new THREE.Mesh(geos.length === 1 ? geos[0] : mergeGeometries(geos, false),
+                              siteMat('mulch', month));
+  mesh.name = 'mulch-rings';
+  mesh.userData.count = rings.length;
+  mesh.receiveShadow = true;
+  group.add(mesh);
 }

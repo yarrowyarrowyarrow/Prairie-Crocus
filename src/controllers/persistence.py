@@ -703,6 +703,9 @@ class PersistenceController:
         # undo of an import that added/removed it stays in sync.
         from src import site_photo_flow
         site_photo_flow.restore_site_photo(m)
+        # The mulch rings (V3.76), which clearAll wiped too.
+        from src import mulch_rings_flow
+        mulch_rings_flow.send(m)
 
     # ── per-action handlers ──────────────────────────────────────────────────
 
@@ -731,7 +734,8 @@ class PersistenceController:
             group_id)
         m._store.add_plant(pid, name, lat, lng,
                            placement_group_id=group_id,
-                           feature_id=entry.get("feature_id", ""))
+                           feature_id=entry.get("feature_id", ""),
+                           mulch_ring=bool(entry.get("mulch_ring")))
         m.plant_panel.on_plant_placed(pid, name)
         m.statusBar().showMessage("Redo: placed plant", 2000)
 

@@ -148,6 +148,7 @@ class MapBridge(QObject):
 
     # Hedgerow signals
     hedgerow_complete = pyqtSignal(str, str, str, str, float, int)  # id, pointsJson, species, style, lengthM, numPlants
+    mulch_ring_toggled = pyqtSignal(int, float, float, str, bool)  # V3.76
     hedgerow_removed = pyqtSignal(str, str)                         # id, pointsJson
 
     # Shape signals
@@ -411,6 +412,12 @@ class MapBridge(QObject):
     @pyqtSlot(str, str)
     def onHedgerowRemoved(self, hedge_id: str, points_json: str):
         self.hedgerow_removed.emit(hedge_id, points_json)
+
+    @pyqtSlot(int, float, float, str, bool)
+    def onMulchRingToggled(self, plant_id: int, lat: float, lng: float,
+                           group_id: str, on: bool):
+        """A plant's right-click menu gave or took away a ring (V3.76)."""
+        self.mulch_ring_toggled.emit(plant_id, lat, lng, group_id, on)
 
     # ── Shape slots ───────────────────────────────────────────────────────────
 
@@ -880,6 +887,10 @@ class MapWidget(QWebEngineView):
     def load_hedgerow(self, hedge_def: dict):
         """Load a hedgerow from a saved project."""
         self.run_js(map_js.load_hedgerow(hedge_def))
+
+    def set_mulch_rings(self, rings: list):
+        """Draw the mulch rings (V3.76, ``src/mulch_rings.py``)."""
+        self.run_js(map_js.set_mulch_rings(rings))
 
     # ── Shape helpers ─────────────────────────────────────────────────────────
 

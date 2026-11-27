@@ -241,6 +241,16 @@ class PlacementBar(QFrame):
             self._top.insertWidget(self._top.indexOf(self._done), holder)
             self._accessories[source] = holder
 
+    def add_shared(self, widget: QWidget) -> None:
+        """A control shown under every source's page (V3.76: the mulch
+        ring box, for plants and communities alike)."""
+        row = QWidget()
+        line = QHBoxLayout(row)
+        line.setContentsMargins(18, 0, 0, 0)
+        line.addWidget(widget)
+        line.addStretch(1)
+        self.layout().addWidget(row)
+
     def status_text(self) -> str:
         """The first line as plain text (what a screen reader is given)."""
         return self._status.accessibleName()

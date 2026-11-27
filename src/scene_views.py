@@ -353,9 +353,52 @@ def _to_segment(px: float, py: float, a: tuple, b: tuple) -> tuple:
     return math.hypot(px - qx, py - qy), along
 
 
+#: How far from the house's outline a door still counts as on it (V3.76):
+#: the doorstep's own depth and a little.
+DOOR_ON_HOUSE_M = 1.5
+
+
+def _door_view(house: list, doors: Optional[list], subject: list):
+    """From the house at a door: a step out of the door on the house that the
+    planting is nearest, looking at the planting in front of it."""
+    n = len(house)
+    on_house = []
+    for d in doors or []:
+        if d.get("facing_deg") is None:
+            continue
+        x, y = float(d["x"]), float(d["y"])
+        near = min(_to_segment(x, y, house[i], house[(i + 1) % n])[0]
+                   for i in range(n))
+        if near <= DOOR_ON_HOUSE_M:
+            on_house.append(d)
+    if not on_house:
+        return None
+    cx = sum(p[0] for p in subject) / len(subject)
+    cy = sum(p[1] for p in subject) / len(subject)
+    door = min(on_house, key=lambda d: (math.hypot(float(d["x"]) - cx,
+                                                   float(d["y"]) - cy)))
+    f = math.radians(float(door["facing_deg"]))
+    ox, oy = math.sin(f), math.cos(f)
+    back = float(door.get("width_m") or 1.2) / 2.0      # to the door
+    eye = (float(door["x"]) + ox * (HOUSE_STEP_M - back),
+           float(door["y"]) + oy * (HOUSE_STEP_M - back))
+    ahead = [p for p in subject
+             if (p[0] - eye[0]) * ox + (p[1] - eye[1]) * oy > 0]
+    if ahead:
+        lx = sum(p[0] for p in ahead) / len(ahead)
+        ly = sum(p[1] for p in ahead) / len(ahead)
+    else:
+        lx, ly = eye[0] + ox * HOUSE_LOOK_MIN_M, eye[1] + oy * HOUSE_LOOK_MIN_M
+    if math.hypot(lx - eye[0], ly - eye[1]) < HOUSE_LOOK_MIN_M:
+        lx, ly = eye[0] + ox * HOUSE_LOOK_MIN_M, eye[1] + oy * HOUSE_LOOK_MIN_M
+    return {"eye": [round(eye[0], 2), round(eye[1], 2)],
+            "look": [round(lx, 2), round(ly, 2)], "at_door": True}
+
+
 def house_view(boundary: Optional[list], plants: list,
                buildings: list, pin: Optional[tuple] = None,
-               extent: Optional[list] = None) -> Optional[dict]:
+               extent: Optional[list] = None,
+               doors: Optional[list] = None) -> Optional[dict]:
     """Where the person stands at their own house and what they look at:
     ``{eye: [x, y], look: [x, y]}`` in scene metres, or ``None`` when there
     is no house (:func:`house_ring`; ``pin`` is the yard's pin, for a yard
@@ -370,6 +413,10 @@ def house_view(boundary: Optional[list], plants: list,
 
     **The same answer in every year**, for the reason :func:`street_view`
     gives: it is worked out from the design as planted.
+
+    **A door drawn on the house wins (V3.76)**: ``doors`` are the scene's
+    door entries (``x``, ``y`` at the doorstep, ``facing_deg``), and the
+    person stands a step out of the one the planting is nearest to.
     """
     house = house_ring(boundary, buildings, pin)
     if house is None:
@@ -382,6 +429,9 @@ def house_view(boundary: Optional[list], plants: list,
                          for p in (boundary or extent or [])]
     if not subject:
         return None
+    at_door = _door_view(house, doors, subject)
+    if at_door is not None:
+        return at_door
 
     n = len(house)
     groups: dict = {}

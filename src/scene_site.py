@@ -403,9 +403,12 @@ def site_fields(project: dict, proj, boundary_xy: Optional[list],
     """The scene's ``ground``, ``surfaces``, ``lines`` and ``street``, and a
     ``roof`` on each of ``buildings`` (in place)."""
     add_roofs(buildings)
+    from src import mulch_rings
     return {
         "ground": ground_kind(project),
         "surfaces": surfaces(project, proj, boundary_xy),
         "lines": lines(project, proj),
         "street": street(project, proj, boundary_xy),
+        # A ring of mulch under a plant that asked for one (V3.76).
+        "mulch_rings": mulch_rings.scene_rings(project, proj),
     }

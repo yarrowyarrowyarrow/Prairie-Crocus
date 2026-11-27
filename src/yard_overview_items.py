@@ -358,15 +358,16 @@ def _dollars(lo: float, hi: float) -> str:
 def item_cost(d: Design) -> Item:
     from src import sourcing, water_budget, region
     from src.maintenance_calendar import build_maintenance_calendar
+    from src.mulch_rings import mulch_area_m2
     from src.site_prep import MULCH_DEPTH_CM
-    from src.yard_overview import bed_area_m2
     pack = region.for_site(d.site) or region.default()
     note = ((pack.overview or {}).get("price_note") or "").strip()
     lo, hi = sourcing.estimate_cost(d.placed, get_plant=d.get_plant)
     n = len(d.placed)
     line = (f"Plants: about {_dollars(lo, hi)} for "
             f"{_kinds(n, 'plant', 'plants')}" + (f" {note}." if note else "."))
-    area = bed_area_m2(d.project)
+    # The beds and any mulch rings outside them (V3.76).
+    area = mulch_area_m2(d.project, get_plant=d.get_plant)
     if area > 0:
         m_lo, m_hi = sourcing.mulch_cost(area)
         v_lo = area * MULCH_DEPTH_CM[0] / 100.0

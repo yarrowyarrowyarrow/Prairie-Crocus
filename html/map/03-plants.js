@@ -124,6 +124,7 @@
         });
       }
       if (typeof turnMenuItems === 'function') items = items.concat(turnMenuItems(pd));
+      if (typeof mulchMenuItems === 'function') items = items.concat(mulchMenuItems(pd));
       // "The nursery is out" (F91, V2.58) — above Remove, being the
       // alternative TO removing. File is AT its ceiling: extract
       // showPlantContextMenu before adding anything else here.

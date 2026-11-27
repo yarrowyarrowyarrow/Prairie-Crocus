@@ -49,6 +49,8 @@ SIMPLE_MODULES = (
     "first_step_bar.py", "onboarding.py", "start_screen.py", "start_rows.py",
     # V3.72: the Yard tab, and the table its words come from.
     "yard_palette.py", "yard_kinds.py", "share_panel.py", "community_page.py",
+    # V3.76: the mulch rings' placing box, and the Water page's tap line.
+    "mulch_rings_flow.py", "water_budget.py",
     "species_page.py", "plant_filters.py", "filter_area.py",
     "placement_bar.py", "landing_check.py", "plain_messages.py",
     "month_tasks.py", "advanced_tools_flow.py", "start_flow.py",

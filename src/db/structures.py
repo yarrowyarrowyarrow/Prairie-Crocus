@@ -81,6 +81,40 @@ STRUCTURES: list[dict] = [
         "description": "Rainwater collection barrel (200-300L). Place under downspouts; use to water new plantings during establishment.",
         "maintenance_hours_year": 2,
     },
+    # On a building's wall (V3.76): placed onto the nearest wall within
+    # src/wall_objects.WALL_SNAP_M, the long side along it. Their width is
+    # what stands out from the wall: a door's doorstep, a downspout's splash
+    # block, a spigot's reach.
+    {
+        "id": "downspout",
+        "name": "Downspout",
+        "category": "Water",
+        "icon": "\U0001F4A7",      # 💧
+        "shape": "rectangle",
+        "size_m": 0.3,
+        "width_m": 0.6,
+        "on_wall": True,
+        "color": "#546e7a",
+        "fill_color": "#90a4ae",
+        "fill_opacity": 0.6,
+        "description": "Where the roof's water comes down a wall, onto a splash block. A rain barrel or a rain garden can take it.",
+        "maintenance_hours_year": 0,
+    },
+    {
+        "id": "spigot",
+        "name": "Spigot",
+        "category": "Water",
+        "icon": "\U0001F6B0",      # 🚰
+        "shape": "rectangle",
+        "size_m": 0.3,
+        "width_m": 0.3,
+        "on_wall": True,
+        "color": "#1565c0",
+        "fill_color": "#42a5f5",
+        "fill_opacity": 0.7,
+        "description": "An outdoor tap for city water. Design › Water says how far a hose from it reaches.",
+        "maintenance_hours_year": 0,
+    },
 
     # ── Habitat (native wildlife shelter & nesting structures) ────────
     {
@@ -212,6 +246,21 @@ STRUCTURES: list[dict] = [
 
     # ── Infrastructure ────────────────────────────────────────────────
     {
+        "id": "door",
+        "name": "Door",
+        "category": "Infrastructure",
+        "icon": "\U0001F6AA",      # 🚪
+        "shape": "rectangle",
+        "size_m": 0.9,
+        "width_m": 1.2,
+        "on_wall": True,
+        "color": "#6d4c41",
+        "fill_color": "#bcaaa4",
+        "fill_opacity": 0.5,
+        "description": "A door out to the yard. Its doorstep is kept clear, and the 3D's From the house stands here.",
+        "maintenance_hours_year": 0,
+    },
+    {
         "id": "fence",
         "name": "Fence / Wall",
         "category": "Infrastructure",
@@ -289,6 +338,9 @@ _SIZE_RANGE_M: dict[str, tuple[float, float]] = {
     "shed":             (1.5, 6.0),
     "fence":            (1.0, 50.0),
     "fire_pit":         (1.0, 4.0),
+    "door":             (0.7, 2.5),
+    "downspout":        (0.2, 0.6),
+    "spigot":           (0.1, 0.5),
 }
 
 

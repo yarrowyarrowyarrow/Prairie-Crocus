@@ -746,6 +746,12 @@ class MainWindow(QMainWindow):
         # map included, which Python could not see before. See the module.
         from src import placement_bar_flow
         placement_bar_flow.install(self)
+        # Mulch rings (V3.76): the placing box on that bar, and a plant's
+        # right-click menu.
+        from src import mulch_rings_flow
+        mulch_rings_flow.install(self)
+        self.map_widget.mulch_ring_toggled.connect(
+            lambda *a: mulch_rings_flow.toggle(self, *a))
         # A plant's page beside the side panel (F192, V3.00): opened by
         # choosing a plant in Browse, closed by placing. See the module.
         from src import species_flyout
@@ -2015,7 +2021,9 @@ class MainWindow(QMainWindow):
         # A drawn pond is bought as a pond (V3.71, src/yard_kinds.py).
         from src.yard_kinds import structure_defs
         structs = [sd for sd in structure_defs(self._project) if sd]
-        bed_area = bed_area_m2(self._project)
+        # The beds and any mulch rings outside them (V3.76).
+        from src.mulch_rings import mulch_area_m2
+        bed_area = mulch_area_m2(self._project)
         plan = build_planting_plan(
             self._placed_plants, structures=structs, bed_area_m2=bed_area,
             site_config=self._project.get("properties", {}).get("site_config"))
@@ -2157,6 +2165,8 @@ class MainWindow(QMainWindow):
         from src.design_inputs import boundary_area_m2
         self.planning_panel.set_site_area(boundary_area_m2(self._project))
         self.plant_panel.set_site_area(boundary_area_m2(self._project))
+        from src.water_budget import tap_reach        # city water (V3.76)
+        self.planning_panel.set_tap_reach(tap_reach(self._project))
         self.planning_panel.set_site_config(
             self._project.get("properties", {}).get("site_config") or {})
 

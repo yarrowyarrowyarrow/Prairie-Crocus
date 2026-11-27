@@ -265,17 +265,15 @@ class MapEventRouter:
         else:
             struct_def = {"id": struct_id, "name": name, "size_m": size_m}
 
+        props = {"element_type": "structure", "struct_id": struct_id,
+                 "name": name, "size_m": size_m, "struct_def": struct_def}
+        # A door, a downspout or a spigot goes onto the nearest wall (V3.76).
+        from src.tree_edit_flow import onto_wall
+        lat, lng = onto_wall(self._main, props, lat, lng)
         self._main._project["features"].append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [lng, lat]},
-            "properties": {
-                "element_type": "structure",
-                "struct_id": struct_id,
-                "name": name,
-                "size_m": size_m,
-                "struct_def": struct_def,
-            }
-        })
+            "properties": props})
         self._main._push_undo({
             "action": "place_structure",
             "struct_id": struct_id,
@@ -815,14 +813,15 @@ class MapEventRouter:
         # Single-click placement: each plant gets its own singleton group.
         import src.project as project_io
         group_id = project_io.new_placement_group_id()
+        record = store_for(self._main).add_plant(
+            plant_id, common_name, lat, lng, placement_group_id=group_id)
         self._main._push_undo({
             "action": "place_plant",
             "plant_id": plant_id, "common_name": common_name,
             "lat": lat, "lng": lng,
             "placement_group_id": group_id,
+            "mulch_ring": bool(record.get("mulch_ring")),    # V3.76
         })
-        store_for(self._main).add_plant(
-            plant_id, common_name, lat, lng, placement_group_id=group_id)
         # Tell JS the marker's group id so right-click → "Delete group" works.
         self._main.map_widget.set_plant_group_for_latest(plant_id, lat, lng, group_id)
         self._main.plant_panel.on_plant_placed(plant_id, common_name)

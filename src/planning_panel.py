@@ -444,13 +444,25 @@ class PlanningPanel(QWidget):
                 f"{litres:,.0f} L</td></tr>" for label, litres in supply)
             + "</table>")
 
+        # City water (V3.76): how far a hose from a spigot reaches, and how
+        # long the first summer's watering is at the tap.
+        import html as _html
+        taps = wb.tap_words(getattr(self, "_tap_reach", None),
+                            self._placed_plants)
         self._water_answer.setText(
             "<div style='font-size:12px;'>"
             + self._callout("good", wb.weekly_rule(self._placed_plants))
+            + (self._callout("good", _html.escape(taps)) if taps else "")
             + "</div>")
         self._water_results.setText(
             "<div style='font-size:12px;'>" + demand_html + supply_html
             + "</div>")
+
+    def set_tap_reach(self, reach: dict) -> None:
+        """Each plant's distance to the nearest spigot (V3.76,
+        ``water_budget.tap_reach``), for the page's city-water line."""
+        self._tap_reach = dict(reach or {})
+        self._poke()
 
     def set_site_config(self, site_config: dict) -> None:
         """The site's fetched data, for the Water page's rainfall (V3.20)."""

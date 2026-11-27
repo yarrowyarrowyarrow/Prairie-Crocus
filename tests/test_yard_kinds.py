@@ -133,9 +133,12 @@ class TheReadersAskTheTable(unittest.TestCase):
             "pond", "swale", "rain_garden", "rain_barrel", "native_bee_log",
             "bee_hotel", "brush_pile", "snag", "rock_xeriscape",
             "native_lawn_patch"}))
+        # The downspout and the spigot answer the Water page too (V3.76).
         self.assertEqual(WATER_STRUCTURES, {"rain_barrel": "rain_barrels",
                                             "pond": "ponds",
-                                            "swale": "swales"})
+                                            "swale": "swales",
+                                            "downspout": "downspouts",
+                                            "spigot": "spigots"})
         self.assertEqual(WET_STRUCTURE_IDS, frozenset(
             {"pond", "swale", "rain_garden", "rain_barrel"}))
 

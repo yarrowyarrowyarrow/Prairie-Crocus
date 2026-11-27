@@ -279,6 +279,34 @@ async function run() {
                  r_min: radii.length ? +Math.min(...radii).toFixed(2) : 0,
                  r_max: radii.length ? +Math.max(...radii).toFixed(2) : 0 };
 
+  // Mulch rings (V3.76): Python's list drawn under the plants, the one in a
+  // bed left out; a plant's right-click menu gives or takes away its ring.
+  if (w.hideContextMenu) w.hideContextMenu();
+  const ML = LAT + D * 20;
+  w.setMulchRings([{ lat: ML, lng: LNG, r: 0.6, shown: true, plant_id: 5 },
+                   { lat: ML, lng: LNG + D * 4, r: 0.6, shown: false, plant_id: 5 }]);
+  const pane = w.map.getPane('mulchPane');
+  const ringed = w.placePlantMarker(5, 'Ringed', ML, LNG, 1.0, 'shrub', null, null, null);
+  const bare = w.placePlantMarker(5, 'Bare', ML + D * 3, LNG, 1.0, 'shrub', null, null, null);
+  function plantMenu(id) {
+    if (w.hideContextMenu) w.hideContextMenu();
+    const c = w.plantMarkers[id];
+    const p = px(c._pd.lat, c._pd.lng);
+    c.fire('contextmenu', { originalEvent: { clientX: p.x, clientY: p.y } });
+    const m = w.document.getElementById('_pd_ctx_menu');
+    return m ? Array.from(m.querySelectorAll('div')) : [];
+  }
+  calls = [];
+  const ringedItems = plantMenu(ringed);
+  const takeAway = ringedItems.find(d => d.textContent.indexOf('mulch ring away') >= 0);
+  if (takeAway) takeAway.click();
+  out.mulch = { drawn: pane ? pane.querySelectorAll('path').length : -1,
+                pane_z: pane ? +pane.style.zIndex : null,
+                ringed_menu: labelsOf(ringedItems),
+                bare_menu: labelsOf(plantMenu(bare)),
+                sent: calledWith('onMulchRingToggled').map(c => [c[1], c[4], c[5]]) };
+  if (w.hideContextMenu) w.hideContextMenu();
+
   document.title = 'MEASURED ' + JSON.stringify(out);
 }
 run().catch(e => { document.title = 'MEASURED ' + JSON.stringify({ error: String(e) + ' ' + (e.stack || '') }); });

@@ -59,8 +59,10 @@ class TestWhatTheDesignKnows(unittest.TestCase):
     def test_water_structures_are_counted(self):
         placed = [{"id": "pond"}, {"id": "rain_barrel"}, {"id": "rain_barrel"},
                   {"id": "bee_hotel"}, {"id": "swale"}, {}]
+        # The downspout and the spigot are counted too since V3.76.
         self.assertEqual(water_features(placed),
-                         {"rain_barrels": 2, "ponds": 1, "swales": 1})
+                         {"rain_barrels": 2, "ponds": 1, "swales": 1,
+                          "downspouts": 0, "spigots": 0})
 
 
 def _catalogue_plants(n=4):

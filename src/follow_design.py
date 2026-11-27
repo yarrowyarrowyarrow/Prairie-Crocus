@@ -43,6 +43,10 @@ def request_sync(main) -> None:
     bar = getattr(main, "plan_bar", None)
     if bar is not None:
         bar.follow(getattr(main, "_project", None))
+    # The map's mulch rings follow the plants (V3.76).
+    if getattr(main, "map_widget", None) is not None:
+        from src import mulch_rings_flow
+        mulch_rings_flow.request(main)
     # Design › Overview, while it is on screen (V3.27, OV-2).
     live = getattr(main, "_overview_live", None)
     if live is not None:

@@ -136,6 +136,20 @@ class TheYardOnTheMap(unittest.TestCase):
         self.assertAlmostEqual(c["r_max"], 1.5, delta=0.02)
 
 
+    # ── Mulch rings (V3.76) ──────────────────────────────────────────────────
+
+    def test_mulch_rings_under_the_plants_and_none_in_a_bed(self):
+        m = self.m["mulch"]
+        self.assertEqual(m["drawn"], 1)                 # the bed's is left out
+        self.assertLess(m["pane_z"], 400)               # under the plants
+
+    def test_a_plants_menu_gives_or_takes_away_its_ring(self):
+        m = self.m["mulch"]
+        self.assertIn("Take its mulch ring away", m["ringed_menu"])
+        self.assertIn("Add a mulch ring", m["bare_menu"])
+        self.assertEqual(m["sent"], [[5, "", False]])
+
+
 class TheTurnIsStored(unittest.TestCase):
     """The Python side of a turn and a move (no browser)."""
 

@@ -135,6 +135,16 @@ function site(w) {
     else if (o.name === 'rocks')
       out.extras.rocks = Object.assign(box(w, o), { count: o.userData.count,
                                                     colour: seen(w, o.material) });
+    // Mulch rings, and a door, a downspout and a spigot on a wall (V3.76).
+    else if (o.name === 'mulch-rings')
+      out.extras.mulch = Object.assign(box(w, o), { count: o.userData.count,
+                                                    look: o.material.userData.look || '' });
+    else if (/^wall:/.test(o.name)) {
+      const b = new w.THREE.Box3().setFromObject(o), c = new w.THREE.Vector3();
+      b.getCenter(c);
+      out.extras[o.name] = Object.assign(box(w, o),
+        { x: +c.x.toFixed(2), y: +(-c.z).toFixed(2) });
+    }
     else if (o.name === 'roofs') out.roofs = Object.assign(box(w, o), { colour: seen(w, o.material) });
     else if (o.name === 'buildings') out.walls = Object.assign(box(w, o), { colour: seen(w, o.material) });
   }

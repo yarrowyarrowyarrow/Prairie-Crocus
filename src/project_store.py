@@ -65,6 +65,10 @@ _OPTIONAL_FIELDS = (
     # again replaces that plan instead of stacking a second one on it. A
     # hand-placed plant has none, and keeps its place through every replace.
     "plan_run",
+    # V3.76: a ring of mulch under it (src/mulch_rings.py), set by Plan My
+    # Yard's box, the placing box or the plant's right-click menu. Written
+    # only when on.
+    "mulch_ring",
 )
 
 
@@ -230,6 +234,10 @@ class ProjectStore:
         if placed_plants is None:
             placed_plants = self.records_from_features()
         self._placed = placed_plants
+        # Whether a plant placed by hand gets a mulch ring (V3.76): the
+        # placing box's state, which the window sets. A caller that knows
+        # (a plan, a swap, a rebuilt walk) says so to add_plant instead.
+        self.mulch_new_plants = False
 
     # ── access ────────────────────────────────────────────────────────────
 
@@ -292,7 +300,8 @@ class ProjectStore:
                   feature_id: str = "",
                   planted_year=None,
                   why_here=None,
-                  plan_run: str = "") -> dict:
+                  plan_run: str = "",
+                  mulch_ring=None) -> dict:
         """Append one placed plant to both structures. Returns the index
         record (callers feed it to the map widget / panels).
 
@@ -328,6 +337,8 @@ class ProjectStore:
             record["why_here"] = list(why_here)
         if plan_run:
             record["plan_run"] = plan_run
+        if self.mulch_new_plants if mulch_ring is None else mulch_ring:
+            record["mulch_ring"] = True
         self._placed.append(record)
         self.features.append(
             plant_feature(record, pattern_kind=pattern_kind,
@@ -414,6 +425,44 @@ class ProjectStore:
             if why_here:
                 target["why_here"] = list(why_here)
         return True
+
+    def set_mulch_rings(self, keys: Iterable[tuple], on: bool) -> int:
+        """Give the plants at ``keys`` (``(plant_id, lat, lng)``) a mulch ring,
+        or take theirs away (V3.76). Returns how many changed."""
+        keys = list(keys)
+        changed = 0
+        for p, f in self._pairs():
+            if not any(_same_spot(p["plant_id"], p["lat"], p["lng"], *k)
+                       for k in keys):
+                continue
+            if bool(p.get("mulch_ring")) == bool(on):
+                continue
+            for target in (p, f["properties"]):
+                if on:
+                    target["mulch_ring"] = True
+                else:
+                    target.pop("mulch_ring", None)
+            changed += 1
+        return changed
+
+    def _pairs(self):
+        """Each placed-plant record with its feature, matched by feature id
+        or, for a legacy plant with none, by spot."""
+        feats = [f for f in self.features
+                 if (f.get("properties") or {}).get("element_type") == "plant"
+                 and (f.get("geometry") or {}).get("type") == "Point"]
+        by_id = {f["properties"].get("feature_id"): f for f in feats
+                 if f["properties"].get("feature_id")}
+        for p in self._placed:
+            f = by_id.get(p.get("feature_id"))
+            if f is None:
+                f = next((g for g in feats if _same_spot(
+                    p["plant_id"], p["lat"], p["lng"],
+                    g["properties"].get("plant_id"),
+                    g["geometry"]["coordinates"][1],
+                    g["geometry"]["coordinates"][0])), None)
+            if f is not None:
+                yield p, f
 
     def remove_plants_batch(self, keys: Iterable[tuple]) -> list[dict]:
         """Remove many plants in one pass. ``keys`` is an iterable of

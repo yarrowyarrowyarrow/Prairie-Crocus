@@ -186,10 +186,38 @@ def _yard() -> dict:
     for i in range(30):                   # a short-lived kind, in the back
         feats.append(_plant(10, "Short-lived forb", -6.0 + (i % 6) * 0.9,
                             7.0 + (i // 6) * 0.9))
+    # V3.76: mulch rings on three of them (on the lawn) and on the saskatoon
+    # (in the bed, mulched already, so not drawn).
+    for f in feats[-30:-27] + [f for f in feats
+                               if f["properties"].get("plant_id") == 6]:
+        f["properties"]["mulch_ring"] = True
+    feats += _on_the_house(feats[1])
     # The person's answer in Plan My Yard: the street is to the south.
     return {"type": "FeatureCollection",
             "properties": {"site_config": {"street_side": "south"}},
             "features": feats + DRAWN}
+
+
+#: A door, a downspout and a spigot on the house (V3.76), clicked a little
+#: off its walls: the back wall (y = 2.7), its corner, the east wall.
+WALL_CLICKS = (("door", (0.0, 3.5)), ("downspout", (5.0, 3.2)),
+               ("spigot", (6.0, -3.0)))
+
+
+def _on_the_house(house) -> list:
+    from src import wall_objects
+    from src.db.structures import get_structure
+    out = []
+    for sid, (x, y) in WALL_CLICKS:
+        sd = dict(get_structure(sid))
+        props = {"element_type": "structure", "struct_id": sid,
+                 "name": sd["name"], "size_m": sd["size_m"], "struct_def": sd}
+        lng, lat = _ll(x, y)
+        lat, lng = wall_objects.place({"features": [house]}, props, lat, lng)
+        out.append({"type": "Feature",
+                    "geometry": {"type": "Point", "coordinates": [lng, lat]},
+                    "properties": props})
+    return out
 
 
 def _scenes():
@@ -829,6 +857,36 @@ class TheWholeYard(unittest.TestCase):
         self.assertTrue(2.7 < ey < 2.7 + 1.5, ey)
         self.assertGreater(ly, ey, "it looks away from the house")
         self.assertNotEqual(at, self.got["views"]["street"]["at"])
+
+    # ── a door, a downspout, a spigot, mulch rings (V3.76) ───────────────────
+
+    def test_the_wall_objects_stand_against_the_house(self):
+        ex = self.got["site"]["extras"]
+        door, pipe, tap = ex["wall:door"], ex["wall:downspout"], ex["wall:spigot"]
+        # The door on the back wall (y = 2.7), a person's height.
+        self.assertAlmostEqual(door["y"], 2.7, delta=0.6)
+        self.assertAlmostEqual(door["top"], 2.2, delta=0.1)
+        # The downspout from near the eave down to its splash block.
+        self.assertAlmostEqual(pipe["low"], 0.0, delta=0.05)
+        self.assertGreater(pipe["top"], 3.0)
+        # The spigot on the east wall (x = 5.4), low down.
+        self.assertAlmostEqual(tap["x"], 5.4, delta=0.3)
+        self.assertLess(tap["top"], 0.7)
+        self.assertGreater(tap["low"], 0.3)
+
+    def test_from_the_house_stands_at_the_door(self):
+        house = self.scene["views"]["house"]
+        self.assertTrue(house.get("at_door"))
+        door = next(s for s in self.scene["structures"]
+                    if s["struct_id"] == "door")
+        self.assertAlmostEqual(house["eye"][0], door["x"], delta=0.05)
+
+    def test_mulch_rings_on_the_lawn_and_none_in_the_bed(self):
+        rings = self.scene["mulch_rings"]
+        self.assertEqual(len(rings), 3, rings)          # the saskatoon's is not
+        mulch = self.got["site"]["extras"]["mulch"]
+        self.assertEqual(mulch["count"], 3)
+        self.assertLess(mulch["top"], 0.1)              # lying on the ground
 
     def test_from_above_holds_the_whole_yard_north_up(self):
         above = self.got["views"]["above"]

@@ -1005,6 +1005,10 @@ class ModelAssetsTest(unittest.TestCase):
         # the existing_* ids use constants, so this regex excludes them.
         src = _read(os.path.join(_ROOT, "src", "db", "structures.py"))
         ids = set(re.findall(r'"id":\s*"(\w+)"', src))
+        # A door, a downspout and a spigot are drawn by the viewer, with no
+        # model (V3.76, html/scene3d/02d-kinds.js).
+        from src.db.structures import get_structure
+        ids = {i for i in ids if not (get_structure(i) or {}).get("on_wall")}
         section = self.mf.get("structures", {})
         if not section:
             self.skipTest("manifest has no structures section yet")

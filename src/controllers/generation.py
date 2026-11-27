@@ -87,6 +87,7 @@ class GenerationController:
             coverage=region.message(cov), outside=cov.kind == region.OUTSIDE,
             coverage_warns=cov.kind in (region.PROVINCE, region.OUTSIDE),
             areas=yard_overview.where_areas(main._project),
+            mulch_rings=bool(site_config.get("plan_mulch_rings")),
             place=pack.short if pack is not None else "",
             advanced=advanced,
             fauna_options=self._fauna_options() if advanced else [],
@@ -110,6 +111,8 @@ class GenerationController:
             "site_config", {})
         stored["priorities"] = goals
         stored["yard_setting"] = dlg.setting()
+        stored["plan_mulch_rings"] = dlg.mulch_rings()           # V3.76
+        self._mulch = dlg.mulch_rings()
         if dlg.setting() == "front":
             stored["street_side"] = dlg.street_side()
         site_config = dict(stored)
@@ -319,7 +322,8 @@ class GenerationController:
                 pid, name, lat, lng, placement_group_id=group_id,
                 polyculture_name=poly_name, pattern_kind="generated",
                 quantity=qty, why_here=props.get("why_here"),
-                plan_run=group_id)
+                plan_run=group_id,
+                mulch_ring=bool(getattr(self, "_mulch", False)))
             batch.append((pid, name))
 
         # The structures come too (V2.95, F185). The generator places a pond,

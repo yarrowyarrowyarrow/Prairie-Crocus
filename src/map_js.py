@@ -414,6 +414,11 @@ def load_hedgerow(hedge_def: dict) -> str:
     return f"loadHedgerow({_jsobj(hedge_def)});"
 
 
+def set_mulch_rings(rings: list) -> str:
+    """The rings of mulch under plants (V3.76, ``05d-mulch.js``)."""
+    return f"setMulchRings({_jsobj(rings)});"
+
+
 def undo_hedgerow_by_id(hedge_id: str) -> str:
     return f"undoHedgerowById({_jsstr(hedge_id)});"
 

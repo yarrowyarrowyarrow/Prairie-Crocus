@@ -105,6 +105,9 @@ class TheModelsAndTheCatalogueAgree(unittest.TestCase):
     def test_each_model_is_authored_at_the_catalogue_size_and_width(self):
         manifest, widths = _manifest(), _builder_widths()
         for s in STRUCTURES:
+            if s.get("on_wall"):         # drawn by the viewer (V3.76), no model
+                self.assertNotIn(s["id"], manifest)
+                continue
             entry = manifest[s["id"]]
             self.assertEqual(entry["size_m"], s["size_m"], s["id"])
             if s.get("shape") == "rectangle":

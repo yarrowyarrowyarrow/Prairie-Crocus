@@ -455,6 +455,7 @@ function buildFlowers(plants, month, terrain) {
 // after the plants and before the sun, the shadows and the camera (V3.37).
 function buildStructures(group, structures, month) {
   for (const s of structures || []) {
+    if (s.on_wall && buildWallObject(group, s, month)) continue;  // 02d, V3.76
     // Blender GLB structure first (09-models.js), box as the fallback.
     const glb = window.glbStructure && window.glbStructure(s);
     if (glb) {

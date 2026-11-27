@@ -189,15 +189,16 @@ def replace(main, old_id: int, new_id: int) -> int:
     """Every ``old_id`` becomes ``new_id`` at the same spot; one undo step."""
     from src.db.plants import get_plant
     store = main._store
-    spots = [(p["plant_id"], p["lat"], p["lng"]) for p in store.placed_plants
-             if p.get("plant_id") == old_id]
+    olds = [p for p in store.placed_plants if p.get("plant_id") == old_id]
+    spots = [(p["plant_id"], p["lat"], p["lng"]) for p in olds]
     if not spots:
         return 0
     name = (get_plant(new_id) or {}).get("common_name") or ""
     with main._persistence.checkpoint("swap plant"):
+        rings = [bool(p.get("mulch_ring")) for p in olds]    # kept (V3.76)
         store.remove_plants_batch(spots)
-        for _pid, lat, lng in spots:
-            store.add_plant(new_id, name, lat, lng)
+        for (_pid, lat, lng), ring in zip(spots, rings):
+            store.add_plant(new_id, name, lat, lng, mulch_ring=ring)
         main._persistence.redraw()
         try:
             main.plant_panel.on_plants_removed_batch([old_id] * len(spots))

@@ -200,7 +200,8 @@ def export_pdf(
         try:
             from src.lawn_zones import conversion_summary
             from src.site_prep import build_site_prep
-            prep_bed_area = bed_area_m2(project)
+            from src.mulch_rings import mulch_area_m2   # rings too (V3.76)
+            prep_bed_area = mulch_area_m2(project)
             prep = build_site_prep(
                 project.get("properties", {}).get("site_config") or {},
                 placed_plants, bed_area_m2=prep_bed_area,
@@ -221,7 +222,8 @@ def export_pdf(
             # A drawn pond is bought as a pond (V3.71, yard_kinds).
             from src.yard_kinds import structure_defs
             structs = [sd for sd in structure_defs(project) if sd]
-            plan_bed_area = bed_area_m2(project)
+            from src.mulch_rings import mulch_area_m2   # rings too (V3.76)
+            plan_bed_area = mulch_area_m2(project)
             plan = build_planting_plan(
                 placed_plants, structures=structs, bed_area_m2=plan_bed_area,
                 site_config=(project.get("properties") or {}).get(

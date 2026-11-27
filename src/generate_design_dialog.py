@@ -149,6 +149,7 @@ class GenerateDesignDialog(QDialog):
                  areas: dict | None = None, place: str = "",
                  advanced: bool = False,
                  setting: str = "front", street_side: str = "south",
+                 mulch_rings: bool = False,
                  parent: QWidget | None = None):
         super().__init__(parent)
         self.setWindowTitle(TITLE)
@@ -168,6 +169,8 @@ class GenerateDesignDialog(QDialog):
         self._yard: dict = {}
         self._street: QComboBox | None = None
         self._more: dict = {}
+        self._mulch_start = bool(mulch_rings)
+        self._mulch_check: QCheckBox | None = None
         self.next_step = ""
         self.state = state_for(
             has_pin=has_pin, outside=outside,
@@ -391,6 +394,14 @@ class GenerateDesignDialog(QDialog):
         row.addWidget(self._budget)
         row.addStretch(1)
         layout.addLayout(row)
+        # A ring of mulch round each plant (V3.76, the owner's Q4): off until
+        # ticked, remembered with the design.
+        self._mulch_check = QCheckBox("A ring of mulch round each plant")
+        self._mulch_check.setChecked(self._mulch_start)
+        self._mulch_check.setToolTip(
+            "Wood chips round each plant outside a bed: drawn on the map and "
+            "in 3D, and counted in the mulch to buy.")
+        layout.addWidget(self._mulch_check)
 
     # ── What the Advanced tools add (§4.7) ───────────────────────────────────
 
@@ -471,6 +482,10 @@ class GenerateDesignDialog(QDialog):
         """Whether this run replaces the design's last plan: yes when it has
         one, unless *Add to it instead* is ticked."""
         return self._add_check is not None and not self._add_check.isChecked()
+
+    def mulch_rings(self) -> bool:
+        """Whether the plan's plants get a ring of mulch (V3.76)."""
+        return self._mulch_check is not None and self._mulch_check.isChecked()
 
     def where(self) -> str:
         """``"beds"`` or ``"yard"``: where the plants go."""

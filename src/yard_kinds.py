@@ -310,6 +310,18 @@ KINDS: tuple = (
          colours=("#4caf50",)),
     # Objects: kept out of at their footprint (until V3.71 only a barrel and a
     # brush pile were, so a plan could put plants in a fire pit).
+    # On a building's wall (V3.76, src/wall_objects.py): a door keeps its
+    # doorstep clear; a downspout and a spigot are the Water page's.
+    Kind("door", "Door", OBJECT, struct_ids=("door",), planting=KEEP_OUT,
+         about="A door out to the yard, on a building's wall. Its doorstep "
+               "is kept clear, and the 3D's From the house stands here."),
+    Kind("downspout", "Downspout", OBJECT, struct_ids=("downspout",),
+         water="downspouts",
+         about="Where the roof's water comes down a wall, onto a splash "
+               "block."),
+    Kind("spigot", "Spigot", OBJECT, struct_ids=("spigot",), water="spigots",
+         about="An outdoor tap for city water, on a building's wall. Design "
+               "› Water says how far a hose from it reaches."),
     Kind("bee_hotel", "Bee hotel", OBJECT, struct_ids=("bee_hotel",),
          planting=KEEP_OUT, habitat=True),
     Kind("bee_log", "Bee log", OBJECT, struct_ids=("native_bee_log",),
@@ -344,11 +356,12 @@ PALETTE: tuple = (
     # group (V3.75, the owner: "the list is a bit messy").
     ("Lawn conversion", ("lawn_to_convert", "restoration_1",
                          "restoration_3", "established", "remnant")),
-    ("Water", ("pond", "rain_garden", "swale", "rain_barrel")),
+    ("Water", ("pond", "rain_garden", "swale", "rain_barrel", "downspout",
+               "spigot")),
     ("For wildlife", ("native_lawn", "rock_garden", "brush_pile",
                       "bee_hotel", "bee_log", "snag")),
     ("Fences and hedges", ("fence", "wall", "hedge")),
-    ("Buildings", ("building",)),
+    ("Buildings", ("building", "door")),
     ("Around the yard", ("compost_bin", "fire_pit", "custom")),
 )
 
@@ -387,6 +400,26 @@ def surface_looks() -> dict:
 
 
 # ── what a feature is ───────────────────────────────────────────────────────
+
+#: The looks of ground that is mulched already (V3.76): a plant standing in
+#: a drawn bed or mulch area needs no ring of its own.
+MULCHED_LOOKS = ("bed", "mulch")
+
+
+def is_mulched(feature: dict) -> bool:
+    """Whether a drawn area is mulched ground (:data:`MULCHED_LOOKS`)."""
+    props = (feature or {}).get("properties") or {}
+    if props.get("element_type") not in ("custom_shape",):
+        return False
+    k = kind_of(feature)
+    return k is not None and k.look in MULCHED_LOOKS
+
+
+def is_door(struct_id: str) -> bool:
+    """Whether a structure id is a door (V3.76): where the 3D's From the
+    house stands."""
+    return _BY_STRUCT.get(struct_id or "") is BY_KEY["door"]
+
 
 def struct_id_of(props: dict) -> str:
     """A structure feature's id, wherever it was stored (the interactive path

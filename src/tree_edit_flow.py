@@ -57,8 +57,29 @@ def on_existing_feature_moved(main, marker_id: str, struct_id: str,
     if feat is None:
         return
     with _checkpoint(main, "move existing feature"):
+        # A wall object dragged goes onto the wall nearest where it was let
+        # go (V3.76), the map's marker with it.
+        new_lat, new_lng = onto_wall(main, feat["properties"], new_lat,
+                                     new_lng)
         feat["geometry"]["coordinates"] = [new_lng, new_lat]
     main._mark_modified()
+
+
+def onto_wall(main, props: dict, lat: float, lng: float) -> tuple:
+    """A door, a downspout or a spigot (``on_wall``) onto the nearest
+    building's wall (``src/wall_objects.py``): ``props`` gain its bearing and
+    facing, and the map's marker is drawn again where it stands. Anything
+    else, and a click far from every wall, stays where it was put."""
+    from src import map_js, wall_objects
+    sd = props.get("struct_def") or {}
+    if not wall_objects.is_wall_object(sd):
+        return lat, lng
+    s_lat, s_lng = wall_objects.place(main._project, props, lat, lng)
+    if (s_lat, s_lng) != (lat, lng) or props.get("bearing_deg"):
+        sid = props.get("struct_id") or sd.get("id", "")
+        main.map_widget.run_js(map_js.undo_structure_at(sid, lat, lng))
+        main.map_widget.load_structure(dict(sd), s_lat, s_lng)
+    return s_lat, s_lng
 
 
 def on_structure_turned(main, marker_id: str, struct_id: str, lat: float,

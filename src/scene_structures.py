@@ -91,6 +91,14 @@ def record(props: dict, x: float, y: float) -> Optional[dict]:
         rec["width_m"] = round(fp["width_m"], 3)
     if fp["shape"] == "rectangle" or fp["bearing_deg"]:
         rec["bearing_deg"] = fp["bearing_deg"]
+    # On a wall (V3.76, src/wall_objects.py): the way out of the building and
+    # the wall's height, so the viewer stands a door, a downspout or a spigot
+    # against the wall rather than in the doorstep's middle.
+    if sd.get("on_wall"):
+        rec["on_wall"] = True
+        if props.get("facing_deg") is not None:
+            rec["facing_deg"] = float(props["facing_deg"])
+        rec["wall_h_m"] = float(props.get("wall_h_m") or 0.0)
     return rec
 
 

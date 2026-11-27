@@ -184,7 +184,7 @@ from typing import Callable, Optional
 from src.member_colors import TYPE_COLORS as _TYPE_COLORS
 from src.projection import Projector
 from src.project_store import plant_record_from_feature
-from src import scene_structures
+from src import scene_structures, yard_kinds
 from src.scene3d import plant_3d_state
 
 SCENE_VERSION = 1
@@ -952,8 +952,10 @@ def build_scene(project: dict, *, year: int = 0,
         pin = None
         if site.get("latitude") is not None and site.get("longitude") is not None:
             pin = proj.to_xy(float(site["latitude"]), float(site["longitude"]))
-        house = scene_views.house_view(boundary_xy, plants, buildings,
-                                       pin=pin, extent=yard)
+        house = scene_views.house_view(
+            boundary_xy, plants, buildings, pin=pin, extent=yard,
+            doors=[s for s in structures
+                   if yard_kinds.is_door(s.get("struct_id"))])
         if house:
             views["house"] = house
         house_at = scene_views.house_ring(boundary_xy, buildings, pin)

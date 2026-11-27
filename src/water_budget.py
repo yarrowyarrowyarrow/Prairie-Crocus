@@ -129,3 +129,73 @@ def _round_litres(litres: float) -> str:
     one (P9)."""
     step = 5 if litres < 100 else 10
     return f"{max(step, int(round(litres / step)) * step):,}"
+
+
+# ── City water: the spigot (V3.76) ──────────────────────────────────────────
+
+#: The garden hoses a person is likely to own, metres: 50 ft and 75 ft.
+HOSE_M = (15.0, 23.0)
+#: Litres a minute through a garden hose on city pressure: **a stated
+#: estimate** (a 5/8" hose runs about 10 to 20).
+TAP_L_MIN = 12.0
+
+
+def tap_reach(project) -> dict:
+    """``{"taps": n, "metres": [...]}``: how many spigots are on the map, and
+    each placed plant's straight-line distance to the nearest one (empty
+    with none). ``src/yard_kinds.py`` says what a spigot is."""
+    from src import yard_kinds                               # noqa: PLC0415
+    from src.project_store import ProjectStore               # noqa: PLC0415
+    from src.projection import Projector                     # noqa: PLC0415
+    taps = []
+    for f in (project or {}).get("features", []) or []:
+        props = f.get("properties") or {}
+        geom = f.get("geometry") or {}
+        k = yard_kinds.kind_of(f)
+        if (k is not None and k.water == "spigots"
+                and geom.get("type") == "Point"):
+            lng, lat = geom["coordinates"][:2]
+            taps.append((lat, lng))
+    if not taps:
+        return {"taps": 0, "metres": []}
+    proj = Projector(*taps[0])
+    xy = [proj.to_xy(lat, lng) for lat, lng in taps]
+    metres = []
+    for p in ProjectStore(project).placed_plants:
+        px, py = proj.to_xy(p["lat"], p["lng"])
+        metres.append(min(((px - x) ** 2 + (py - y) ** 2) ** 0.5
+                          for x, y in xy))
+    return {"taps": len(taps), "metres": metres}
+
+
+def tap_words(reach: dict, plants) -> str:
+    """What the Water page says about city water: how far the planting is
+    from a spigot, how much of it a garden hose reaches, and how long the
+    first summer's weekly watering is at the tap. ``""`` with no plants."""
+    metres = (reach or {}).get("metres") or []
+    litres = first_summer_weekly_litres(plants)
+    if not (reach or {}).get("taps"):
+        return ("No spigot is on the map yet. Placement › Yard › Water › "
+                "Spigot puts one on a wall, and this says how far a hose from "
+                "it reaches." if plants else "")
+    if not metres:
+        return ""
+    far = max(metres)
+    short, long_ = HOSE_M
+    words = (f"From the nearest spigot the farthest plant is {far:.0f} m "
+             f"away in a straight line. ")
+    if far <= short:
+        words += f"A {short:.0f} m (50 ft) hose reaches all of them."
+    else:
+        n_short = sum(m <= short for m in metres)
+        n_long = sum(m <= long_ for m in metres)
+        words += (f"A {short:.0f} m (50 ft) hose reaches {n_short} of "
+                  f"{len(metres)} plants, a {long_:.0f} m (75 ft) one "
+                  f"{n_long}.")
+    words += " Going round the house takes more hose."
+    if litres > 0:
+        minutes = max(1, int(round(litres / TAP_L_MIN)))
+        words += (f" The first summer's weekly watering, about "
+                  f"{_round_litres(litres)} L, is about {minutes} minutes "
+                  f"at the tap.")
+    return words
