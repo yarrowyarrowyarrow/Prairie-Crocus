@@ -27,7 +27,10 @@ dependency. **P** names the principle in [`DESIGN_PHILOSOPHY.md`](DESIGN_PHILOSO
 ## Waiting on the owner
 
 *Most rows wait on engineering. These wait on a decision or a step only the owner can take; the
-column says what each holds up.*
+column says what each holds up. The questions are on the
+[decisions page](https://claude.ai/artifact/2bm9oj98vH8qGc3M4cR2cz) with their context and a
+recommendation each; a session reads the answers there (`ArtifactData list` on `answers`) and
+moves each answered row out of this table.*
 
 | What | Holds up |
 |---|---|
@@ -263,17 +266,54 @@ and its data jobs (F243, F246–F249) in group J.*
 
 ---
 
-## Where to start
+## Where to start: the recommended order (V3.77)
 
-The pick is the owner's. The three plans with an order still running:
+The pick is the owner's. This is the recommendation, made in V3.77 from the state above. It
+reads one fact first: installed copies are on **V3.68**, the last promoted release (25 November
+2026, six downloads), so nothing since has reached anyone, and the user base is small enough that
+watching a few people use the app is worth more than any feature.
 
-1. **[V3.77](plans/V3.77-slope-and-the-yard-from-use.md#a-suggested-order)**: F289 with F279's
-   lines; then F290 and F291 (placing); then F278 and F293 (one shade path); F292 when D3 is
-   answered.
-2. **[V3.69](plans/V3.69-a-new-tester.md#recommended-order)**, what is left of it: F285, F287 and
-   F282's two small fixes; F276 with F277's measurement; F283 and F284; F282's picker (its photos
-   have arrived); F281; F286 once measured on Windows.
-3. **[V3.43](plans/V3.43-the-3d-preview-reviewed.md)**: F266, then F267.
+**0. Decide.** The table at the top, answered on the
+[decisions page](https://claude.ai/artifact/2bm9oj98vH8qGc3M4cR2cz), where each question carries
+its context and a recommendation and the answers are saved for the next session to read.
 
-The V3.17 homeowner-path plan is finished as code; what it left is the owner's (table at the top)
-and group J's data jobs.
+**1. V3.78, the easy wins: the map tells the truth.** Each is small, its cause found, and most
+were hit by the owner or a tester:
+
+| Win | Row |
+|---|---|
+| The shade on screen redraws after placing a plant, object or line | F293's first part |
+| Contour labels on screen and inside the boundary, on every 5th line; the *Slope grid* box gone | F289 |
+| Fences, walls, hedges and swales caught by the selection box, Select All and Delete | F279's lines |
+| An emoji for every Yard kind | F292's first half |
+| The PDF's status words in colour and a total cost on *What to buy* | F287's part |
+| An object's stand-in box no longer looks like a building | F288 (the fire pit) |
+| The bee game takes the keyboard at once and says what the orbs are | F282's two small fixes |
+
+**2. Promote a release**, after trying its installer on a real Windows machine: V3.76's first
+build stopped at launch, and the tests in a session cannot open the real window.
+
+**3. Watch three to five people use it** (F243): both outside testers found what nobody inside
+could, mostly tools that exist and could not be found.
+
+**4. V3.79, a site you can trust** (F276, F278, F293). Shade decides what goes where, and Plan My
+Yard already swaps plants by it: the scan in installed copies (no rasterio, so no canopy-height
+map), existing features first on the Yard tab, the map's shade showing the design. Measure Plan
+My Yard's shade cells before and after. Packaging is the risk.
+
+**5. V3.80, placing yard things** (F290, F291; F292's lawn half once D3 is answered).
+
+**6. V3.81, water in the design** (F281): downspouts exist since V3.76; a rain garden planted,
+water routed by the slope.
+
+**7. 3D on the laptop it is for** (F267, before F266): on a machine whose graphics driver
+Chromium blocks, the 3D shows only an error.
+
+**Held back, on purpose:** more model polish (F268, F266) until F267; the designer's workflow
+(F113, F93), written for professionals before the V3.17 turn to the Edmonton homeowner; the
+Calgary edition (F244) until the sessions say Edmonton works.
+
+The plans whose orders this draws on: [V3.77](plans/V3.77-slope-and-the-yard-from-use.md#a-suggested-order),
+[V3.69](plans/V3.69-a-new-tester.md#recommended-order),
+[V3.43](plans/V3.43-the-3d-preview-reviewed.md). The V3.17 homeowner-path plan is finished as
+code; what it left is the owner's (the table at the top) and group J's data jobs.
