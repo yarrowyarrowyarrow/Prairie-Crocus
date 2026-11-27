@@ -110,6 +110,22 @@ ID ledger and the code on 27 November 2026.*
 
 ---
 
+## Closed by the owner's answers (V3.77)
+
+*Rows whose only open part was a decision, closed when the owner answered the
+[decisions page](https://claude.ai/artifact/2bm9oj98vH8qGc3M4cR2cz) on 27 November 2026. The
+answers to the rest are carried on their rows in the backlog.*
+
+| Row | Answer |
+|---|---|
+| **F189 "Native Prairie Aromatics" and P12** (group J) | **Keep it as authored.** The owner's call under P12, made with the four plants' standing as Indigenous medicines and the grouping's shape in front of them. Nothing changes in the data |
+
+| Job | What is left |
+|---|---|
+| **F189 "Native Prairie Aromatics" and P12** | Four of its seven are widely known on the prairies as Indigenous medicines; whether the grouping sits inside P12's hard rule is the owner's call. Left exactly as authored |
+
+---
+
 ## Shipped, by the group it was filed in
 
 ### A · Confidence and provenance
