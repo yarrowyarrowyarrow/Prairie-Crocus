@@ -307,7 +307,6 @@ OWNERS = {"src/yard_kinds.py", "src/db/structures.py", "src/lawn_zones.py",
           # The conversion on open names what it converts (V3.72).
           "src/yard_upgrade.py"}
 KNOWN = {
-    "src/advanced_tools.py": 1,     # the Custom shape is an advanced tool
     "src/analysis_panel.py": 10,    # the habitat structures' display names
     "src/bee_habitat.py": 5,        # which structures a bee nests in
     "src/bird_body_plan.py": 1,     # a duck stands on a pond

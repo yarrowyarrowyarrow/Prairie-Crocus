@@ -86,7 +86,7 @@ the one plant picker and species page every plant list shares since V3.00
 and empty state in `src/filter_status.py` since V3.01;
 `src/species_page.py`, shown beside the Browse list by `src/species_flyout.py`;
 the Plant Directory window was retired in V3.22, `src/plant_directory.py` stays),
-`src/structure_panel.py`, `src/site_panel.py`, `src/analysis_panel.py`,
+`src/yard_palette.py`, `src/site_panel.py`, `src/analysis_panel.py`,
 `src/planning_panel.py`, `src/learn_panel.py` (Field Study / Lessons /
 Present, V2.25), plus small QPainter widgets
 (`src/wind_rose_widget.py`,

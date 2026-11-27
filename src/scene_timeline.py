@@ -49,6 +49,18 @@ PLACE_WORDS = {
     "seeded": "seeded area", "water": "water", "path": "path",
     "patio": "paving", "custom": "drawn area",
 }
+
+
+def _kind_words() -> None:
+    """Any other look in the table (a rock garden, a rain garden, a deck,
+    V3.72) is called what its kind is called."""
+    from src import yard_kinds
+    for k in yard_kinds.KINDS:
+        if k.look and k.look not in PLACE_WORDS:
+            PLACE_WORDS[k.look] = k.words.lower()
+
+
+_kind_words()
 #: Plants in no drawn area.
 ELSEWHERE = "the rest of the yard"
 WHOLE_YARD = "the yard"
@@ -140,8 +152,13 @@ def _own_label(surface: Mapping) -> str:
     label = str(surface.get("label") or "").strip()
     if not label:
         return ""
-    from src.scene_site import SURFACE_KINDS                 # noqa: PLC0415
-    plain = {k.lower() for k in SURFACE_KINDS} | set(PLACE_WORDS.values())
+    # Only this area's own kind's words (V3.72): a mulched area someone
+    # named "Rain garden" is named, now that a rain garden is also a kind.
+    from src import yard_kinds                               # noqa: PLC0415
+    look = surface.get("kind") or ""
+    plain = {PLACE_WORDS.get(look, "")} | {
+        w.lower() for k in yard_kinds.KINDS if k.look == look
+        for w in k.shape_types + (k.words,)}
     return "" if label.lower() in plain else label
 
 

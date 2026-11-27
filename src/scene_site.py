@@ -88,6 +88,8 @@ LINE_WIDTH_M = 1.5
 #: A fence is boards, not a planting: it is drawn this thick whatever the
 #: width the line carries (which the map tool fills in for every line).
 FENCE_WIDTH_M = 0.1
+#: The lines drawn at their own thickness, whatever width the line carries.
+_SOLID_WIDTH_M = {"fence": FENCE_WIDTH_M, "wall": WALL_WIDTH_M}
 
 # ── the street ──────────────────────────────────────────────────────────────
 
@@ -215,12 +217,11 @@ def lines(project: dict, proj) -> list:
             continue
         style = props.get("kind") or props.get("style")
         kind = style if style in LINE_HEIGHT_M else "hedge"
-        width = (FENCE_WIDTH_M if kind == "fence" else WALL_WIDTH_M
-                 if kind == "wall" else float(props.get("width_m")
-                                              or LINE_WIDTH_M))
+        width = _SOLID_WIDTH_M.get(kind) or float(props.get("width_m")
+                                                   or LINE_WIDTH_M)
         row = {"kind": kind, "points": pts, "width_m": round(width, 2),
                "height_m": LINE_HEIGHT_M[kind]}
-        if kind == "fence" and props.get("fence_kind"):
+        if props.get("fence_kind"):          # rail, board, chain link (V3.72)
             row["fence_kind"] = props["fence_kind"]
         out.append(row)
     # A raised bed's frame, along its outline at its height (V3.72).

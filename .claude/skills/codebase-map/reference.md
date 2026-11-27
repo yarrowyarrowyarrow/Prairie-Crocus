@@ -80,13 +80,12 @@ added; trust the source over this list).
 | `src/on_this_design_panel.py` | What is on the design: Species + Communities (Design › Planted); its Stats page, the Report card, was retired in V3.55 |
 | `src/placement_controls.py` | Shared placement-controls widget used by the Plants tab and the Plant |
 | `src/polyculture_panel.py` | (no module docstring) |
-| `src/structure_panel.py` | Placement › Structures: browse and place habitat structures |
+| `src/yard_palette.py` | Placement › Yard (V3.72): every kind of thing in a yard that is not a plant, one list under six headings, each with its options and its verb (draw an area or a line, place an object); replaced Placement › Structures and Draw › Shape. The kinds are `src/yard_kinds.py`; older designs are converted on open by `src/yard_upgrade.py` |
 | `src/side_panel_layout.py` | The side panel's five tabs, Site · Placement · Design · Share · Learn (F94, V3.07–V3.08): moves built pages between tab widgets; address pages by widget, never index; a page put in a layout must be shown again |
 | `src/food_page.py` | Design › Food: one animal, any animal, and month by month with people's harvest kept apart (V3.08) |
 | `src/what_it_feeds.py` | Food's Qt-free arithmetic over the edges layer, and Planted's "feeds N · flowers … · fruit …" line (V3.08) |
 | `src/share_panel.py` | Share: Present and Export (every export, Growth Snapshots, the 3D outputs, Where to buy) (V3.08) |
 | `src/follow_design.py` | The 3D preview and Growth Snapshots rebuild when the design changes; no Refresh (F89, V3.08) |
-| `src/shape_tool.py` | Draw › Shape: areas, lawn-conversion zones and hedge/fence/windbreak lines in one form under a Draw-row button (V3.07) |
 | `src/map_settings_flow.py` | View › Map Settings: the zoom step, saved and sent on every map load (V3.07) |
 | `src/site_panel.py` | Side-panel tab for the property pin and auto-filled site data |
 | `src/analysis_panel.py` | The Design tab's widget (its strip: Overview, Through the year, Planted, Habitat, Over time, Water) and the Site tab's Sun & Shade and Wind pages, which it builds and runs |

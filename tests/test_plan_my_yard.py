@@ -211,10 +211,14 @@ class TestRunningItTwice(unittest.TestCase):
         self.ctl._finish_ui()
 
     def _kinds(self):
+        # A plan's pond lands as the Yard palette draws one since V3.72, an
+        # area of the pond kind (src/yard_upgrade.py), and the plan owns it.
+        from src import yard_kinds
         out = {"generated": 0, "by_hand": 0, "ponds": 0}
         for f in self.main._project["features"]:
             p = f["properties"]
-            if p["element_type"] == "structure":
+            kind = yard_kinds.kind_of(f)
+            if kind is not None and kind.key == "pond":
                 out["ponds"] += 1
             elif p.get("plan_run"):
                 out["generated"] += 1
