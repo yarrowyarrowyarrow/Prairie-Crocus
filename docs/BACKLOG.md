@@ -518,8 +518,8 @@ section is planned on its own before it is built.*
 |----|---------|--------|------|---|
 | **F276** | **Existing trees you can trust**: installed builds have no rasterio, so the scan never reads the canopy-height map; correctable conifer/broadleaf, height and species; a read crown in 3D. | M–L | Med (packaging) | P9 |
 | **F277** | **The scan in seconds**: the region's buildings, treetops and slope shipped with its pack. | L | Med (installer size, licences) | P8 |
-| **F278** | **Sun and shade as one path**: Features first, steps in order, the time scrubber on the map, the arc tied to the shade. | M | Low | P5, P11 |
-| **F279** | **Select everything, move everything**: a drag moves every selected kind, one undo step. | S–M | Low | — |
+| **F278** | **Sun and shade as one path**: Features first, steps in order, the time scrubber on the map, the arc tied to the shade. Extended by the owner in V3.77: existing buildings and trees under the Yard tab (*Already here*, D4), Site › Features retired, Sun & Shade's sentence linking to it ([plan](plans/V3.77-slope-and-the-yard-from-use.md)). | M | Low | P5, P11 |
+| **F279** | **Select everything, move everything**: a drag moves every selected kind, one undo step. Extended in V3.77: fences, walls, hedges and swales are in no selection path at all (click, box, Select All, drag, corners); they join. | S–M | Low | — |
 | **F280** | **One way to put things on the map** ([plan](plans/V3.71-one-palette.md)): one table of kinds every reader asks; one palette of three verbs; old designs converted to what the map showed; a shed a building, a hedge real shrubs; path surfaces, decks, doors, downspouts, mulch rings. Five increments, V3.71 to V3.75; the first (one table) ✅ V3.71, the second (the Yard palette, conversion on open) ✅ V3.72, the third (the drawn kinds in 3D) ✅ V3.73, the fourth (hedges you can plant, solid fences' shade) ✅ V3.74, then the Yard tab tidied and the hedge made an existing one ✅ V3.75, and doors, downspouts, spigots and mulch rings ✅ V3.76: **complete**. | L | Med (file format) | P2, P9, P10 |
 | **F281** | **Water in the design**: downspouts, runoff by the slope, a rain garden planted, not kept out. | M | Med (local rules) | P1, P8 |
 | **F282** | **The bee game, refined**: a short picker of the region's known pollinators with photos and cards; focus on start; the orbs explained. | M | Low | P5 |
@@ -528,7 +528,25 @@ section is planned on its own before it is built.*
 | **F285** | **Words a beginner can act on**: a visible Advanced switch; Edible narrowed; Food for a fussy eater explained. | S | Low (P12 on the records) | P12 |
 | **F286** | **The first launch says it is working**: no (Not Responding) at start. | S–M | Low (needs a Windows measurement) | — |
 | **F287** | **The PDF report in colour, and adding up**: status words coloured, the planting map by type or species with a key, a total cost. | S–M | Low | P13 |
-| **F288** | **Structures you can believe** ([review](plans/V3.69-structures-and-shapes-reviewed.md)): part 1 ✅ V3.70 ([plan](plans/V3.70-structures-turned-to-the-map.md)): roofs, the turn to the map, the width, winter. Part 2: the objects that stay objects rebuilt, after F280 (moved and turned since V3.72). | M | Low | P9, P13 |
+| **F288** | **Structures you can believe** ([review](plans/V3.69-structures-and-shapes-reviewed.md)): part 1 ✅ V3.70 ([plan](plans/V3.70-structures-turned-to-the-map.md)): roofs, the turn to the map, the width, winter. Part 2: the objects that stay objects rebuilt, after F280 (moved and turned since V3.72). Added V3.77: the owner's fire pit drawn as a shed (not reproduced; likeliest the placeholder box, which is the Building's brown). | M | Low | P9, P13 |
+
+---
+
+## W · The owner on the slope and the Yard tab (the V3.77 plan)
+
+*The owner used V3.76 and sent one message: the slope page, placing several yard things, paths as
+lines, lawn conversion, selection, buildings in two places, the map's shade, a fire pit drawn as a
+shed and the Yard tab's emoji. Verbatim in [`USER_FEEDBACK.md`](USER_FEEDBACK.md); traced into the
+code, with seven decisions, in [the V3.77 plan](plans/V3.77-slope-and-the-yard-from-use.md). Three
+items extend F278, F279 and F288 above.*
+
+| ID | Feature | Effort | Risk | P |
+|----|---------|--------|------|---|
+| **F289** | **Slope you can read**: labels on every 5th line from round heights, inside the boundary or the ramp; the grid chosen by the source and said, the *Slope grid* box gone (D1, D2). | S | Low | P9 |
+| **F290** | **Several yard things at once**: Row, Grid, Circle and Fill area for objects and for areas placed as a rectangle or circle, at their size plus a gap, one undo step (D5). | M | Low | — |
+| **F291** | **A path drawn as a line** at a width, stored as its strip. | S–M | Low | — |
+| **F292** | **The Yard tab finished**: an emoji for every kind (D7); lawn conversion retired into a bed's "lawn now" and *Wild ground to keep* (D3). | S–M | Med (P8) | P8 |
+| **F293** | **The map's shade follows the design**: redrawn after every edit; objects cast at one height shared with the 3D; woody plants from 1 m; the design's own plants a switch (D6). | M | Med (planner's shade cells) | P5, P9 |
 
 ---
 

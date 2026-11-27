@@ -212,3 +212,33 @@ never uses the canopy-height map** and always reads the satellite photo instead.
 | 19 | *"Report is nice. Would be nice to utilize colour better. The plants colour can be changed manually but there ought to be an option to have each species show a different colour with a legend, or even have the type colour for the plants show."* | 🕳 | **F287.** On screen plants are coloured by type; the legend's Species mode keeps the type colour. The PDF planting map draws every plant the same pale green, ignoring type colours and hand-picked ones. |
 | 20 | *"The report card actually referred to the first word section of the pdf report. The user says the feedback 'Looks good' or 'worth a look' could be colour coded as they all appear green atm."* | 🐞 | **F287.** The screen colours each status; the PDF writes them all in the heading green. |
 | 21 | *"Planting plan portion could benefit from a sum total for cost."* | 🐞 | **F287.** The text planting plan ends with an estimated total; the PDF's *What to buy* page never adds its lines up. |
+
+---
+
+## 2026-11 — the owner, after V3.76
+
+The owner used V3.76 (the Yard tab's last increment) and sent one message about
+the slope page and the Yard tab. Their words, split into items; nothing is fixed
+yet. [The overview plan](plans/V3.77-slope-and-the-yard-from-use.md) traces each
+into the code and groups them into F289–F293, with three extending F278, F279
+and F288.
+
+**The shape of this round:** most items are two ways of doing one thing, or a
+control that does less than it says. The *Slope grid* box changes a 6 × 4-pixel
+picture into a 9 × 6 one; *Label every 5th contour* labels every 10th line at
+Edmonton's interval and puts the label at the middle of a line nobody cut to the
+view; a building can be put down four ways; the map's shade stays as it was when
+a tree is planted under it.
+
+| # | What they said | Verdict | Where it went |
+|---|---|---|---|
+| 1 | *"Slope is mostly good but needs a slight simplification and 'slope grid' I'm not sure if changing the number actually does anything."* | 🐞 | **F289.** In Edmonton the contours do not use it; the ramp is one pixel per cell, so at the default 30 m a yard is a 3 × 2 to 6 × 4 picture the browser blurs, and it reads a mound's slope at a fifth of what a 5 m grid reads. The engine's own defaults (5 m Edmonton, 15 m elsewhere) never run. Recommended: the box goes and the grid follows the source (D1). |
+| 2 | *"The labels for label every 5th contour should land within my boundary area or at least on the screen that I view when the slope image is created. Slope lines extend beyond the boundary area to the area that is within the scope of the screen I am viewing. This is all good however the contour labels should fall in this area of the heat map as well."* | 🐞 | **F289.** The rule is every 5 m above the lowest line (every 10th line at 0.5 m; a pair 0.25 m apart at 0.25 m), so a yard under 5 m of relief labels only its lowest line, at the edge. The label sits at the middle of the line as fetched, and the City's lines are never cut to the area. |
+| 3 | *"The yard features, I'd like to be able to place multiple, like a row of raised beds for instance. Or a fill area of bee logs. Basically, bring over the placement options from plants/communities."* | ✨ | **F290.** An object stays armed (one click each); nothing lays out several. The plant patterns' geometry is general and can be reused. |
+| 4 | *"I'd also add a draw as line option for the paths as the fill area method is a bit cumbersome and unintuitive."* | ✨ | **F291.** A path is an area only; a line at a width, stored as its strip. |
+| 5 | *"Lawn conversion seems almost useless as it doesn't tie into any other planting info, i would consider removing these."* | 🕳 | **F292**, D3. Two meanings are real (the sod comes off first; wild ground to keep); the three stages tell neither the timeline nor Plan My Yard anything. |
+| 6 | *"Ensure all features can be selected, currently fences hedges and walls are not selected, possibly others as well."* | 🐞 | **F279.** Lines (fence, wall, hedge, swale) are in no selection path: no click, box or Select All; no drag or corners; only right-click Remove. Map notes are not selectable either. |
+| 7 | *"Yard -> building overlaps with the Site -> Features placement of existing buildings. I'm not sure what the best way to mitigate this overlap is but something to consider. I like it all falling under the Yard Tab in a way that makes it clear that if you are doing shade you need to do that first, a sentence with a link directing you to the right place to do the existing features before doing shade."* | 🕳 | **F278**, D4. Four ways to put a building down; an existing tree only on Site › Features. Recommended: an *Already here* group at the top of the Yard tab, Sun & Shade linking to it. |
+| 8 | *"I'd like the shade to reflect on the map as well the trees and shrubs and structures we are adding (I believe they already do a good job in the 3D view so this should not be difficult."* | 🐞 + 🕳 | **F293**, D6. The map counts planted woody plants from 2 m, fully grown; never objects (the catalogue gives them no height); and the shade on screen is not redrawn after placing a plant, object or line. |
+| 9 | *"The fire pit has turned into a shed for some reason, this needs to be added to the 3D work."* | 🐞 | **F288.** Not reproduced: the real viewer draws a fire pit as stones, ash and logs. Likeliest: the placeholder box for an object whose model has not loaded, a 2 × 2 m box in the Building's brown. Needs the design or a screenshot. |
+| 10 | *"Lastly I think the emojis are useful in the context on the yard tab as it helps catch the eye what you are looking for, lets fill in the gaps for the ones without emojis."* | 🕳 | **F292**, D7. 21 of the 31 kinds (every area and line) have none; a proposed set is in the plan. |
