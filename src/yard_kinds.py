@@ -320,8 +320,9 @@ KINDS: tuple = (
          about="Where the roof's water comes down a wall, onto a splash "
                "block."),
     Kind("spigot", "Spigot", OBJECT, struct_ids=("spigot",), water="spigots",
-         about="An outdoor tap for city water, on a building's wall. Design "
-               "› Water says how far a hose from it reaches."),
+         about="An outdoor tap for city water, on a building's wall. With "
+               "Advanced tools on, Design › Water says how far a hose "
+               "from it reaches."),
     Kind("bee_hotel", "Bee hotel", OBJECT, struct_ids=("bee_hotel",),
          planting=KEEP_OUT, habitat=True),
     Kind("bee_log", "Bee log", OBJECT, struct_ids=("native_bee_log",),

@@ -750,7 +750,7 @@ class MainWindow(QMainWindow):
         # right-click menu.
         from src import mulch_rings_flow
         mulch_rings_flow.install(self)
-        self.map_widget.mulch_ring_toggled.connect(
+        b.mulch_ring_toggled.connect(              # MapBridge's signal
             lambda *a: mulch_rings_flow.toggle(self, *a))
         # A plant's page beside the side panel (F192, V3.00): opened by
         # choosing a plant in Browse, closed by placing. See the module.

@@ -112,7 +112,7 @@ STRUCTURES: list[dict] = [
         "color": "#1565c0",
         "fill_color": "#42a5f5",
         "fill_opacity": 0.7,
-        "description": "An outdoor tap for city water. Design › Water says how far a hose from it reaches.",
+        "description": "An outdoor tap for city water. With Advanced tools on, Design › Water says how far a hose from it reaches.",
         "maintenance_hours_year": 0,
     },
 

@@ -405,6 +405,12 @@ wiring. They skip with a message that reads like an environment limitation
 pip install PyQt6-WebEngine        # +47 tests actually run
 ```
 
+**When no WebEngine wheel matches the installed PyQt6** (V3.76: PyQt6 6.12 had none), build the
+window in a side environment rather than skip it: `python -m venv --system-site-packages <dir>`,
+then `<dir>/bin/pip install "PyQt6==6.11.*" "PyQt6-WebEngine==6.11.0"`, and run the suite with
+`<dir>/bin/python`. V3.76 shipped a signal connected on the wrong object, which stopped the app
+opening, because every test that builds the window had skipped.
+
 With it installed the process **exits 139 (segfault) at teardown**, after the
 summary — `Release of profile requested but WebEnginePage still not deleted`.
 It fires even on a run where zero tests execute, so it is WebEngine shutdown,

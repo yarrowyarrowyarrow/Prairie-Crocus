@@ -60,6 +60,70 @@ def _mapbridge_signals() -> set:
     return out
 
 
+def _class_signals(name: str) -> set:
+    """pyqtSignal attribute names declared on class ``name`` in map_widget.py."""
+    tree = ast.parse(_MAP_WIDGET.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef) and node.name == name:
+            return {t.id for stmt in node.body if isinstance(stmt, ast.Assign)
+                    and isinstance(stmt.value, ast.Call)
+                    and getattr(stmt.value.func, "id", "") == "pyqtSignal"
+                    for t in stmt.targets if isinstance(t, ast.Name)}
+    raise AssertionError(f"{name} not found in src/map_widget.py")
+
+
+def _is_attr(node, attr: str) -> bool:
+    return isinstance(node, ast.Attribute) and node.attr == attr
+
+
+def _map_signal_connections():
+    """Every ``….map_widget.<sig>.connect`` and ``….map_widget.bridge.<sig>
+    .connect`` in src/, plus ``b.<sig>.connect`` where a function took ``b``
+    from ``….map_widget.bridge``: ``(file, line, owner, sig)``, owner being
+    MapWidget or MapBridge."""
+    out = []
+    for path in sorted((_ROOT / "src").rglob("*.py")):
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        for fn in ast.walk(tree):
+            if not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            bridges = {t.id for st in ast.walk(fn) if isinstance(st, ast.Assign)
+                       and _is_attr(st.value, "bridge")
+                       and _is_attr(st.value.value, "map_widget")
+                       for t in st.targets if isinstance(t, ast.Name)}
+            for call in ast.walk(fn):
+                if not (isinstance(call, ast.Call) and _is_attr(call.func, "connect")
+                        and isinstance(call.func.value, ast.Attribute)):
+                    continue
+                sig, owner = call.func.value.attr, call.func.value.value
+                if _is_attr(owner, "map_widget"):
+                    out.append((path.name, call.lineno, "MapWidget", sig))
+                elif _is_attr(owner, "bridge") and _is_attr(owner.value, "map_widget"):
+                    out.append((path.name, call.lineno, "MapBridge", sig))
+                elif isinstance(owner, ast.Name) and owner.id in bridges:
+                    out.append((path.name, call.lineno, "MapBridge", sig))
+    return sorted(set(out))
+
+
+class TestPythonConnectsRealSignals(unittest.TestCase):
+    """A signal connected on the wrong object (V3.76: the mulch ring's, on
+    MapWidget when MapBridge declares it) raises AttributeError while the
+    window is built, so the app does not open. Every test that builds the
+    window skips without QtWebEngine, so nothing else catches it here."""
+
+    def test_every_connection_names_a_declared_signal(self):
+        # MapWidget is a QWebEngineView: Qt's own signals come with it.
+        web_view = {"loadStarted", "loadFinished", "loadProgress", "titleChanged",
+                    "urlChanged", "iconChanged", "selectionChanged",
+                    "renderProcessTerminated", "destroyed"}
+        found = {"MapWidget": _class_signals("MapWidget") | web_view,
+                 "MapBridge": _class_signals("MapBridge")}
+        conns = _map_signal_connections()
+        self.assertGreater(len(conns), 20, "the scan found the connections")
+        wrong = [f"{f}:{n} {o}.{s}" for f, n, o, s in conns if s not in found[o]]
+        self.assertEqual(wrong, [], "connected on a class that does not declare it")
+
+
 def _map_js_source() -> str:
     """map.html plus every html/map/*.js split file (V1.64) — the bridge
     calls can live in any of them."""
