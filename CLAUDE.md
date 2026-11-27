@@ -37,7 +37,9 @@ feature, skim where it sits in that philosophy. The sources of truth:
   12). **Before starting an increment, read its part and check its decisions are answered.**
 - [`docs/BACKLOG.md`](docs/BACKLOG.md) — **everything not yet built, in one place** (V2.52). Read
   this before re-deriving the backlog from the two roadmaps; it is the index, and it carries the
-  verified status of every open ID.
+  verified status of every open ID. **Since V3.77 it lists only what is open**, with the owner's
+  pending decisions in one table at its top: a row that ships moves, as it stood, to
+  [`docs/BACKLOG_ARCHIVE.md`](docs/BACKLOG_ARCHIVE.md), and a row partly shipped is cut to what is left.
 - [`docs/ROADMAP_NEXT.md`](docs/ROADMAP_NEXT.md) — the live plan and the *reasoning* per feature,
   plus the **ID ledger** (F63–F171) and the shipped record. Feature IDs have collided four times;
   take the next free ID from that ledger, never from memory.
