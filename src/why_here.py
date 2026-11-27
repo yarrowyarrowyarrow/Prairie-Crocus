@@ -43,6 +43,9 @@ STREET = "Along the street: short plants, repeated, so it reads as a garden"
 #: A plant that needs standing water, seated in a pond (F185).
 POND = "In the pond: it grows in standing water"
 BARE_POND = "Planted so the pond was not left bare"
+#: A hedge, living fence or windbreak's plants (V3.74).
+HEDGE = ("Along the {line} you drew, at its own spacing, so the crowns meet "
+         "once grown")
 
 
 def stamp(project, n: int, why) -> None:

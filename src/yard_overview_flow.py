@@ -153,7 +153,14 @@ def _view3d(main, view: str) -> None:
     open_3d_view(main, view or "")
 
 
+def _hedge(main, hedge_id: str) -> None:
+    """*Plant this hedge*: the choice of plants, the old line's words matched
+    first (the owner's Q5, V3.74). Nothing is planted without the answer."""
+    from src import hedge_flow
+    hedge_flow.offer(main, hedge_id)
+
+
 _HANDLERS = {"advanced": _advanced, "page": _page, "plants": _plants,
              "yard": _yard, "export": _export, "site": _site,
              "draw": _draw, "plan": _plan, "swap": _swap,
-             "fill_gaps": _fill, "view3d": _view3d}
+             "fill_gaps": _fill, "view3d": _view3d, "hedge": _hedge}

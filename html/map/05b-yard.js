@@ -98,10 +98,17 @@
         segments.push({ from: from, to: to, len: segLen });
         totalLen += segLen;
       }
-      var numPlants = s.fillDots ? Math.floor(totalLen / spacing) + 1 : 0;
+      // A hedge, living fence or windbreak planted with real plants (V3.74)
+      // draws no dots: its plants are on the map. One drawn with plants
+      // chosen is planted by Python as soon as it is finished.
+      var living = cfg.living !== undefined ? !!cfg.living
+        : (style === 'hedge' || style === 'living_fence' || style === 'windbreak');
+      var planted = (+cfg.plants > 0) || !!(cfg.plant_ids && cfg.plant_ids.length);
+      var numPlants = planted ? (+cfg.plants || 0)
+        : (s.fillDots ? Math.floor(totalLen / spacing) + 1 : 0);
 
       // Plant markers along the line
-      if (s.fillDots) {
+      if (s.fillDots && !planted) {
         var distAlong = 0;
         var segIdx = 0;
         var segDist = 0;
@@ -147,8 +154,8 @@
       var tooltipText = '<b>' + escH(styleWords) + '</b>';
       if (species) tooltipText += '<br>' + escH(species);
       tooltipText += '<br><span style="color:#b0bec5;font-size:12px">' +
-        (numPlants ? '~' + Number(numPlants) + ' plants · ' : '') +
-        totalLen.toFixed(1) + 'm<br>Right-click to remove</span>';
+        (numPlants ? (planted ? '' : '~') + Number(numPlants) + ' plants · ' : '') +
+        totalLen.toFixed(1) + 'm<br>Right-click for more</span>';
       mainLine.bindTooltip(tooltipText, { className: 'plant-marker-label' });
 
       // Store metadata
@@ -164,12 +171,33 @@
         numPlants: numPlants
       };
 
-      // Right-click to remove
-      mainLine.on('contextmenu', function(e) {
-        L.DomEvent.stop(e);
+      // Right-click: plant it (a living line, V3.74) or remove it, with
+      // what Remove takes said. It removed on a right-click until V3.74.
+      var linePoints = hedgerowPoints.slice();
+      var lineWords = styleWords.toLowerCase();
+      function removeLine() {
         map.removeLayer(group);
         delete hedgerowLayers[id];
-        if (bridge) bridge.onHedgerowRemoved(id, JSON.stringify(hedgerowPoints));
+        if (bridge) bridge.onHedgerowRemoved(id, JSON.stringify(linePoints));
+      }
+      mainLine.on('contextmenu', function(e) {
+        L.DomEvent.stop(e);
+        var oe = e.originalEvent;
+        if (typeof showContextMenu !== 'function') { removeLine(); return; }
+        var items = [];
+        if (living) {
+          items.push({ label: (planted ? 'Change its plants…'
+                                       : 'Plant this ' + lineWords + '…'),
+                       action: function() {
+                         if (bridge && bridge.onHedgePlantRequested)
+                           bridge.onHedgePlantRequested(id);
+                       } });
+          items.push('sep');
+        }
+        items.push({ label: '🗑 Remove the ' + lineWords +
+                     (planted && numPlants ? ' and its ' + Number(numPlants) +
+                      ' plants' : ''), action: removeLine });
+        showContextMenu(oe.clientX, oe.clientY, items);
       });
 
       hedgerowLayers[id] = group;

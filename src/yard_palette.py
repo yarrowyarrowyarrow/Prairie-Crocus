@@ -188,7 +188,9 @@ class YardPalette(QWidget):
             self._add_colours(kind)
 
     def _add_option(self, kind, opt) -> None:
-        if opt.choices:
+        if opt.plants:
+            w = self._plant_list(kind, opt)
+        elif opt.choices:
             w = QComboBox()
             for value, words in opt.choices:
                 w.addItem(words, value)
@@ -197,7 +199,6 @@ class YardPalette(QWidget):
                 w.currentIndexChanged.connect(self._on_building)
         elif opt.text:
             w = QLineEdit()
-            w.setPlaceholderText("e.g. saskatoon")
         else:
             w = QDoubleSpinBox()
             w.setRange(opt.lo, opt.hi)
@@ -210,6 +211,22 @@ class YardPalette(QWidget):
         self._form.addRow(opt.words + ":", w)
         if opt.key == "building":
             self._on_building()
+
+    def _plant_list(self, kind, opt) -> QComboBox:
+        """A hedge's shrubs, a windbreak's rows (V3.74): the region's plants
+        that can fill the role, by name, the first choice chosen."""
+        from src import hedge_planting
+        w = QComboBox()
+        if opt.optional:
+            w.addItem("None", None)
+        try:
+            for pid, name in hedge_planting.choices(opt.plants):
+                w.addItem(name, pid)
+            first = hedge_planting.default_choices(kind.key).get(opt.key)
+        except Exception:                                   # noqa: BLE001
+            first = None                    # no catalogue: drawn unplanted
+        w.setCurrentIndex(max(0, w.findData(first)))
+        return w
 
     def _on_building(self, *_):
         """A building's height follows what it is until changed by hand."""
@@ -283,8 +300,11 @@ class YardPalette(QWidget):
         props.pop("element_type", None)
         if kind.verb == yk.LINE:
             props.setdefault("width_m", opts.get("width_m", 0.3))
-            props.setdefault("spacing_m", opts.get("spacing_m", 1.0))
-            props.setdefault("species", opts.get("species", ""))
+            if kind.key in yk.LIVING_LINES:
+                # Its plants, in order (V3.74): the map draws no dots for a
+                # planted line, and the window plants them when it is done.
+                from src import hedge_planting
+                props["plant_ids"] = hedge_planting.chosen_ids(kind.key, opts)
             return props
         props.update({"label": "", "height_m": props.get("height_m", 0.0),
                       "kind_words": kind.words})

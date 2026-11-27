@@ -15,7 +15,11 @@ Boots ``html/map.html`` in headless Chromium through ``html/yard_map_probe.html`
   from its right-click menu (which no longer removes at once) and by R with the
   pointer over it, and a turned rectangle is drawn turned, including one loaded
   from a design;
-* an existing building mark still removes on a right-click.
+* an existing building mark still removes on a right-click;
+* a hedge, living fence or windbreak with plants on it draws no dots, and its
+  right-click menu offers *Change its plants…* and a Remove that names what it
+  takes; an old one with nothing on it keeps its dots and offers *Plant this
+  hedge…*, which asks Python (V3.74). A fence's menu only removes.
 
 Self-skips with no Chromium.
 """
@@ -74,6 +78,29 @@ class TheYardOnTheMap(unittest.TestCase):
 
     def test_an_existing_building_still_removes(self):
         self.assertEqual(self.m["existing"]["removed"], 1)
+
+    # ── Lines you plant (V3.74) ──────────────────────────────────────────────
+
+    def test_an_old_hedge_keeps_its_dots_and_offers_planting(self):
+        h = self.m["hedges"]
+        self.assertGreater(h["old_dots"], 5)
+        self.assertIn("Plant this hedge…", h["old_menu"])
+        self.assertEqual(h["removed_at_once"], 0)
+        self.assertEqual(h["asked"], ["hedge_old"])
+
+    def test_a_planted_hedge_draws_no_dots_and_says_what_remove_takes(self):
+        h = self.m["hedges"]
+        self.assertEqual(h["planted_dots"], 0)
+        self.assertIn("Change its plants…", h["planted_menu"])
+        self.assertTrue(any("Remove the hedge and its 3 plants" in t
+                            for t in h["planted_menu"]), h["planted_menu"])
+        self.assertEqual(h["removed"], ["hedge_planted"])
+        self.assertTrue(h["gone"])
+
+    def test_a_fence_only_removes(self):
+        menu = self.m["hedges"]["fence_menu"]
+        self.assertFalse(any("Plant" in t for t in menu), menu)
+        self.assertTrue(any("Remove the fence" in t for t in menu), menu)
 
 
 class TheTurnIsStored(unittest.TestCase):

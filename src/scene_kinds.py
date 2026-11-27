@@ -50,10 +50,9 @@ ROCK_R_M = (0.25, 0.55)
 ROCK_CLEAR_M = 0.3
 PLANT_REACH_M = 0.3
 ROCK_MAX = 40
-#: A fence's height by its kind: a rail fence a person sees over (as V3.45
-#: drew every fence), a board fence at the usual privacy height, a chain link
-#: fence at the usual lot-line height.
-FENCE_HEIGHT_M = {"rail": 1.2, "board": 1.8, "chain_link": 1.2}
+#: A fence's height by its kind: ``yard_kinds``'s since V3.74, so the shade
+#: map casts a board fence at the height the 3D draws it.
+FENCE_HEIGHT_M = yard_kinds.FENCE_HEIGHT_M
 
 
 def fence_height(fence_kind: str, default: float) -> float:

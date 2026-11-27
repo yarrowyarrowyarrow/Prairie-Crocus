@@ -303,6 +303,8 @@ class SuccessionEngine:
                 # map casts it, not a circle out to its farthest corner.
                 "ring": (list(c.get("footprint") or [])
                          if c.get("kind") != "tree" else []),
+                # A wall's or a fence's own name (V3.74), for the notes.
+                "what": c.get("what") or "",
             })
             lat_acc.append(c["lat"])
             lng_acc.append(c["lng"])
@@ -602,7 +604,8 @@ class SuccessionEngine:
                 "x": src["x"], "y": src["y"], "share": round(share, 3),
                 "is_tree": bool(is_tree), "foliage": src.get("foliage") or "",
                 "plant_id": src.get("plant_id"),
-                "common_name": src.get("common_name") or ""}
+                "common_name": src.get("common_name") or "",
+                "what": src.get("what") or ""}
 
     def death_year(self, index: int, year: int) -> Optional[int]:
         """The first year in 1..``year`` plant ``index`` reads dead, or None."""

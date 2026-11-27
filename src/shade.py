@@ -104,6 +104,29 @@ def _caster(lat: float, lng: float, height_m: float, radius_m: float,
     return c
 
 
+def _line_casters(feature: dict) -> list[dict]:
+    """A wall's or a board fence's shade, the owner's Q3 (V3.74): each
+    segment a strip ``yard_kinds.SHADE_STRIP_M`` wide extruded to its height,
+    as a building's footprint is. Any other line casts nothing."""
+    from src import yard_kinds
+    height = yard_kinds.shade_height(feature)
+    if height <= 0:
+        return []
+    out = []
+    pts = (feature.get("geometry") or {}).get("coordinates") or []
+    for ring in yard_kinds.line_strips(pts, yard_kinds.SHADE_STRIP_M):
+        body = ring[:-1]
+        lng = sum(p[0] for p in body) / len(body)
+        lat = sum(p[1] for p in body) / len(body)
+        c = _caster(lat, lng, height, yard_kinds.SHADE_STRIP_M / 2,
+                    footprint=ring, kind="building")
+        # What it is, for the 3D timeline's notes ("the fence"), which would
+        # otherwise call anything with an outline a building.
+        c["what"] = (yard_kinds.kind_of(feature).words or "").lower()
+        out.append(c)
+    return out
+
+
 def casters_from_project(project_dict: dict) -> list[dict]:
     """Collect shade casters from a project FeatureCollection: marked existing
     trees/buildings plus already-placed plants/structures with a known height.
@@ -131,6 +154,9 @@ def casters_from_project(project_dict: dict) -> list[dict]:
         geom = f.get("geometry", {}) or {}
         coords = geom.get("coordinates")
         if not coords or (et != "plant" and props.get(SHADE_OFF)):
+            continue
+        if et == "hedgerow":
+            casters.extend(_line_casters(f))
             continue
         # Point geometry → (lng, lat); polygon → centroid proxy + keep the ring
         # so the shapely path can cast the true footprint.

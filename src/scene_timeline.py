@@ -222,6 +222,8 @@ def shader_words(shader: Optional[Mapping], plants: list, buildings: list,
     if shader.get("kind") == "plant":
         name = shader.get("common_name") or "a tree"
         return f"the {name} in this plan"
+    if shader.get("what"):                   # a wall or a fence (V3.74)
+        return f"the {shader['what']}"
     x, y = float(shader["x"]), float(shader["y"])
     for b in buildings or []:
         ring = b.get("ring") or []

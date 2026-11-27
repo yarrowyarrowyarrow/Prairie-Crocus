@@ -9,13 +9,31 @@ One list under six headings; each kind's options as the owner answered them
 """
 
 import os
+import shutil
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+# A hedge's plant lists read the catalogue (V3.74): never the person's own.
+_TMP = tempfile.mkdtemp(prefix="yard_palette_")
+import src.db.plants as _plants                                # noqa: E402
+_plants._DATA_DIR = _TMP
+_plants._DB_PATH = os.path.join(_TMP, "permadesign_test.db")
+
 from src import yard_kinds as Y                                # noqa: E402
+
+
+def setUpModule():
+    _plants._DATA_DIR = _TMP
+    _plants._DB_PATH = os.path.join(_TMP, "permadesign_test.db")
+    _plants.init_db()
+
+
+def tearDownModule():
+    shutil.rmtree(_TMP, ignore_errors=True)
 
 try:
     from PyQt6.QtCore import Qt
@@ -164,6 +182,46 @@ class TheYardTab(unittest.TestCase):
         self.assertEqual(what, "line")
         self.assertEqual((d["kind"], d["style"], d["fence_kind"]),
                          ("fence", "fence", "board"))
+
+    def test_a_hedge_asks_for_a_shrub_from_the_list(self):
+        """V3.74: no width, no spacing, no box to type a species in."""
+        from PyQt6.QtWidgets import QComboBox
+        from src import hedge_planting
+        self.p.choose("hedge")
+        self.assertEqual(set(self.p._inputs), {"shrub"})
+        box = self.p._inputs["shrub"]
+        self.assertIsInstance(box, QComboBox)
+        listed = [box.itemData(i) for i in range(box.count())]
+        self.assertEqual(listed, [pid for pid, _n in
+                                  hedge_planting.choices("shrub")])
+        first = hedge_planting.default_choices("hedge")["shrub"]
+        self.assertEqual(box.currentData(), first)
+        self.p._verb.click()
+        what, d = self.sent[-1]
+        self.assertEqual(what, "line")
+        self.assertEqual((d["kind"], d["plant_ids"]), ("hedge", [first]))
+        self.assertNotIn("species", d)
+
+    def test_a_living_fence_two_or_three(self):
+        self.p.choose("living_fence")
+        self.assertEqual(list(self.p._inputs),
+                         ["shrub", "shrub_2", "shrub_3"])
+        third = self.p._inputs["shrub_3"]
+        self.assertIsNone(third.currentData())               # "None"
+        self.p._verb.click()
+        self.assertEqual(len(self.sent[-1][1]["plant_ids"]), 2)
+        third.setCurrentIndex(3)
+        self.p._verb.click()
+        self.assertEqual(len(self.sent[-1][1]["plant_ids"]), 3)
+
+    def test_a_windbreak_a_back_and_a_front_row(self):
+        self.p.choose("windbreak")
+        self.assertEqual(list(self.p._inputs), ["tree", "shrub"])
+        self.p._verb.click()
+        d = self.sent[-1][1]
+        self.assertEqual(d["plant_ids"],
+                         [self.p._inputs["tree"].currentData(),
+                          self.p._inputs["shrub"].currentData()])
 
     def test_an_object_is_placed_at_its_size(self):
         self.p.choose("bee_hotel")

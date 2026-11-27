@@ -73,6 +73,11 @@ class Option:
     hi: float = 0.0
     step: float = 0.0
     text: bool = False
+    # A plant from the region's list (V3.74): the role
+    # ``src/hedge_planting.py`` lists the choices for ("shrub", "tall",
+    # "front"), the default its first choice. ``optional`` adds "None".
+    plants: str = ""
+    optional: bool = False
 
 
 @dataclass(frozen=True)
@@ -135,13 +140,31 @@ BUILDING_HEIGHT_M = {"house": 6.0, "garage": 4.0, "shed": 2.4}
 BUILDINGS = (("house", "House"), ("garage", "Garage"), ("shed", "Shed"))
 
 
-def _hedge_options(width: float) -> tuple:
-    return (Option("width_m", "Width", default=width, unit="m", lo=0.5,
-                   hi=5.0, step=0.5),
-            Option("spacing_m", "How far apart", default=1.0, unit="m",
-                   lo=0.3, hi=5.0, step=0.1),
-            Option("species", "What is planted (optional)", default="",
-                   text=True))
+#: What a hedge, a living fence and a windbreak are planted with (V3.74): the
+#: region's shrubs and trees, chosen by ``src/hedge_planting.py``. Until V3.74
+#: each asked a width, a spacing and a species typed into a box, and nothing
+#: was planted.
+HEDGE_OPTIONS = (Option("shrub", "Shrub", plants="shrub"),)
+LIVING_FENCE_OPTIONS = (Option("shrub", "First shrub", plants="shrub"),
+                        Option("shrub_2", "Second shrub", plants="shrub"),
+                        Option("shrub_3", "Third shrub", plants="shrub",
+                               optional=True))
+WINDBREAK_OPTIONS = (Option("tree", "Back row", plants="tall"),
+                     Option("shrub", "Front row", plants="front"))
+
+#: How tall a fence stands by its kind, and a wall: **stated estimates**
+#: (nothing in a design records them). A rail fence a person sees over (as
+#: V3.45 drew every fence), a board fence at the usual privacy height, a
+#: chain link fence at the usual lot-line height. The 3D draws them (V3.73)
+#: and the shade map casts the ones that shade (V3.74).
+FENCE_HEIGHT_M = {"rail": 1.2, "board": 1.8, "chain_link": 1.2}
+WALL_HEIGHT_M = 1.2
+#: The fences that cast shade, the owner's Q3: closed boards. A rail or a
+#: chain link fence lets the light through.
+SHADING_FENCES = ("board",)
+#: A shading line is cast as a strip this wide at its height: a wall's
+#: thickness, and near enough a board fence's for a shadow metres long.
+SHADE_STRIP_M = 0.2
 
 
 #: The table. **Order matters**: the readers' derived tuples keep the order
@@ -254,14 +277,14 @@ KINDS: tuple = (
     Kind("wall", "Wall", LINE, line_styles=("wall",), cue="border",
          about="A wall of brick, block or stone.", colours=("#9e9e9e",)),
     Kind("hedge", "Hedge", LINE, line_styles=("hedge",),
-         about="A row of one kind of shrub.", options=_hedge_options(1.5),
+         about="A row of one kind of shrub.", options=HEDGE_OPTIONS,
          colours=("#4caf50",)),
     Kind("living_fence", "Living fence", LINE, line_styles=("living_fence",),
          about="A mixed row of two or three kinds of shrub.",
-         options=_hedge_options(1.5), colours=("#66bb6a",)),
+         options=LIVING_FENCE_OPTIONS, colours=("#66bb6a",)),
     Kind("windbreak", "Windbreak", LINE, line_styles=("windbreak",),
          about="Trees and tall shrubs against the wind.",
-         options=_hedge_options(3.0), colours=("#2e7d32",)),
+         options=WINDBREAK_OPTIONS, colours=("#2e7d32",)),
     # Objects: kept out of at their footprint (until V3.71 only a barrel and a
     # brush pile were, so a plan could put plants in a fire pit).
     Kind("bee_hotel", "Bee hotel", OBJECT, struct_ids=("bee_hotel",),
@@ -477,10 +500,16 @@ def footprint_rings(feature: dict) -> list:
         return [ring]
     geom = (feature or {}).get("geometry") or {}
     props = (feature or {}).get("properties") or {}
-    pts = geom.get("coordinates") or []
-    if geom.get("type") != "LineString" or len(pts) < 2:
+    if geom.get("type") != "LineString":
         return []
-    half = float(props.get("width_m") or 1.0) / 2.0
+    return line_strips(geom.get("coordinates") or [],
+                       float(props.get("width_m") or 1.0))
+
+
+def line_strips(pts: list, width_m: float) -> list:
+    """A ``[lng, lat]`` line as closed rings, one rectangle a segment,
+    ``width_m`` across."""
+    half = float(width_m) / 2.0
     out = []
     for a, b in zip(pts, pts[1:]):
         kx = _M_PER_DEG * math.cos(math.radians((a[1] + b[1]) / 2.0))
@@ -494,6 +523,43 @@ def footprint_rings(feature: dict) -> list:
                 for p, s in corners]
         out.append(ring + [ring[0]])
     return out
+
+
+#: The lines planted along (V3.74): the kinds whose options are plants.
+LIVING_LINES: tuple = tuple(k.key for k in KINDS
+                            if any(o.plants for o in k.options))
+
+
+def is_living_line(feature: dict) -> bool:
+    """A hedge, a living fence or a windbreak: a line its plants stand on."""
+    k = kind_of(feature)
+    return k is not None and k.key in LIVING_LINES
+
+
+def line_height(feature: dict) -> float:
+    """How tall a fence or a wall stands (:data:`FENCE_HEIGHT_M`,
+    :data:`WALL_HEIGHT_M`), 0 for any other line."""
+    k = kind_of(feature)
+    props = (feature or {}).get("properties") or {}
+    if k is not None and k.key == "wall":
+        return WALL_HEIGHT_M
+    if k is not None and k.key == "fence":
+        return FENCE_HEIGHT_M.get(props.get("fence_kind") or "rail",
+                                  FENCE_HEIGHT_M["rail"])
+    return 0.0
+
+
+def shade_height(feature: dict) -> float:
+    """How tall a line casts shade from, the owner's Q3: a wall and a board
+    fence (:data:`SHADING_FENCES`) at their height, anything else 0."""
+    k = kind_of(feature)
+    props = (feature or {}).get("properties") or {}
+    if k is None or k.verb != LINE:
+        return 0.0
+    if k.key == "fence" and (props.get("fence_kind") or "rail") \
+            not in SHADING_FENCES:
+        return 0.0
+    return line_height(feature)
 
 
 def ring_area_m2(ring: list) -> float:

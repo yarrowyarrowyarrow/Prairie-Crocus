@@ -148,6 +148,7 @@ class MapBridge(QObject):
 
     # Hedgerow signals
     hedgerow_complete = pyqtSignal(str, str, str, str, float, int)  # id, pointsJson, species, style, lengthM, numPlants
+    hedge_plant_requested = pyqtSignal(str)  # a line's "Plant this hedge…" (V3.74)
     hedgerow_removed = pyqtSignal(str, str)                         # id, pointsJson
 
     # Shape signals
@@ -411,6 +412,10 @@ class MapBridge(QObject):
     @pyqtSlot(str, str)
     def onHedgerowRemoved(self, hedge_id: str, points_json: str):
         self.hedgerow_removed.emit(hedge_id, points_json)
+
+    @pyqtSlot(str)
+    def onHedgePlantRequested(self, hedge_id: str):
+        self.hedge_plant_requested.emit(hedge_id)
 
     # ── Shape slots ───────────────────────────────────────────────────────────
 

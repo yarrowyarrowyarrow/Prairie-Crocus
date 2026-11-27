@@ -361,6 +361,7 @@ class MapEventRouter:
 
     # ── Hedgerow handlers ────────────────────────────────────────────────────
 
+    @undoable("draw a line")
     def _on_hedgerow_complete(self, hedge_id: str, points_json: str,
                                species: str, style: str, length_m: float,
                                num_plants: int):
@@ -376,29 +377,28 @@ class MapEventRouter:
                  "color": cfg.get("color") or "#4caf50",
                  "width_m": float(cfg.get("width_m") or 1.5),
                  "spacing_m": float(cfg.get("spacing_m") or 1.0)}
-        # Its kind from the Yard palette (V3.72), else its style's.
-        props.update({k: cfg[k] for k in ("kind", "fence_kind") if cfg.get(k)})
-        self._main._project["features"].append({
-            "type": "Feature",
-            "geometry": {"type": "LineString", "coordinates": coords},
-            "properties": props})
-        self._main._push_undo({
-            "action": "place_hedgerow",
-            "hedge_id": hedge_id,
-            "length_m": length_m,
-        })
+        # Its kind from the Yard palette (V3.72), else its style's, and the
+        # plants chosen for it, which go in with it as one undo step (V3.74).
+        props.update({k: cfg[k] for k in ("kind", "fence_kind", "plant_ids")
+                      if cfg.get(k)})
+        feature = {"type": "Feature",
+                   "geometry": {"type": "LineString", "coordinates": coords},
+                   "properties": props}
+        self._main._project["features"].append(feature)
+        from src import hedge_flow
+        num_plants = hedge_flow.plant_new_line(self._main, feature) \
+            or num_plants
         self._main._mark_modified()
         self._main._set_mode_label("Ready")
         self._main.statusBar().showMessage(
-            f"Hedgerow placed: {length_m:.1f}m, ~{num_plants} plants", 3000
-        )
+            f"Line drawn: {length_m:.1f} m"
+            + (f", {num_plants} plants" if num_plants else ""), 3000)
 
     @undoable("remove hedgerow")
     def _on_hedgerow_removed(self, hedge_id: str, points_json: str):
-        self._main._project["features"] = [
-            f for f in self._main._project["features"]
-            if f.get("properties", {}).get("hedge_id") != hedge_id
-        ]
+        # Its plants go with it (V3.74).
+        from src import hedge_flow
+        hedge_flow.remove_line(self._main, hedge_id)
         self._main._mark_modified()
 
     # ── Shape handlers ───────────────────────────────────────────────────────

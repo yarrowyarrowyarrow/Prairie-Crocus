@@ -140,6 +140,50 @@ async function run() {
   fire('contextmenu', px(LAT + D * 2, LNG + D * 3));
   out.existing = { removed: calledWith('onStructureRemoved').length };
 
+  // Lines you plant (V3.74). An old hedge with nothing on it keeps its dots
+  // and its menu offers planting; a planted one has no dots, and its Remove
+  // says it takes the plants; a fence's menu only removes.
+  if (w.hideContextMenu) w.hideContextMenu();
+  const HL = LAT + D * 6;
+  w.loadHedgerow({ points: [[HL, LNG - D * 3], [HL, LNG + D * 3]], hedge_id: 'hedge_old',
+                   style: 'hedge', color: '#4caf50', spacing_m: 1, species: 'saskatoon',
+                   living: true, plants: 0 });
+  w.loadHedgerow({ points: [[HL + D * 2, LNG - D * 3], [HL + D * 2, LNG + D * 3]],
+                   hedge_id: 'hedge_planted', style: 'hedge', color: '#4caf50',
+                   spacing_m: 1, living: true, plants: 3 });
+  w.loadHedgerow({ points: [[HL + D * 4, LNG - D * 3], [HL + D * 4, LNG + D * 3]],
+                   hedge_id: 'fence_plain', style: 'fence', kind: 'fence', color: '#795548',
+                   living: false, plants: 0 });
+  const dotsOf = id => w.hedgerowLayers[id].getLayers()
+    .filter(l => l instanceof w.L.CircleMarker).length;
+  const lineOf = id => w.hedgerowLayers[id].getLayers()
+    .find(l => l instanceof w.L.Polyline);
+  function menuOf(id) {
+    if (w.hideContextMenu) w.hideContextMenu();
+    const ll = lineOf(id).getLatLngs()[0];
+    const p = px(ll.lat, ll.lng);
+    lineOf(id).fire('contextmenu', { originalEvent: { clientX: p.x, clientY: p.y } });
+    const m = w.document.getElementById('_pd_ctx_menu');
+    return m ? Array.from(m.querySelectorAll('div')) : [];
+  }
+  const labelsOf = items => items.map(d => d.textContent.trim()).filter(t => t);
+  calls = [];
+  const oldItems = menuOf('hedge_old');
+  out.hedges = { old_dots: dotsOf('hedge_old'), planted_dots: dotsOf('hedge_planted'),
+                 old_menu: labelsOf(oldItems),
+                 removed_at_once: calledWith('onHedgerowRemoved').length };
+  const plantItem = oldItems.find(d => d.textContent.indexOf('Plant this') >= 0);
+  if (plantItem) plantItem.click();
+  out.hedges.asked = calledWith('onHedgePlantRequested').map(c => c[1]);
+  const plantedItems = menuOf('hedge_planted');
+  out.hedges.planted_menu = labelsOf(plantedItems);
+  const removeItem = plantedItems.find(d => d.textContent.indexOf('Remove') >= 0);
+  if (removeItem) removeItem.click();
+  out.hedges.removed = calledWith('onHedgerowRemoved').map(c => c[1]);
+  out.hedges.gone = !w.hedgerowLayers.hedge_planted;
+  out.hedges.fence_menu = labelsOf(menuOf('fence_plain'));
+  if (w.hideContextMenu) w.hideContextMenu();
+
   document.title = 'MEASURED ' + JSON.stringify(out);
 }
 run().catch(e => { document.title = 'MEASURED ' + JSON.stringify({ error: String(e) + ' ' + (e.stack || '') }); });

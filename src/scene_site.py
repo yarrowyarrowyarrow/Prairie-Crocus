@@ -39,6 +39,8 @@ from __future__ import annotations
 import math
 from typing import Optional
 
+from src import yard_kinds
+
 GROUND_PALE = "pale"
 GROUND_MEADOW = "meadow"
 
@@ -79,7 +81,7 @@ KINDS = _all_looks()
 #: species in free text). A rail fence a person can see over; a clipped hedge;
 #: a taller living fence; a windbreak of shrubs.
 LINE_HEIGHT_M = {"fence": 1.2, "hedge": 1.2, "living_fence": 1.6,
-                 "windbreak": 3.0, "wall": 1.2}
+                 "windbreak": 3.0, "wall": yard_kinds.WALL_HEIGHT_M}
 #: A wall's thickness, and a raised bed's frame's (V3.72): stated estimates,
 #: like the heights above.
 WALL_WIDTH_M = 0.2
@@ -200,13 +202,17 @@ def lines(project: dict, proj) -> list:
     """Hedges, fences, living fences and windbreaks: ``[{kind, points,
     width_m, height_m}]``. The height is :data:`LINE_HEIGHT_M`'s estimate,
     or a fence kind's (``scene_kinds.FENCE_HEIGHT_M``, V3.73)."""
-    from src import scene_kinds
+    from src import hedge_planting, scene_kinds
+    # A planted hedge, living fence or windbreak draws nothing (V3.74): its
+    # plants are the shrubs and trees the viewer builds.
+    planted = hedge_planting.planted(project)
     out = []
     for f in (project or {}).get("features", []) or []:
         props = f.get("properties") or {}
         geom = f.get("geometry") or {}
         if (props.get("element_type") != "hedgerow"
-                or geom.get("type") != "LineString"):
+                or geom.get("type") != "LineString"
+                or (props.get("hedge_id") and props["hedge_id"] in planted)):
             continue
         pts = []
         for pt in geom.get("coordinates") or []:

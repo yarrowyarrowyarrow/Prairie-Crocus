@@ -185,15 +185,20 @@ def _kind_words(feature: dict) -> str:
     return words
 
 
-def feature_to_hedgerow(feature: dict) -> Optional[dict]:
+def feature_to_hedgerow(feature: dict, plants: int = 0) -> Optional[dict]:
     """A drawn line as the map's ``loadHedgerow`` takes it, or ``None``. Its
     ``hedge_id`` rides along (V3.72) so the map and the design name the same
-    line, and the map draws it without telling Python it was drawn."""
+    line, and the map draws it without telling Python it was drawn.
+    ``plants`` is how many stand on it (V3.74): a planted line is drawn
+    without dots, and its menu says what Remove takes."""
     geom = feature.get("geometry", {})
     if geom.get("type") != "LineString":
         return None
     props = feature.get("properties", {})
+    from src import yard_kinds
     return {
+        "plants": int(plants or 0),
+        "living": yard_kinds.is_living_line(feature),
         "points": [[pt[1], pt[0]] for pt in geom.get("coordinates") or []],
         "hedge_id": props.get("hedge_id") or "",
         "style": props.get("style", "hedge"),
@@ -293,6 +298,13 @@ def project_to_map_data(project: dict) -> dict:
         "annotations": [],     # text notes pinned to the map (V1.81)
         "measurements": [],    # {id, points: [[lat, lng], [lat, lng]]} (V3.11)
     }
+    # How many plants stand on each line (V3.74), by their placement group.
+    on_line: dict = {}
+    for feature in project.get("features", []):
+        props = feature.get("properties", {})
+        if props.get("element_type") == "plant":
+            gid = props.get("placement_group_id") or ""
+            on_line[gid] = on_line.get(gid, 0) + 1
     for feature in project.get("features", []):
         props = feature.get("properties", {})
         geom  = feature.get("geometry", {})
@@ -371,7 +383,8 @@ def project_to_map_data(project: dict) -> dict:
             })
 
         elif etype == "hedgerow" and geom.get("type") == "LineString":
-            line = feature_to_hedgerow(feature)
+            line = feature_to_hedgerow(
+                feature, on_line.get(props.get("hedge_id") or "\0", 0))
             if line:
                 result["hedgerows"].append(line)
 
