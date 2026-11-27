@@ -1,0 +1,1687 @@
+{
+ "_about": "Photographs for animals, from iNaturalist, openly licensed. Written by scripts/fetch_animal_photos.py on the owner's PC; folded by scripts/fold_animal_photos.py.",
+ "none": [
+  "Anas clypeata",
+  "Grus canadensis",
+  "Speyeria cybele",
+  "Speyeria atlantis",
+  "Speyeria aphrodite",
+  "Ellychnia corrusca",
+  "Speyeria mormonia",
+  "Cimbex americana",
+  "Geina tenuidactylus",
+  "Adelges lariciatus",
+  "Nomada bella",
+  "Lycaena heteronea",
+  "Cupido comyntas",
+  "Xeromelecta californica",
+  "Nomada aquilarum",
+  "Nomada lehighensis",
+  "Triepeolus balteatus",
+  "Schizura concinna",
+  "Nomada snowii",
+  "Triepeolus subalpinus",
+  "Lagopus lagopus"
+ ],
+ "photos": {
+  "Adalia bipunctata": {
+   "attribution": "(c) Alexis Tinker-Tsavalas, some rights reserved (CC BY), uploaded by Alexis Tinker-Tsavalas",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/52506",
+   "taxon_id": 52506,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/63106443/medium.jpeg"
+  },
+  "Adelges cooleyi": {
+   "attribution": "(c) Ken-ichi Ueda, some rights reserved (CC BY), uploaded by Ken-ichi Ueda",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/334163",
+   "taxon_id": 334163,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2476229/medium.jpg"
+  },
+  "Agelaius phoeniceus": {
+   "attribution": "(c) anonymous, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/9744",
+   "taxon_id": 9744,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/275637604/medium.jpg"
+  },
+  "Agrilus anxius": {
+   "attribution": "(c) Jason Hill, some rights reserved (CC BY), uploaded by Jason Hill",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/123961",
+   "taxon_id": 123961,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/44266046/medium.jpg"
+  },
+  "Alypia octomaculata": {
+   "attribution": "(c) Sam Kieschnick, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/271862639",
+   "taxon_id": 84950,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/489058618/medium.jpeg"
+  },
+  "Anagrapha falcifera": {
+   "attribution": "(c) Colin Croft, some rights reserved (CC BY), uploaded by Colin Croft",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/59300",
+   "taxon_id": 59300,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/42254542/medium.jpeg"
+  },
+  "Anser caerulescens": {
+   "attribution": "(c) Tom Field, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/127173859",
+   "taxon_id": 558426,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/215872657/medium.jpg"
+  },
+  "Anthocharis julia": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/75716097",
+   "taxon_id": 900255,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/123904692/medium.jpeg"
+  },
+  "Anthophora bomboides": {
+   "attribution": "(c) USGS Native Bee Inventory and Monitoring Laboratory, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/198855",
+   "taxon_id": 198855,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/222694/medium.jpg"
+  },
+  "Anthophora occidentalis": {
+   "attribution": "no rights reserved, uploaded by USGS Bee Inventory and Monitoring Lab",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/213790",
+   "taxon_id": 213790,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/571483/medium.jpg"
+  },
+  "Anthophora peritomae": {
+   "attribution": "(c) Toby, some rights reserved (CC BY), uploaded by Toby",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/459051",
+   "taxon_id": 459051,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/175013537/medium.jpeg"
+  },
+  "Anthophora porterae": {
+   "attribution": "(c) Austin Saunders, some rights reserved (CC BY), uploaded by Austin Saunders",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/213791",
+   "taxon_id": 213791,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/653978497/medium.jpg"
+  },
+  "Anthophora ursina": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/107910048",
+   "taxon_id": 213792,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/181575004/medium.jpeg"
+  },
+  "Archilochus colubris": {
+   "attribution": "(c) Blake Ross, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/139913607",
+   "taxon_id": 6432,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/239401590/medium.jpg"
+  },
+  "Archips cerasivorana": {
+   "attribution": "(c) Medetera, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/129576",
+   "taxon_id": 129576,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/10783887/medium.jpeg"
+  },
+  "Argynnis aphrodite": {
+   "attribution": "(c) Dan Vickers, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/241457078",
+   "taxon_id": 1456585,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/430339097/medium.jpg"
+  },
+  "Bembix americana": {
+   "attribution": "(c) Garth Harwood, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/30708352",
+   "taxon_id": 53072,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47986907/medium.jpeg"
+  },
+  "Blepharida rhois": {
+   "attribution": "(c) David George, some rights reserved (CC BY), uploaded by David George",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/215269",
+   "taxon_id": 215269,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/220271317/medium.jpg"
+  },
+  "Boisea trivittata": {
+   "attribution": "(c) Susan Blayney, some rights reserved (CC BY), uploaded by Susan Blayney",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/53227",
+   "taxon_id": 53227,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/297563357/medium.jpg"
+  },
+  "Boloria bellona": {
+   "attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/367591934",
+   "taxon_id": 58564,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/671311507/medium.jpg"
+  },
+  "Boloria chariclea": {
+   "attribution": "no rights reserved, uploaded by Kent P. McFarland",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/194027",
+   "taxon_id": 194027,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/432036/medium.jpg"
+  },
+  "Bombus appositus": {
+   "attribution": "(c) Will Pearce, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/388519736",
+   "taxon_id": 320050,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/711576648/medium.jpg"
+  },
+  "Bombus balteatus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/222448112",
+   "taxon_id": 143025,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/394044372/medium.jpeg"
+  },
+  "Bombus bifarius": {
+   "attribution": "(c) John Powers, some rights reserved (CC BY), uploaded by John Powers",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/1020324",
+   "taxon_id": 1020324,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/83350087/medium.jpeg"
+  },
+  "Bombus bohemicus": {
+   "attribution": "no rights reserved, uploaded by Ilkka Kaita-aho",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/125884",
+   "taxon_id": 125884,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/132584919/medium.jpeg"
+  },
+  "Bombus borealis": {
+   "attribution": "(c) Andrew Lai, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/304387377",
+   "taxon_id": 143854,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/548730042/medium.jpg"
+  },
+  "Bombus centralis": {
+   "attribution": "(c) Darrin Gobble, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/167312305",
+   "taxon_id": 321463,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/289829018/medium.jpeg"
+  },
+  "Bombus cryptarum": {
+   "attribution": "(c) Andrew Cottrell, some rights reserved (CC BY), uploaded by Andrew Cottrell",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/453068",
+   "taxon_id": 453068,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/391216022/medium.jpg"
+  },
+  "Bombus fervidus": {
+   "attribution": "(c) John Baker, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/52774",
+   "taxon_id": 52774,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/221730/medium.jpg"
+  },
+  "Bombus flavidus": {
+   "attribution": "(c) Jeff Bartlett, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/120993522",
+   "taxon_id": 541839,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/204696779/medium.jpg"
+  },
+  "Bombus flavifrons": {
+   "attribution": "(c) sprcrkwild, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/84113241",
+   "taxon_id": 119308,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/138211336/medium.jpg"
+  },
+  "Bombus frigidus": {
+   "attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/433293",
+   "taxon_id": 433293,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/72458896/medium.jpeg"
+  },
+  "Bombus griseocollis": {
+   "attribution": "no rights reserved, uploaded by USGS Bee Inventory and Monitoring Lab",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/120215",
+   "taxon_id": 120215,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/571486/medium.jpg"
+  },
+  "Bombus insularis": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/164911094",
+   "taxon_id": 143036,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/285396007/medium.jpeg"
+  },
+  "Bombus kirbiellus": {
+   "attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/704572",
+   "taxon_id": 704572,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/42756491/medium.jpeg"
+  },
+  "Bombus melanopygus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/282206942",
+   "taxon_id": 130222,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/506999957/medium.jpg"
+  },
+  "Bombus mixtus": {
+   "attribution": "(c) Lee Cain, some rights reserved (CC BY), uploaded by Lee Cain",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/319125",
+   "taxon_id": 319125,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/78320005/medium.jpeg"
+  },
+  "Bombus nevadensis": {
+   "attribution": "no rights reserved, uploaded by Steve Wells",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/341001",
+   "taxon_id": 341001,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/6106541/medium.jpeg"
+  },
+  "Bombus occidentalis": {
+   "attribution": "(c) USGS Bee Inventory and Monitoring Lab, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/82371",
+   "taxon_id": 82371,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/693150/medium.jpg"
+  },
+  "Bombus pensylvanicus": {
+   "attribution": "(c) crseaquist, some rights reserved (CC BY), uploaded by crseaquist",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/56887",
+   "taxon_id": 56887,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/102805250/medium.jpg"
+  },
+  "Bombus perplexus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/223576615",
+   "taxon_id": 155085,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/396163284/medium.jpeg"
+  },
+  "Bombus polaris": {
+   "attribution": "(c) Rajan Rao, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/379599874",
+   "taxon_id": 452396,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/694382230/medium.jpg"
+  },
+  "Bombus rufocinctus": {
+   "attribution": "(c) Michelle Orcutt, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/140685730",
+   "taxon_id": 144011,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/240855810/medium.jpg"
+  },
+  "Bombus sitkensis": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/125085320",
+   "taxon_id": 142269,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/212088894/medium.jpg"
+  },
+  "Bombus suckleyi": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/94398908",
+   "taxon_id": 452445,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/156586446/medium.jpg"
+  },
+  "Bombus sylvicola": {
+   "attribution": "(c) Syd Cannings, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/229431422",
+   "taxon_id": 450489,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/407254969/medium.jpeg"
+  },
+  "Bombus terricola": {
+   "attribution": "(c) Bill Keim, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/121517",
+   "taxon_id": 121517,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/51554787/medium.jpg"
+  },
+  "Bombus vagans": {
+   "attribution": "(c) Bernie Paquette, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/132704327",
+   "taxon_id": 128670,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/225960343/medium.jpeg"
+  },
+  "Bombus vancouverensis": {
+   "attribution": "no rights reserved, uploaded by Steve Wells",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/1020304",
+   "taxon_id": 1020304,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/33918846/medium.jpeg"
+  },
+  "Bombylius major": {
+   "attribution": "(c) Kostas Zontanos, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/10635479",
+   "taxon_id": 51557,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/14837087/medium.jpeg"
+  },
+  "Burnsius communis": {
+   "attribution": "(c) Chris Quirin, some rights reserved (CC BY), uploaded by Chris Quirin",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/1038408",
+   "taxon_id": 1038408,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/188795343/medium.jpeg"
+  },
+  "Buteo jamaicensis": {
+   "attribution": "no rights reserved, uploaded by Claude Lyneis",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/5212",
+   "taxon_id": 5212,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/319785046/medium.jpg"
+  },
+  "Byturus unicolor": {
+   "attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/215612",
+   "taxon_id": 215612,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20225382/medium.jpg"
+  },
+  "Callophrys niphon": {
+   "attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/215679366",
+   "taxon_id": 58550,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/381352622/medium.jpg"
+  },
+  "Calvia quatuordecimguttata": {
+   "attribution": "(c) Gilles San Martin, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/69203",
+   "taxon_id": 69203,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/378648764/medium.jpg"
+  },
+  "Camponotus novaeboracensis": {
+   "attribution": "(c) Benjamin Burgunder, some rights reserved (CC BY), uploaded by Benjamin Burgunder",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/143252",
+   "taxon_id": 143252,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/130251314/medium.jpeg"
+  },
+  "Carterocephalus mandan": {
+   "attribution": "no rights reserved, uploaded by John Sankey",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/1268534",
+   "taxon_id": 1268534,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/70813304/medium.jpg"
+  },
+  "Catocala concumbens": {
+   "attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/216266",
+   "taxon_id": 216266,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5966339/medium.jpg"
+  },
+  "Celastrina ladon": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/360757229",
+   "taxon_id": 58556,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/658303453/medium.jpg"
+  },
+  "Celastrina lucia": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/174525501",
+   "taxon_id": 84662,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/303205249/medium.jpeg"
+  },
+  "Celastrina neglecta": {
+   "attribution": "(c) botanygirl, some rights reserved (CC BY), uploaded by botanygirl",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/82792",
+   "taxon_id": 82792,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/602425/medium.jpg"
+  },
+  "Ceratomia undulosa": {
+   "attribution": "(c) Anne C Lewis, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/127516427",
+   "taxon_id": 82153,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/216492158/medium.jpeg"
+  },
+  "Charadra deridens": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/80437768",
+   "taxon_id": 148460,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/131849150/medium.jpg"
+  },
+  "Chionaspis pinifoliae": {
+   "attribution": "(c) Cricket Raspet, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/133723390",
+   "taxon_id": 536686,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/227816631/medium.jpeg"
+  },
+  "Choristoneura fumiferana": {
+   "attribution": "(c) Lucas Benaiche, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/244129284",
+   "taxon_id": 208521,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/435434224/medium.jpeg"
+  },
+  "Choristoneura pinus": {
+   "attribution": "(c) Jake McCumber, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/174961992",
+   "taxon_id": 216809,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/304014189/medium.jpeg"
+  },
+  "Choristoneura rosaceana": {
+   "attribution": "(c) Rob Foster, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/51805053",
+   "taxon_id": 143728,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/82326022/medium.jpeg"
+  },
+  "Chrysochus auratus": {
+   "attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA), uploaded by Jimmy Dee",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/84162",
+   "taxon_id": 84162,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47954553/medium.jpg"
+  },
+  "Chrysochus cobaltinus": {
+   "attribution": "(c) Alan Vernon, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/119881",
+   "taxon_id": 119881,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/57684/medium.jpg"
+  },
+  "Chrysopa oculata": {
+   "attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/146945",
+   "taxon_id": 146945,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8328255/medium.jpeg"
+  },
+  "Chrysoperla carnea": {
+   "attribution": "(c) E. A., some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/295431077",
+   "taxon_id": 311581,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/531844101/medium.jpg"
+  },
+  "Chrysoteuchia topiarius": {
+   "attribution": "(c) Andy Reago & Chrissy McClarren, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/321779",
+   "taxon_id": 321779,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1004550/medium.jpg"
+  },
+  "Cingilia catenaria": {
+   "attribution": "(c) Doug Macaulay, some rights reserved (CC BY), uploaded by Doug Macaulay",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/154057",
+   "taxon_id": 154057,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/61580850/medium.jpeg"
+  },
+  "Cisseps fulvicollis": {
+   "attribution": "(c) Judy Gallagher, some rights reserved (CC BY-SA), uploaded by Judy Gallagher",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/119789",
+   "taxon_id": 119789,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/21877919/medium.jpg"
+  },
+  "Clemensia albata": {
+   "attribution": "(c) W Rao, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/221251885",
+   "taxon_id": 81672,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/391812367/medium.jpeg"
+  },
+  "Coccinella novemnotata": {
+   "attribution": "(c) Jared Shorma, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/9381086",
+   "taxon_id": 136563,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/12742315/medium.jpg"
+  },
+  "Coccinella transversoguttata": {
+   "attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/128994",
+   "taxon_id": 128994,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/145296153/medium.jpeg"
+  },
+  "Coccinella trifasciata": {
+   "attribution": "(c) Eddie Dunbar, some rights reserved (CC BY-SA), uploaded by Eddie Dunbar",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/207616",
+   "taxon_id": 207616,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4141807/medium.jpg"
+  },
+  "Coenonympha tullia": {
+   "attribution": "(c) Kai L\u00f6hr, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/357930714",
+   "taxon_id": 59185,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/652886138/medium.jpg"
+  },
+  "Colias eurytheme": {
+   "attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/58532",
+   "taxon_id": 58532,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/235358656/medium.jpeg"
+  },
+  "Colias interior": {
+   "attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/13945981",
+   "taxon_id": 198800,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20611497/medium.jpg"
+  },
+  "Colletes inaequalis": {
+   "attribution": "(c) christine123, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/12145047",
+   "taxon_id": 199041,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/17429749/medium.jpg"
+  },
+  "Ctenucha virginica": {
+   "attribution": "(c) Dan MacNeal, some rights reserved (CC BY), uploaded by Dan MacNeal",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/119013",
+   "taxon_id": 119013,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/295764125/medium.jpeg"
+  },
+  "Cycnia tenera": {
+   "attribution": "(c) Judy Gallagher, some rights reserved (CC BY-SA), uploaded by Judy Gallagher",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/143043",
+   "taxon_id": 143043,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4859426/medium.jpg"
+  },
+  "Diabrotica undecimpunctata": {
+   "attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/55487",
+   "taxon_id": 55487,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/31516455/medium.jpg"
+  },
+  "Diadasia australis": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/96527964",
+   "taxon_id": 307402,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/160371887/medium.jpeg"
+  },
+  "Diadasia diminuta": {
+   "attribution": "(c) Zack Abbey, some rights reserved (CC BY), uploaded by Zack Abbey",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/307403",
+   "taxon_id": 307403,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/186473398/medium.jpg"
+  },
+  "Diplolepis spinosa": {
+   "attribution": "(c) Chris Friesen, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/105051957",
+   "taxon_id": 746857,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/176170919/medium.jpeg"
+  },
+  "Dolichovespula arctica": {
+   "attribution": "(c) Owen Strickland, some rights reserved (CC BY), uploaded by Owen Strickland",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/209575",
+   "taxon_id": 209575,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/225158841/medium.jpeg"
+  },
+  "Dolichovespula arenaria": {
+   "attribution": "(c) Chris O'Donoghue, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/121300261",
+   "taxon_id": 118913,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/205243927/medium.jpg"
+  },
+  "Dolichovespula maculata": {
+   "attribution": "(c) Amy Schnebelin, some rights reserved (CC BY), uploaded by Amy Schnebelin",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/52911",
+   "taxon_id": 52911,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47461172/medium.jpg"
+  },
+  "Dumetella carolinensis": {
+   "attribution": "(c) kirk gardner, some rights reserved (CC BY), uploaded by kirk gardner",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/14995",
+   "taxon_id": 14995,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/129956324/medium.jpg"
+  },
+  "Ectropis crepuscularia": {
+   "attribution": "(c) Emanuel Kern, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/273478379",
+   "taxon_id": 143009,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/491784955/medium.jpeg"
+  },
+  "Emmelina monodactyla": {
+   "attribution": "(c) ingridaltmann, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/127431",
+   "taxon_id": 127431,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/290597887/medium.jpg"
+  },
+  "Eosphoropteryx thyatyroides": {
+   "attribution": "(c) Doug Macaulay, some rights reserved (CC BY), uploaded by Doug Macaulay",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/219229",
+   "taxon_id": 219229,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/61526723/medium.jpeg"
+  },
+  "Epeolus americanus": {
+   "attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/459070",
+   "taxon_id": 459070,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/43469988/medium.jpeg"
+  },
+  "Epeolus compactus": {
+   "attribution": "(c) eebee, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/84363613",
+   "taxon_id": 308866,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/138640366/medium.jpeg"
+  },
+  "Epeolus minimus": {
+   "attribution": "(c) Parker James Lloyd, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/307200818",
+   "taxon_id": 345437,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/554073324/medium.jpg"
+  },
+  "Epiblema scudderiana": {
+   "attribution": "(c) Michelle W. \uff08\u937e\u5049\u744b\uff09, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/301333744",
+   "taxon_id": 219296,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/542986953/medium.jpg"
+  },
+  "Epirrhoe alternata": {
+   "attribution": "(c) christine123, some rights reserved (CC BY), uploaded by christine123",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/127618",
+   "taxon_id": 127618,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13061922/medium.jpg"
+  },
+  "Eristalis dimidiata": {
+   "attribution": "(c) Gilles Gonthier, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/155106",
+   "taxon_id": 155106,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/188688/medium.jpg"
+  },
+  "Estigmene acrea": {
+   "attribution": "(c) Jon Sullivan, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/121612",
+   "taxon_id": 121612,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/75628/medium.jpg"
+  },
+  "Eucera fulvitarsis": {
+   "attribution": "(c) Joel Gardner, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/393617986",
+   "taxon_id": 453649,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/721471661/medium.jpg"
+  },
+  "Euchloe ausonides": {
+   "attribution": "(c) Ken-ichi Ueda, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/59120",
+   "taxon_id": 59120,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/876802/medium.jpg"
+  },
+  "Euchloe creusa": {
+   "attribution": "(c) Akr, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/170904780",
+   "taxon_id": 219634,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/296492141/medium.jpg"
+  },
+  "Euchloe olympia": {
+   "attribution": "(c) aarongunnar, some rights reserved (CC BY), uploaded by aarongunnar",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/58527",
+   "taxon_id": 58527,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1766954/medium.jpg"
+  },
+  "Eucirroedia pampina": {
+   "attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/154823",
+   "taxon_id": 154823,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5798061/medium.jpg"
+  },
+  "Euphydryas anicia": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/164239046",
+   "taxon_id": 219779,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/284146306/medium.jpeg"
+  },
+  "Euptoieta claudia": {
+   "attribution": "(c) Douglas Goldman, some rights reserved (CC BY-SA), uploaded by Douglas Goldman",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/68244",
+   "taxon_id": 68244,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/405684698/medium.jpg"
+  },
+  "Eurosta solidaginis": {
+   "attribution": "(c) Ryan Donnelly, some rights reserved (CC BY), uploaded by Ryan Donnelly",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/85317",
+   "taxon_id": 85317,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/43432943/medium.jpg"
+  },
+  "Eusarca confusaria": {
+   "attribution": "(c) Liliana Ram\u00edrez-Freire, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/24245736",
+   "taxon_id": 143024,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/37492633/medium.jpg"
+  },
+  "Evergestis pallidata": {
+   "attribution": "(c) mnauky, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/216666009",
+   "taxon_id": 81685,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/383204387/medium.jpg"
+  },
+  "Falco columbarius": {
+   "attribution": "no rights reserved, uploaded by Kathlin Simpkins",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/4672",
+   "taxon_id": 4672,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/324285453/medium.jpg"
+  },
+  "Feltia jaculifera": {
+   "attribution": "(c) hr_dragonfly, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/321048423",
+   "taxon_id": 119550,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/580563167/medium.jpg"
+  },
+  "Feralia comstocki": {
+   "attribution": "(c) Sheila Furlong, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/362721929",
+   "taxon_id": 119937,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/662052192/medium.jpg"
+  },
+  "Fumibotys fumalis": {
+   "attribution": "(c) Stan Rullman, some rights reserved (CC BY), uploaded by Stan Rullman",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/205196",
+   "taxon_id": 205196,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/423870290/medium.jpeg"
+  },
+  "Gillmeria pallidactyla": {
+   "attribution": "(c) Donald Hobern, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/321014",
+   "taxon_id": 321014,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8568220/medium.jpg"
+  },
+  "Glaucopsyche piasus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/165607938",
+   "taxon_id": 117346,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/286682055/medium.jpeg"
+  },
+  "Gnophaela vermiculata": {
+   "attribution": "(c) Caleb Catto, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/380014842",
+   "taxon_id": 81968,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/695186099/medium.jpg"
+  },
+  "Graphocephala coccinea": {
+   "attribution": "(c) Trevor Edmonson, some rights reserved (CC BY), uploaded by Trevor Edmonson",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/56925",
+   "taxon_id": 56925,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/46770268/medium.jpg"
+  },
+  "Haemorhous mexicanus": {
+   "attribution": "(c) MostlyDross, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/199840",
+   "taxon_id": 199840,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/177247547/medium.jpg"
+  },
+  "Haemorhous purpureus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/46165608",
+   "taxon_id": 199841,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/73218113/medium.jpg"
+  },
+  "Halysidota tessellaris": {
+   "attribution": "(c) Laura Gaudette, some rights reserved (CC BY), uploaded by Laura Gaudette",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/120217",
+   "taxon_id": 120217,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/87377159/medium.jpeg"
+  },
+  "Hemadas nubilipennis": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/464235",
+   "taxon_id": 464235,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/86646571/medium.jpg"
+  },
+  "Hemaris thysbe": {
+   "attribution": "(c) Bernie Paquette, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/55224448",
+   "taxon_id": 82379,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/87920191/medium.jpeg"
+  },
+  "Hemileuca nevadensis": {
+   "attribution": "(c) Grand Canyon National Park, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/179423",
+   "taxon_id": 179423,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/19042469/medium.jpg"
+  },
+  "Hesperia comma": {
+   "attribution": "(c) SteveM4560, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/233677365",
+   "taxon_id": 58468,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/415317060/medium.jpg"
+  },
+  "Hippodamia convergens": {
+   "attribution": "(c) Adam J. Searcy, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/70063588",
+   "taxon_id": 48987,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/113829167/medium.jpg"
+  },
+  "Hippodamia parenthesis": {
+   "attribution": "(c) Suzanne Carriere, some rights reserved (CC BY), uploaded by Suzanne Carriere",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/133141",
+   "taxon_id": 133141,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20106241/medium.jpg"
+  },
+  "Homoeosoma electella": {
+   "attribution": "(c) Kylie Etter, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/78307763",
+   "taxon_id": 343382,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/128138444/medium.jpg"
+  },
+  "Hydria undulata": {
+   "attribution": "(c) Nigel Voaden, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/447509",
+   "taxon_id": 447509,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/11003688/medium.jpg"
+  },
+  "Hyphantria cunea": {
+   "attribution": "no rights reserved, uploaded by Liubov Ilminska",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/127133",
+   "taxon_id": 127133,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/190924423/medium.jpeg"
+  },
+  "Icaricia icarioides": {
+   "attribution": "(c) John Hibbard, some rights reserved (CC BY), uploaded by John Hibbard",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/520457",
+   "taxon_id": 520457,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/496926658/medium.jpeg"
+  },
+  "Icaricia saepiolus": {
+   "attribution": "(c) Laura Gaudette, some rights reserved (CC BY), uploaded by Laura Gaudette",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/520398",
+   "taxon_id": 520398,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/190222242/medium.jpeg"
+  },
+  "Icterus galbula": {
+   "attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/9346",
+   "taxon_id": 9346,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/145445553/medium.jpg"
+  },
+  "Lagopus leucura": {
+   "attribution": "no rights reserved, uploaded by Braden J. Judson",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/974",
+   "taxon_id": 974,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/58193613/medium.jpeg"
+  },
+  "Lagopus muta": {
+   "attribution": "(c) \u5b6b\u92d2 \u6797, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/949",
+   "taxon_id": 949,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/165788873/medium.jpg"
+  },
+  "Lasionycteris noctivagans": {
+   "attribution": "(c) Kalvin Chan, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/346013686",
+   "taxon_id": 40629,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/630644917/medium.jpg"
+  },
+  "Lasius neoniger": {
+   "attribution": "(c) Robert Webster, some rights reserved (CC BY-SA), uploaded by Robert Webster",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/69311",
+   "taxon_id": 69311,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/57582523/medium.jpg"
+  },
+  "Lepturobosca chrysocoma": {
+   "attribution": "(c) Melissa McMasters, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/92531330",
+   "taxon_id": 332243,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/153224314/medium.jpg"
+  },
+  "Limenitis archippus": {
+   "attribution": "(c) Benny Mazur, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/58586",
+   "taxon_id": 58586,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2058543/medium.jpg"
+  },
+  "Limenitis arthemis": {
+   "attribution": "no rights reserved, uploaded by Kent P. McFarland",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/60607",
+   "taxon_id": 60607,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/149671657/medium.jpg"
+  },
+  "Lon hobomok": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/229842322",
+   "taxon_id": 1081323,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/408033002/medium.jpeg"
+  },
+  "Loxia curvirostra": {
+   "attribution": "(c) Stanley Davis, some rights reserved (CC BY), uploaded by Stanley Davis",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/10411",
+   "taxon_id": 10411,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/303309597/medium.jpg"
+  },
+  "Loxia leucoptera": {
+   "attribution": "(c) Aleksey Shumkov, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/42586853",
+   "taxon_id": 10423,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/67624690/medium.jpeg"
+  },
+  "Lucidota atra": {
+   "attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/224157",
+   "taxon_id": 224157,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8699197/medium.jpg"
+  },
+  "Lycaena cupreus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/3623600",
+   "taxon_id": 117322,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4184029/medium.jpg"
+  },
+  "Lycomorpha pholus": {
+   "attribution": "(c) Tom Kennedy, some rights reserved (CC BY), uploaded by Tom Kennedy",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/128950",
+   "taxon_id": 128950,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/218554513/medium.jpeg"
+  },
+  "Lygus lineolaris": {
+   "attribution": "(c) Katja Schulz, some rights reserved (CC BY), uploaded by Katja Schulz",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/84507",
+   "taxon_id": 84507,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/87901528/medium.jpg"
+  },
+  "Macrosiphum albifrons": {
+   "attribution": "no rights reserved, uploaded by Jesse Rorabaugh",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/465560",
+   "taxon_id": 465560,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/74736332/medium.jpg"
+  },
+  "Malacosoma californica": {
+   "attribution": "(c) Franco Folini, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/359294",
+   "taxon_id": 359294,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/10047/medium.jpg"
+  },
+  "Malacosoma disstria": {
+   "attribution": "no rights reserved, uploaded by Jack Gelinas",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/81663",
+   "taxon_id": 81663,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/406454621/medium.jpeg"
+  },
+  "Melecta pacifica": {
+   "attribution": "(c) Jared Shorma, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/13690264",
+   "taxon_id": 236822,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20165039/medium.jpg"
+  },
+  "Melecta separata": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/111567708",
+   "taxon_id": 361455,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/188344143/medium.jpeg"
+  },
+  "Microrhopala vittata": {
+   "attribution": "(c) Zachary Dankowicz, some rights reserved (CC BY), uploaded by Zachary Dankowicz",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/199931",
+   "taxon_id": 199931,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/316479121/medium.jpg"
+  },
+  "Microtus pennsylvanicus": {
+   "attribution": "(c) Gordon Johnston, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/66581853",
+   "taxon_id": 44311,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/107365361/medium.jpg"
+  },
+  "Mordwilkoja vagabunda": {
+   "attribution": "no rights reserved, uploaded by Adam Kranz",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/454530",
+   "taxon_id": 454530,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/143091810/medium.jpg"
+  },
+  "Nephelodes minians": {
+   "attribution": "(c) Ezekiel (Zeke) Blankenship, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/316424316",
+   "taxon_id": 153076,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/571822471/medium.jpg"
+  },
+  "Nomada articulata": {
+   "attribution": "(c) Paul Prior, some rights reserved (CC BY), uploaded by Paul Prior",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/1426445",
+   "taxon_id": 1426445,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/85562433/medium.jpeg"
+  },
+  "Nomada valida": {
+   "attribution": "(c) Christian Back, some rights reserved (CC BY), uploaded by Christian Back",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/1426467",
+   "taxon_id": 1426467,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/269901235/medium.jpg"
+  },
+  "Nomada vincta": {
+   "attribution": "(c) Bernie Paquette, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/394792437",
+   "taxon_id": 1426476,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/723798508/medium.jpg"
+  },
+  "Nomia melanderi": {
+   "attribution": "(c) RJ Baltierra, some rights reserved (CC BY), uploaded by RJ Baltierra",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/57675",
+   "taxon_id": 57675,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/83364098/medium.jpeg"
+  },
+  "Nomophila nearctica": {
+   "attribution": "(c) 116916927065934112165, some rights reserved (CC BY), uploaded by 116916927065934112165",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/58750",
+   "taxon_id": 58750,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/169795/medium.JPG"
+  },
+  "Nymphalis antiopa": {
+   "attribution": "(c) Matt Muir, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/135437627",
+   "taxon_id": 56832,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/230995584/medium.jpeg"
+  },
+  "Oarisma garita": {
+   "attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/226071",
+   "taxon_id": 226071,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3106051/medium.JPG"
+  },
+  "Ochlodes sylvanoides": {
+   "attribution": "(c) Gavin Slater, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/240245397",
+   "taxon_id": 59194,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/427996877/medium.jpeg"
+  },
+  "Oecanthus nigricornis": {
+   "attribution": "(c) Summit Metro Parks, some rights reserved (CC BY), uploaded by Summit Metro Parks",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/154605",
+   "taxon_id": 154605,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/491511/medium.JPG"
+  },
+  "Oeneis chryxus": {
+   "attribution": "(c) Sam Eberhard, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/178026884",
+   "taxon_id": 117369,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/309706915/medium.jpg"
+  },
+  "Oeneis melissa": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/149937",
+   "taxon_id": 226266,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/30754935/medium.jpg"
+  },
+  "Oeneis uhleri": {
+   "attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/226269",
+   "taxon_id": 226269,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3106955/medium.JPG"
+  },
+  "Oiceoptoma noveboracense": {
+   "attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/226275",
+   "taxon_id": 226275,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20396241/medium.jpg"
+  },
+  "Orgyia leucostigma": {
+   "attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/81665",
+   "taxon_id": 81665,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5757526/medium.jpg"
+  },
+  "Orthosia hibisci": {
+   "attribution": "(c) Alan Macnaughton, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/346351785",
+   "taxon_id": 226646,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/631338637/medium.jpg"
+  },
+  "Papilio eurymedon": {
+   "attribution": "no rights reserved, uploaded by Irene",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/55521",
+   "taxon_id": 55521,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/390616948/medium.jpg"
+  },
+  "Papilio polyxenes": {
+   "attribution": "(c) Jay Brasher, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/152276997",
+   "taxon_id": 58523,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/262848199/medium.jpeg"
+  },
+  "Papilio zelicaon": {
+   "attribution": "(c) Hydrocycler (Elizabeth Dougherty), some rights reserved (CC BY), uploaded by Hydrocycler (Elizabeth Dougherty)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/51097",
+   "taxon_id": 51097,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/137061775/medium.jpeg"
+  },
+  "Paraclemensia acerifoliella": {
+   "attribution": "(c) Tom Norton, baz\u0131 haklar\u0131 sakl\u0131d\u0131r (CC BY), y\u00fckleyen: Tom Norton",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/176089",
+   "taxon_id": 176089,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/23382777/medium.jpeg"
+  },
+  "Paranthrene robiniae": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/298002197",
+   "taxon_id": 354116,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/536737366/medium.jpg"
+  },
+  "Pennisetia marginatum": {
+   "attribution": "(c) Linda Watson, some rights reserved (CC BY), uploaded by Linda Watson",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/477881",
+   "taxon_id": 477881,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/326032346/medium.jpg"
+  },
+  "Pheucticus melanocephalus": {
+   "attribution": "(c) Bill Bouton, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/10274",
+   "taxon_id": 10274,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/836832/medium.jpg"
+  },
+  "Phyciodes batesii": {
+   "attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/58577",
+   "taxon_id": 58577,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3111601/medium.JPG"
+  },
+  "Phyciodes cocyta": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/290537509",
+   "taxon_id": 58576,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/522652648/medium.jpg"
+  },
+  "Phyciodes mylitta": {
+   "attribution": "(c) wildrollo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/245491951",
+   "taxon_id": 59176,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/438079528/medium.jpeg"
+  },
+  "Phyciodes pulchella": {
+   "attribution": "(c) John Rosford, some rights reserved (CC BY), uploaded by John Rosford",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/82069",
+   "taxon_id": 82069,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/200066910/medium.jpg"
+  },
+  "Phyciodes tharos": {
+   "attribution": "(c) Beatriz Moisset, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/52925",
+   "taxon_id": 52925,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13235553/medium.jpg"
+  },
+  "Phyllocnistis populiella": {
+   "attribution": "(c) Justin Paulin, some rights reserved (CC BY), uploaded by Justin Paulin",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/180712",
+   "taxon_id": 180712,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/402297055/medium.jpg"
+  },
+  "Pieris oleracea": {
+   "attribution": "(c) Joseph D Kurtz, some rights reserved (CC BY), uploaded by Joseph D Kurtz",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/198821",
+   "taxon_id": 198821,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4349988/medium.jpeg"
+  },
+  "Pinicola enucleator": {
+   "attribution": "(c) Richard Littauer, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/65291810",
+   "taxon_id": 9771,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/105060920/medium.jpg"
+  },
+  "Pipilo maculatus": {
+   "attribution": "(c) Nigel Voaden, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/9420",
+   "taxon_id": 9420,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2373007/medium.jpg"
+  },
+  "Piranga ludoviciana": {
+   "attribution": "(c) Spencer Hurt, some rights reserved (CC BY), uploaded by Spencer Hurt",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/9919",
+   "taxon_id": 9919,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/414074727/medium.jpg"
+  },
+  "Plebejus melissa": {
+   "attribution": "(c) Joey Bom, some rights reserved (CC BY), uploaded by Joey Bom",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/122383",
+   "taxon_id": 122383,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/301798888/medium.jpg"
+  },
+  "Podosesia syringae": {
+   "attribution": "(c) Guillermo L Verdecchia, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/343246560",
+   "taxon_id": 228454,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625215225/medium.jpg"
+  },
+  "Polistes fuscatus": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/10013001",
+   "taxon_id": 52757,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13770099/medium.jpeg"
+  },
+  "Polites peckius": {
+   "attribution": "(c) Katja Schulz, some rights reserved (CC BY), uploaded by Katja Schulz",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/133631",
+   "taxon_id": 133631,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/63077929/medium.jpeg"
+  },
+  "Polites themistocles": {
+   "attribution": "(c) Bill Keim, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/58506",
+   "taxon_id": 58506,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1300668/medium.jpg"
+  },
+  "Pontia occidentalis": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/211908079",
+   "taxon_id": 209718,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/374538295/medium.jpeg"
+  },
+  "Pontia protodice": {
+   "attribution": "(c) Megan McCarty, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/59119",
+   "taxon_id": 59119,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/260798/medium.jpg"
+  },
+  "Prociphilus tessellatus": {
+   "attribution": "(c) Rose Zappa, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/136768200",
+   "taxon_id": 143427,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/233472811/medium.jpg"
+  },
+  "Pyrrharctia isabella": {
+   "attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/59675",
+   "taxon_id": 59675,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/93704993/medium.jpg"
+  },
+  "Quiscalus quiscula": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/150969498",
+   "taxon_id": 9602,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/260412819/medium.jpeg"
+  },
+  "Rheumaptera hastata": {
+   "attribution": "(c) Matteo Martini, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/369671815",
+   "taxon_id": 205039,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/675203902/medium.jpg"
+  },
+  "Saperda populnea": {
+   "attribution": "(c) migallel, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/27987238",
+   "taxon_id": 230396,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/43598324/medium.jpeg"
+  },
+  "Satyrium titus": {
+   "attribution": "(c) pondhawk, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/198804",
+   "taxon_id": 198804,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/221418/medium.jpg"
+  },
+  "Scathophaga stercoraria": {
+   "attribution": "(c) Nash Turley, some rights reserved (CC BY), uploaded by Nash Turley",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/132718",
+   "taxon_id": 132718,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/133633334/medium.jpg"
+  },
+  "Schinia arcigera": {
+   "attribution": "(c) Ilona, some rights reserved (CC BY-SA), uploaded by Ilona",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/143196",
+   "taxon_id": 143196,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/267656680/medium.jpg"
+  },
+  "Scoliopteryx libatrix": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/113007198",
+   "taxon_id": 134078,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/190924329/medium.jpeg"
+  },
+  "Scudderia furcata": {
+   "attribution": "(c) David Hill, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/55957",
+   "taxon_id": 55957,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1122194/medium.jpg"
+  },
+  "Selasphorus calliope": {
+   "attribution": "(c) Laurel Meredyk, some rights reserved (CC BY), uploaded by Laurel Meredyk",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/199914",
+   "taxon_id": 199914,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/224428193/medium.jpeg"
+  },
+  "Selasphorus rufus": {
+   "attribution": "(c) Amber M. King, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/332490066",
+   "taxon_id": 6363,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/603413538/medium.jpg"
+  },
+  "Setophaga coronata": {
+   "attribution": "(c) Dan Vickers, some rights reserved (CC BY), uploaded by Dan Vickers",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/145245",
+   "taxon_id": 145245,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/442752262/medium.jpg"
+  },
+  "Sitta carolinensis": {
+   "attribution": "(c) Judy Gallagher, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/14801",
+   "taxon_id": 14801,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/169033925/medium.jpg"
+  },
+  "Sphex ichneumoneus": {
+   "attribution": "(c) Daughter Dad, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/316642341",
+   "taxon_id": 85362,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/572111965/medium.jpg"
+  },
+  "Spilosoma virginica": {
+   "attribution": "(c) Andy Reago & Chrissy McClarren, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/60839",
+   "taxon_id": 60839,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/18984537/medium.jpg"
+  },
+  "Stictoleptura canadensis": {
+   "attribution": "no rights reserved, uploaded by Steve Wells",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/199944",
+   "taxon_id": 199944,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/9600475/medium.jpeg"
+  },
+  "Strymon melinus": {
+   "attribution": "(c) Michael J. Papay, some rights reserved (CC BY), uploaded by Michael J. Papay",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/50931",
+   "taxon_id": 50931,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/435842145/medium.jpeg"
+  },
+  "Sunira bicolorago": {
+   "attribution": "(c) feralbeetle, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/67053760",
+   "taxon_id": 154353,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/108241112/medium.jpeg"
+  },
+  "Synchlora aerata": {
+   "attribution": "no rights reserved, uploaded by Zygy",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/126204",
+   "taxon_id": 126204,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/391824/medium.jpg"
+  },
+  "Tabanus punctifer": {
+   "attribution": "(c) Rachel Allingham, some rights reserved (CC BY), uploaded by Rachel Allingham",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/154812",
+   "taxon_id": 154812,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/154200246/medium.jpg"
+  },
+  "Tharsalea helloides": {
+   "attribution": "(c) John Hibbard, some rights reserved (CC BY), uploaded by John Hibbard",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/1360298",
+   "taxon_id": 1360298,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/11186195/medium.jpg"
+  },
+  "Tharsalea hyllus": {
+   "attribution": "no rights reserved, uploaded by Robbie Hannawacker",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/1360291",
+   "taxon_id": 1360291,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8773107/medium.jpeg"
+  },
+  "Toxomerus geminatus": {
+   "attribution": "(c) Ryan Hodnett, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/126532",
+   "taxon_id": 126532,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/10849225/medium.jpg"
+  },
+  "Toxostoma rufum": {
+   "attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/taxa/14898",
+   "taxon_id": 14898,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/186561540/medium.jpeg"
+  },
+  "Tremex columba": {
+   "attribution": "(c) Bill Keim, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/63275",
+   "taxon_id": 63275,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5825666/medium.jpg"
+  },
+  "Trichodes ornatus": {
+   "attribution": "(c) W. Terry Hunefeld, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/5294480",
+   "taxon_id": 61157,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/6551443/medium.jpg"
+  },
+  "Triepeolus concavus": {
+   "attribution": "(c) Christine Melvin, some rights reserved (CC BY), uploaded by Christine Melvin",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/452935",
+   "taxon_id": 452935,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2079036/medium.jpg"
+  },
+  "Triepeolus dacotensis": {
+   "attribution": "(c) Colin Croft, some rights reserved (CC BY), uploaded by Colin Croft",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/459165",
+   "taxon_id": 459165,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/397577884/medium.jpeg"
+  },
+  "Triepeolus helianthi": {
+   "attribution": "(c) Desiree L. Narango, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/309459963",
+   "taxon_id": 452937,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/558431642/medium.jpg"
+  },
+  "Triepeolus paenepectoralis": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/87993746",
+   "taxon_id": 459167,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/145132778/medium.jpeg"
+  },
+  "Tyrannus tyrannus": {
+   "attribution": "(c) Laura Mae, some rights reserved (CC BY), uploaded by Laura Mae",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/16782",
+   "taxon_id": 16782,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/26210699/medium.jpeg"
+  },
+  "Vanessa virginiensis": {
+   "attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/taxa/48549",
+   "taxon_id": 48549,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4871987/medium.jpg"
+  },
+  "Vireo gilvus": {
+   "attribution": "(c) Michael, Antoni and Nihat Hinczewski, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/216714958",
+   "taxon_id": 17394,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/383303869/medium.jpeg"
+  },
+  "Vireo olivaceus": {
+   "attribution": "(c) Andy Reago & Chrissy McClarren, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/891704",
+   "taxon_id": 891704,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/272009008/medium.jpg"
+  },
+  "Xylena curvimacula": {
+   "attribution": "(c) Louis Imbeau, some rights reserved (CC BY), uploaded by Louis Imbeau",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/233838",
+   "taxon_id": 233838,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/131636634/medium.jpeg"
+  },
+  "Zacosmia maculata": {
+   "attribution": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/167807566",
+   "taxon_id": 308635,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/290744410/medium.jpg"
+  },
+  "Zale minerea": {
+   "attribution": "(c) David Dodd, some rights reserved (CC BY), uploaded by David Dodd",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/205300",
+   "taxon_id": 205300,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/9896295/medium.jpg"
+  },
+  "Zelleria haimbachi": {
+   "attribution": "(c) Louis Imbeau, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/136377696",
+   "taxon_id": 233970,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/232741976/medium.jpeg"
+  },
+  "Zenaida macroura": {
+   "attribution": "(c) Timothy Lindsey, some rights reserved (CC BY), uploaded by Timothy Lindsey",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/taxa/3454",
+   "taxon_id": 3454,
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/488854845/medium.jpg"
+  }
+ }
+}
