@@ -51,7 +51,7 @@ from src.controllers.area_fill_controller import AreaFillController
 from src.project_store import ProjectStore
 from src import accessible_names, data_sources_flow, feedback_flow, keyboard_help, tree_edit_flow
 from src import indicator_style, target_size
-from src import hedge_flow, month_tasks, onboarding_flow, start_flow
+from src import month_tasks, onboarding_flow, start_flow
 from src.yard_overview import bed_area_m2
 from src.elided_label import ElidedLabel
 from src.scene3d_window import (open_3d_view as _open_3d_view,
@@ -791,8 +791,6 @@ class MainWindow(QMainWindow):
             lambda *a: tree_edit_flow.on_structure_turned(self, *a))
         b.hedgerow_complete.connect(self._on_hedgerow_complete)
         b.hedgerow_removed.connect(self._on_hedgerow_removed)
-        b.hedge_plant_requested.connect(                # V3.74: Plant this hedge…
-            lambda hid: hedge_flow.offer(self, hid))
         b.shape_complete.connect(self._on_shape_complete)
         b.shape_removed.connect(self._on_shape_removed)
         b.shape_height_changed.connect(self._on_shape_height_changed)

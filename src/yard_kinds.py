@@ -73,11 +73,6 @@ class Option:
     hi: float = 0.0
     step: float = 0.0
     text: bool = False
-    # A plant from the region's list (V3.74): the role
-    # ``src/hedge_planting.py`` lists the choices for ("shrub", "tall",
-    # "front"), the default its first choice. ``optional`` adds "None".
-    plants: str = ""
-    optional: bool = False
 
 
 @dataclass(frozen=True)
@@ -140,17 +135,46 @@ BUILDING_HEIGHT_M = {"house": 6.0, "garage": 4.0, "shed": 2.4}
 BUILDINGS = (("house", "House"), ("garage", "Garage"), ("shed", "Shed"))
 
 
-#: What a hedge, a living fence and a windbreak are planted with (V3.74): the
-#: region's shrubs and trees, chosen by ``src/hedge_planting.py``. Until V3.74
-#: each asked a width, a spacing and a species typed into a box, and nothing
-#: was planted.
-HEDGE_OPTIONS = (Option("shrub", "Shrub", plants="shrub"),)
-LIVING_FENCE_OPTIONS = (Option("shrub", "First shrub", plants="shrub"),
-                        Option("shrub_2", "Second shrub", plants="shrub"),
-                        Option("shrub_3", "Third shrub", plants="shrub",
-                               optional=True))
-WINDBREAK_OPTIONS = (Option("tree", "Back row", plants="tall"),
-                     Option("shrub", "Front row", plants="front"))
+#: A hedge already growing in the yard (V3.75, the owner: "most likely
+#: cotoneaster or sometimes caragana" around Edmonton). Not a plant: none of
+#: these is in the catalogue, and a hedge drawn here is a feature, as an
+#: existing tree is. V3.74 planted a hedge with the region's shrubs, which
+#: the owner found a second way to plant a row.
+HEDGE_KINDS = (("cotoneaster", "Cotoneaster"), ("caragana", "Caragana"),
+               ("lilac", "Common lilac"), ("cedar", "Cedar"),
+               ("other", "Other"))
+#: A hedge's height and width (m) when a person names only what it is:
+#: **stated estimates** of a hedge kept as one usually is (a clipped
+#: cotoneaster, an unclipped caragana or lilac, a cedar row); the boxes beside
+#: them are the person's to change.
+HEDGE_SIZE_M = {"cotoneaster": (1.5, 1.0), "caragana": (2.5, 1.5),
+                "lilac": (2.5, 2.0), "cedar": (3.0, 1.0),
+                "other": (1.5, 1.0)}
+#: An existing hedge's green on the map and in 3D, by what it is.
+HEDGE_COLOURS = {"cotoneaster": "#2f6b3a", "caragana": "#7a9a3c",
+                 "lilac": "#557f45", "cedar": "#2d5a46", "other": "#4caf50"}
+#: The hedges that keep their leaves through the winter.
+EVERGREEN_HEDGES = ("cedar",)
+#: The words a hedge was typed as before V3.75, read for what it is.
+HEDGE_WORDS = {"cotoneaster": ("cotoneaster",), "caragana": ("caragana",
+               "peashrub", "pea shrub"), "lilac": ("lilac", "syringa"),
+               "cedar": ("cedar", "arborvitae", "thuja")}
+HEDGE_OPTIONS = (
+    Option("hedge_kind", "What it is", HEDGE_KINDS, "cotoneaster"),
+    Option("height_m", "Height", default=HEDGE_SIZE_M["cotoneaster"][0],
+           unit="m", lo=0.3, hi=8.0, step=0.1),
+    Option("width_m", "Width", default=HEDGE_SIZE_M["cotoneaster"][1],
+           unit="m", lo=0.3, hi=5.0, step=0.1))
+
+#: A rectangle's length and width (m), and a circle's width across, that an
+#: area placed by its dimensions starts at (V3.75): **stated guesses** of a
+#: usual one, the person's to change. Anything not listed: 3 x 2 m, 3 m across.
+SHAPE_SIZE_M = {"bed": (3.0, 1.2), "mulch": (3.0, 2.0), "path": (5.0, 1.0),
+                "patio": (4.0, 3.0), "deck": (4.0, 3.0), "pond": (3.0, 2.0),
+                "rain_garden": (3.0, 2.0), "rock_garden": (3.0, 2.0),
+                "building": (3.0, 2.4)}
+SHAPE_ACROSS_M = {"pond": 3.0, "rain_garden": 3.0, "rock_garden": 2.5,
+                  "bed": 2.0, "mulch": 2.0, "patio": 4.0}
 
 #: How tall a fence stands by its kind, and a wall: **stated estimates**
 #: (nothing in a design records them). A rail fence a person sees over (as
@@ -276,15 +300,14 @@ KINDS: tuple = (
          colours=("#795548",)),
     Kind("wall", "Wall", LINE, line_styles=("wall",), cue="border",
          about="A wall of brick, block or stone.", colours=("#9e9e9e",)),
-    Kind("hedge", "Hedge", LINE, line_styles=("hedge",),
-         about="A row of one kind of shrub.", options=HEDGE_OPTIONS,
+    # A hedge already growing (V3.75); the living fence and the windbreak
+    # V3.74 planted are read as one.
+    Kind("hedge", "Hedge", LINE,
+         line_styles=("hedge", "living_fence", "windbreak"),
+         planting=KEEP_OUT, cue="border",
+         about="A hedge already growing in the yard, drawn along its middle.",
+         options=HEDGE_OPTIONS,
          colours=("#4caf50",)),
-    Kind("living_fence", "Living fence", LINE, line_styles=("living_fence",),
-         about="A mixed row of two or three kinds of shrub.",
-         options=LIVING_FENCE_OPTIONS, colours=("#66bb6a",)),
-    Kind("windbreak", "Windbreak", LINE, line_styles=("windbreak",),
-         about="Trees and tall shrubs against the wind.",
-         options=WINDBREAK_OPTIONS, colours=("#2e7d32",)),
     # Objects: kept out of at their footprint (until V3.71 only a barrel and a
     # brush pile were, so a plan could put plants in a fire pit).
     Kind("bee_hotel", "Bee hotel", OBJECT, struct_ids=("bee_hotel",),
@@ -316,14 +339,15 @@ _BY_STYLE: dict = {s: k for k in KINDS for s in k.line_styles}
 #: Placement › Yard (V3.72): the headings, and the kinds under each in the
 #: order shown. Every kind is under exactly one (a test holds it).
 PALETTE: tuple = (
-    ("Beds and ground", ("bed", "mulch", "path", "patio", "deck", "lawn",
-                         "lawn_to_convert", "restoration_1", "restoration_3",
-                         "established", "remnant")),
+    ("Beds and ground", ("bed", "mulch", "lawn", "path", "patio", "deck")),
+    # The five stages of a lawn's conversion had been half of the first
+    # group (V3.75, the owner: "the list is a bit messy").
+    ("Lawn conversion", ("lawn_to_convert", "restoration_1",
+                         "restoration_3", "established", "remnant")),
     ("Water", ("pond", "rain_garden", "swale", "rain_barrel")),
     ("For wildlife", ("native_lawn", "rock_garden", "brush_pile",
                       "bee_hotel", "bee_log", "snag")),
-    ("Fences and hedges", ("fence", "wall", "hedge", "living_fence",
-                           "windbreak")),
+    ("Fences and hedges", ("fence", "wall", "hedge")),
     ("Buildings", ("building",)),
     ("Around the yard", ("compost_bin", "fire_pit", "custom")),
 )
@@ -526,21 +550,44 @@ def line_strips(pts: list, width_m: float) -> list:
 
 
 #: The lines planted along (V3.74): the kinds whose options are plants.
-LIVING_LINES: tuple = tuple(k.key for k in KINDS
-                            if any(o.plants for o in k.options))
-
-
-def is_living_line(feature: dict) -> bool:
-    """A hedge, a living fence or a windbreak: a line its plants stand on."""
+def hedge_kind(feature: dict) -> str:
+    """What an existing hedge is (:data:`HEDGE_KINDS`), ``""`` for any other
+    feature. A line from before V3.75 is read by the words typed on it."""
     k = kind_of(feature)
-    return k is not None and k.key in LIVING_LINES
+    if k is None or k.key != "hedge":
+        return ""
+    props = (feature or {}).get("properties") or {}
+    known = {v for v, _w in HEDGE_KINDS}
+    if props.get("hedge_kind") in known:
+        return props["hedge_kind"]
+    said = (props.get("species") or "").lower()
+    for key, words in HEDGE_WORDS.items():
+        if any(w in said for w in words):
+            return key
+    return "other"
+
+
+def hedge_foliage(feature: dict) -> str:
+    """An existing hedge's leaves for the shade's leaf-off break:
+    ``"evergreen"`` or ``"deciduous"``, ``""`` for anything else."""
+    kind = hedge_kind(feature)
+    if not kind:
+        return ""
+    return "evergreen" if kind in EVERGREEN_HEDGES else "deciduous"
 
 
 def line_height(feature: dict) -> float:
-    """How tall a fence or a wall stands (:data:`FENCE_HEIGHT_M`,
-    :data:`WALL_HEIGHT_M`), 0 for any other line."""
+    """How tall a fence, a wall or an existing hedge stands
+    (:data:`FENCE_HEIGHT_M`, :data:`WALL_HEIGHT_M`, a hedge's own height or
+    :data:`HEDGE_SIZE_M`), 0 for any other line."""
     k = kind_of(feature)
     props = (feature or {}).get("properties") or {}
+    if k is not None and k.key == "hedge":
+        try:
+            h = float(props.get("height_m") or 0.0)
+        except (TypeError, ValueError):
+            h = 0.0
+        return h or HEDGE_SIZE_M[hedge_kind(feature)][0]
     if k is not None and k.key == "wall":
         return WALL_HEIGHT_M
     if k is not None and k.key == "fence":
@@ -550,8 +597,9 @@ def line_height(feature: dict) -> float:
 
 
 def shade_height(feature: dict) -> float:
-    """How tall a line casts shade from, the owner's Q3: a wall and a board
-    fence (:data:`SHADING_FENCES`) at their height, anything else 0."""
+    """How tall a line casts shade from: a wall and a board fence
+    (:data:`SHADING_FENCES`, the owner's Q3) and an existing hedge (V3.75) at
+    their height, anything else 0."""
     k = kind_of(feature)
     props = (feature or {}).get("properties") or {}
     if k is None or k.verb != LINE:
@@ -696,6 +744,14 @@ def drawn_props(key: str, **options) -> dict:
         props["element_type"] = "hedgerow"
         props["style"] = k.line_styles[0] if k.line_styles else key
         props["color"] = options.get("color") or k.colours[0]
+        if key == "hedge":
+            # Sized and coloured by what it is, unless the person said.
+            what = props.get("hedge_kind") or "other"
+            h, w = HEDGE_SIZE_M.get(what, HEDGE_SIZE_M["other"])
+            props["height_m"] = float(options.get("height_m") or h)
+            props["width_m"] = float(options.get("width_m") or w)
+            props["color"] = options.get("color") or HEDGE_COLOURS.get(
+                what, k.colours[0])
         return props
     fill, stroke, opacity, dash = k.colours
     props.update({

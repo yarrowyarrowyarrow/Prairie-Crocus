@@ -222,8 +222,9 @@ BACK = [_shape("Patio / Deck", _rect(3.0, 21.2, 9.0, 25.0)),
         _shape("Garden Bed", _rect(0.6, 31.4, 7.8, 36.0)),
         _shape("Garden Bed", _rect(9.4, 21.4, 14.6, 29.2))]
 #: V3.45: the back yard's fence along the west and north lot lines, and a
-#: hedge along the east one. Not handed to the planner, so the plan is the
-#: same plan as the sheets before it.
+#: hedge along the east one. Handed to the planner since V3.75, as the app
+#: hands it every drawn line: an existing hedge casts shade and is kept out
+#: of, and a plan made without it put four plants in its shade.
 LINES = [_line("fence", [(0.0, 21.0), (0.0, D), (8.0, D)]),
          _line("hedge", [(W - 0.8, 21.6), (W - 0.8, 29.0)])]
 
@@ -247,7 +248,8 @@ def review_lot() -> dict:
         made = generate_design_offline(
             site_config=dict(SITE, yard_setting=setting), boundary=BOUNDARY,
             goals=list(FIRST_RUN_GOALS), density="balanced", cover=0.70,
-            existing_features=SCANNED + mine + others, setting=setting,
+            existing_features=SCANNED + LINES + mine + others,
+            setting=setting,
             street_side="south" if setting == "front" else "").as_dict()
         return [f for f in made["features"]
                 if (f.get("properties") or {}).get("plant_id")

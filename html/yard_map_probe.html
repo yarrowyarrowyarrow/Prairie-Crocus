@@ -140,24 +140,26 @@ async function run() {
   fire('contextmenu', px(LAT + D * 2, LNG + D * 3));
   out.existing = { removed: calledWith('onStructureRemoved').length };
 
-  // Lines you plant (V3.74). An old hedge with nothing on it keeps its dots
-  // and its menu offers planting; a planted one has no dots, and its Remove
-  // says it takes the plants; a fence's menu only removes.
+  // An existing hedge (V3.75): a solid band in its kind's green, no dots,
+  // its kind's words, and a menu that only removes; a fence's too.
   if (w.hideContextMenu) w.hideContextMenu();
   const HL = LAT + D * 6;
-  w.loadHedgerow({ points: [[HL, LNG - D * 3], [HL, LNG + D * 3]], hedge_id: 'hedge_old',
-                   style: 'hedge', color: '#4caf50', spacing_m: 1, species: 'saskatoon',
-                   living: true, plants: 0 });
+  w.loadHedgerow({ points: [[HL, LNG - D * 3], [HL, LNG + D * 3]], hedge_id: 'hedge_cot',
+                   style: 'hedge', kind: 'hedge', hedge_kind: 'cotoneaster',
+                   color: '#2f6b3a', width_m: 1.0 });
   w.loadHedgerow({ points: [[HL + D * 2, LNG - D * 3], [HL + D * 2, LNG + D * 3]],
-                   hedge_id: 'hedge_planted', style: 'hedge', color: '#4caf50',
-                   spacing_m: 1, living: true, plants: 3 });
+                   hedge_id: 'hedge_old', style: 'living_fence', color: '#66bb6a',
+                   spacing_m: 1, species: '' });
   w.loadHedgerow({ points: [[HL + D * 4, LNG - D * 3], [HL + D * 4, LNG + D * 3]],
-                   hedge_id: 'fence_plain', style: 'fence', kind: 'fence', color: '#795548',
-                   living: false, plants: 0 });
+                   hedge_id: 'fence_plain', style: 'fence', kind: 'fence', color: '#795548' });
   const dotsOf = id => w.hedgerowLayers[id].getLayers()
     .filter(l => l instanceof w.L.CircleMarker).length;
   const lineOf = id => w.hedgerowLayers[id].getLayers()
     .find(l => l instanceof w.L.Polyline);
+  const labelOf = id => {
+    const m = w.hedgerowLayers[id].getLayers().find(l => l.options && l.options.icon);
+    return m ? m.options.icon.options.html : '';
+  };
   function menuOf(id) {
     if (w.hideContextMenu) w.hideContextMenu();
     const ll = lineOf(id).getLatLngs()[0];
@@ -168,21 +170,114 @@ async function run() {
   }
   const labelsOf = items => items.map(d => d.textContent.trim()).filter(t => t);
   calls = [];
-  const oldItems = menuOf('hedge_old');
-  out.hedges = { old_dots: dotsOf('hedge_old'), planted_dots: dotsOf('hedge_planted'),
-                 old_menu: labelsOf(oldItems),
+  const hedgeItems = menuOf('hedge_cot');
+  out.hedges = { dots: dotsOf('hedge_cot') + dotsOf('hedge_old'),
+                 label: labelOf('hedge_cot'), old_label: labelOf('hedge_old'),
+                 menu: labelsOf(hedgeItems),
                  removed_at_once: calledWith('onHedgerowRemoved').length };
-  const plantItem = oldItems.find(d => d.textContent.indexOf('Plant this') >= 0);
-  if (plantItem) plantItem.click();
-  out.hedges.asked = calledWith('onHedgePlantRequested').map(c => c[1]);
-  const plantedItems = menuOf('hedge_planted');
-  out.hedges.planted_menu = labelsOf(plantedItems);
-  const removeItem = plantedItems.find(d => d.textContent.indexOf('Remove') >= 0);
+  const removeItem = hedgeItems.find(d => d.textContent.indexOf('Remove') >= 0);
   if (removeItem) removeItem.click();
   out.hedges.removed = calledWith('onHedgerowRemoved').map(c => c[1]);
-  out.hedges.gone = !w.hedgerowLayers.hedge_planted;
+  out.hedges.gone = !w.hedgerowLayers.hedge_cot;
   out.hedges.fence_menu = labelsOf(menuOf('fence_plain'));
   if (w.hideContextMenu) w.hideContextMenu();
+
+  // A line finishes the way an area closes (V3.75, the owner: a swale
+  // "doesn't close"). A click on its last point finishes it; a quick second
+  // click (a double-click's) is left to the double-click.
+  const LL = LAT - D * 8;
+  const lastCall = name => { const c = calledWith(name); return c.length ? c[c.length - 1] : null; };
+  calls = [];
+  w.setMode('hedgerow', { style: 'swale', kind: 'swale', color: '#4fc3f7', width_m: 1 });
+  w.handleHedgerowClick(LL, LNG - D * 3);
+  await wait(450);
+  w.handleHedgerowClick(LL, LNG);
+  await wait(450);
+  w.handleHedgerowClick(LL + D, LNG + D * 3);
+  await wait(450);
+  w.handleHedgerowClick(LL + D, LNG + D * 3);           // its last point
+  const swale = lastCall('onHedgerowComplete');
+  out.lines = { swale_sent: calledWith('onHedgerowComplete').length,
+                swale_points: swale ? JSON.parse(swale[2]).length : 0,
+                swale_mode: w.currentMode };
+  // A click on the first point closes it into a loop.
+  calls = [];
+  w.setMode('hedgerow', { style: 'fence', kind: 'fence', color: '#795548' });
+  const F0 = [LL - D * 3, LNG - D * 3];
+  w.handleHedgerowClick(F0[0], F0[1]); await wait(450);
+  w.handleHedgerowClick(LL - D * 3, LNG + D * 3); await wait(450);
+  w.handleHedgerowClick(LL - D * 6, LNG + D * 3); await wait(450);
+  w.handleHedgerowClick(F0[0] + D * 0.05, F0[1]);       // a hair off the first
+  const loop = lastCall('onHedgerowComplete');
+  const lp = loop ? JSON.parse(loop[2]) : [];
+  out.lines.loop_points = lp.length;
+  out.lines.loop_closed = lp.length > 1 && lp[0][0] === lp[lp.length - 1][0]
+                          && lp[0][1] === lp[lp.length - 1][1];
+  // A double-click: its quick second click adds nothing and finishes nothing;
+  // the double-click itself finishes the line.
+  calls = [];
+  w.setMode('hedgerow', { style: 'wall', kind: 'wall', color: '#9e9e9e' });
+  w.handleHedgerowClick(LL - D * 9, LNG - D * 3); await wait(450);
+  w.handleHedgerowClick(LL - D * 9, LNG + D * 3);
+  w.handleHedgerowClick(LL - D * 9, LNG + D * 3);        // straight after
+  out.lines.quick_sent = calledWith('onHedgerowComplete').length;
+  out.lines.quick_points = w.hedgerowPoints.length;
+  w.finishDrawing();                                    // the double-click
+  const dbl = lastCall('onHedgerowComplete');
+  out.lines.dbl_points = dbl ? JSON.parse(dbl[2]).length : 0;
+
+  // An area closes on a click of its first corner, whatever it is.
+  calls = [];
+  const kindsClosed = [];
+  for (const kind of ['bed', 'pond', 'path', 'rain_garden', 'building', 'lawn_to_convert']) {
+    w.setMode('shape', { kind: kind, shape_type: 'Custom', fill_color: '#4caf50',
+                         stroke_color: '#2e7d32', fill_opacity: 0.25, place: 'outline' });
+    const A = LAT + D * 12, B = LNG + D * 6;
+    w.handleShapeClick(A, B);
+    w.handleShapeClick(A, B + D * 2);
+    w.handleShapeClick(A + D * 2, B + D * 2);
+    w.handleShapeClick(A + D * 0.05, B);                 // its first corner
+    kindsClosed.push(calledWith('onShapeComplete').length);
+  }
+  out.closed = kindsClosed;
+
+  // A rectangle of the size typed follows the cursor, R turns it 15°, and a
+  // click puts it down whole (V3.75).
+  calls = [];
+  const RL = LAT - D * 14, RG = LNG - D * 4;
+  w.setMode('shape', { kind: 'bed', shape_type: 'Garden Bed', fill_color: '#4caf50',
+                       stroke_color: '#2e7d32', fill_opacity: 0.25,
+                       place: 'rectangle', place_length_m: 4, place_width_m: 2 });
+  w.updateAreaGhost(w.L.latLng(RL, RG));
+  const ghost = w._areaGhost ? w._areaGhost.getLatLngs()[0].length : 0;
+  const rectTurned = w.turnHoveredObject();
+  w.handleShapeClick(RL, RG);
+  const rect = lastCall('onShapeComplete');
+  const rp = rect ? JSON.parse(rect[2]) : [];
+  const kx = 111320 * Math.cos(RL * Math.PI / 180), ky = 111320;
+  const side = (a, b) => [(b[1] - a[1]) * kx, (b[0] - a[0]) * ky];
+  const sides = rp.length === 4 ? [side(rp[0], rp[1]), side(rp[1], rp[2])] : [];
+  const long = sides.length ? sides.reduce((m, v) => Math.hypot(...v) > Math.hypot(...m) ? v : m) : [0, 0];
+  let bearing = Math.atan2(long[0], long[1]) * 180 / Math.PI;
+  bearing = ((bearing % 180) + 180) % 180;
+  out.rectangle = { ghost: ghost, turned: rectTurned, corners: rp.length,
+                    sides: sides.map(v => +Math.hypot(...v).toFixed(2)).sort(),
+                    bearing: Math.round(bearing), area: rect ? +(+rect[9]).toFixed(1) : 0,
+                    mode: w.currentMode, ghost_left: !!w._areaGhost };
+  // A circle of the width typed.
+  calls = [];
+  const CL = LAT - D * 14, CG = LNG + D * 6;
+  w.setMode('shape', { kind: 'pond', shape_type: 'Water Feature', fill_color: '#4fc3f7',
+                       stroke_color: '#0288d1', fill_opacity: 0.4,
+                       place: 'circle', place_across_m: 3 });
+  out.circle_turns = w.turnPlacingArea();
+  w.handleShapeClick(CL, CG);
+  const circ = lastCall('onShapeComplete');
+  const cp = circ ? JSON.parse(circ[2]) : [];
+  const radii = cp.map(p => Math.hypot((p[1] - CG) * kx, (p[0] - CL) * ky));
+  out.circle = { points: cp.length,
+                 r_min: radii.length ? +Math.min(...radii).toFixed(2) : 0,
+                 r_max: radii.length ? +Math.max(...radii).toFixed(2) : 0 };
 
   document.title = 'MEASURED ' + JSON.stringify(out);
 }

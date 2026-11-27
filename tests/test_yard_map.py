@@ -16,10 +16,14 @@ Boots ``html/map.html`` in headless Chromium through ``html/yard_map_probe.html`
   pointer over it, and a turned rectangle is drawn turned, including one loaded
   from a design;
 * an existing building mark still removes on a right-click;
-* a hedge, living fence or windbreak with plants on it draws no dots, and its
-  right-click menu offers *Change its plants…* and a Remove that names what it
-  takes; an old one with nothing on it keeps its dots and offers *Plant this
-  hedge…*, which asks Python (V3.74). A fence's menu only removes.
+* an existing hedge (V3.75) is a solid band with no dots, labelled by what it
+  is, and its right-click menu, like a fence's, only removes;
+* a line finishes on a click of its last point and closes on a click of its
+  first, a double-click's quick second click is left to the double-click, and
+  every area closes on its first corner (V3.75, the owner: a swale "doesn't
+  close");
+* a rectangle of the size typed follows the cursor, turns 15° with R and goes
+  down whole on a click; a circle the same at the width typed.
 
 Self-skips with no Chromium.
 """
@@ -79,28 +83,57 @@ class TheYardOnTheMap(unittest.TestCase):
     def test_an_existing_building_still_removes(self):
         self.assertEqual(self.m["existing"]["removed"], 1)
 
-    # ── Lines you plant (V3.74) ──────────────────────────────────────────────
+    # ── An existing hedge (V3.75) ────────────────────────────────────────────
 
-    def test_an_old_hedge_keeps_its_dots_and_offers_planting(self):
+    def test_a_hedge_draws_no_dots_says_what_it_is_and_only_removes(self):
         h = self.m["hedges"]
-        self.assertGreater(h["old_dots"], 5)
-        self.assertIn("Plant this hedge…", h["old_menu"])
+        self.assertEqual(h["dots"], 0)
+        self.assertEqual(h["label"], "Cotoneaster hedge")
+        self.assertEqual(h["old_label"], "Hedge")      # a V3.74 living fence
+        self.assertEqual(h["menu"], ["🗑 Remove the cotoneaster hedge"])
         self.assertEqual(h["removed_at_once"], 0)
-        self.assertEqual(h["asked"], ["hedge_old"])
-
-    def test_a_planted_hedge_draws_no_dots_and_says_what_remove_takes(self):
-        h = self.m["hedges"]
-        self.assertEqual(h["planted_dots"], 0)
-        self.assertIn("Change its plants…", h["planted_menu"])
-        self.assertTrue(any("Remove the hedge and its 3 plants" in t
-                            for t in h["planted_menu"]), h["planted_menu"])
-        self.assertEqual(h["removed"], ["hedge_planted"])
+        self.assertEqual(h["removed"], ["hedge_cot"])
         self.assertTrue(h["gone"])
+        self.assertEqual(h["fence_menu"], ["🗑 Remove the fence"])
 
-    def test_a_fence_only_removes(self):
-        menu = self.m["hedges"]["fence_menu"]
-        self.assertFalse(any("Plant" in t for t in menu), menu)
-        self.assertTrue(any("Remove the fence" in t for t in menu), menu)
+    # ── A line finishes the way an area closes (V3.75) ───────────────────────
+
+    def test_a_click_on_the_last_point_finishes_a_line(self):
+        lines = self.m["lines"]
+        self.assertEqual((lines["swale_sent"], lines["swale_points"],
+                          lines["swale_mode"]), (1, 3, "none"))
+
+    def test_a_click_on_the_first_point_closes_it(self):
+        lines = self.m["lines"]
+        self.assertEqual(lines["loop_points"], 4)
+        self.assertTrue(lines["loop_closed"])
+
+    def test_a_double_click_still_finishes_with_no_doubled_point(self):
+        lines = self.m["lines"]
+        self.assertEqual((lines["quick_sent"], lines["quick_points"]), (0, 2))
+        self.assertEqual(lines["dbl_points"], 2)
+
+    def test_every_area_closes_on_its_first_corner(self):
+        self.assertEqual(self.m["closed"], [1, 2, 3, 4, 5, 6])
+
+    # ── An area placed whole (V3.75) ─────────────────────────────────────────
+
+    def test_a_rectangle_of_the_size_typed_turned_by_r(self):
+        r = self.m["rectangle"]
+        self.assertEqual((r["ghost"], r["turned"], r["corners"]), (4, True, 4))
+        self.assertAlmostEqual(r["sides"][0], 2.0, delta=0.05)
+        self.assertAlmostEqual(r["sides"][1], 4.0, delta=0.05)
+        self.assertEqual(r["bearing"], 15)
+        self.assertAlmostEqual(r["area"], 8.0, delta=0.2)
+        self.assertEqual(r["mode"], "none")
+        self.assertFalse(r["ghost_left"])
+
+    def test_a_circle_of_the_width_typed(self):
+        c = self.m["circle"]
+        self.assertFalse(self.m["circle_turns"])
+        self.assertEqual(c["points"], 32)
+        self.assertAlmostEqual(c["r_min"], 1.5, delta=0.02)
+        self.assertAlmostEqual(c["r_max"], 1.5, delta=0.02)
 
 
 class TheTurnIsStored(unittest.TestCase):

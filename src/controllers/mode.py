@@ -93,8 +93,8 @@ class ModeController:
         self._main.map_widget.set_hedgerow_mode(hedge_config)
         self._main.toolbar.reset_draw_buttons()
         self._set_mode_label(
-            "Drawing hedgerow — click to add points, double-click to finish"
-        )
+            "Drawing a line — click to add points; double-click or click the "
+            "last point to finish, or click the first point to close it")
 
     def _enter_shape_mode(self, shape_config: dict):
         self._main._current_mode = 'shape'
@@ -108,6 +108,22 @@ class ModeController:
                                    if shape_config.get("kind") else {})
         self._main.map_widget.set_shape_mode(shape_config)
         self._main.toolbar.reset_draw_buttons()
-        self._set_mode_label(
-            "Drawing shape — click points, double-click or click first point to close"
-        )
+        self._set_mode_label(shape_mode_words(shape_config))
+        if shape_config.get("place") in ("rectangle", "circle"):
+            # The next press is on the map, and R turns it there (V3.75).
+            self._main.map_widget.setFocus()
+
+
+def shape_mode_words(cfg: dict) -> str:
+    """What the next click does while an area is being put on the map: drawn
+    corner by corner, or a rectangle or circle of the size typed (V3.75)."""
+    def _m(key: str) -> str:
+        return f"{float(cfg.get(key) or 0):g}"
+    if cfg.get("place") == "rectangle":
+        return (f"Placing a {_m('place_length_m')} × {_m('place_width_m')} m "
+                "rectangle — click to put it down; R turns it; Esc to stop")
+    if cfg.get("place") == "circle":
+        return (f"Placing a circle {_m('place_across_m')} m across — click to "
+                "put it down; Esc to stop")
+    return ("Drawing an outline — click its corners; double-click or click "
+            "the first corner to close it")

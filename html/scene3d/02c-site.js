@@ -285,7 +285,6 @@ function _stops(points, step) {
   return out;
 }
 
-const _LINE_GREEN = { hedge: 0x58794a, living_fence: 0x5f8050, windbreak: 0x4f6f47 };
 const _LINE_SOLID = { wall: 0x9a958c, frame: 0x8a6a4c };     // V3.72: slabs
 function buildLines(group, lines, terrain, month) {
   const fence = [], green = {}, slabs = { wall: [], frame: [] };
@@ -316,10 +315,10 @@ function buildLines(group, lines, terrain, month) {
           fence.push(_boxBetween(posts[i][0], posts[i][1], posts[i + 1][0],
             posts[i + 1][1], terrain, up * h, 0.12 * h, 0.03));
     } else {
-      // A hedge, a living fence, a windbreak: one plain mass. Nothing records
-      // its plants one by one, so none is drawn.
+      // An existing hedge (V3.75): one plain mass at its height and width,
+      // in its kind's green (HEDGE_LOOK, 02d-kinds.js).
       const stops = _stops(pts, 2), w = ln.width_m || 1.5;
-      const key = _LINE_GREEN[ln.kind] ? ln.kind : 'hedge';
+      const key = HEDGE_LOOK[ln.hedge_kind] ? ln.hedge_kind : 'other';
       for (let i = 0; i + 1 < stops.length; i++)
         (green[key] = green[key] || []).push(_boxBetween(stops[i][0], stops[i][1],
           stops[i + 1][0], stops[i + 1][1], terrain, 0, h, w, 0.6));
@@ -337,7 +336,7 @@ function buildLines(group, lines, terrain, month) {
   add(slabs.wall, _LINE_SOLID.wall, 'walls');
   add(slabs.frame, _LINE_SOLID.frame, 'frames');
   for (const key in green)        // bare and twiggy with its leaves down
-    add(green[key], seasonLeavesDown(month) ? 0x6f6a55 : _LINE_GREEN[key], 'hedges:' + key);
+    add(green[key], hedgeColour(key, month), 'hedges:' + key);
 }
 
 // ── everything on the ground ────────────────────────────────────────────────

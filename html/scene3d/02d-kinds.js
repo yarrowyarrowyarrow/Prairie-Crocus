@@ -222,3 +222,16 @@ function buildFenceKind(group, ln, terrain, month) {
       'fence-panels:' + ln.fence_kind);
   return true;
 }
+
+// ── an existing hedge's green (V3.75) ───────────────────────────────────────
+// By what it is (src/yard_kinds.py's HEDGE_KINDS): bare and twiggy with its
+// leaves down, except the cedar, which keeps them.
+const HEDGE_LOOK = {
+  cotoneaster: { green: 0x3f6b3c }, caragana: { green: 0x7b9446 },
+  lilac: { green: 0x5c8048 }, cedar: { green: 0x35593f, evergreen: true },
+  other: { green: 0x58794a },
+};
+function hedgeColour(key, month) {
+  const look = HEDGE_LOOK[key] || HEDGE_LOOK.other;
+  return (!look.evergreen && seasonLeavesDown(month)) ? 0x6f6a55 : look.green;
+}

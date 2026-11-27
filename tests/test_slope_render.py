@@ -147,7 +147,8 @@ class TheGroundOnASlope(unittest.TestCase):
 
     def test_a_fence_and_a_hedge_stand_on_the_slope(self):
         lines = self.m["lines"]
-        self.assertEqual(sorted(lines), ["fences", "hedges:hedge"])
+        # An existing hedge nobody named is Other (V3.75).
+        self.assertEqual(sorted(lines), ["fences", "hedges:other"])
         for name, ln in lines.items():
             self.assertGreaterEqual(ln["foot_m"], -0.25, f"{name} is sunk in the hill")
             self.assertLessEqual(ln["foot_m"], 0.3, f"{name} hangs over the ground")

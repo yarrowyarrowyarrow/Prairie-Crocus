@@ -105,26 +105,45 @@ def _caster(lat: float, lng: float, height_m: float, radius_m: float,
 
 
 def _line_casters(feature: dict) -> list[dict]:
-    """A wall's or a board fence's shade, the owner's Q3 (V3.74): each
-    segment a strip ``yard_kinds.SHADE_STRIP_M`` wide extruded to its height,
-    as a building's footprint is. Any other line casts nothing."""
+    """A wall's or a board fence's shade, the owner's Q3 (V3.74), and an
+    existing hedge's (V3.75): each segment a strip extruded to its height, as
+    a building's footprint is (``yard_kinds.SHADE_STRIP_M`` wide, a hedge at
+    its own width). A deciduous hedge carries its foliage, so it takes the
+    leaf-off break a deciduous crown does. Any other line casts nothing."""
     from src import yard_kinds
     height = yard_kinds.shade_height(feature)
     if height <= 0:
         return []
     out = []
     pts = (feature.get("geometry") or {}).get("coordinates") or []
-    for ring in yard_kinds.line_strips(pts, yard_kinds.SHADE_STRIP_M):
+    foliage = yard_kinds.hedge_foliage(feature)
+    width = yard_kinds.SHADE_STRIP_M
+    if foliage:
+        props = feature.get("properties") or {}
+        width = float(props.get("width_m") or width)
+    for ring in yard_kinds.line_strips(pts, width):
         body = ring[:-1]
         lng = sum(p[0] for p in body) / len(body)
         lat = sum(p[1] for p in body) / len(body)
-        c = _caster(lat, lng, height, yard_kinds.SHADE_STRIP_M / 2,
-                    footprint=ring, kind="building")
-        # What it is, for the 3D timeline's notes ("the fence"), which would
-        # otherwise call anything with an outline a building.
-        c["what"] = (yard_kinds.kind_of(feature).words or "").lower()
+        # A hedge is extruded as a building is (every reader asks only
+        # whether a caster is a tree); its own kind lets its leaves drop.
+        c = _caster(lat, lng, height, width / 2, footprint=ring,
+                    kind="hedge" if foliage else "building",
+                    foliage=foliage or None)
+        # What it is, for the 3D timeline's notes ("the fence", "the
+        # cotoneaster hedge"), which would otherwise call it a building.
+        c["what"] = _line_words(feature)
         out.append(c)
     return out
+
+
+def _line_words(feature: dict) -> str:
+    from src import yard_kinds
+    what = yard_kinds.hedge_kind(feature)
+    if what and what != "other":
+        words = dict(yard_kinds.HEDGE_KINDS)[what].lower()
+        return f"{words} hedge"
+    return (yard_kinds.kind_of(feature).words or "").lower()
 
 
 def casters_from_project(project_dict: dict) -> list[dict]:
@@ -214,13 +233,14 @@ def casters_from_project(project_dict: dict) -> list[dict]:
 def _split_casters_by_leaf(casters, month):
     """Partition casters into (full-shade, leaf-off-reduced) for a sample
     month. Outside the leaf-off window — or with no month — everything is
-    full; inside it, declared-deciduous tree crowns move to the reduced list.
-    Untagged trees always stay full (unknown ≠ transparent)."""
+    full; inside it, declared-deciduous tree crowns and hedges (V3.75) move to
+    the reduced list. Untagged trees always stay full (unknown ≠ transparent),
+    and a building never does, whatever it carries."""
     if month is None or month not in _LEAF_OFF_MONTHS:
         return list(casters or []), []
     full, reduced = [], []
     for c in casters or []:
-        if c.get("kind") == "tree" and c.get("foliage") == "deciduous":
+        if c.get("kind") in ("tree", "hedge") and c.get("foliage") == "deciduous":
             reduced.append(c)
         else:
             full.append(c)

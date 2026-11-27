@@ -377,28 +377,25 @@ class MapEventRouter:
                  "color": cfg.get("color") or "#4caf50",
                  "width_m": float(cfg.get("width_m") or 1.5),
                  "spacing_m": float(cfg.get("spacing_m") or 1.0)}
-        # Its kind from the Yard palette (V3.72), else its style's, and the
-        # plants chosen for it, which go in with it as one undo step (V3.74).
-        props.update({k: cfg[k] for k in ("kind", "fence_kind", "plant_ids")
-                      if cfg.get(k)})
-        feature = {"type": "Feature",
-                   "geometry": {"type": "LineString", "coordinates": coords},
-                   "properties": props}
-        self._main._project["features"].append(feature)
-        from src import hedge_flow
-        num_plants = hedge_flow.plant_new_line(self._main, feature) \
-            or num_plants
+        # Its kind from the Yard palette (V3.72), else its style's, and what
+        # an existing hedge is (V3.75).
+        props.update({k: cfg[k] for k in ("kind", "fence_kind", "hedge_kind",
+                                          "height_m") if cfg.get(k)})
+        self._main._project["features"].append({
+            "type": "Feature",
+            "geometry": {"type": "LineString", "coordinates": coords},
+            "properties": props})
         self._main._mark_modified()
         self._main._set_mode_label("Ready")
-        self._main.statusBar().showMessage(
-            f"Line drawn: {length_m:.1f} m"
-            + (f", {num_plants} plants" if num_plants else ""), 3000)
+        self._main.statusBar().showMessage(f"Line drawn: {length_m:.1f} m",
+                                           3000)
 
     @undoable("remove hedgerow")
     def _on_hedgerow_removed(self, hedge_id: str, points_json: str):
-        # Its plants go with it (V3.74).
-        from src import hedge_flow
-        hedge_flow.remove_line(self._main, hedge_id)
+        self._main._project["features"] = [
+            f for f in self._main._project["features"]
+            if f.get("properties", {}).get("hedge_id") != hedge_id
+        ]
         self._main._mark_modified()
 
     # ── Shape handlers ───────────────────────────────────────────────────────

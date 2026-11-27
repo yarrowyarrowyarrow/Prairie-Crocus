@@ -16,6 +16,24 @@
 
     // ── Lines: hedges, fences, walls, swales (S2) ─────────────────────────────
     function handleHedgerowClick(lat, lng) {
+      // A line finishes the way an area closes (V3.75, the owner: a swale
+      // "doesn't close"): a click on its last point finishes it, and on its
+      // first point closes it into a loop and finishes it, within the 12 px
+      // an area's first point takes.
+      // A double-click's second click lands on the last point too: it is left
+      // to the double-click, which finishes the line without zooming the map.
+      var n = hedgerowPoints.length, now = Date.now();
+      var quick = now - _lineClickAt < LINE_DOUBLE_MS;
+      _lineClickAt = now;
+      if (n >= 2 && _nearPx(hedgerowPoints[n - 1], lat, lng)) {
+        if (!quick) finishHedgerow();
+        return;
+      }
+      if (n >= 3 && _nearPx(hedgerowPoints[0], lat, lng)) {
+        hedgerowPoints.push(hedgerowPoints[0].slice());
+        finishHedgerow();
+        return;
+      }
       hedgerowPoints.push([lat, lng]);
 
       // Draw vertex marker
@@ -27,6 +45,14 @@
       }).addTo(drawnItems);
 
       refreshHedgerowPolyline();
+    }
+
+    var _lineClickAt = 0, LINE_DOUBLE_MS = 400;
+
+    function _nearPx(pt, lat, lng) {
+      var a = map.latLngToContainerPoint(L.latLng(pt));
+      var b = map.latLngToContainerPoint(L.latLng(lat, lng));
+      return Math.hypot(a.x - b.x, a.y - b.y) < 12;
     }
 
     function refreshHedgerowPolyline() {
@@ -62,16 +88,17 @@
       var color   = cfg.color    || '#4caf50';
       var widthM  = cfg.width_m  || 1.5;
       var spacing = cfg.spacing_m || 1.0;
-      var style   = cfg.style    || 'hedge';
+      // A living fence and a windbreak are drawn as the hedge they became.
+      var style   = ({ living_fence: 'hedge', windbreak: 'hedge' })[cfg.style]
+                    || cfg.style || 'hedge';
       var species = cfg.species  || '';
       var group   = L.layerGroup().addTo(map);
 
       // Style definitions
       var styleMap = {
-        'hedge':       { weight: 6, opacity: 0.6, dashArray: null,    fillDots: true },
+        // An existing hedge (V3.75): a solid band in its kind's green.
+        'hedge':       { weight: 8, opacity: 0.75, dashArray: null,  fillDots: false },
         'fence':       { weight: 3, opacity: 0.8, dashArray: '8 6',  fillDots: false },
-        'living_fence':{ weight: 5, opacity: 0.6, dashArray: '12 4', fillDots: true },
-        'windbreak':   { weight: 8, opacity: 0.5, dashArray: null,    fillDots: true },
         'wall':        { weight: 5, opacity: 0.85, dashArray: null,   fillDots: false },
         'swale':       { weight: 9, opacity: 0.45, dashArray: '2 6', fillDots: false }
       };
@@ -98,17 +125,10 @@
         segments.push({ from: from, to: to, len: segLen });
         totalLen += segLen;
       }
-      // A hedge, living fence or windbreak planted with real plants (V3.74)
-      // draws no dots: its plants are on the map. One drawn with plants
-      // chosen is planted by Python as soon as it is finished.
-      var living = cfg.living !== undefined ? !!cfg.living
-        : (style === 'hedge' || style === 'living_fence' || style === 'windbreak');
-      var planted = (+cfg.plants > 0) || !!(cfg.plant_ids && cfg.plant_ids.length);
-      var numPlants = planted ? (+cfg.plants || 0)
-        : (s.fillDots ? Math.floor(totalLen / spacing) + 1 : 0);
+      var numPlants = s.fillDots ? Math.floor(totalLen / spacing) + 1 : 0;
 
       // Plant markers along the line
-      if (s.fillDots && !planted) {
+      if (s.fillDots) {
         var distAlong = 0;
         var segIdx = 0;
         var segDist = 0;
@@ -140,7 +160,10 @@
       var midIdx = Math.floor(hedgerowPoints.length / 2);
       var styleWords = style.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
       var FENCE_WORDS = { rail: 'Rail fence', board: 'Board fence', chain_link: 'Chain link fence' };
+      var HEDGE_WORDS = { cotoneaster: 'Cotoneaster hedge', caragana: 'Caragana hedge',
+                          lilac: 'Lilac hedge', cedar: 'Cedar hedge' };
       if (style === 'fence' && FENCE_WORDS[cfg.fence_kind]) styleWords = FENCE_WORDS[cfg.fence_kind];
+      if (style === 'hedge' && HEDGE_WORDS[cfg.hedge_kind]) styleWords = HEDGE_WORDS[cfg.hedge_kind];
       var labelText = species || styleWords;
       var labelIcon = L.divIcon({
         className: 'hedgerow-label',
@@ -154,8 +177,8 @@
       var tooltipText = '<b>' + escH(styleWords) + '</b>';
       if (species) tooltipText += '<br>' + escH(species);
       tooltipText += '<br><span style="color:#b0bec5;font-size:12px">' +
-        (numPlants ? (planted ? '' : '~') + Number(numPlants) + ' plants · ' : '') +
-        totalLen.toFixed(1) + 'm<br>Right-click for more</span>';
+        (numPlants ? '~' + Number(numPlants) + ' plants · ' : '') +
+        totalLen.toFixed(1) + 'm<br>Right-click to remove</span>';
       mainLine.bindTooltip(tooltipText, { className: 'plant-marker-label' });
 
       // Store metadata
@@ -171,8 +194,7 @@
         numPlants: numPlants
       };
 
-      // Right-click: plant it (a living line, V3.74) or remove it, with
-      // what Remove takes said. It removed on a right-click until V3.74.
+      // Right-click: a menu with Remove (V3.74; it removed at once before).
       var linePoints = hedgerowPoints.slice();
       var lineWords = styleWords.toLowerCase();
       function removeLine() {
@@ -184,20 +206,8 @@
         L.DomEvent.stop(e);
         var oe = e.originalEvent;
         if (typeof showContextMenu !== 'function') { removeLine(); return; }
-        var items = [];
-        if (living) {
-          items.push({ label: (planted ? 'Change its plants…'
-                                       : 'Plant this ' + lineWords + '…'),
-                       action: function() {
-                         if (bridge && bridge.onHedgePlantRequested)
-                           bridge.onHedgePlantRequested(id);
-                       } });
-          items.push('sep');
-        }
-        items.push({ label: '🗑 Remove the ' + lineWords +
-                     (planted && numPlants ? ' and its ' + Number(numPlants) +
-                      ' plants' : ''), action: removeLine });
-        showContextMenu(oe.clientX, oe.clientY, items);
+        showContextMenu(oe.clientX, oe.clientY,
+                        [{ label: '🗑 Remove the ' + lineWords, action: removeLine }]);
       });
 
       hedgerowLayers[id] = group;
@@ -267,6 +277,8 @@
     // R on the map: the object under the pointer, if no tool is on. Returns
     // whether one was turned (the window turns a community being placed first).
     function turnHoveredObject() {
+      // A rectangle being placed turns first (05c-areas.js, V3.75).
+      if (typeof turnPlacingArea === 'function' && turnPlacingArea()) return true;
       if (!_hoverObject || currentMode !== 'none') return false;
       turnObject(_hoverObject, 45);
       return true;

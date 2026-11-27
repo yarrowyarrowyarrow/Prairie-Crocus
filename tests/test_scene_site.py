@@ -92,9 +92,13 @@ def _scene(project, **kw):
 
 
 def _site_js() -> str:
-    with open(os.path.join(_ROOT, "html", "scene3d", "02c-site.js"),
-              encoding="utf-8") as fh:
-        return fh.read()
+    """The chunks that draw the site: 02c, and 02d since V3.73."""
+    out = []
+    for name in ("02c-site.js", "02d-kinds.js"):
+        with open(os.path.join(_ROOT, "html", "scene3d", name),
+                  encoding="utf-8") as fh:
+            out.append(fh.read())
+    return "\n".join(out)
 
 
 class OneVocabularyOfSurfaces(unittest.TestCase):
@@ -164,8 +168,12 @@ class OneVocabularyOfSurfaces(unittest.TestCase):
         js = _site_js()
         self.assertIn("ln.kind === 'fence'", js)
         for kind in S.LINE_HEIGHT_M:
-            if kind != "fence":
+            if kind not in ("fence", "hedge"):
                 self.assertRegex(js, rf"\b{kind}: 0x[0-9a-f]{{6}}", kind)
+        # An existing hedge is drawn in its kind's green (V3.75).
+        from src import yard_kinds as Y
+        for kind, _words in Y.HEDGE_KINDS:
+            self.assertRegex(js, rf"\b{kind}: {{ green: 0x[0-9a-f]{{6}}", kind)
 
 
 class TheGround(unittest.TestCase):
@@ -247,9 +255,7 @@ class TheLines(unittest.TestCase):
 
     def test_a_height_is_one_estimate_a_kind(self):
         """Nothing in a design records how tall a hedge or a fence is."""
-        self.assertEqual(sorted(S.LINE_HEIGHT_M),
-                         ["fence", "hedge", "living_fence", "wall",
-                          "windbreak"])
+        self.assertEqual(sorted(S.LINE_HEIGHT_M), ["fence", "hedge", "wall"])
         # Every line the Yard tab draws (V3.72) but a swale, which lies on the
         # ground as a strip.
         from src import yard_kinds as Y
@@ -257,9 +263,9 @@ class TheLines(unittest.TestCase):
         self.assertEqual(styles - {"swale"}, set(S.LINE_HEIGHT_M))
         for kind, height in S.LINE_HEIGHT_M.items():
             row = S.lines(_project(_line(kind, [(0, 0), (5, 0)])), _Proj())[0]
+            if kind == "hedge":           # its own height since V3.75
+                height = Y.HEDGE_SIZE_M["other"][0]
             self.assertEqual(row["height_m"], height)
-        self.assertGreater(S.LINE_HEIGHT_M["windbreak"],
-                           S.LINE_HEIGHT_M["hedge"])
         self.assertLess(S.LINE_HEIGHT_M["fence"], 1.6,
                         "a fence a person can see over, not a wall nobody drew")
 

@@ -21,7 +21,10 @@ saved by any earlier version into that form, **at the outline the map showed**
 * a Garden Bed or Mulch Area given a height up to 1.2 m becomes a raised bed at
   that height, and any other shape given a height (not a tree's crown) a
   building, which is what the shade map already took it for;
-* every other drawn area and line gains the ``kind`` it already was.
+* every other drawn area and line gains the ``kind`` it already was;
+* a hedge, living fence or windbreak line becomes an existing hedge (V3.75), at
+  the height the 3D drew it and what it is read from the words typed on it,
+  and a line V3.74 planted is taken off, its plants staying as plants.
 
 It is idempotent, and it changes the design in memory only: the windows call it
 before they mark a design open, so it is never an undo step and never asks to
@@ -178,8 +181,34 @@ def _upgrade_shape(f: dict) -> bool:
     return True
 
 
+#: How tall the 3D drew a hedge, a living fence and a windbreak before V3.75
+#: (``scene_site.LINE_HEIGHT_M`` until then): an old one is kept at it.
+OLD_LINE_HEIGHT_M = {"hedge": 1.2, "living_fence": 1.6, "windbreak": 3.0}
+
+
+def _upgrade_hedge(f: dict) -> bool:
+    """A line from before V3.75 that was a hedge, a living fence or a
+    windbreak, as an existing hedge (the owner: an existing hedge is what the
+    tab is for)."""
+    props = f.setdefault("properties", {})
+    if props.get("hedge_kind"):
+        return False
+    style = props.get("kind") or props.get("style") or "hedge"
+    props["hedge_kind"] = yard_kinds.hedge_kind(f)
+    props["height_m"] = float(props.get("height_m")
+                              or OLD_LINE_HEIGHT_M.get(style, 1.2))
+    props["width_m"] = float(props.get("width_m") or 1.5)
+    props["kind"] = props["style"] = "hedge"
+    for gone in ("plant_ids", "spacing_m", "num_plants"):
+        props.pop(gone, None)
+    return True
+
+
 def _upgrade_line(f: dict) -> bool:
     props = f.setdefault("properties", {})
+    k = yard_kinds.kind_of(f)
+    if k is not None and k.key == "hedge":
+        return _upgrade_hedge(f)
     if props.get("kind") in yard_kinds.BY_KEY:
         return False
     k = yard_kinds.kind_of(f)
@@ -217,7 +246,17 @@ def upgrade(project: dict) -> int:
         return 0
     changed = 0
     out = []
+    # The plants V3.74 planted along a line are grouped under its id; the line
+    # comes off and they stay, as plants (V3.75).
+    groups = {(f.get("properties") or {}).get("placement_group_id")
+              for f in features
+              if (f.get("properties") or {}).get("element_type") == "plant"}
     for f in features:
+        props = (f or {}).get("properties") or {}
+        if (props.get("element_type") == "hedgerow" and props.get("plant_ids")
+                and props.get("hedge_id") in groups):
+            changed += 1
+            continue
         new, did = upgrade_feature(f)
         out.append(new)
         changed += bool(did)

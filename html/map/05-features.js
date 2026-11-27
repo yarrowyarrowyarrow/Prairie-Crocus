@@ -308,6 +308,8 @@
 
     // ── Custom shape drawing (S3) ────────────────────────────────────────────
     function handleShapeClick(lat, lng) {
+      // A rectangle or circle of the size typed goes down whole (05c-areas.js).
+      if (typeof placeAreaAt === 'function' && placeAreaAt(lat, lng)) return;
       // Close polygon if clicking near first point
       if (shapePoints.length >= 3) {
         var first = shapePoints[0];

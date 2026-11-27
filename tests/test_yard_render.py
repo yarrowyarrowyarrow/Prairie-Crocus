@@ -449,12 +449,15 @@ class TheWholeYard(unittest.TestCase):
         lines = self.got["site"]["lines"]
         self.assertEqual(sorted(lines), [
             "fence-panels:board", "fence-panels:chain_link", "fences",
-            "fences:board", "fences:chain_link", "frames", "hedges:hedge",
+            "fences:board", "fences:chain_link", "frames", "hedges:other",
             "strip", "walls"])
         self.assertAlmostEqual(lines["fences"]["low"], 0.0, delta=0.02)
         self.assertAlmostEqual(lines["fences"]["top"], 1.28, delta=0.03)
-        self.assertAlmostEqual(lines["hedges:hedge"]["top"], 1.2, delta=0.02)
-        r, g, b = lines["hedges:hedge"]["colour"]
+        # An existing hedge nobody named (V3.75): Other, at its stated height.
+        from src.yard_kinds import HEDGE_SIZE_M
+        self.assertAlmostEqual(lines["hedges:other"]["top"],
+                               HEDGE_SIZE_M["other"][0], delta=0.02)
+        r, g, b = lines["hedges:other"]["colour"]
         self.assertGreater(g, max(r, b), "a hedge is not green")
 
     def test_snow_lies_on_the_soft_ground_and_the_roofs(self):
@@ -576,7 +579,7 @@ class TheWholeYard(unittest.TestCase):
 
     def test_a_hedge_is_twigs_when_the_leaves_are_down(self):
         def hedge(site):
-            return site["lines"]["hedges:hedge"]["colour"]
+            return site["lines"]["hedges:other"]["colour"]
         r, g, b = hedge(self.got["site"])
         self.assertGreater(g, max(r, b))
         for name in ("apr", "oct", "jan"):

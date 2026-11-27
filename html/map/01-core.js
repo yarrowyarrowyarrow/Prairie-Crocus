@@ -814,6 +814,7 @@
         _drawPatternPreview(e.latlng);
       }
       if (typeof updateCursorFootprint === 'function') updateCursorFootprint(e.latlng);
+      if (typeof updateAreaGhost === 'function') updateAreaGhost(e.latlng);   // 05c
       boundaryHover(e);
     }
 

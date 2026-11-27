@@ -202,8 +202,11 @@ class EachDrawnShapeAndLine(unittest.TestCase):
         props = _upgraded(_line("fence", [(0, 0), (8, 0)]))["properties"]
         self.assertEqual((props["kind"], props["fence_kind"]),
                          ("fence", "rail"))
+        # A windbreak is an existing hedge since V3.75, at the height the 3D
+        # drew it (U.OLD_LINE_HEIGHT_M).
         props = _upgraded(_line("windbreak", [(0, 0), (8, 0)]))["properties"]
-        self.assertEqual(props["kind"], "windbreak")
+        self.assertEqual((props["kind"], props["hedge_kind"], props["height_m"]),
+                         ("hedge", "other", 3.0))
 
 
 class OnceAndEverywhere(unittest.TestCase):

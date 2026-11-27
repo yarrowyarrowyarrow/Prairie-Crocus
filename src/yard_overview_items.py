@@ -290,14 +290,11 @@ def item_cover(d: Design) -> Item:
         c = yo.cover(d.project, get_plant=d.get_plant)
     except ImportError:                       # no shapely: say nothing wrong
         c = None
-    hedge = _hedge_offer(d)                  # an old hedge, never planted
-    if c is None:                            # on its own (Q5, V3.74)
-        lines = ["Outline your yard, or the beds you are planting, to see "
-                 "how much of it the plants will cover."]
-        if hedge is not None:
-            return Item("cover", title, LOOK, lines + [hedge[0]], *hedge[1:])
-        return Item("cover", title, LOOK, lines, "Outline my yard",
-                    "draw:boundary")
+    if c is None:
+        return Item("cover", title, LOOK,
+                    ["Outline your yard, or the beds you are planting, to see "
+                     "how much of it the plants will cover."],
+                    "Outline my yard", "draw:boundary")
     words = yo.share_words(c["share"])
     line = (f"Once grown, the plants will cover {words} of the area you "
             f"outlined ({c['covered_m2']:.0f} of {c['area_m2']:.0f} m²).")
@@ -305,32 +302,11 @@ def item_cover(d: Design) -> Item:
     parts = yo.parts_words(yo.yard_parts(d.project))
     if parts:
         lines.append(parts)
-    if hedge is not None:
-        return Item("cover", title, LOOK, lines + [hedge[0]], *hedge[1:])
     if c["share"] >= yo.WELL_FILLED:
         return Item("cover", title, GOOD, lines)
     lines.append(FILL_LINE)
     return Item("cover", title, LOOK, lines, "Ways to fill the gaps",
                 "fill_gaps")
-
-
-def _hedge_offer(d: Design) -> Optional[tuple]:
-    """``(line, action, target)`` for the longest hedge, living fence or
-    windbreak with nothing planted on it, naming the plant its old name
-    matches, or ``None``."""
-    from src import hedge_planting, yard_kinds
-    lines = hedge_planting.unplanted(d.project)
-    if not lines:
-        return None
-    f = lines[0]
-    words = (yard_kinds.kind_of(f) or yard_kinds.BY_KEY["hedge"]).words.lower()
-    length = yard_kinds.line_length_m(f["geometry"]["coordinates"])
-    text = f"The {words} you drew ({length:.0f} m) has nothing planted on it."
-    found = hedge_planting.match(f)
-    if found:
-        text += f" {found['common_name']} matches the name you gave it."
-    return (text, f"Plant this {words}",
-            f"hedge:{f['properties'].get('hedge_id') or ''}")
 
 
 # ── 5. How it will look from the street ─────────────────────────────────────

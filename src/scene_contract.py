@@ -128,9 +128,10 @@ Scene schema (``SCENE_VERSION`` = 1)::
                                        #   kind: scene_site.KINDS; "custom"
                                        #   carries the person's color
       "lines": [{kind, points: [[x, y], ...], width_m, height_m}, ...],
-                                       # kind: hedge | fence | living_fence |
-                                       #   windbreak. height_m is an estimate by
-                                       #   kind: no design records one
+                                       # kind: hedge | fence | wall | strip |
+                                       #   frame. A hedge (V3.75) carries its
+                                       #   own height_m and hedge_kind; a
+                                       #   fence's or wall's is an estimate
       "season": {snow: bool, ground: snow | dormant | waking | green |
                  turning, leaves, herbs, known: bool, basis: str},
                                        # V3.46: the season, decided once from

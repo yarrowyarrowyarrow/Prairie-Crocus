@@ -76,12 +76,10 @@ KINDS = _all_looks()
 
 # ── lines ───────────────────────────────────────────────────────────────────
 
-#: ``style`` → metres tall. **Estimates by form**: nothing in a design records
-#: how tall a hedge or a fence is (the tool asks its width, spacing and a
-#: species in free text). A rail fence a person can see over; a clipped hedge;
-#: a taller living fence; a windbreak of shrubs.
-LINE_HEIGHT_M = {"fence": 1.2, "hedge": 1.2, "living_fence": 1.6,
-                 "windbreak": 3.0, "wall": yard_kinds.WALL_HEIGHT_M}
+#: ``style`` → metres tall. **Estimates by form**: a rail fence a person can
+#: see over, a wall. A hedge carries its own height since V3.75
+#: (``yard_kinds.line_height``); a fence its kind's.
+LINE_HEIGHT_M = {"fence": 1.2, "hedge": 1.2, "wall": yard_kinds.WALL_HEIGHT_M}
 #: A wall's thickness, and a raised bed's frame's (V3.72): stated estimates,
 #: like the heights above.
 WALL_WIDTH_M = 0.2
@@ -202,17 +200,13 @@ def lines(project: dict, proj) -> list:
     """Hedges, fences, living fences and windbreaks: ``[{kind, points,
     width_m, height_m}]``. The height is :data:`LINE_HEIGHT_M`'s estimate,
     or a fence kind's (``scene_kinds.FENCE_HEIGHT_M``, V3.73)."""
-    from src import hedge_planting, scene_kinds
-    # A planted hedge, living fence or windbreak draws nothing (V3.74): its
-    # plants are the shrubs and trees the viewer builds.
-    planted = hedge_planting.planted(project)
+    from src import scene_kinds
     out = []
     for f in (project or {}).get("features", []) or []:
         props = f.get("properties") or {}
         geom = f.get("geometry") or {}
         if (props.get("element_type") != "hedgerow"
-                or geom.get("type") != "LineString"
-                or (props.get("hedge_id") and props["hedge_id"] in planted)):
+                or geom.get("type") != "LineString"):
             continue
         pts = []
         for pt in geom.get("coordinates") or []:
@@ -238,6 +232,10 @@ def lines(project: dict, proj) -> list:
                                                    or LINE_WIDTH_M)
         row = {"kind": kind, "points": pts, "width_m": round(width, 2),
                "height_m": LINE_HEIGHT_M[kind]}
+        if kind == "hedge":
+            # An existing hedge at its own height, in its own green (V3.75).
+            row["height_m"] = round(yard_kinds.line_height(f), 2)
+            row["hedge_kind"] = yard_kinds.hedge_kind(f) or "other"
         if props.get("fence_kind"):          # rail, board, chain link (V3.72)
             row["fence_kind"] = props["fence_kind"]
             row["height_m"] = scene_kinds.fence_height(props["fence_kind"],

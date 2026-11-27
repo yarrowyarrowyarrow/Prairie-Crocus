@@ -36,8 +36,8 @@ MAP_LETTERS: tuple = (
     ("G", "communities", "Go to Placement: Communities"),
     ("Y", "yard", "Go to Placement: Yard"),         # S until V3.72
     ("D", "design", "Go to Design"),        # since V3.07 (Analysis was A)
-    ("R", "turn", "Turn 45°: the community being placed, or the object "
-                  "under the pointer"),       # V3.59; objects since V3.72
+    ("R", "turn", "Turn: the community or rectangle being placed, or the "
+                  "object under the pointer"),   # V3.59; objects V3.72
     # T went with the Planning tab (V3.08); Share has no letter of its own.
 )
 
