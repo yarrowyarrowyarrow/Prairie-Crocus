@@ -328,11 +328,15 @@ class GenerationController:
         # would have stood in a ring on the lawn. Written as the map's own
         # structure tool writes them; this method's checkpoint makes the whole
         # design, structures included, one undo step.
+        # A pond the plan places is drawn at its outline, as the Yard palette
+        # draws one (V3.72, src/yard_upgrade.py); a bee hotel stays an object.
+        from src import yard_upgrade
         placed_structures = 0
         for struct_def, lat, lng in _iter_generated_structures(project):
-            main._project["features"].append(
+            feature, _ = yard_upgrade.upgrade_feature(
                 _structure_feature(struct_def, lat, lng, plan_run=group_id))
-            main.map_widget.load_structure(struct_def, lat, lng)
+            main._project["features"].append(feature)
+            _draw_on_map(main.map_widget, feature)
             placed_structures += 1
 
         main.plant_panel.on_plants_placed_batch(batch)
@@ -356,6 +360,22 @@ class GenerationController:
         if bar is not None:
             bar.show_plan(len(batch), len({pid for pid, _n in batch}),
                           group_id)
+
+
+def _draw_on_map(map_widget, feature) -> None:
+    """Draw a design feature on the map as a design's open draws it."""
+    props = feature.get("properties") or {}
+    et = props.get("element_type")
+    if et == "structure":
+        lng, lat = feature["geometry"]["coordinates"][:2]
+        map_widget.load_structure(project_io.structure_map_def(props), lat,
+                                  lng)
+    elif et == "hedgerow":
+        line = project_io.feature_to_hedgerow(feature)
+        if line:
+            map_widget.load_hedgerow(line)
+    elif (shape := project_io.feature_to_shape(feature)) is not None:
+        map_widget.load_shape(shape)
 
 
 def _is_bed(feature) -> bool:

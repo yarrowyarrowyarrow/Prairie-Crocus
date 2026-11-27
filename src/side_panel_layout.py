@@ -92,7 +92,7 @@ def move_page(page: QWidget, to: QTabWidget, index: int,
 
 
 def placement_tab(main) -> QWidget:
-    """Placement: Plants, Communities, Structures."""
+    """Placement: Plants, Communities, Yard."""
     from src.fill_tab_widget import FillTabWidget
     from src.ui_style import inner_tab_stylesheet
     inner = FillTabWidget()
@@ -104,7 +104,9 @@ def placement_tab(main) -> QWidget:
     # because Plants was also the tab it sat under.
     inner.addTab(main.plant_panel, "Plants")
     inner.addTab(main.polyculture_panel, "Communities")
-    inner.addTab(main.structure_panel, "Structures")
+    # Yard (V3.72, the owner's Q1): everything else in a yard, which was
+    # Structures here and Draw › Shape on the Draw row.
+    inner.addTab(main.yard_palette, "Yard")
     main._placement_tabs = inner
     return inner
 

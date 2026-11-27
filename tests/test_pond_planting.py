@@ -412,16 +412,23 @@ class TheAppKeepsTheStructures(unittest.TestCase):
         with mock.patch.object(self.gen, "QMessageBox"), \
                 mock.patch.object(self.gen, "store_for") as store:
             ctl._render(proj)
-        feats = [f for f in main._project["features"]
-                 if f["properties"].get("element_type") == "structure"]
-        self.assertEqual([f["properties"]["struct_id"] for f in feats], ["pond"])
-        props = feats[0]["properties"]
-        self.assertEqual(props["struct_def"]["id"], "pond")
-        self.assertEqual(props["size_m"], 6.0)
-        self.assertEqual(main.map_widget.load_structure.call_count, 1)
-        sd, lat, lng = main.map_widget.load_structure.call_args[0]
-        self.assertEqual(sd["id"], "pond")
-        self.assertEqual(feats[0]["geometry"]["coordinates"], [lng, lat])
+        # Since V3.72 the pond lands as the Yard palette draws one: the 6 m
+        # circle the map drew for the placed pond, a pond to every reader
+        # (src/yard_upgrade.py), and the plan that placed it still owns it.
+        from src import yard_kinds
+        ponds = [f for f in main._project["features"]
+                 if (yard_kinds.kind_of(f) or None)
+                 and yard_kinds.kind_of(f).key == "pond"]
+        self.assertEqual(len(ponds), 1)
+        props = ponds[0]["properties"]
+        self.assertEqual(props["element_type"], "custom_shape")
+        self.assertTrue(props["plan_run"])
+        self.assertAlmostEqual(props["area_m2"], 3.14159 * 9, delta=0.6)
+        self.assertEqual(main.map_widget.load_shape.call_count, 1)
+        shape = main.map_widget.load_shape.call_args[0][0]
+        self.assertEqual((shape["kind"], shape["kind_words"]),
+                         ("pond", "Pond"))
+        self.assertEqual(main.map_widget.load_structure.call_count, 0)
         self.assertTrue(store.return_value.add_plant.called)
 
 

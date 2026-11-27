@@ -1,6 +1,6 @@
 """
 tree_edit_flow.py — persist drag / scroll-resize of existing tree & building
-marks (V2.26).
+marks (V2.26), and the move and turn of a placed object (V3.72).
 
 Free functions taking ``main`` (kept off MainWindow/the map controller, both at
 their guard ceilings; wired from ``app.py`` via lambdas). Existing on-site
@@ -20,6 +20,9 @@ from __future__ import annotations
 from contextlib import nullcontext
 
 _EXISTING = ("existing_tree", "existing_building")
+#: What the map lets a person drag: an existing tree or building, and since
+#: V3.72 a placed object (a bee hotel, a brush pile…).
+_MOVABLE = _EXISTING + ("structure",)
 
 
 def _checkpoint(main, label: str):
@@ -29,13 +32,15 @@ def _checkpoint(main, label: str):
 
 
 def _find(main, struct_id: str, lat: float, lng: float):
-    """The existing-feature Point matching ``struct_id`` at ≈(lat, lng), or
-    ``None``. Position is the identity (struct_id is shared by every tree)."""
+    """The existing-feature or object Point matching ``struct_id`` at
+    ≈(lat, lng), or ``None``. Position is the identity (struct_id is shared
+    by every tree)."""
+    from src.yard_kinds import struct_id_of
     for f in main._project.get("features", []):
         props = f.get("properties") or {}
-        if props.get("element_type") not in _EXISTING:
+        if props.get("element_type") not in _MOVABLE:
             continue
-        if props.get("struct_id") != struct_id:
+        if (props.get("struct_id") or struct_id_of(props)) != struct_id:
             continue
         coords = (f.get("geometry") or {}).get("coordinates") or []
         if len(coords) >= 2 and abs(coords[1] - lat) < 1e-6 \
@@ -54,6 +59,29 @@ def on_existing_feature_moved(main, marker_id: str, struct_id: str,
     with _checkpoint(main, "move existing feature"):
         feat["geometry"]["coordinates"] = [new_lng, new_lat]
     main._mark_modified()
+
+
+def on_structure_turned(main, marker_id: str, struct_id: str, lat: float,
+                        lng: float, bearing_deg: float) -> None:
+    """Store a turned object's bearing (V3.72), which the map, the planner's
+    footprint and the 3D all read. One undo step."""
+    feat = _find(main, struct_id, lat, lng)
+    if feat is None or feat["properties"].get("element_type") != "structure":
+        return
+    with _checkpoint(main, "turn"):
+        feat["properties"]["bearing_deg"] = round(float(bearing_deg) % 360.0,
+                                                  1)
+    main._mark_modified()
+
+
+def turn_key(main) -> bool:
+    """R on the map: the community being placed, else the object under the
+    pointer (the page turns it and reports back)."""
+    from src import community_turn
+    if community_turn.turn_pending(main):
+        return True
+    main.map_widget.turn_hovered_object()
+    return False
 
 
 def on_existing_feature_foliage(main, marker_id: str, struct_id: str,

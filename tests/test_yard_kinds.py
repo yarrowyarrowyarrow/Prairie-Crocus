@@ -86,13 +86,15 @@ class TheTableCoversWhatTheAppPutsDown(unittest.TestCase):
     def test_every_structure_shape_and_line_has_one_kind(self):
         from src.db.structures import STRUCTURES
         from src.lawn_zones import ZONE_TYPES
-        from src.shape_tool import AREA_PRESETS, LINE_KINDS
         for s in STRUCTURES:
             self.assertIn(s["id"], Y._BY_STRUCT, s["id"])
-        for name in list(AREA_PRESETS) + [z["label"] for z in
-                                          ZONE_TYPES.values()]:
+        # Draw › Shape's seven area types (retired in V3.72; old designs
+        # still hold them) and its four line styles.
+        for name in ["Garden Bed", "Pathway", "Patio / Deck", "Lawn Area",
+                     "Mulch Area", "Water Feature", "Custom"] + [
+                         z["label"] for z in ZONE_TYPES.values()]:
             self.assertIn(name, Y._BY_SHAPE, name)
-        for _words, style in LINE_KINDS:
+        for style in ("hedge", "fence", "living_fence", "windbreak"):
             self.assertIn(style, Y._BY_STYLE, style)
 
     def test_each_name_belongs_to_one_kind(self):
@@ -301,8 +303,9 @@ class PlanMyYardPlantsWhereTheTableSays(unittest.TestCase):
 #: modules that own them. A ratchet, like ``tests/test_vocabulary.py``: a new
 #: module or a higher count fails (ask ``src/yard_kinds.py``); a lower count
 #: fails until it is lowered here, so the list only shrinks.
-OWNERS = {"src/yard_kinds.py", "src/db/structures.py", "src/shape_tool.py",
-          "src/structure_panel.py", "src/lawn_zones.py"}
+OWNERS = {"src/yard_kinds.py", "src/db/structures.py", "src/lawn_zones.py",
+          # The conversion on open names what it converts (V3.72).
+          "src/yard_upgrade.py"}
 KNOWN = {
     "src/advanced_tools.py": 1,     # the Custom shape is an advanced tool
     "src/analysis_panel.py": 10,    # the habitat structures' display names

@@ -58,16 +58,17 @@ STRIP = tuple(range(4, 11))
 SEE_3D = ("See it in 3D", "view3d:street")
 
 #: The street cues: (what is there, the next step, the action, its target).
-#: Only a drawn shape has an action; the order is ``cues_to_care``'s.
+#: Only a drawn kind has an action, which opens Placement › Yard on it (V3.72;
+#: it opened Draw › Shape); the order is ``cues_to_care``'s.
 _CUES = {
     "mown_edge": ("a mown strip", "a mown strip about a metre wide along the "
-                  "street", "Draw a mown strip", "shape:Lawn Area"),
+                  "street", "Draw a mown strip", "yard:lawn"),
     "crisp_border": ("a clear edge", "a clear edge around the bed",
-                     "Draw the bed's edge", "shape:Garden Bed"),
+                     "Draw the bed's edge", "yard:bed"),
     "height_graded": ("tall plants at the back", "the tallest plants toward "
                       "the back", "", ""),
     "visible_path": ("a path", "a path or a way in", "Draw a path",
-                     "shape:Pathway"),
+                     "yard:path"),
     "showy_repeat": ("a repeated showy flower", "one showy flower repeated "
                      "three or more times", "", ""),
 }

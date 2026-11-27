@@ -121,8 +121,8 @@ LESSONS = (
              "buy. A bee hotel helps some bees, but its tubes must be "
              "cleaned or replaced every year, or they spread parasites and "
              "disease."),
-         "look": ("In a design, Placement › Structures has brush piles, bee "
-                  "logs, rock piles and ponds to place."),
+         "look": ("In a design, Placement › Yard has brush piles, bee logs, "
+                  "rock gardens and ponds to put in."),
          "sources": ("Tallamy 2019", "MacIvor & Packer 2015"),
          "readout": "shelter"},
         {"title": "Ranges, not certainties",
@@ -322,7 +322,7 @@ LESSONS = (
              "frame around a messy ecosystem. The frame is what lets the "
              "planting inside it be wild, and it is often what makes "
              "neighbours start their own."),
-         "look": ("In a design, Draw › Shape draws a path, a fence or a "
+         "look": ("In a design, Placement › Yard draws a path, a fence or a "
                   "mown edge."),
          "sources": ("Nassauer 1995",),
          "readout": ""},

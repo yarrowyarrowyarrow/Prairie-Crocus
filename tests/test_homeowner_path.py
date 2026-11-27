@@ -197,11 +197,21 @@ class TheSevenTasks(unittest.TestCase):
         self.assertEqual(win._project["properties"]["project_name"],
                          "10423 81 Avenue NW",
                          "the design takes its address's name (ST-5)")
-        # Draw › Shape: the Draw row's button, Garden Bed, Draw on the map.
+        # Placement › Yard (V3.72; Draw › Shape before it): Bed, Draw on the
+        # map; the page then hands back the outline it was given.
+        from src.keyboard_help import show_panel
+        show_panel(win.yard_palette)
+        self.assertTrue(win.yard_palette.choose("bed"))
+        with mock.patch.object(win.map_widget, "set_shape_mode"):
+            win.yard_palette._verb.click()
+        self.assertEqual(win._current_mode, "shape")
         ring = self._bed_ring()
         win._map_events._on_shape_complete(
             "bed-1", json.dumps([list(p) for p in ring]), "", "Garden Bed",
             "#4caf50", "#2e7d32", 0.25, "", 32.0)
+        self.assertEqual(
+            win._project["features"][-1]["properties"].get("kind"), "bed")
+        win._cancel_draw()
         from src import onboarding
         progress = onboarding.steps_progress(win._project)
         self.assertTrue(all(step["done"] for step in progress[:2]),

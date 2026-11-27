@@ -18,7 +18,7 @@ item 17). This module decides, once, what the viewer then only draws:
   them** (a definition with no ``shape`` is a rectangle there, and one with no
   width a square), so the two cannot disagree.
 * :func:`fence_lines`: a Fence / Wall is drawn as a fence line, posts and rails
-  along its length as Draw › Shape's Fence is, at the map's length and
+  along its length as a drawn Fence is, at the map's length and
   direction. Its stock model was 5 m of rail that stretched its posts with the
   Size box and never matched the drawn fence beside it.
 
@@ -31,9 +31,10 @@ from __future__ import annotations
 import math
 from typing import Optional
 
-#: Which way the map draws a rectangle's long side: north (0 degrees). Nothing
-#: turns a placed structure yet; when something does (F288, part 2), the
-#: bearing is stored on the feature and the map and this both read it.
+#: Which way the map draws a rectangle's long side until it is turned: north
+#: (0 degrees). Since V3.72 an object can be turned on the map; its
+#: ``bearing_deg`` (clockwise from north) is stored on the feature, and the map,
+#: :func:`footprint` and the viewer all read it.
 MAP_BEARING_DEG = 0.0
 
 #: The shape the map draws for a definition that names none.
@@ -52,14 +53,26 @@ def _definition(props: dict) -> dict:
     return sd
 
 
+def bearing_of(props: dict) -> float:
+    """Which way a placed structure faces, degrees clockwise from north."""
+    props = props or {}
+    try:
+        return float(props.get("bearing_deg")
+                     or (props.get("struct_def") or {}).get("bearing_deg")
+                     or MAP_BEARING_DEG) % 360.0
+    except (TypeError, ValueError):
+        return MAP_BEARING_DEG
+
+
 def footprint(props: dict) -> dict:
     """What the 2D map draws for a structure: ``{"shape", "size_m",
-    "width_m"}``, by ``placeStructureOnMap``'s rules (size 3 m, a rectangle,
-    and a square where nothing says otherwise)."""
+    "width_m", "bearing_deg"}``, by ``placeStructureOnMap``'s rules (size
+    3 m, a rectangle, and a square where nothing says otherwise)."""
     sd = _definition(props)
     size = float(sd.get("size_m") or (props or {}).get("size_m") or 3.0)
     return {"shape": sd.get("shape") or MAP_DEFAULT_SHAPE, "size_m": size,
-            "width_m": float(sd.get("width_m") or size)}
+            "width_m": float(sd.get("width_m") or size),
+            "bearing_deg": bearing_of(props)}
 
 
 def record(props: dict, x: float, y: float) -> Optional[dict]:
@@ -76,7 +89,8 @@ def record(props: dict, x: float, y: float) -> Optional[dict]:
     fp = footprint(props)
     if fp["shape"] == "rectangle":
         rec["width_m"] = round(fp["width_m"], 3)
-        rec["bearing_deg"] = MAP_BEARING_DEG
+    if fp["shape"] == "rectangle" or fp["bearing_deg"]:
+        rec["bearing_deg"] = fp["bearing_deg"]
     return rec
 
 
@@ -95,8 +109,9 @@ def fence_lines(project: dict, proj) -> list:
             continue
         lng, lat = geom["coordinates"][:2]
         cx, cy = proj.to_xy(lat, lng)
-        half = footprint(props)["size_m"] / 2.0
-        b = math.radians(MAP_BEARING_DEG)
+        fp = footprint(props)
+        half = fp["size_m"] / 2.0
+        b = math.radians(fp["bearing_deg"])
         dx, dy = math.sin(b) * half, math.cos(b) * half
         out.append({"kind": "fence",
                     "points": [[round(cx - dx, 2), round(cy - dy, 2)],

@@ -30,7 +30,13 @@ def _utc_now_iso() -> str:
 # measurement is part of the design, so undo and save reach it), and a
 # boundary's `name` and `show_handles` properties (the legend's names and the
 # corner-handle switch). Additive, like 1.7 and 1.8.
-SCHEMA_VERSION = "1.10"
+# 1.11 (V3.72): every drawn area and line carries its `kind`
+# (src/yard_kinds.py) and its options (`raised_cm`, `surface`, `fence_kind`,
+# `building`); a drawn Building is a `canopy_footprint` like a scanned one; a
+# placed object may carry `bearing_deg`. Older designs are converted on open
+# (src/yard_upgrade.py), and every drawn area keeps a shape type an older copy
+# reads, so this too is additive for anything a 1.10 copy draws.
+SCHEMA_VERSION = "1.11"
 
 
 def new_placement_group_id() -> str:
@@ -114,9 +120,15 @@ def save_project(project: dict, path: str) -> None:
 
 
 def load_project(path: str) -> dict:
-    """Read and return a project dict from a .perma.geojson file."""
+    """Read and return a project dict from a .perma.geojson file, in the form
+    this version stores (``src/yard_upgrade.py``: a design saved before V3.72
+    is converted here, so every door a design comes in by reads it the same
+    way; nothing is written back until it is saved)."""
     with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    from src import yard_upgrade
+    yard_upgrade.upgrade(data)
+    return data
 
 
 def feature_to_shape(feature: dict) -> Optional[dict]:
@@ -148,6 +160,49 @@ def feature_to_shape(feature: dict) -> Optional[dict]:
         "fill_opacity": props.get("fill_opacity", 0.25),
         "dash_array": props.get("dash_array", ""),
         "height_m": props.get("height_m") or 0.0,
+        # What the map writes on it (V3.72): the kind's words, since a drawn
+        # kind keeps an older shape type for older copies of the app.
+        "kind": props.get("kind") or "",
+        "kind_words": _kind_words(feature),
+    }
+
+
+def _kind_words(feature: dict) -> str:
+    from src import yard_kinds
+    k = yard_kinds.kind_of(feature)
+    if k is None:
+        return ""
+    words = k.words
+    props = feature.get("properties") or {}
+    if k.key == "bed" and props.get("raised_cm"):
+        words = f"Raised bed, {int(props['raised_cm'])} cm"
+    elif k.key == "building" and props.get("building"):
+        words = str(props["building"]).capitalize()
+    elif props.get("surface"):
+        opt = yard_kinds.option(k, "surface")
+        words += ": " + dict(opt.choices).get(props["surface"],
+                                              props["surface"]).lower()
+    return words
+
+
+def feature_to_hedgerow(feature: dict) -> Optional[dict]:
+    """A drawn line as the map's ``loadHedgerow`` takes it, or ``None``. Its
+    ``hedge_id`` rides along (V3.72) so the map and the design name the same
+    line, and the map draws it without telling Python it was drawn."""
+    geom = feature.get("geometry", {})
+    if geom.get("type") != "LineString":
+        return None
+    props = feature.get("properties", {})
+    return {
+        "points": [[pt[1], pt[0]] for pt in geom.get("coordinates") or []],
+        "hedge_id": props.get("hedge_id") or "",
+        "style": props.get("style", "hedge"),
+        "kind": props.get("kind") or "",
+        "fence_kind": props.get("fence_kind") or "",
+        "color": props.get("color", "#4caf50"),
+        "width_m": props.get("width_m", 1.5),
+        "spacing_m": props.get("spacing_m", 1.0),
+        "species": props.get("species", ""),
     }
 
 
@@ -202,6 +257,19 @@ def update_shape_geometry(project: dict, shape_id: str,
                     props["lat"], props["lng"] = c
         return True
     return False
+
+
+def structure_map_def(props: dict) -> dict:
+    """A placed structure's definition as the map draws it: the stored one,
+    with the way it faces (V3.72; ``src/scene_structures.bearing_of``)."""
+    from src.scene_structures import bearing_of
+    sd = dict(props.get("struct_def") or {})
+    if not sd.get("id") and props.get("struct_id"):
+        sd["id"] = props["struct_id"]
+    bearing = bearing_of(props)
+    if bearing:
+        sd["bearing_deg"] = bearing
+    return sd
 
 
 def project_to_map_data(project: dict) -> dict:
@@ -299,19 +367,13 @@ def project_to_map_data(project: dict) -> dict:
             result["structures"].append({
                 "lat": lat,
                 "lng": lng,
-                "struct_def": props.get("struct_def", {}),
+                "struct_def": structure_map_def(props),
             })
 
         elif etype == "hedgerow" and geom.get("type") == "LineString":
-            points = [[pt[1], pt[0]] for pt in geom["coordinates"]]
-            result["hedgerows"].append({
-                "points": points,
-                "style": props.get("style", "hedge"),
-                "color": props.get("color", "#4caf50"),
-                "width_m": props.get("width_m", 1.5),
-                "spacing_m": props.get("spacing_m", 1.0),
-                "species": props.get("species", ""),
-            })
+            line = feature_to_hedgerow(feature)
+            if line:
+                result["hedgerows"].append(line)
 
         elif (etype in ("custom_shape", "canopy_footprint")
               and geom.get("type") == "Polygon"):

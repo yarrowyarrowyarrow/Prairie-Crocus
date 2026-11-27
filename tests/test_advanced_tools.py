@@ -72,13 +72,17 @@ class TheSwitch(unittest.TestCase):
             feature(element_type="measurement"),
             feature(element_type="auto_contour"),
             feature(element_type="measurement"),
-            feature(element_type="hedgerow"),
+            # A fence is in the simple app since V3.72, and a rain garden is
+            # stored as Custom for older copies: neither is advanced work.
+            feature(element_type="hedgerow", style="fence"),
+            feature(element_type="custom_shape", shape_type="Custom",
+                    kind="rain_garden"),
             feature(element_type="annotation"),
             feature(element_type="custom_shape", shape_type="Custom"),
         ]
         self.assertEqual(advanced_tools.uses_advanced(made), [
             "contours or a slope map", "measurements", "notes on the map",
-            "hedges, fences or windbreaks", "custom shapes"])
+            "custom shapes"])
         self.assertEqual(advanced_tools.uses_advanced(None), [])
 
     def test_the_registry_names_each_surface_once(self):

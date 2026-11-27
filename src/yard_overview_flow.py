@@ -10,7 +10,8 @@ refills when it is on screen and after edits (``src/live_refresh.py``, poked by
 replaced the Report card, retired in V3.55 (F270).
 
 :func:`run_action` turns a card's target into what its words say: a filter set
-on the plant list, Draw › Shape opened on the right type, the fill and swap
+on the plant list, Placement › Yard opened on the right kind (Draw › Shape
+until V3.72), the fill and swap
 dialogs (``src/yard_overview_dialogs.py``), Export PDF, Plan My Yard. A *More
 detail* link (MD-4) turns the Advanced tools on and shows the page that
 explains the item, and says once a session how to turn them off. The street
@@ -111,13 +112,12 @@ def _plants(main, arg: str) -> None:
         picker.set_facet("bloom_months", [arg.split("=", 1)[1]])
 
 
-def _shape(main, kind: str) -> None:
-    """Draw › Shape, opened with ``kind`` chosen: a popup, so nothing waits."""
-    from PyQt6.QtCore import QPoint
-    bar = main.toolbar
-    bar.shape_tool.set_type(kind)
-    button = bar._shape_btn
-    button.menu().popup(button.mapToGlobal(QPoint(0, button.height())))
+def _yard(main, key: str) -> None:
+    """Placement › Yard, with the kind ``key`` chosen (V3.72; it was Draw ›
+    Shape's menu): its Draw on the map is one click away."""
+    from src.keyboard_help import show_panel
+    show_panel(main.yard_palette)
+    main.yard_palette.choose(key)
 
 
 def _export(main, _arg: str) -> None:
@@ -154,6 +154,6 @@ def _view3d(main, view: str) -> None:
 
 
 _HANDLERS = {"advanced": _advanced, "page": _page, "plants": _plants,
-             "shape": _shape, "export": _export, "site": _site,
+             "yard": _yard, "export": _export, "site": _site,
              "draw": _draw, "plan": _plan, "swap": _swap,
              "fill_gaps": _fill, "view3d": _view3d}

@@ -49,23 +49,27 @@ EXAMPLE_OPTIONAL = ("own_place", "outline", "features", "notes",
 STREET_SIDES = ("north", "south", "east", "west")
 #: What the example may draw besides plants, and the properties each kind may
 #: carry: a polygon kind has a ``ring``, a point kind an ``at``.
+#: Since V3.72 a drawn area or line carries its Yard palette ``kind`` and
+#: options, and an object which way it faces (``src/yard_kinds.py``).
 EXAMPLE_POLYGONS = {
     "custom_shape": ("label", "shape_type", "fill_color", "stroke_color",
-                     "fill_opacity", "dash_array"),
+                     "fill_opacity", "dash_array", "kind", "raised_cm",
+                     "surface"),
     "canopy_footprint": ("label", "shape_type", "fill_color", "stroke_color",
                          "fill_opacity", "dash_array", "height_m",
-                         "cast_shade", "caster_kind", "tree_foliage"),
+                         "cast_shade", "caster_kind", "tree_foliage", "kind",
+                         "building"),
 }
 EXAMPLE_POINTS = {
     "existing_tree": ("label", "height_m", "canopy_radius_m", "tree_foliage"),
     "existing_building": ("label", "height_m", "canopy_radius_m"),
-    "structure": ("struct_id", "name", "size_m"),
+    "structure": ("struct_id", "name", "size_m", "bearing_deg"),
 }
-#: A line kind has ``points`` (V3.54): a fence or a hedge, as Draw › Shape
-#: stores one.
+#: A line kind has ``points`` (V3.54): a fence or a hedge, as Placement › Yard
+#: stores one (V3.72; Draw › Shape before it).
 EXAMPLE_LINES = {
     "hedgerow": ("style", "species", "color", "width_m", "spacing_m",
-                 "length_m"),
+                 "length_m", "kind", "fence_kind"),
 }
 _KEY = re.compile(r"^[a-z_]+$")
 

@@ -102,6 +102,10 @@ class ModeController:
         # doesn't echo custom config fields (V2.13, mirrors the height stash
         # in _enter_structure_mode).
         self._main._tree_canopy_foliage = shape_config.get("tree_foliage")
+        # The Yard palette's kind and options (V3.72), stored on the area when
+        # it is finished; anything else draws as it always did.
+        self._main._area_config = (dict(shape_config)
+                                   if shape_config.get("kind") else {})
         self._main.map_widget.set_shape_mode(shape_config)
         self._main.toolbar.reset_draw_buttons()
         self._set_mode_label(

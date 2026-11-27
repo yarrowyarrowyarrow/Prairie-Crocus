@@ -34,10 +34,10 @@ MAP_LETTERS: tuple = (
     ("L", "legend", "Show or hide the map legend"),
     ("P", "plants", "Go to Placement: Plants"),
     ("G", "communities", "Go to Placement: Communities"),
-    ("S", "structures", "Go to Placement: Structures"),
-    # D since V3.07, when Analysis became Design (it was A).
-    ("D", "design", "Go to Design"),
-    ("R", "turn", "Turn the community you are placing 45°"),   # V3.59
+    ("Y", "yard", "Go to Placement: Yard"),         # S until V3.72
+    ("D", "design", "Go to Design"),        # since V3.07 (Analysis was A)
+    ("R", "turn", "Turn 45°: the community being placed, or the object "
+                  "under the pointer"),       # V3.59; objects since V3.72
     # T went with the Planning tab (V3.08); Share has no letter of its own.
 )
 

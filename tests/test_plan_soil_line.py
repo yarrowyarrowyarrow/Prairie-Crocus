@@ -7,7 +7,8 @@ texture", calling loam, which is a texture, unknown, because the regional soil
 atlas spells its classes ``loam`` and ``sandy_loam`` and the advice table keys
 them ``Loam`` and ``Sandy loam``. And "Draw your conversion zones on the map
 first (Site → Features)", which is where buildings and trees are entered; the
-lawn has been drawn with Draw › Shape since V3.07.
+lawn has been drawn with Draw › Shape since V3.07, from Placement › Yard
+since V3.72.
 """
 
 import os
@@ -157,7 +158,8 @@ class TestTheWorkedExample(unittest.TestCase):
         self.assertNotIn("unknown texture", text)
         flat = " ".join(text.split())
         self.assertIn("Draw the lawn you are replacing on the map first, "
-                      "with Draw › Shape, and this sheet will size the job.",
+                      "from Placement › Yard, and this sheet will size the "
+                      "job.",
                       flat)
         self.assertNotIn("Site → Features", text)
 
@@ -175,7 +177,7 @@ class TestTheWorkedExample(unittest.TestCase):
         pdf_export._draw_site_prep(page, 600.0, 800.0, prep, 1.0)
         self.assertEqual(page.texts[1], "Soil: loam   ·   pH 6.5")
         drawn = " ".join(" ".join(page.texts).split())
-        self.assertIn("with Draw › Shape,", drawn)
+        self.assertIn("from Placement › Yard,", drawn)
         self.assertNotIn("unknown texture", drawn)
         self.assertNotIn("Site → Features", drawn)
 

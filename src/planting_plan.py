@@ -286,11 +286,16 @@ def _structures_detail(structures, get_structure) -> list:
             get_structure = _gs
         except Exception:
             get_structure = lambda _sid: None
+    from src.yard_kinds import scale
     counts: Counter = Counter()
+    sizes: Counter = Counter()     # how many catalogue defaults, by size
     sdef_by_id: dict = {}
     for s in structures or []:
         sid = s.get("id") if isinstance(s, dict) else s
         counts[sid] += 1
+        # A drawn pond twice the catalogue's costs twice as much (V3.72):
+        # the same ``scale`` sourcing.structure_cost multiplies by.
+        sizes[sid] += scale(s)
         if isinstance(s, dict):
             sdef_by_id.setdefault(sid, s)
     out: list = []
@@ -299,7 +304,8 @@ def _structures_detail(structures, get_structure) -> list:
         catalogue = get_structure(sid) or {}
         nm = sdef.get("name") or catalogue.get("name") or (sid or "structure")
         ic = catalogue.get("install_cost_cad") or sdef.get("install_cost_cad") or (0.0, 0.0)
-        out.append((nm, n, round(ic[0] * n, 2), round(ic[1] * n, 2)))
+        out.append((nm, n, round(ic[0] * sizes[sid], 2),
+                    round(ic[1] * sizes[sid], 2)))
     return out
 
 

@@ -1265,33 +1265,44 @@ class TestMainWindowSmoke(unittest.TestCase):
             self._press(Qt.Key.Key_D)
             self.assertIs(self._win._side_tabs.currentWidget(),
                           self._win.analysis_panel)
-            self._press(Qt.Key.Key_S)
-            self.assertTrue(self._win.structure_panel.isVisibleTo(self._win))
+            # Y for Placement › Yard since V3.72 (S was Structures).
+            self._press(Qt.Key.Key_Y)
+            self.assertTrue(self._win.yard_palette.isVisibleTo(self._win))
 
-    def test_shape_on_the_draw_row_arms_the_map(self):
-        """The Structures tab's Shapes and Hedgerow pages, from the Draw row,
-        to the same handlers."""
+    def test_the_yard_tab_arms_the_map(self):
+        """Placement › Yard (V3.72): an area, a line and an object, to the
+        handlers Draw › Shape and the Structures tab used. The Draw row has no
+        Shape button."""
         win = self._win
         sent = []
         original = (win.map_widget.set_shape_mode,
-                    win.map_widget.set_hedgerow_mode)
+                    win.map_widget.set_hedgerow_mode,
+                    win.map_widget.set_structure_mode)
         win.map_widget.set_shape_mode = lambda cfg: sent.append(("shape", cfg))
         win.map_widget.set_hedgerow_mode = lambda cfg: sent.append(("line", cfg))
+        win.map_widget.set_structure_mode = lambda cfg: sent.append(
+            ("object", cfg))
         self.addCleanup(setattr, win.map_widget, "set_shape_mode", original[0])
         self.addCleanup(setattr, win.map_widget, "set_hedgerow_mode", original[1])
+        self.addCleanup(setattr, win.map_widget, "set_structure_mode",
+                        original[2])
         self.addCleanup(win._cancel_draw)
-        tool = win.toolbar.shape_tool
-        tool.set_type("Garden Bed")
-        tool._draw.click()
+        self.assertFalse(hasattr(win.toolbar, "shape_tool"))
+        palette = win.yard_palette
+        palette.choose("bed")
+        palette._verb.click()
         self.assertEqual(win._current_mode, "shape")
-        self.assertEqual(sent[-1][0], "shape")
-        self.assertTrue(win.toolbar._shape_btn.isChecked())
-        tool.set_type("Hedge")
-        tool._draw.click()
+        self.assertEqual((sent[-1][0], sent[-1][1]["kind"]), ("shape", "bed"))
+        palette.choose("fence")
+        palette._verb.click()
         self.assertEqual(win._current_mode, "hedgerow")
-        self.assertEqual(sent[-1], ("line", tool.line_payload()))
+        self.assertEqual((sent[-1][0], sent[-1][1]["kind"]), ("line", "fence"))
+        palette.choose("bee_hotel")
+        palette._verb.click()
+        self.assertEqual(win._current_mode, "structure")
+        self.assertEqual((sent[-1][0], sent[-1][1]["id"]),
+                         ("object", "bee_hotel"))
         win._cancel_draw()
-        self.assertFalse(win.toolbar._shape_btn.isChecked())
 
     def test_the_pins_wind_reaches_the_wind_page(self):
         win = self._win
@@ -1386,8 +1397,9 @@ class TestMainWindowSmoke(unittest.TestCase):
             places.setdefault(norm(bar.windowTitle()), set()).update(
                 norm(a.text()) for a in bar.actions()
                 if a.text() and shown_act(a))
-            # A row's own buttons count too: Draw › Shape is a button the row
-            # holds, not an action with text (V3.19, QF-11, the plan's pointer).
+            # A row's own buttons count too: a row can hold a button rather
+            # than an action with text (V3.19, QF-11; Draw › Shape was one
+            # until V3.72).
             places[norm(bar.windowTitle())].update(
                 norm(b.text()) for b in bar.findChildren(
                     QToolButton, options=Qt.FindChildOption.FindDirectChildrenOnly)

@@ -368,23 +368,20 @@ class MapEventRouter:
         points = _json.loads(points_json)
         # Store as GeoJSON LineString (lng, lat order)
         coords = [[pt[1], pt[0]] for pt in points]
-        # What the person set in Draw › Shape (the mode's stash, V3.45).
+        # What the person set in Placement › Yard (the mode's stash, V3.45).
         cfg = getattr(self._main, "_hedge_config", None) or {}
+        props = {"element_type": "hedgerow", "hedge_id": hedge_id,
+                 "species": species, "style": style, "length_m": length_m,
+                 "num_plants": num_plants,
+                 "color": cfg.get("color") or "#4caf50",
+                 "width_m": float(cfg.get("width_m") or 1.5),
+                 "spacing_m": float(cfg.get("spacing_m") or 1.0)}
+        # Its kind from the Yard palette (V3.72), else its style's.
+        props.update({k: cfg[k] for k in ("kind", "fence_kind") if cfg.get(k)})
         self._main._project["features"].append({
             "type": "Feature",
             "geometry": {"type": "LineString", "coordinates": coords},
-            "properties": {
-                "element_type": "hedgerow",
-                "hedge_id": hedge_id,
-                "species": species,
-                "style": style,
-                "length_m": length_m,
-                "num_plants": num_plants,
-                "color": cfg.get("color") or "#4caf50",
-                "width_m": float(cfg.get("width_m") or 1.5),
-                "spacing_m": float(cfg.get("spacing_m") or 1.0),
-            }
-        })
+            "properties": props})
         self._main._push_undo({
             "action": "place_hedgerow",
             "hedge_id": hedge_id,
@@ -431,6 +428,14 @@ class MapEventRouter:
             "dash_array": dash_array,
             "area_m2": area_m2,
         }
+        # The Yard palette's kind and options (V3.72, src/yard_kinds.py); a
+        # Building is a shade caster as a scanned one is.
+        cfg = getattr(self._main, "_area_config", None) or {}
+        if cfg.get("kind"):
+            from src.yard_kinds import drawn_props
+            props.update(drawn_props(cfg["kind"], **cfg))
+            casts_shade = props["element_type"] == "canopy_footprint"
+            height_m = props.get("height_m") or 0.0
         if casts_shade:
             props["height_m"] = float(height_m)
             props["cast_shade"] = True

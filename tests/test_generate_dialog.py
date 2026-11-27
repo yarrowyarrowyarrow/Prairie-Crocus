@@ -205,7 +205,7 @@ class TestWhatIsMissing(unittest.TestCase):
         from src.generate_design_dialog import NEXT_STEP
         for kw, want in (({"has_pin": False}, ["site"]),
                          ({"has_boundary": False, "areas": {}},
-                          ["draw", "shape:Garden Bed"])):
+                          ["draw", "yard:bed"])):
             for i, target in enumerate(want):
                 dlg = _dialog(**kw)
                 dlg._step_buttons[i].click()
@@ -222,8 +222,11 @@ class TestWhatIsMissing(unittest.TestCase):
         main.site_panel.focus_address_search.assert_called_once()
         yard_overview_flow.run_action(main, "draw")
         main._enter_boundary_mode.assert_called_once()
-        yard_overview_flow.run_action(main, "shape:Garden Bed")
-        main.toolbar.shape_tool.set_type.assert_called_once_with("Garden Bed")
+        # Placement › Yard on a bed since V3.72 (it was Draw › Shape).
+        with mock.patch("src.keyboard_help.show_panel") as show:
+            yard_overview_flow.run_action(main, "yard:bed")
+        show.assert_called_once_with(main.yard_palette)
+        main.yard_palette.choose.assert_called_once_with("bed")
 
 
 @unittest.skipUnless(_qt_available(), "PyQt6 not installed in this env")

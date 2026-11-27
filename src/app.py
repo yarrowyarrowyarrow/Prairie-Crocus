@@ -33,7 +33,7 @@ from src.map_widget       import MapWidget
 from src.plant_panel        import PlantPanel
 from src.on_this_design_panel import OnThisDesignPanel
 from src.polyculture_panel      import PolyculturePanel
-from src.structure_panel  import StructurePanel
+from src.yard_palette    import YardPalette
 from src.analysis_panel   import AnalysisPanel
 from src.planning_panel   import PlanningPanel
 from src.learn_panel      import LearnPanel
@@ -49,7 +49,7 @@ from src.controllers.map_events import MapEventRouter
 from src.controllers.generation import GenerationController
 from src.controllers.area_fill_controller import AreaFillController
 from src.project_store import ProjectStore
-from src import accessible_names, community_turn, data_sources_flow, feedback_flow, keyboard_help
+from src import accessible_names, data_sources_flow, feedback_flow, keyboard_help, tree_edit_flow
 from src import indicator_style, target_size
 from src import month_tasks, onboarding_flow, start_flow
 from src.yard_overview import bed_area_m2
@@ -199,7 +199,8 @@ class MainWindow(QMainWindow):
         # _sync_planning_panel + PlantPanel's placed_counts_changed. Its pages
         # sit in the Design tab since V3.07 (src/side_panel_layout.py).
         self.on_this_design = OnThisDesignPanel()
-        self.structure_panel = StructurePanel(self)
+        # Placement › Yard (V3.72): everything in a yard that is not a plant.
+        self.yard_palette = YardPalette(self)
         self.analysis_panel  = AnalysisPanel(self)
         self.planning_panel  = PlanningPanel(self)
         self.learn_panel     = LearnPanel(self)
@@ -768,26 +769,26 @@ class MainWindow(QMainWindow):
             )
         )
 
-        # Structure panel → map
-        self.structure_panel.place_structure_requested.connect(self._enter_structure_mode)
-        # Draw › Shape (V3.07): what the Structures tab's Hedgerow and Shapes
-        # pages emitted, now from the Draw row, to the same handlers.
-        self.toolbar.place_hedgerow_requested.connect(self._enter_hedgerow_mode)
-        self.toolbar.place_shape_requested.connect(self._enter_shape_mode)
+        # Placement › Yard → map (V3.72): an object, an area or a line, to the
+        # handlers the Structures tab and Draw › Shape used before it.
+        self.yard_palette.place_object_requested.connect(self._enter_structure_mode)
+        self.yard_palette.draw_line_requested.connect(self._enter_hedgerow_mode)
+        self.yard_palette.draw_area_requested.connect(self._enter_shape_mode)
 
         # Map → structures/hedgerows/shapes
         b.structure_placed.connect(self._on_structure_placed)
         b.structure_removed.connect(self._on_structure_removed)
-        # Drag / scroll-resize of existing tree & building marks (V2.26) —
-        # straight to the flow via lambdas (map controller + MainWindow both
-        # at their guard ceilings).
-        from src import tree_edit_flow
+        # Drag / scroll-resize of existing tree & building marks (V2.26), and
+        # since V3.72 an object's move and turn — straight to the flow via
+        # lambdas (map controller + MainWindow both at their guard ceilings).
         b.existing_feature_moved.connect(
             lambda *a: tree_edit_flow.on_existing_feature_moved(self, *a))
         b.existing_feature_resized.connect(
             lambda *a: tree_edit_flow.on_existing_feature_resized(self, *a))
         b.existing_feature_foliage.connect(
             lambda *a: tree_edit_flow.on_existing_feature_foliage(self, *a))
+        b.structure_turned.connect(                     # V3.72: an object turned
+            lambda *a: tree_edit_flow.on_structure_turned(self, *a))
         b.hedgerow_complete.connect(self._on_hedgerow_complete)
         b.hedgerow_removed.connect(self._on_hedgerow_removed)
         b.shape_complete.connect(self._on_shape_complete)
@@ -2348,9 +2349,9 @@ class MainWindow(QMainWindow):
             "legend": self.map_widget.toggle_legend,
             "plants": lambda: show(self.plant_panel),
             "communities": lambda: show(self.polyculture_panel),
-            "structures": lambda: show(self.structure_panel),
+            "yard": lambda: show(self.yard_palette),
             "design": lambda: show(self.analysis_panel),
-            "turn": lambda: community_turn.turn_pending(self),
+            "turn": lambda: tree_edit_flow.turn_key(self),
         }.get(keyboard_help.letter_action(event))
         if act is not None:
             act()

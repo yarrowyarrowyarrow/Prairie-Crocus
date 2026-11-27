@@ -94,7 +94,7 @@ ADVANCED_HOOKS: tuple = (
     "polyculture_panel.placement_widget",
     "species_flyout.page",            # the plant page's Add to mix
     "species_flyout.community",       # the community page's pattern card
-    "toolbar.shape_tool",             # Draw › Shape's lines and Custom
+    "yard_palette",                   # Placement › Yard's Custom (V3.72)
     "site_panel",                     # Site Info opens on its details (WD-2)
     # The 3D preview's fine sliders, Detail, Flyover, Identify, pollinator
     # tools, Plant and Remove, and outputs (V3.44, F261). The window opens
@@ -132,11 +132,18 @@ _ADVANCED_IN_DESIGN = (
         "contour_line", "auto_contour", "slope_overlay", "water_overlay")),
     ("measurements", lambda p: p.get("element_type") == "measurement"),
     ("notes on the map", lambda p: p.get("element_type") == "annotation"),
-    ("hedges, fences or windbreaks",
-     lambda p: p.get("element_type") == "hedgerow"),
+    # Hedges, fences and windbreaks are in the simple app since V3.72 (the
+    # owner's Q2). A Custom area by its kind: a rain garden is stored with
+    # Custom as its shape type, for older copies of the app.
     ("custom shapes", lambda p: p.get("element_type") == "custom_shape"
-     and p.get("shape_type") == "Custom"),
+     and _kind_key(p) == "custom"),
 )
+
+
+def _kind_key(props: dict) -> str:
+    from src.yard_kinds import kind_of
+    k = kind_of({"properties": props})
+    return k.key if k is not None else ""
 
 #: What the bar says (decision W1's plain words).
 BAR_TEXT = "This design uses advanced tools."

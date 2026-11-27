@@ -245,13 +245,19 @@ def _structure_hours(structures, get_structure=None) -> tuple[float, list]:
             rec = get_structure(sid) or s
         name = (rec or {}).get("name") or str(sid or "structure")
         hours = float((rec or {}).get("maintenance_hours_year") or 0.0)
-        slot = counts.setdefault(name, {"qty": 0, "hours": hours})
+        # By size (V3.72): a drawn pond twice the catalogue's takes twice the
+        # hours, as the buy list costs it (src/yard_kinds.scale).
+        from src.yard_kinds import scale                         # noqa: PLC0415
+        hours_here = hours * scale(s)
+        slot = counts.setdefault(name, {"qty": 0, "hours": hours,
+                                        "total": 0.0})
         slot["qty"] += 1
-        total += hours
+        slot["total"] += hours_here
+        total += hours_here
     for name, slot in sorted(counts.items()):
         detail.append({"name": name, "qty": slot["qty"],
                        "hours_each": slot["hours"],
-                       "hours_total": round(slot["hours"] * slot["qty"], 1)})
+                       "hours_total": round(slot["total"], 1)})
     return round(total, 1), detail
 
 

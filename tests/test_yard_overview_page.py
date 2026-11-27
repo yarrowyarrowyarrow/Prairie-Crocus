@@ -145,16 +145,17 @@ class TheOverviewPage(unittest.TestCase):
         self.assertEqual(picker.combos["bloom_months"].checked_keys(), ["10"])
         picker.set_facet("bloom_months", [])
 
-    def test_draw_a_mown_strip_opens_shape_on_lawn(self):
+    def test_draw_a_mown_strip_opens_the_yard_tab_on_lawn(self):
         # The example has all four signs of care since V3.54, so its card has
         # no step; the action a missing mown strip gives is run as its button
-        # would.
+        # would. It opened Draw › Shape until V3.72.
         from src import yard_overview_flow
-        yard_overview_flow.run_action(self.win, "shape:Lawn Area")
+        yard_overview_flow.run_action(self.win, "yard:lawn")
         self._app.processEvents()
-        tool = self.win.toolbar.shape_tool
-        self.assertEqual(tool._type.currentText(), "Lawn Area")
-        self.win.toolbar._shape_btn.menu().close()
+        palette = self.win.yard_palette
+        self.assertEqual(palette.kind().key, "lawn")
+        self.assertTrue(palette.isVisibleTo(self.win))
+        self.assertTrue(palette._verb.isEnabled())
 
     def test_print_calls_export(self):
         with mock.patch.object(self.win, "_on_export_pdf") as export:

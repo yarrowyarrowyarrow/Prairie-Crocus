@@ -48,7 +48,7 @@ FIRST_LINES = {
 NEXT_STEPS = {
     NEEDS_PIN: (("Find my yard", "site"),),
     NEEDS_OUTLINE: (("Outline my yard", "draw"),
-                    ("Draw a bed", "shape:Garden Bed")),
+                    ("Draw a bed", "yard:bed")),
 }
 
 #: What :meth:`exec` returns when a next-step button closed the dialog.

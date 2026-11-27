@@ -427,9 +427,11 @@ class TestStructuralCeilings(unittest.TestCase):
         # V2.26: +editable existing features (drag + scroll-resize of detected/
         # marked trees & buildings) — in-domain growth for the features file,
         # kept together to avoid the cross-chunk load-order traps a split adds.
-        (_HTML / "map" / "05-features.js", 1200),      # 1193 now (V3.11): 7 left,
-        # and the next feature here needs a split first (structures or the
-        # satellite alignment are the seams)
+        (_HTML / "map" / "05-features.js", 1200),      # 1020 now (V3.72)
+        # V3.11 left 7 lines and said the next feature here needs a split
+        # first; V3.72 made it, the line drawing going to 05b-yard.js with the
+        # objects' move and turn.
+        (_HTML / "map" / "05b-yard.js", 400),          # 295 now (V3.72)
         # V2.13: + water flow & accumulation overlay (raster + arrow lattice).
         (_HTML / "map" / "06-overlays.js", 1560),      # 1323 now (V3.11)
         # V2.31 (F5): the relationship-web overlay went into its own chunk
@@ -825,6 +827,9 @@ class TestAgentApiContract(unittest.TestCase):
         "create", "load", "save", "set_boundary", "place_plant",
         "place_polyculture", "place_structure", "as_dict", "validate",
         "analyze", "name", "placed_plants", "structures",
+        # V3.72 (F280): the Yard palette's areas and lines, a deliberate
+        # change to the snapshot; place_structure keeps its signature.
+        "draw_area", "draw_line",
     }
 
     EXPECTED_MCP_TOOLS = {

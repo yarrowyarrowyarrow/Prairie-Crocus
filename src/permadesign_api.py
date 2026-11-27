@@ -192,9 +192,16 @@ class Project:
     # ── Persistence ──────────────────────────────────────────────────────
 
     def save(self, path: str) -> None:
-        """Write the project to ``path``. Raises ProjectError on I/O error."""
+        """Write the project to ``path``, in the form the app stores (since
+        V3.72 a placed pond, raised bed or shed is written as the area the
+        Yard palette draws, ``src/yard_upgrade.py``; the generator keeps them
+        as points while it works). Raises ProjectError on I/O error."""
+        import copy
+        from src import yard_upgrade
+        data = copy.deepcopy(self._gen.project)
+        yard_upgrade.upgrade(data)
         try:
-            save_project(self._gen.project, path)
+            save_project(data, path)
         except OSError as exc:
             raise ProjectError(f"Couldn't save project to {path}: {exc}") from exc
 
@@ -240,6 +247,63 @@ class Project:
         # the real definition when we have one so habitat scoring counts it.
         self._gen.add_structure(struct_id, lat, lng,
                                 struct_def=struct_def or {"id": struct_id})
+
+    def draw_area(self, kind: str, ring: list[tuple[float, float]],
+                  **options) -> None:
+        """Draw an area of a Yard palette ``kind`` (``src/yard_kinds.py``:
+        ``"bed"``, ``"path"``, ``"pond"``, ``"building"``…) on ``ring``, a list
+        of ``(lat, lng)``, with its options (``raised_cm=45``,
+        ``surface="gravel"``, ``building="garage"``…). V3.72.
+
+        Raises:
+            ValueError: for a kind that is not an area.
+        """
+        from src import yard_kinds
+        k = yard_kinds.BY_KEY.get(kind)
+        if k is None or k.verb != yard_kinds.AREA:
+            raise ValueError(f"{kind!r} is not an area kind")
+        coords = [[float(lng), float(lat)] for lat, lng in ring]
+        if coords and coords[0] != coords[-1]:
+            coords.append(list(coords[0]))
+        props = yard_kinds.drawn_props(kind, **options)
+        props.update({"shape_id": f"shape_api_{len(self._gen.project['features'])}",
+                      "label": options.get("label", ""),
+                      "area_m2": round(yard_kinds.ring_area_m2(coords), 1)})
+        if props["element_type"] == "canopy_footprint":
+            from src.osm_features import ring_radius_m
+            props["canopy_radius_m"] = max(0.5, ring_radius_m(coords))
+        self._gen.project["features"].append({
+            "type": "Feature",
+            "geometry": {"type": "Polygon", "coordinates": [coords]},
+            "properties": props})
+
+    def draw_line(self, kind: str, points: list[tuple[float, float]],
+                  **options) -> None:
+        """Draw a line of a Yard palette ``kind`` (``"fence"``, ``"wall"``,
+        ``"hedge"``, ``"swale"``…) through ``points``, a list of
+        ``(lat, lng)``, with its options (``fence_kind="board"``,
+        ``width_m=1.5``…). V3.72.
+
+        Raises:
+            ValueError: for a kind that is not a line.
+        """
+        from src import yard_kinds
+        k = yard_kinds.BY_KEY.get(kind)
+        if k is None or k.verb != yard_kinds.LINE:
+            raise ValueError(f"{kind!r} is not a line kind")
+        coords = [[float(lng), float(lat)] for lat, lng in points]
+        props = yard_kinds.drawn_props(kind, **options)
+        props.update({
+            "hedge_id": f"hedge_api_{len(self._gen.project['features'])}",
+            "species": options.get("species", ""),
+            "length_m": round(yard_kinds.line_length_m(coords), 2),
+            "num_plants": 0,
+            "width_m": float(options.get("width_m") or 0.3),
+            "spacing_m": float(options.get("spacing_m") or 1.0)})
+        self._gen.project["features"].append({
+            "type": "Feature",
+            "geometry": {"type": "LineString", "coordinates": coords},
+            "properties": props})
 
     # ── Inspection ───────────────────────────────────────────────────────
 

@@ -89,27 +89,11 @@ def _features(project: dict) -> list:
     return (project or {}).get("features") or []
 
 
-def _shape_types(project: dict) -> set:
-    out = set()
-    for f in _features(project):
-        props = f.get("properties") or {}
-        if props.get("element_type") in ("custom_shape", "canopy_footprint"):
-            st = props.get("shape_type")
-            if st:
-                out.add(st)
-    return out
-
-
-def _structure_ids(project: dict) -> set:
-    out = set()
-    for f in _features(project):
-        props = f.get("properties") or {}
-        if props.get("element_type") != "structure":
-            continue
-        sid = _yk.struct_id_of(props)
-        if sid:
-            out.add(sid)
-    return out
+def _kind_cues(project: dict) -> set:
+    """The cue of each thing in the design, drawn or placed, by its kind
+    (V3.72): a deck is a path, a fence line a border, as the table says."""
+    return {k.cue for f in _features(project)
+            if (k := _yk.kind_of(f)) is not None and k.cue}
 
 
 def _has_boundary(project: dict) -> bool:
@@ -120,11 +104,6 @@ def _has_boundary(project: dict) -> bool:
 def _placed(project: dict) -> list:
     from src.project_store import ProjectStore
     return list(ProjectStore(project).placed_plants)
-
-
-def _lawn_zone_labels() -> set:
-    from src.lawn_zones import ZONE_TYPES
-    return {ZONE_TYPES["lawn_remaining"]["label"]}
 
 
 # ── The frontage assumption ──────────────────────────────────────────────────
@@ -163,10 +142,7 @@ def frontage_is_assumed(project: Optional[dict] = None) -> bool:
 def _cue_mown_edge(project: dict) -> Cue:
     """A mown or deliberately managed strip. The single strongest cue there is:
     it is what tells a passer-by the meadow behind it is on purpose."""
-    shapes = _shape_types(project)
-    has = bool(shapes & set(_LAWN_SHAPES)
-               or shapes & _lawn_zone_labels()
-               or _structure_ids(project) & set(_LAWN_STRUCTURES))
+    has = bool({"lawn", "lawn_zone"} & _kind_cues(project))
     if has:
         return Cue(MOWN_EDGE, True,
                    "There is a mown or managed strip — the strongest single "
@@ -180,10 +156,8 @@ def _cue_mown_edge(project: dict) -> Cue:
 
 def _cue_crisp_border(project: dict) -> Cue:
     """A hard edge around the planting — a drawn bed, a boundary, or a fence."""
-    shapes = _shape_types(project)
-    has = bool(shapes & set(_BED_SHAPES)
-               or _has_boundary(project)
-               or _structure_ids(project) & set(_BORDER_STRUCTURES))
+    has = bool({"bed", "border"} & _kind_cues(project)
+               or _has_boundary(project))
     if has:
         return Cue(CRISP_BORDER, True,
                    "The planting has a defined edge — a bed line, boundary or "
@@ -255,7 +229,7 @@ def _cue_height_graded(project: dict,
 
 def _cue_visible_path(project: dict) -> Cue:
     """A path or entry. Access is a cue: it says a person comes in here."""
-    if _shape_types(project) & set(_PATH_SHAPES):
+    if "path" in _kind_cues(project):
         return Cue(VISIBLE_PATH, True,
                    "There is a path or hard surface — a way in tells people "
                    "the space is used, not just left.")

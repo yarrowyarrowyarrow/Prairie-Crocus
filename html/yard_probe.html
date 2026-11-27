@@ -122,7 +122,8 @@ function site(w) {
     if (o.name === 'ground') out.ground = row();
     else if (/^surface:/.test(o.name)) out.surfaces.push(row());
     else if (/^street:/.test(o.name)) out.street.push(row());
-    else if (o.name === 'fences' || /^hedges:/.test(o.name))
+    // Walls, a raised bed's frame and a swale's strip since V3.72.
+    else if (/^(fences|walls|frames|strip)$/.test(o.name) || /^hedges:/.test(o.name))
       out.lines[o.name] = Object.assign(box(w, o), { colour: seen(w, o.material) });
     else if (o.name === 'roofs') out.roofs = Object.assign(box(w, o), { colour: seen(w, o.material) });
     else if (o.name === 'buildings') out.walls = Object.assign(box(w, o), { colour: seen(w, o.material) });

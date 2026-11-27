@@ -101,21 +101,20 @@ class OneVocabularyOfSurfaces(unittest.TestCase):
     """A shape type the tools can draw and the scene cannot name would be
     drawn as nothing, which is what all of them were until V3.45."""
 
-    def test_every_type_the_shape_tool_offers_has_a_kind(self):
+    def test_every_area_the_yard_tab_draws_has_a_look(self):
+        """Every area kind in Placement › Yard (V3.72; Draw › Shape's types
+        before it) has a look the scene names, but a building, which is drawn
+        as a building, and Custom, in the person's own colour."""
+        from src import yard_kinds as Y
         from src.lawn_zones import ZONE_TYPES
-        try:
-            from src.shape_tool import AREA_PRESETS
-            names = list(AREA_PRESETS)
-        except Exception:                       # no Qt here: read the source
-            src = open(os.path.join(_ROOT, "src", "shape_tool.py"),
-                       encoding="utf-8").read()
-            start = src.index("AREA_PRESETS = {")
-            block = src[start:src.index("\n}\n", start)]
-            names = re.findall(r'^\s+"([^"]+)":\s+\{', block, re.M)
-        names += [z["label"] for z in ZONE_TYPES.values()]
-        self.assertGreaterEqual(len(names), 12)
-        for name in names:
-            self.assertIn(name, S.SURFACE_KINDS, name)
+        areas = [k for k in Y.KINDS if k.verb == Y.AREA]
+        self.assertGreaterEqual(len(areas), 17)
+        for k in areas:
+            if k.key == "building":
+                continue
+            self.assertIn(k.look, S.KINDS, k.key)
+        for z in ZONE_TYPES.values():
+            self.assertIn(z["label"], S.SURFACE_KINDS, z["label"])
 
     def test_every_shape_the_overview_measures_has_a_kind(self):
         from src.yard_overview import BED_SHAPES, NOT_PLANTED
@@ -242,17 +241,13 @@ class TheLines(unittest.TestCase):
     def test_a_height_is_one_estimate_a_kind(self):
         """Nothing in a design records how tall a hedge or a fence is."""
         self.assertEqual(sorted(S.LINE_HEIGHT_M),
-                         ["fence", "hedge", "living_fence", "windbreak"])
-        try:
-            from src.shape_tool import LINE_KINDS
-            styles = {style for _w, style in LINE_KINDS}
-        except Exception:                       # no Qt here: read the source
-            src = open(os.path.join(_ROOT, "src", "shape_tool.py"),
-                       encoding="utf-8").read()
-            start = src.index("LINE_KINDS = (")
-            block = src[start:src.index("\n)\n", start)]
-            styles = set(re.findall(r'\("[^"]+", "(\w+)"\)', block))
-        self.assertEqual(styles, set(S.LINE_HEIGHT_M))
+                         ["fence", "hedge", "living_fence", "wall",
+                          "windbreak"])
+        # Every line the Yard tab draws (V3.72) but a swale, which lies on the
+        # ground as a strip.
+        from src import yard_kinds as Y
+        styles = {k.line_styles[0] for k in Y.KINDS if k.verb == Y.LINE}
+        self.assertEqual(styles - {"swale"}, set(S.LINE_HEIGHT_M))
         for kind, height in S.LINE_HEIGHT_M.items():
             row = S.lines(_project(_line(kind, [(0, 0), (5, 0)])), _Proj())[0]
             self.assertEqual(row["height_m"], height)

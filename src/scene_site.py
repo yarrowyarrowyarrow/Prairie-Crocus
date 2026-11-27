@@ -47,7 +47,7 @@ GROUND_MEADOW = "meadow"
 #: A drawn area's ``shape_type`` → the kind the viewer has a look for
 #: (``html/scene3d/02c-site.js``: ``SURFACE_LOOK``, held equal by a test).
 #: One vocabulary with ``yard_overview.BED_SHAPES`` / ``NOT_PLANTED``,
-#: ``shape_tool.AREA_PRESETS`` and ``lawn_zones.ZONE_TYPES``: a test fails on a
+#: the Yard palette's kinds and ``lawn_zones.ZONE_TYPES``: a test fails on a
 #: type any of them offers that is not here.
 #: Read from ``src/yard_kinds.py`` since V3.71 (each kind's ``look``): a lawn to
 #: convert is lawn today, a year-1 restoration prepared ground newly seeded.
@@ -61,8 +61,15 @@ SURFACE_KINDS = _surface_kinds()
 #: What a type the table does not know is drawn as: the person's own colour.
 CUSTOM = "custom"
 
-#: Every kind a surface can have. ``lawn`` is also the outline's inside (D3).
-KINDS = tuple(sorted(set(SURFACE_KINDS.values())))
+#: Every kind a surface can have: every kind's look in the table, a kind that
+#: has no shape type of its own (a deck, a rock garden) included since V3.72.
+#: ``lawn`` is also the outline's inside (D3).
+def _all_looks() -> tuple:
+    from src import yard_kinds
+    return tuple(sorted({k.look for k in yard_kinds.KINDS if k.look}))
+
+
+KINDS = _all_looks()
 
 # ── lines ───────────────────────────────────────────────────────────────────
 
@@ -71,7 +78,11 @@ KINDS = tuple(sorted(set(SURFACE_KINDS.values())))
 #: species in free text). A rail fence a person can see over; a clipped hedge;
 #: a taller living fence; a windbreak of shrubs.
 LINE_HEIGHT_M = {"fence": 1.2, "hedge": 1.2, "living_fence": 1.6,
-                 "windbreak": 3.0}
+                 "windbreak": 3.0, "wall": 1.2}
+#: A wall's thickness, and a raised bed's frame's (V3.72): stated estimates,
+#: like the heights above.
+WALL_WIDTH_M = 0.2
+FRAME_WIDTH_M = 0.05
 #: The width a line is drawn when the design holds none.
 LINE_WIDTH_M = 1.5
 #: A fence is boards, not a planting: it is drawn this thick whatever the
@@ -160,8 +171,14 @@ def surfaces(project: dict, proj, boundary_xy: Optional[list]) -> list:
         ring = _open_ring((geom.get("coordinates") or [[]])[0], proj)
         if len(ring) < 3:
             continue
-        kind = surface_kind(props.get("shape_type"))
+        # By the feature's kind (V3.72): a deck or a rock garden is stored with
+        # an older copy's shape type.
+        from src import yard_kinds
+        kind = yard_kinds.look_of(f)
         row = {"kind": kind, "ring": ring}
+        if props.get("raised_cm"):
+            # A raised bed's soil, at its frame's top (lines() draws the frame).
+            row["lift_m"] = round(float(props["raised_cm"]) / 100.0, 2)
         if kind == CUSTOM:
             row["color"] = props.get("fill_color") or "#9e9e9e"
         if props.get("label"):
@@ -186,13 +203,40 @@ def lines(project: dict, proj) -> list:
             pts.append([round(x, 2), round(y, 2)])
         if len(pts) < 2:
             continue
-        kind = props.get("style") if props.get("style") in LINE_HEIGHT_M \
-            else "hedge"
-        width = FENCE_WIDTH_M if kind == "fence" else float(
-            props.get("width_m") or LINE_WIDTH_M)
-        out.append({"kind": kind, "points": pts,
-                    "width_m": round(width, 2),
-                    "height_m": LINE_HEIGHT_M[kind]})
+        from src import yard_kinds
+        k = yard_kinds.kind_of(f)
+        if k is not None and k.look:
+            # A line with a look (a swale) lies on the ground as a strip at
+            # its width (V3.72), in that look until V3.73 draws it.
+            out.append({"kind": "strip", "look": k.look, "points": pts,
+                        "height_m": 0.0,
+                        "width_m": round(float(props.get("width_m")
+                                               or LINE_WIDTH_M), 2)})
+            continue
+        style = props.get("kind") or props.get("style")
+        kind = style if style in LINE_HEIGHT_M else "hedge"
+        width = (FENCE_WIDTH_M if kind == "fence" else WALL_WIDTH_M
+                 if kind == "wall" else float(props.get("width_m")
+                                              or LINE_WIDTH_M))
+        row = {"kind": kind, "points": pts, "width_m": round(width, 2),
+               "height_m": LINE_HEIGHT_M[kind]}
+        if kind == "fence" and props.get("fence_kind"):
+            row["fence_kind"] = props["fence_kind"]
+        out.append(row)
+    # A raised bed's frame, along its outline at its height (V3.72).
+    for f in (project or {}).get("features", []) or []:
+        props = f.get("properties") or {}
+        geom = f.get("geometry") or {}
+        if (props.get("element_type") != "custom_shape"
+                or not props.get("raised_cm")
+                or geom.get("type") != "Polygon"):
+            continue
+        ring = _open_ring((geom.get("coordinates") or [[]])[0], proj)
+        if len(ring) >= 3:
+            out.append({"kind": "frame", "points": ring + [ring[0]],
+                        "width_m": FRAME_WIDTH_M,
+                        "height_m": round(float(props["raised_cm"]) / 100.0,
+                                          2)})
     # A placed Fence / Wall is drawn as the same fence (V3.70).
     from src.scene_structures import fence_lines
     return out + fence_lines(project, proj)

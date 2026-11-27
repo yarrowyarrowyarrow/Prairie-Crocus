@@ -49,36 +49,27 @@ EXCLUDING_STRUCTURE_IDS = frozenset(
 _struct_id_of = yard_kinds.struct_id_of
 
 
-# Drawn custom_shape shape_types the generator plants AROUND, not on, and the
-# ones it plants INTO: one list with the overview's planting area since V3.28
-# (PY-2, ``yard_overview.NOT_PLANTED`` and ``BED_SHAPES``), so a plan goes where
-# the overview measures. Until then a Lawn Area was planted (32 of 42 plants on
-# a lawn over 60% of a yard) and a Garden Bed was ignored (1 of 42 in it).
-def _avoid_shape_types() -> set:
-    from src.yard_overview import NOT_PLANTED
-    return set(NOT_PLANTED)
-
-
-def _fill_zone_shape_types() -> set:
-    from src.yard_overview import BED_SHAPES
-    return set(BED_SHAPES)
+# What the generator plants AROUND, not on, and what it plants INTO: one answer
+# with the overview's planting area since V3.28 (PY-2), so a plan goes where the
+# overview measures. Until then a Lawn Area was planted (32 of 42 plants on a
+# lawn over 60% of a yard) and a Garden Bed was ignored (1 of 42 in it). Read
+# from each feature's kind since V3.72 (``src/yard_kinds.py``): a deck or a rain
+# garden is stored with an older copy's shape type.
+_AREA_TYPES = ("custom_shape", "canopy_footprint")
 
 
 def fill_regions(project_dict: dict) -> list:
-    """Rings ``[[lng, lat], …]`` of the drawn beds and conversion zones, and
-    since V3.71 of a placed raised bed or rock garden at its map footprint:
-    the areas the generator plants INTO. Empty when there are none."""
-    want = _fill_zone_shape_types()
+    """Rings ``[[lng, lat], …]`` of the beds and conversion zones, drawn or
+    (since V3.71) placed: the areas the generator plants INTO. Empty when
+    there are none."""
     out: list = []
     for f in (project_dict or {}).get("features", []) or []:
         props = f.get("properties", {}) or {}
-        if (props.get("element_type") in ("custom_shape", "canopy_footprint")
-                and props.get("shape_type") in want):
-            ring = (f.get("geometry", {}) or {}).get("coordinates") or []
-            if ring and ring[0] and len(ring[0]) >= 3:
-                out.append(ring[0])
-        elif props.get("element_type") == "structure" and yard_kinds.is_fill(f):
-            out.append(yard_kinds.footprint_ring(f))
+        if (props.get("element_type") in _AREA_TYPES + ("structure",)
+                and yard_kinds.is_fill(f)):
+            ring = yard_kinds.footprint_ring(f)
+            if ring and len(ring) >= 3:
+                out.append(ring)
     return out
 
 
@@ -172,19 +163,20 @@ def _keepout_items(project_dict: dict):
     ``("shape", ring, (lat, lng, r))``, the circle being the coarse view of
     the shape."""
     from src.osm_features import ring_centroid, ring_radius_m   # ring helpers
-    avoid_shapes = _avoid_shape_types()
     for f in (project_dict or {}).get("features", []) or []:
         props = f.get("properties", {}) or {}
         et = props.get("element_type")
         geom = f.get("geometry", {}) or {}
-        # Drawn "existing remnant" / hardscape areas → keep planting out.
-        if (et in ("custom_shape", "canopy_footprint")
-                and props.get("shape_type") in avoid_shapes):
-            ring = (geom.get("coordinates") or [None])[0]
-            c = ring_centroid(ring) if ring else None
-            if c is not None:
-                yield ("shape", ring, (float(c[0]), float(c[1]),
-                                       max(0.5, ring_radius_m(ring, c))))
+        # Drawn "existing remnant" / hardscape areas, and since V3.72 a swale
+        # drawn as a line (its strip) → keep planting out. A building's
+        # outline is kept out of below, by its stored radius.
+        if (et in _AREA_TYPES + ("hedgerow",) and yard_kinds.is_keep_out(f)
+                and not yard_kinds.is_building_footprint(props)):
+            for ring in yard_kinds.footprint_rings(f):
+                c = ring_centroid(ring)
+                if c is not None:
+                    yield ("shape", ring, (float(c[0]), float(c[1]),
+                                           max(0.5, ring_radius_m(ring, c))))
             continue
         if geom.get("type") != "Point":
             # canopy_footprint Polygons (OSM buildings, hand-drawn building/canopy

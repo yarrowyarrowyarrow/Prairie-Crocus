@@ -407,6 +407,10 @@ def build_example_project(lat: Optional[float] = None,
                        "show_lengths": True, "show_area": True},
     })
     project["features"].extend(example_features(sw_lat, sw_lng, ex))
+    # In the Yard palette's form (V3.72): a fence is a fence line with its kind,
+    # as it would be had the person drawn it.
+    from src import yard_upgrade                            # noqa: PLC0415
+    yard_upgrade.upgrade(project)
 
     store = ProjectStore(project)
     placements, missing = resolve_example_planting(

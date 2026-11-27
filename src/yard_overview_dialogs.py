@@ -109,7 +109,7 @@ def fill_gaps(main) -> str:
             main._area_fill._place_plant_records(plan["records"])
     elif dialog.answer == "outline":
         from src.yard_overview_flow import run_action
-        run_action(main, "shape:Garden Bed")
+        run_action(main, "yard:bed")
     return dialog.answer
 
 

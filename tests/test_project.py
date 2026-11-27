@@ -455,7 +455,10 @@ class TestSchemaVersionStable(unittest.TestCase):
         # 1.10 (V3.11): the `measurement` feature type and a boundary's
         # `name` and `show_handles` (additive; their round trips are in
         # tests/test_measurements.py TestTheFeature).
-        self.assertEqual(SCHEMA_VERSION, "1.10")
+        # 1.11 (V3.72): drawn areas and lines carry their `kind`, a placed
+        # object its `bearing_deg`; older designs are converted on open
+        # (tests/test_yard_upgrade.py).
+        self.assertEqual(SCHEMA_VERSION, "1.11")
 
     def test_a_file_from_before_1_10_loads_with_the_old_defaults(self):
         p = new_project("t")

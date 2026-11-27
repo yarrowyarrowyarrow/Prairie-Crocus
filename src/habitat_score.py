@@ -388,7 +388,7 @@ def habitat_nudges(score: "HabitatScore", *, limit: int = 3) -> list[dict]:
         add(head, f"{n_struct} habitat structure type"
                   f"{'s' if n_struct != 1 else ''} — a bee hotel, brush pile or "
                   f"small pond adds up to +{int(round(head))} pts "
-                  "(Placement → Structures).")
+                  "(Placement → Yard).")
 
     nudges.sort(key=lambda d: -d["headroom"])
     return nudges[:limit]

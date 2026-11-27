@@ -57,13 +57,10 @@
         }
 
       } else {
-        // Rectangle: use L.rectangle
-        var halfLen = sizeM / 2;
-        var halfWid = widthM / 2;
-        var dLat = halfLen / 111320;
-        var dLng = halfWid / (111320 * Math.cos(lat * Math.PI / 180));
-        var bounds = [[lat - dLat, lng - dLng], [lat + dLat, lng + dLng]];
-        mainLayer = L.rectangle(bounds, {
+        // A rectangle sizeM along its bearing (north until turned, V3.72) by
+        // widthM: a polygon, so a turned one is drawn turned (05b-yard.js).
+        mainLayer = L.polygon(_structureCorners(lat, lng, sizeM, widthM,
+                                                structDef.bearing_deg), {
           color: color,
           weight: 2,
           fillColor: fillColor,
@@ -85,7 +82,8 @@
         '<b>' + escH(icon) + ' ' + escH(name) + '</b><br>' +
         '<span style="color:#b0bec5;font-size:12px">' + Number(sizeM) + 'm' +
         (structDef.maintenance_hours_year ? ' · ~' + Number(structDef.maintenance_hours_year) + ' hrs/yr' : '') +
-        '<br>Right-click to remove</span>',
+        (structDef.category === 'Existing' ? '<br>Right-click to remove'
+         : '<br>Drag to move · R or right-click to turn') + '</span>',
         { className: 'plant-marker-label' }
       );
 
@@ -103,17 +101,21 @@
       };
 
       // Right-click: existing trees get a small menu (switch conifer/
-      // deciduous, or remove); everything else removes directly. Uses the
-      // group's live position so a dragged marker removes at its real spot.
-      mainLayer.on('contextmenu', function(e) {
-        L.DomEvent.stop(e);
+      // deciduous, or remove); a building mark removes directly; an object's
+      // menu (Turn 45°, Remove) is 05b-yard.js's. Uses the group's live
+      // position so a dragged marker removes at its real spot.
+      function _remove() {
         var pos = group._pdStruct || { lat: lat, lng: lng };
-        function _remove() {
-          map.removeLayer(group);
-          delete structureMarkers[id];
-          if (bridge) bridge.onStructureRemoved(id, structDef.id,
-                                                pos.lat, pos.lng);
-        }
+        map.removeLayer(group);
+        delete structureMarkers[id];
+        if (bridge) bridge.onStructureRemoved(id, structDef.id,
+                                              pos.lat, pos.lng);
+      }
+      if (structDef.category !== 'Existing') {
+        makeObjectEditable(group, mainLayer, labelMarker, id, structDef, lat,
+                           lng, sizeM, widthM, name, _remove);
+      } else mainLayer.on('contextmenu', function(e) {
+        L.DomEvent.stop(e);
         if (structDef.id === 'existing_tree' &&
             typeof showContextMenu === 'function') {
           var oe = e.originalEvent;
@@ -138,8 +140,9 @@
       structureMarkers[id] = group;
 
       // Existing tree/building marks are editable like plants (V2.26): drag
-      // to the real spot, scroll to match the crown size. Gated to the
-      // 'Existing' category so decorative structures stay fixed.
+      // to the real spot, scroll to match the crown size. An object moves and
+      // turns by 05b-yard.js's makeObjectEditable (V3.72), and is not resized
+      // by the wheel: its Size is chosen in the Yard tab.
       if (structDef.category === 'Existing') {
         _makeExistingEditable(group, mainLayer, labelMarker, id,
                               structDef.id, lat, lng, sizeM, shape, widthM,
@@ -184,11 +187,9 @@
     function _moveExistingLayer(st) {
       if (st.layer.setLatLng) {                 // circle (trees)
         st.layer.setLatLng([st.lat, st.lng]);
-      } else if (st.layer.setBounds) {          // rectangle (marked building)
-        var dLat = (st.sizeM / 2) / 111320;
-        var dLng = (st.widthM / 2) / (111320 * Math.cos(st.lat * Math.PI / 180));
-        st.layer.setBounds([[st.lat - dLat, st.lng - dLng],
-                            [st.lat + dLat, st.lng + dLng]]);
+      } else if (st.layer.setLatLngs) {         // rectangle (marked building)
+        st.layer.setLatLngs(_structureCorners(st.lat, st.lng, st.sizeM,
+                                              st.widthM, 0));
       }
       if (st.label && st.label.setLatLng) st.label.setLatLng([st.lat, st.lng]);
     }
@@ -302,183 +303,8 @@
       return false;
     }
 
-    // ── Hedgerow drawing (S2) ────────────────────────────────────────────────
-    function handleHedgerowClick(lat, lng) {
-      hedgerowPoints.push([lat, lng]);
-
-      // Draw vertex marker
-      L.circleMarker([lat, lng], {
-        radius: 4,
-        color: currentHedgerow ? currentHedgerow.color : '#4caf50',
-        fillColor: currentHedgerow ? currentHedgerow.color : '#4caf50',
-        fillOpacity: 1
-      }).addTo(drawnItems);
-
-      refreshHedgerowPolyline();
-    }
-
-    function refreshHedgerowPolyline() {
-      if (hedgerowPreview) { map.removeLayer(hedgerowPreview); hedgerowPreview = null; }
-      if (hedgerowPoints.length >= 2) {
-        var color = currentHedgerow ? currentHedgerow.color : '#4caf50';
-        hedgerowPreview = L.polyline(hedgerowPoints, {
-          color: color, weight: 3, opacity: 0.7, dashArray: '6 4'
-        }).addTo(map);
-      }
-    }
-
-    function updateHedgerowPreview(latlng) {
-      if (hedgerowPreview) { map.removeLayer(hedgerowPreview); }
-      var color = currentHedgerow ? currentHedgerow.color : '#4caf50';
-      var pts = hedgerowPoints.concat([[latlng.lat, latlng.lng]]);
-      hedgerowPreview = L.polyline(pts, {
-        color: color, weight: 3, opacity: 0.5, dashArray: '4 4'
-      }).addTo(map);
-    }
-
-    function finishHedgerow() {
-      if (hedgerowPoints.length < 2) return;
-      if (hedgerowPreview) { map.removeLayer(hedgerowPreview); hedgerowPreview = null; }
-      drawnItems.clearLayers();
-
-      var id = 'hedge_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-      var cfg = currentHedgerow || {};
-      var color   = cfg.color    || '#4caf50';
-      var widthM  = cfg.width_m  || 1.5;
-      var spacing = cfg.spacing_m || 1.0;
-      var style   = cfg.style    || 'hedge';
-      var species = cfg.species  || '';
-      var group   = L.layerGroup().addTo(map);
-
-      // Style definitions
-      var styleMap = {
-        'hedge':       { weight: 6, opacity: 0.6, dashArray: null,    fillDots: true },
-        'fence':       { weight: 3, opacity: 0.8, dashArray: '8 6',  fillDots: false },
-        'living_fence':{ weight: 5, opacity: 0.6, dashArray: '12 4', fillDots: true },
-        'windbreak':   { weight: 8, opacity: 0.5, dashArray: null,    fillDots: true }
-      };
-      var s = styleMap[style] || styleMap['hedge'];
-
-      // Main polyline
-      var mainLine = L.polyline(hedgerowPoints, {
-        color: color,
-        weight: s.weight,
-        opacity: s.opacity,
-        dashArray: s.dashArray,
-        lineCap: 'round',
-        lineJoin: 'round'
-      }).addTo(group);
-
-      // The line's length, for every style. Until V3.11 it was measured only
-      // where plants are dotted along it, so a fence (no dots) threw on the
-      // tooltip below and was never kept, saved or sent to Python.
-      var totalLen = 0, segments = [];
-      for (var i = 1; i < hedgerowPoints.length; i++) {
-        var from = L.latLng(hedgerowPoints[i-1]);
-        var to   = L.latLng(hedgerowPoints[i]);
-        var segLen = from.distanceTo(to);
-        segments.push({ from: from, to: to, len: segLen });
-        totalLen += segLen;
-      }
-      var numPlants = s.fillDots ? Math.floor(totalLen / spacing) + 1 : 0;
-
-      // Plant markers along the line
-      if (s.fillDots) {
-        var distAlong = 0;
-        var segIdx = 0;
-        var segDist = 0;
-        for (var p = 0; p < numPlants; p++) {
-          var target = p * spacing;
-          while (segIdx < segments.length - 1 && segDist + segments[segIdx].len < target) {
-            segDist += segments[segIdx].len;
-            segIdx++;
-          }
-          var seg = segments[segIdx];
-          var frac = seg.len > 0 ? (target - segDist) / seg.len : 0;
-          frac = Math.max(0, Math.min(1, frac));
-          var ptLat = seg.from.lat + (seg.to.lat - seg.from.lat) * frac;
-          var ptLng = seg.from.lng + (seg.to.lng - seg.from.lng) * frac;
-
-          var dotColor = style === 'living_fence' ?
-            (p % 2 === 0 ? color : shiftColor(color, 30)) : color;
-          L.circleMarker([ptLat, ptLng], {
-            radius: 3.5,
-            color: dotColor,
-            fillColor: dotColor,
-            fillOpacity: 0.8,
-            weight: 1
-          }).addTo(group);
-        }
-      }
-
-      // Label at midpoint
-      var midIdx = Math.floor(hedgerowPoints.length / 2);
-      var styleWords = style.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-      var labelText = species || styleWords;
-      var labelIcon = L.divIcon({
-        className: 'hedgerow-label',
-        html: escH(labelText),
-        iconSize: [0, 0],
-        iconAnchor: [0, 12]
-      });
-      L.marker(hedgerowPoints[midIdx], { icon: labelIcon, interactive: false }).addTo(group);
-
-      // Tooltip
-      var tooltipText = '<b>' + escH(styleWords) + '</b>';
-      if (species) tooltipText += '<br>' + escH(species);
-      tooltipText += '<br><span style="color:#b0bec5;font-size:12px">' +
-        (numPlants ? '~' + Number(numPlants) + ' plants · ' : '') +
-        totalLen.toFixed(1) + 'm<br>Right-click to remove</span>';
-      mainLine.bindTooltip(tooltipText, { className: 'plant-marker-label' });
-
-      // Store metadata
-      mainLine._hedge = {
-        id: id,
-        points: hedgerowPoints.slice(),
-        style: style,
-        color: color,
-        widthM: widthM,
-        spacingM: spacing,
-        species: species,
-        lengthM: totalLen,
-        numPlants: numPlants
-      };
-
-      // Right-click to remove
-      mainLine.on('contextmenu', function(e) {
-        L.DomEvent.stop(e);
-        map.removeLayer(group);
-        delete hedgerowLayers[id];
-        if (bridge) bridge.onHedgerowRemoved(id, JSON.stringify(hedgerowPoints));
-      });
-
-      hedgerowLayers[id] = group;
-
-      // Notify Python
-      if (bridge) bridge.onHedgerowComplete(id, JSON.stringify(hedgerowPoints.slice()), species, style, totalLen, numPlants);
-
-      hedgerowPoints = [];
-      setMode('none');
-    }
-
-    // Undo helper — remove a hedgerow group by its id. Returns true on hit.
-    function undoHedgerowById(hedgeId) {
-      var group = hedgerowLayers[hedgeId];
-      if (!group) return false;
-      try { map.removeLayer(group); } catch (e) {}
-      delete hedgerowLayers[hedgeId];
-      return true;
-    }
-
-    // Load a hedgerow from saved project
-    function loadHedgerow(hedgeDef) {
-      hedgerowPoints = hedgeDef.points || [];
-      currentHedgerow = hedgeDef;
-      if (hedgerowPoints.length >= 2) {
-        finishHedgerow();
-      }
-      hedgerowPoints = [];
-    }
+    // Hedgerow drawing (S2) moved to 05b-yard.js in V3.72, with the Yard
+    // palette's lines and the objects' move and turn.
 
     // ── Custom shape drawing (S3) ────────────────────────────────────────────
     function handleShapeClick(lat, lng) {
@@ -597,7 +423,7 @@
           var treeCaster = /tree/i.test(shapeType) || cfg.caster_kind === 'tree';
           displayLabel = (treeCaster ? '🌳 ' : '🏠 ') + heightM + 'm';
         } else {
-          displayLabel = label || shapeType || 'Shape';
+          displayLabel = label || cfg.kind_words || shapeType || 'Shape';
         }
         var labelIcon = L.divIcon({
           className: 'shape-label',
@@ -614,7 +440,7 @@
           + '<br>Click to edit outline · right-click for height/remove'
         : '<br>Click to edit outline · right-click to remove';
       polygon.bindTooltip(
-        '<b>' + escH(label || shapeType) + '</b><br>' +
+        '<b>' + escH(label || cfg.kind_words || shapeType) + '</b><br>' +
         '<span style="color:#b0bec5;font-size:12px">Area: ' + escH(areaStr)
           + shadeLine + '</span>',
         { className: 'plant-marker-label' }

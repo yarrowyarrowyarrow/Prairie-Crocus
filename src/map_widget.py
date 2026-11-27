@@ -141,6 +141,10 @@ class MapBridge(QObject):
         # markerId, structId, lat, lng, newDiameterM
     existing_feature_foliage = pyqtSignal(str, str, float, float, str)
         # markerId, structId, lat, lng, foliage ("evergreen"|"deciduous")
+    # An object turned on the map (V3.72): its new bearing. A move rides
+    # existing_feature_moved, as an existing tree's does.
+    structure_turned = pyqtSignal(str, str, float, float, float)
+        # markerId, structId, lat, lng, bearingDeg
 
     # Hedgerow signals
     hedgerow_complete = pyqtSignal(str, str, str, str, float, int)  # id, pointsJson, species, style, lengthM, numPlants
@@ -384,6 +388,12 @@ class MapBridge(QObject):
                                  lat: float, lng: float, new_diameter_m: float):
         self.existing_feature_resized.emit(marker_id, struct_id, lat, lng,
                                            new_diameter_m)
+
+    @pyqtSlot(str, str, float, float, float)
+    def onStructureTurned(self, marker_id: str, struct_id: str, lat: float,
+                          lng: float, bearing_deg: float):
+        self.structure_turned.emit(marker_id, struct_id, lat, lng,
+                                   bearing_deg)
 
     @pyqtSlot(str, str, float, float, str)
     def onExistingFeatureFoliage(self, marker_id: str, struct_id: str,
@@ -856,6 +866,10 @@ class MapWidget(QWebEngineView):
     def load_structure(self, struct_def: dict, lat: float, lng: float):
         """Load a structure from a saved project."""
         self.run_js(map_js.load_structure(struct_def, lat, lng))
+
+    def turn_hovered_object(self):
+        """Turn the object under the pointer 45° (R on the map, V3.72)."""
+        self.run_js(map_js.turn_hovered_object())
 
     # ── Hedgerow helpers ──────────────────────────────────────────────────────
 

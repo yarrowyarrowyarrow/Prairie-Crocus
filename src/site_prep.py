@@ -311,11 +311,11 @@ def build_site_prep(site_config: dict, placed_plants: Optional[list] = None, *,
         prep.steps.append(PrepStep(
             order=order,
             title="Decide how the existing cover comes off",
-            # The lawn and its conversion zones are drawn with Draw › Shape
-            # (V3.07); this pointed at Site → Features, which holds buildings
-            # and trees (V3.19, QF-11, R24).
-            detail="Draw the lawn you are replacing on the map first, with "
-                   "Draw › Shape, and this sheet will size the job. The "
+            # The lawn and its conversion zones are drawn from Placement ›
+            # Yard (V3.72; Draw › Shape from V3.07); this pointed at Site →
+            # Features, which holds buildings and trees (V3.19, QF-11, R24).
+            detail="Draw the lawn you are replacing on the map first, from "
+                   "Placement › Yard, and this sheet will size the job. The "
                    "three methods are sheet mulch, cutting the sod, and "
                    "solarising.",
             basis="general"))

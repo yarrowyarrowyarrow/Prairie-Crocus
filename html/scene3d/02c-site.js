@@ -55,6 +55,16 @@ const SURFACE_LOOK = {
                   specks: [800, 'rgba(120,112,98,0.5)', 0.4, 1.1] },
   patio:        { rank: 6, tile: 2.4, base: '#aab0b3', hard: true, joints: 4,
                   blobs: [[16, 20, 40, ['156,162,166', '186,190,192'], 0.12, 0.14]] },
+  // V3.72: kinds the palette draws that had only a model before. Plain and
+  // honest until V3.73 draws each at its outline.
+  rock:         { rank: 3, tile: 2.5, base: '#a59a8c', hard: true,
+                  blobs: [[26, 6, 16, ['140,132,122', '186,178,166'], 0.3, 0.4]],
+                  specks: [600, 'rgba(96,88,78,0.5)', 0.6, 1.6] },
+  rain_garden:  { rank: 3, tile: 3, base: '#5c5a3e', soft: true,
+                  blobs: [[30, 8, 20, ['88,104,62', '70,84,54'], 0.2, 0.26]],
+                  specks: [420, 'rgba(120,146,84,0.5)', 0.5, 1.4] },
+  deck:         { rank: 6, tile: 1.2, base: '#9c7a5b', hard: true, joints: 8,
+                  blobs: [[16, 14, 30, ['132,102,74', '170,136,104'], 0.12, 0.16]] },
   custom:       { rank: 7, tile: 1, soft: true },   // the person's own colour
   // Not surfaces of the design: the ground where nothing is recorded, and the
   // street. Pale, plain, and under everything.
@@ -212,11 +222,11 @@ function drapedShape(ring, terrain, lift, tile) {
   return geo;
 }
 
-function _surfaceMesh(group, ring, kind, mat, terrain, name) {
+function _surfaceMesh(group, ring, kind, mat, terrain, name, lift) {
   if (!ring || ring.length < 3) return null;
   const look = SURFACE_LOOK[kind] || SURFACE_LOOK.custom;
-  const mesh = new THREE.Mesh(
-    drapedShape(ring, terrain, _SITE_LIFT_M * (look.rank + 1), look.tile), mat);
+  const mesh = new THREE.Mesh(drapedShape(ring, terrain,
+    _SITE_LIFT_M * (look.rank + 1) + (lift || 0), look.tile), mat);
   mesh.name = name;
   mesh.receiveShadow = true;
   mesh.renderOrder = look.rank;
@@ -274,12 +284,22 @@ function _stops(points, step) {
 }
 
 const _LINE_GREEN = { hedge: 0x58794a, living_fence: 0x5f8050, windbreak: 0x4f6f47 };
+const _LINE_SOLID = { wall: 0x9a958c, frame: 0x8a6a4c };     // V3.72: slabs
 function buildLines(group, lines, terrain, month) {
-  const fence = [], green = {};
+  const fence = [], green = {}, slabs = { wall: [], frame: [] };
   for (const ln of lines || []) {
     const pts = ln.points || [];
     if (pts.length < 2) continue;
     const h = ln.height_m || 1.2;
+    if (ln.kind === 'strip') continue;        // on the ground: buildSite
+    if (_LINE_SOLID[ln.kind]) {
+      // A wall, and a raised bed's frame (V3.72): plain slabs along the line.
+      for (let i = 0; i + 1 < pts.length; i++)
+        slabs[ln.kind].push(_boxBetween(
+          pts[i][0], pts[i][1], pts[i + 1][0], pts[i + 1][1], terrain, 0, h,
+          ln.width_m || 0.2));
+      continue;
+    }
     if (ln.kind === 'fence') {
       // Posts and three rails: a fence a person can see through and over.
       const posts = _stops(pts, 2.4);
@@ -311,6 +331,8 @@ function buildLines(group, lines, terrain, month) {
     group.add(mesh);
   };
   add(fence, 0xb9a98c, 'fences');
+  add(slabs.wall, _LINE_SOLID.wall, 'walls');
+  add(slabs.frame, _LINE_SOLID.frame, 'frames');
   for (const key in green)        // bare and twiggy with its leaves down
     add(green[key], seasonLeavesDown(month) ? 0x6f6a55 : _LINE_GREEN[key], 'hedges:' + key);
 }
@@ -339,8 +361,12 @@ function buildSite(group, sc) {
         polygonOffsetUnits: -2 * SURFACE_LOOK.custom.rank });
       mat.userData.look = 'custom';
     }
-    _surfaceMesh(group, s.ring, kind, mat, t, 'surface:' + s.kind);
+    _surfaceMesh(group, s.ring, kind, mat, t, 'surface:' + s.kind, s.lift_m);
   }
+  for (const ln of sc.lines || [])        // a swale: a strip at its width
+    if (ln.kind === 'strip' && SURFACE_LOOK[ln.look])
+      for (const ring of _ribbonRings(ln.points || [], ln.width_m || 1.5))
+        _surfaceMesh(group, ring, ln.look, siteMat(ln.look, m), t, 'strip');
   buildLines(group, sc.lines, t, m);
 }
 

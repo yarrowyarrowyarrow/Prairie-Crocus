@@ -200,6 +200,7 @@ def structure_cost(structures, get_structure=None) -> tuple[float, float]:
     if get_structure is None:
         from src.db.structures import get_structure as _gs
         get_structure = _gs
+    from src.yard_kinds import scale
     lo = hi = 0.0
     for s in structures or []:
         rec = s if isinstance(s, dict) else (get_structure(s) or {})
@@ -207,8 +208,11 @@ def structure_cost(structures, get_structure=None) -> tuple[float, float]:
         if ic is None and rec.get("id"):   # older project: stamp from catalogue
             ic = (get_structure(rec["id"]) or {}).get("install_cost_cad")
         if ic:
-            lo += float(ic[0])
-            hi += float(ic[1])
+            # By size (V3.72): a drawn kind's ``scale``, its area or length
+            # over the catalogue default's (src/yard_kinds.structure_defs).
+            k = scale(rec)
+            lo += float(ic[0]) * k
+            hi += float(ic[1]) * k
     return (round(lo, 2), round(hi, 2))
 
 

@@ -1,0 +1,146 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#101815;color:#dfe;font:13px system-ui}
+iframe{width:900px;height:600px;border:0;display:block}</style>
+</head><body>
+<iframe id="m" src="map.html"></iframe>
+<script>
+// The Yard palette on the real map (dev page + the harness behind
+// tests/test_yard_map.py, V3.72). A saved line is drawn without telling Python
+// it was drawn (until V3.72 every open added a copy); an object is dragged,
+// turned from its right-click menu and by R, and a turned rectangle is drawn
+// turned. Mouse events go to whatever is under each point, as in
+// boundary_probe.html; results go into document.title for --dump-dom.
+const LAT = 53.5461, LNG = -113.4938, D = 0.00004;
+const out = {};
+let w, calls = [];
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+function calledWith(name) { return calls.filter(c => c[0] === name); }
+function px(lat, lng) {
+  const p = w.map.latLngToContainerPoint([lat, lng]);
+  const r = w.map.getContainer().getBoundingClientRect();
+  return { x: r.left + p.x, y: r.top + p.y };
+}
+function fire(type, p, extra) {
+  const el = w.document.elementFromPoint(p.x, p.y);
+  el.dispatchEvent(new w.MouseEvent(type, Object.assign({
+    bubbles: true, cancelable: true, view: w, clientX: p.x, clientY: p.y,
+    button: type === 'contextmenu' ? 2 : 0, buttons: type === 'mousedown' ? 1 : 0,
+  }, extra || {})));
+  return el;
+}
+// The long side's bearing of a drawn rectangle, degrees clockwise from north.
+function longBearing(layer) {
+  const ll = layer.getLatLngs()[0];
+  const kx = 111320 * Math.cos(LAT * Math.PI / 180), ky = 111320;
+  const side = (a, b) => [(b.lng - a.lng) * kx, (b.lat - a.lat) * ky];
+  const s1 = side(ll[0], ll[1]), s2 = side(ll[1], ll[2]);
+  const long = Math.hypot(...s1) > Math.hypot(...s2) ? s1 : s2;
+  let b = Math.atan2(long[0], long[1]) * 180 / Math.PI;
+  b = ((b % 180) + 180) % 180;
+  return Math.round(b);
+}
+function objectLayer(structId) {
+  for (const k of Object.keys(w.structureMarkers)) {
+    const g = w.structureMarkers[k];
+    if (g._pdStruct && g._pdStruct.structId === structId)
+      return g.getLayers().find(l => l.getLatLngs || l.getRadius);
+  }
+  return null;
+}
+
+async function run() {
+  const ready = () => (w = document.getElementById('m').contentWindow).map && w.map.getContainer;
+  for (let i = 0; i < 100 && !ready(); i++) await wait(50);
+  if (!ready()) throw new Error('the map never started');
+  w.bridge = new Proxy({}, { get: (t, name) => (...args) => { calls.push([name].concat(args)); } });
+  w.map.setView([LAT, LNG], 21);
+  await wait(100);
+
+  // A saved fence, drawn again on open: nothing sent, its own id kept.
+  calls = [];
+  w.loadHedgerow({ points: [[LAT - D, LNG - D * 2], [LAT - D, LNG + D * 2]],
+                   hedge_id: 'hedge_saved', style: 'fence', fence_kind: 'board',
+                   color: '#795548', width_m: 0.3, spacing_m: 1, species: '' });
+  await wait(30);
+  out.load_line = { complete_sent: calledWith('onHedgerowComplete').length,
+                    kept_id: !!w.hedgerowLayers.hedge_saved };
+  // Drawing it again replaces it rather than stacking a second.
+  w.loadHedgerow({ points: [[LAT - D, LNG - D * 2], [LAT - D, LNG + D * 2]],
+                   hedge_id: 'hedge_saved', style: 'fence', color: '#795548' });
+  out.load_line.layers = Object.keys(w.hedgerowLayers).length;
+
+  // A line drawn by hand is still told to Python, once.
+  calls = [];
+  w.setMode('hedgerow', { style: 'wall', kind: 'wall', color: '#9e9e9e' });
+  w.handleHedgerowClick(LAT - D * 1.5, LNG - D);
+  w.handleHedgerowClick(LAT - D * 1.5, LNG + D);
+  w.finishHedgerow();
+  const drawn = calledWith('onHedgerowComplete');
+  out.draw_line = { sent: drawn.length, style: drawn.length ? drawn[0][4] : '' };
+
+  // A bee hotel (a 0.6 x 0.3 m rectangle), placed: north-south.
+  w.setMode('none');
+  w.placeStructureOnMap({ id: 'bee_hotel', name: 'Bee hotel', size_m: 0.6,
+                          width_m: 0.3, shape: 'rectangle', category: 'Habitat' },
+                        LAT, LNG);
+  await wait(30);
+  const hotel = objectLayer('bee_hotel');
+  out.placed = { bearing: longBearing(hotel) };
+
+  // Dragged two metres east: the move is reported with where it was.
+  calls = [];
+  const a = px(LAT, LNG), b = px(LAT, LNG + 2 / (111320 * Math.cos(LAT * Math.PI / 180)));
+  fire('mousedown', a);
+  for (let i = 1; i <= 5; i++) fire('mousemove', { x: a.x + (b.x - a.x) * i / 5, y: a.y });
+  fire('mouseup', b);
+  const moved = calledWith('onExistingFeatureMoved');
+  out.drag = { sent: moved.length,
+               from_lat: moved.length ? +moved[0][3].toFixed(6) : null,
+               east_m: moved.length ? +((moved[0][6] - moved[0][4]) * 111320 *
+                                        Math.cos(LAT * Math.PI / 180)).toFixed(1) : null };
+
+  // Its right-click menu turns it 45°, and says so to Python.
+  calls = [];
+  const here = moved.length ? px(moved[0][5], moved[0][6]) : a;
+  fire('contextmenu', here);
+  const menu = w.document.getElementById('_pd_ctx_menu');
+  const labels = menu ? Array.from(menu.querySelectorAll('div')).map(d => d.textContent) : [];
+  out.menu = { turn: labels.some(t => t.indexOf('Turn 45') >= 0),
+               remove: labels.some(t => t.indexOf('Remove') >= 0),
+               removed_at_once: calledWith('onStructureRemoved').length };
+  const turnItem = menu && Array.from(menu.querySelectorAll('div')).find(d => d.textContent.indexOf('Turn 45') >= 0);
+  if (turnItem) turnItem.click();
+  const turned = calledWith('onStructureTurned');
+  out.turn_menu = { sent: turned.length, bearing: turned.length ? turned[0][5] : null,
+                    drawn: longBearing(hotel) };
+  if (w.hideContextMenu) w.hideContextMenu();
+
+  // R with the pointer over it turns it again; with nothing under it, nothing.
+  calls = [];
+  fire('mouseover', here);
+  out.turn_key = { turned: w.turnHoveredObject(),
+                   bearing: calledWith('onStructureTurned').length ?
+                     calledWith('onStructureTurned')[0][5] : null,
+                   drawn: longBearing(hotel) };
+  fire('mouseout', here);
+  out.turn_key.away = w.turnHoveredObject();
+
+  // A turned one loaded from a design is drawn turned.
+  w.loadStructure({ id: 'compost_bin', name: 'Bin', size_m: 2, width_m: 1,
+                    shape: 'rectangle', category: 'Storage', bearing_deg: 90 },
+                  LAT + D * 2, LNG);
+  out.loaded_turned = { bearing: longBearing(objectLayer('compost_bin')) };
+
+  // An existing building mark still removes on a right-click, as before.
+  calls = [];
+  w.placeStructureOnMap({ id: 'existing_building', name: 'Garage', size_m: 4,
+                          width_m: 3, shape: 'rectangle', category: 'Existing' },
+                        LAT + D * 2, LNG + D * 3);
+  await wait(20);
+  fire('contextmenu', px(LAT + D * 2, LNG + D * 3));
+  out.existing = { removed: calledWith('onStructureRemoved').length };
+
+  document.title = 'MEASURED ' + JSON.stringify(out);
+}
+run().catch(e => { document.title = 'MEASURED ' + JSON.stringify({ error: String(e) + ' ' + (e.stack || '') }); });
+</script></body></html>

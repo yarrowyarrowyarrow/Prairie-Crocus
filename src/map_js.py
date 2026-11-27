@@ -402,6 +402,10 @@ def load_structure(struct_def: dict, lat: float, lng: float) -> str:
     return f"loadStructure({_jsobj(struct_def)}, {lat}, {lng});"
 
 
+def turn_hovered_object() -> str:
+    return "turnHoveredObject();"
+
+
 def undo_structure_at(struct_id: str, lat: float, lng: float) -> str:
     return f"undoStructureAt({_jsstr(struct_id)}, {lat}, {lng});"
 

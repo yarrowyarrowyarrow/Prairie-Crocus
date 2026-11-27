@@ -267,7 +267,7 @@ _INSTALL_COST_CAD: dict[str, list[float]] = {
 for _s in STRUCTURES:
     _s.setdefault("install_cost_cad", _INSTALL_COST_CAD.get(_s["id"], [0.0, 0.0]))
 
-# What Placement › Structures' Size box allows for each kind, in metres, as
+# What Placement › Yard's Size box (Structures' until V3.72) allows for each kind, in metres, as
 # [low, high] (V3.70). Until then it ran 0.5 to 50 m for everything, and a
 # bee hotel set to 50 m was drawn 133 m tall. **Estimates**, by form: a
 # backyard wildlife pond to a large one, one rain barrel to a big cistern, a

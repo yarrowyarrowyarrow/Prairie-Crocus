@@ -837,18 +837,9 @@ class PersistenceController:
     def _redo_place_hedgerow(self, entry):
         m = self._main
         for f in self._restore_stashed(entry):
-            geom = f.get("geometry", {})
-            props = f.get("properties", {})
-            if geom.get("type") != "LineString":
-                continue
-            m.map_widget.load_hedgerow({
-                "points": [[pt[1], pt[0]] for pt in geom["coordinates"]],
-                "style": props.get("style", "hedge"),
-                "color": props.get("color", "#4caf50"),
-                "width_m": props.get("width_m", 1.5),
-                "spacing_m": props.get("spacing_m", 1.0),
-                "species": props.get("species", ""),
-            })
+            line = project_io.feature_to_hedgerow(f)
+            if line:
+                m.map_widget.load_hedgerow(line)
         m.statusBar().showMessage("Redo: placed hedgerow", 2000)
 
     def _undo_place_custom_shape(self, entry):

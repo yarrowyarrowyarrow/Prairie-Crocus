@@ -149,9 +149,6 @@ class MainToolbar(QToolBar):
 
     # Drawing mode signals
     draw_boundary_requested   = pyqtSignal()
-    # Draw › Shape (V3.07): an area or a line, from src/shape_tool.py.
-    place_shape_requested     = pyqtSignal(dict)
-    place_hedgerow_requested  = pyqtSignal(dict)
     measure_requested         = pyqtSignal()
     annotate_requested        = pyqtSignal()
     select_requested          = pyqtSignal()
@@ -202,16 +199,8 @@ class MainToolbar(QToolBar):
         self._act_boundary.triggered.connect(self._on_boundary_toggled)
         self.addAction(self._act_boundary)
 
-        # Shape (V3.07): beds, paths, lawn-conversion zones, and the hedge,
-        # fence and windbreak lines, which were the Structures tab's Shapes
-        # and Hedgerow pages until the owner moved them here. Its menu is the
-        # form; Draw on the map closes it and arms the map, and the button
-        # shows as on while the shape is being drawn.
-        from src.shape_tool import shape_button
-        self._shape_btn, self.shape_tool = shape_button(self)
-        self.shape_tool.place_shape_requested.connect(self._on_shape_draw)
-        self.shape_tool.place_hedgerow_requested.connect(self._on_line_draw)
-        self.addWidget(self._shape_btn)
+        # Shape (V3.07–V3.71) is gone: beds, paths, fences and the rest are
+        # drawn from Placement › Yard (src/yard_palette.py, V3.72).
 
         self._act_measure = QAction("📏 Measure", self)
         self._act_measure.setCheckable(True)
@@ -445,25 +434,12 @@ class MainToolbar(QToolBar):
                     self._act_select]:
             if act is not keep:
                 act.setChecked(False)
-        self._shape_btn.setChecked(False)
-
-    def _on_shape_draw(self, config: dict):
-        self._uncheck_except(None)
-        self.place_shape_requested.emit(config)
-        # After the emit: entering the mode resets the draw buttons.
-        self._shape_btn.setChecked(True)
-
-    def _on_line_draw(self, config: dict):
-        self._uncheck_except(None)
-        self.place_hedgerow_requested.emit(config)
-        self._shape_btn.setChecked(True)
 
     def _on_cancel(self):
         self._act_boundary.setChecked(False)
         self._act_measure.setChecked(False)
         self._act_annotate.setChecked(False)
         self._act_select.setChecked(False)
-        self._shape_btn.setChecked(False)
         self.cancel_draw_requested.emit()
 
     def _emit_grid_settings(self, *_):
@@ -487,11 +463,9 @@ class MainToolbar(QToolBar):
         self._act_boundary.setChecked(False)
         self._act_measure.setChecked(False)
         self._act_annotate.setChecked(False)
-        self._shape_btn.setChecked(False)
 
     def enter_plant_mode(self):
         """Called by plant panel 'Place on Map' — visually deactivate draw buttons."""
         self._act_boundary.setChecked(False)
         self._act_measure.setChecked(False)
         self._act_annotate.setChecked(False)
-        self._shape_btn.setChecked(False)

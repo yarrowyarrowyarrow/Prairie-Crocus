@@ -118,6 +118,8 @@ def _struct_props(props: dict) -> dict:
     size = props.get("size_m") or sd.get("size_m")
     if size:
         out["size_m"] = float(size)
+    if props.get("bearing_deg"):                 # turned on the map (V3.72)
+        out["bearing_deg"] = float(props["bearing_deg"])
     return out
 
 

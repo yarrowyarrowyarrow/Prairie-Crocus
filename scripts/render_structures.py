@@ -436,11 +436,16 @@ def _reader_cases() -> list:
     ]
 
 
-def readers_table() -> list:
+def readers_table(upgraded: bool = True) -> list:
     """What each part of the app makes of one thing in a 12 x 12 m yard: the
     habitat score's structure types, the Overview's planting area, Plan My
     Yard's fill zones and keep-outs, the Water page's counts, the shade
-    model's casters, the ponds the pond planting sees, and the 3D scene."""
+    model's casters, the ponds the pond planting sees, and the 3D scene.
+
+    Each case is converted as the app converts a design it opens
+    (``src/yard_upgrade.py``, V3.72) unless ``upgraded`` is false, which reads
+    it as V3.71 stored it."""
+    from src import yard_upgrade
     from src.design_inputs import water_features
     from src.exclusion import fill_regions, keepout_areas
     from src.habitat_score import compute_habitat_score
@@ -451,6 +456,8 @@ def readers_table() -> list:
 
     rows = []
     for name, p in _reader_cases():
+        if upgraded:
+            yard_upgrade.upgrade(p)
         from src.yard_kinds import structure_defs
         defs = structure_defs(p)        # what the app hands the score (V3.71)
         hs = compute_habitat_score([], defs)
@@ -478,10 +485,10 @@ def readers_table() -> list:
     return rows
 
 
-def print_readers() -> None:
+def print_readers(upgraded: bool = True) -> None:
     cols = ("case", "habitat", "planting_m2", "fill_zones", "keep_out",
             "water_page", "shade", "ponds", "in_3d")
-    rows = readers_table()
+    rows = readers_table(upgraded)
     width = {c: max(len(c), *(len(str(r[c])) for r in rows)) for c in cols}
     print("  ".join(c.ljust(width[c]) for c in cols))
     for r in rows:
@@ -554,11 +561,14 @@ def main(argv=None) -> int:
     ap.add_argument("--readers", action="store_true",
                     help="no pictures: print what each part of the app makes "
                          "of a structure and its drawn twin (no browser)")
+    ap.add_argument("--as-stored", action="store_true",
+                    help="with --readers: read each case as V3.71 stored it, "
+                         "without the conversion on open (V3.72)")
     args = ap.parse_args(argv)
     if args.readers:
         import tests  # noqa: F401  (its __init__ blocks the internet)
         use_throwaway_database()
-        print_readers()
+        print_readers(upgraded=not args.as_stored)
         return 0
     if not args.out:
         ap.error("--out is needed for the pictures (or use --readers)")

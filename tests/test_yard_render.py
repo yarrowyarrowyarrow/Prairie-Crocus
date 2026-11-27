@@ -97,6 +97,28 @@ DRAWN = [
 ]
 
 
+def _kind(key, geometry, **options):
+    """A kind as Placement › Yard stores it (V3.72, ``yard_kinds.drawn_props``)."""
+    from src.yard_kinds import drawn_props
+    props = drawn_props(key, **options)
+    props.setdefault("width_m", options.get("width_m", 0.3))
+    return {"type": "Feature", "geometry": geometry, "properties": props}
+
+
+#: ... and what the Yard palette draws that Draw › Shape could not (V3.72).
+DRAWN += [
+    _kind("bed", {"type": "Polygon", "coordinates": [_ring(2.0, 16.4, 6.0, 17.8)]},
+          raised_cm=45),
+    _kind("deck", {"type": "Polygon",
+                   "coordinates": [_ring(-7.2, -8.8, -5.8, -6.0)]}),
+    _kind("wall", {"type": "LineString",
+                   "coordinates": [_ll(7.3, -9.0), _ll(7.3, 0.0)]}),
+    _kind("swale", {"type": "LineString",
+                    "coordinates": [_ll(7.0, -17.5), _ll(7.0, -11.0)]},
+          width_m=0.8),
+]
+
+
 def _yard() -> dict:
     """A 15 x 37 m lot, street to the south, as a scan and a plan leave it."""
     feats = [
@@ -239,9 +261,9 @@ class TheWholeYard(unittest.TestCase):
         self.assertTrue(self.scene["views"]["house"])
         self.assertEqual([s_["kind"] for s_ in self.scene["surfaces"]],
                          ["lawn", "bed", "path", "lawn", "water", "mulch",
-                          "custom"])
+                          "custom", "bed", "deck"])
         self.assertEqual([ln["kind"] for ln in self.scene["lines"]],
-                         ["fence", "hedge"])
+                         ["fence", "hedge", "wall", "strip", "frame"])
         self.assertEqual(self.scene["street"]["how"], "told")
         # V3.46: notes of more than one kind, and a herb that stands all year.
         kinds = [n["kind"] for n in self.scene["timeline_notes"]["notes"]]
@@ -345,9 +367,28 @@ class TheWholeYard(unittest.TestCase):
         r, g, b = walls["colour"]
         self.assertLess(max(r, g, b) - min(r, g, b), 30, "the walls are coloured")
 
+    def test_a_raised_bed_a_wall_and_a_swale(self):
+        """V3.72: what had only a model before the Yard palette drew it at its
+        outline, plainly until V3.73."""
+        lines = self.got["site"]["lines"]
+        self.assertAlmostEqual(lines["frames"]["top"], 0.45, delta=0.02)
+        self.assertAlmostEqual(lines["walls"]["top"], 1.2, delta=0.02)
+        r, g, b = lines["walls"]["colour"]
+        self.assertLess(max(r, g, b) - min(r, g, b), 30, "a wall is coloured")
+        self.assertLess(lines["strip"]["top"], 0.05, "a swale stands up")
+        beds = [s_ for s_ in self.got["site"]["surfaces"]
+                if s_["name"] == "surface:bed"]
+        self.assertEqual(len(beds), 2)
+        self.assertGreater(beds[1]["lift"], 0.44,
+                           "a raised bed's soil is at the ground")
+        self.assertLess(beds[0]["lift"], 0.05)
+        deck = self._surface("deck")["colour"]
+        self.assertGreater(deck[0], deck[2], "a deck is not wood-coloured")
+
     def test_a_fence_and_a_hedge_stand_where_they_were_drawn(self):
         lines = self.got["site"]["lines"]
-        self.assertEqual(sorted(lines), ["fences", "hedges:hedge"])
+        self.assertEqual(sorted(lines), ["fences", "frames", "hedges:hedge",
+                                         "strip", "walls"])
         self.assertAlmostEqual(lines["fences"]["low"], 0.0, delta=0.02)
         self.assertAlmostEqual(lines["fences"]["top"], 1.28, delta=0.03)
         self.assertAlmostEqual(lines["hedges:hedge"]["top"], 1.2, delta=0.02)

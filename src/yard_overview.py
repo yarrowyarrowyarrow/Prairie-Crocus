@@ -65,25 +65,28 @@ def _parts(project: dict) -> tuple:
         ring = _ring(f)
         if ring is None:
             continue
-        et, kind = props.get("element_type"), props.get("shape_type") or ""
+        et = props.get("element_type")
         if et == "property_boundary":
             bounds.append(ring)
-        elif et == "custom_shape" and kind in BED_SHAPES:
-            beds.append(ring)
-        elif et == "custom_shape" and kind in NOT_PLANTED:
+        elif yard_kinds.is_building_footprint(props):
             holes.append(ring)
-        elif et == "canopy_footprint" and kind.startswith("Building"):
+        # A drawn area by its kind (V3.72), so a deck, a rain garden or a
+        # native lawn, stored with an older copy's shape type, is what it is.
+        elif et == "custom_shape" and yard_kinds.is_fill(f):
+            beds.append(ring)
+        elif et == "custom_shape" and yard_kinds.is_keep_out(f):
             holes.append(ring)
     # A placed structure is what its kind is (V3.71): a raised bed or a rock
     # garden is a bed, a pond or a shed is not planted, at the footprint the
-    # map draws for it.
+    # map draws for it. A swale drawn as a line is its strip (V3.72).
     for f in (project or {}).get("features", []) or []:
-        if (f.get("properties") or {}).get("element_type") != "structure":
+        et = (f.get("properties") or {}).get("element_type")
+        if et not in ("structure", "hedgerow"):
             continue
         if yard_kinds.is_fill(f):
-            beds.append(yard_kinds.footprint_ring(f))
+            beds.extend(yard_kinds.footprint_rings(f))
         elif yard_kinds.is_keep_out(f):
-            holes.append(yard_kinds.footprint_ring(f))
+            holes.extend(yard_kinds.footprint_rings(f))
     return bounds, beds, holes
 
 
@@ -268,8 +271,7 @@ def _house(project: dict, proj):
     best = None
     for f in (project or {}).get("features", []) or []:
         props = f.get("properties", {}) or {}
-        if (props.get("element_type") == "canopy_footprint"
-                and (props.get("shape_type") or "").startswith("Building")):
+        if yard_kinds.is_building_footprint(props):
             ring = _ring(f)
             if ring is not None:
                 shape = _poly(proj, ring)
