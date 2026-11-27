@@ -587,7 +587,7 @@ _NURSERIES_JSON_PATH    = resource_path("data", "nurseries_master.json")
 # off the photographs of the six still at 4 or less: the bedstraw's leaves
 # (lanceolate, the narrow whorled leaves the photographs show, not obovate)
 # and the leaf colours of the bedstraw and the bog cranberry.
-_SCHEMA_VERSION = 108
+_SCHEMA_VERSION = 109
 
 # Tolerance (pH units) added at each end of a plant's soil-pH bracket when
 # matching against a site's (often coarse, regional) pH estimate. See the

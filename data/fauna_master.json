@@ -54,7 +54,10 @@
   "ab_native": 1,
   "range_notes": "Common throughout Alberta wherever willows occur.",
   "icon": "🦋",
-  "description": "Dark butterfly with yellow wing borders; one of the first to emerge in spring. Caterpillars feed on willow, poplar, birch, and elm."
+  "description": "Dark butterfly with yellow wing borders; one of the first to emerge in spring. Caterpillars feed on willow, poplar, birch, and elm.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/230995584/medium.jpeg",
+  "image_attribution": "(c) Matt Muir, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Aglais milberti",
@@ -111,7 +114,10 @@
   "ab_native": 1,
   "range_notes": "Boreal and aspen parkland Alberta.",
   "icon": "🦋",
-  "description": "Black butterfly with broad white wing-bands. Caterpillars feed on aspen, willow, and birch."
+  "description": "Black butterfly with broad white wing-bands. Caterpillars feed on aspen, willow, and birch.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/149671657/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Kent P. McFarland",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Speyeria aphrodite",
@@ -150,7 +156,10 @@
   "ab_native": 1,
   "range_notes": "Early-spring flyer along forest edges.",
   "icon": "🦋",
-  "description": "Tiny pale-blue butterfly. Caterpillars feed on flower buds of dogwoods, viburnums, and cherries."
+  "description": "Tiny pale-blue butterfly. Caterpillars feed on flower buds of dogwoods, viburnums, and cherries.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/658303453/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Glaucopsyche lygdamus",
@@ -183,7 +192,10 @@
   "ab_native": 1,
   "range_notes": "Native-grass prairie and meadow openings.",
   "icon": "🦋",
-  "description": "Orange-and-brown skipper. Caterpillars feed on native bunchgrasses."
+  "description": "Orange-and-brown skipper. Caterpillars feed on native bunchgrasses.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/415317060/medium.jpg",
+  "image_attribution": "(c) SteveM4560, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Antheraea polyphemus",
@@ -216,7 +228,10 @@
   "ab_native": 1,
   "range_notes": "Day-flying moth of forest openings.",
   "icon": "🦋",
-  "description": "Hovers like a hummingbird at flowers. Caterpillars feed on honeysuckle and snowberry."
+  "description": "Hovers like a hummingbird at flowers. Caterpillars feed on honeysuckle and snowberry.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/87920191/medium.jpeg",
+  "image_attribution": "(c) Bernie Paquette, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Hemaris diffinis",
@@ -285,7 +300,10 @@
   "ab_native": 1,
   "range_notes": "Summer breeder in central and northern Alberta.",
   "icon": "🐦",
-  "description": "Tiny migratory hummingbird. Feeds at red tubular flowers; bee balm and columbine are major nectar sources."
+  "description": "Tiny migratory hummingbird. Feeds at red tubular flowers; bee balm and columbine are major nectar sources.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/239401590/medium.jpg",
+  "image_attribution": "(c) Blake Ross, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Selasphorus rufus",
@@ -294,7 +312,10 @@
   "ab_native": 1,
   "range_notes": "Summer breeder in western Alberta.",
   "icon": "🐦",
-  "description": "Aggressive coppery hummingbird of the mountain west. Feeds at red tubular flowers."
+  "description": "Aggressive coppery hummingbird of the mountain west. Feeds at red tubular flowers.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/603413538/medium.jpg",
+  "image_attribution": "(c) Amber M. King, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Poecile atricapillus",
@@ -408,7 +429,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🐝",
-  "description": "Highly variable short-tongued bumble bee common in gardens and grassland."
+  "description": "Highly variable short-tongued bumble bee common in gardens and grassland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/240855810/medium.jpg",
+  "image_attribution": "(c) Michelle Orcutt, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus borealis",
@@ -417,7 +441,10 @@
   "ab_native": 1,
   "range_notes": "Aspen parkland & boreal.",
   "icon": "🐝",
-  "description": "Long-tongued bumble bee favouring deep flowers (legumes, mints)."
+  "description": "Long-tongued bumble bee favouring deep flowers (legumes, mints).",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/548730042/medium.jpg",
+  "image_attribution": "(c) Andrew Lai, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Osmia lignaria",
@@ -471,7 +498,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🐝",
-  "description": "Early ground-nesting bee that lines burrows with a cellophane-like secretion; vital willow and early-spring pollinator."
+  "description": "Early ground-nesting bee that lines burrows with a cellophane-like secretion; vital willow and early-spring pollinator.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/17429749/medium.jpg",
+  "image_attribution": "(c) christine123, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Halictus rubicundus",
@@ -504,7 +534,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦅",
-  "description": "Open-country raptor that nests in tall poplars and spruce and hunts small mammals over meadows."
+  "description": "Open-country raptor that nests in tall poplars and spruce and hunts small mammals over meadows.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/319785046/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Claude Lyneis",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bubo virginianus",
@@ -525,7 +558,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦅",
-  "description": "Small falcon that reuses old crow/magpie nests in spruce; hunts small birds in towns and parkland."
+  "description": "Small falcon that reuses old crow/magpie nests in spruce; hunts small birds in towns and parkland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/324285453/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Kathlin Simpkins",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Falco sparverius",
@@ -642,7 +678,10 @@
   "ab_native": 1,
   "range_notes": "Boreal; winters south.",
   "icon": "🐦",
-  "description": "Large winter finch that feeds on mountain-ash and other persistent fruit plus conifer and birch seeds."
+  "description": "Large winter finch that feeds on mountain-ash and other persistent fruit plus conifer and birch seeds.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/105060920/medium.jpg",
+  "image_attribution": "(c) Richard Littauer, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombycilla garrulus",
@@ -711,7 +750,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🐞",
-  "description": "Native lady beetle; both adults and larvae eat aphids, adults also take pollen and nectar."
+  "description": "Native lady beetle; both adults and larvae eat aphids, adults also take pollen and nectar.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/113829167/medium.jpg",
+  "image_attribution": "(c) Adam J. Searcy, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Coccinella novemnotata",
@@ -720,7 +762,10 @@
   "ab_native": 1,
   "range_notes": "Prairie & parkland.",
   "icon": "🐞",
-  "description": "Declining native lady beetle; aphid predator of grassland and gardens."
+  "description": "Declining native lady beetle; aphid predator of grassland and gardens.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/12742315/medium.jpg",
+  "image_attribution": "(c) Jared Shorma, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Chrysoperla carnea",
@@ -729,7 +774,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦗",
-  "description": "'Aphid lions' as larvae; adults sip nectar and honeydew. Key garden biocontrol."
+  "description": "'Aphid lions' as larvae; adults sip nectar and honeydew. Key garden biocontrol.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/531844101/medium.jpg",
+  "image_attribution": "(c) E. A., some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Pterostichus spp.",
@@ -831,7 +879,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦇",
-  "description": "Migratory tree bat roosting under bark of poplar and spruce."
+  "description": "Migratory tree bat roosting under bark of poplar and spruce.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/630644917/medium.jpg",
+  "image_attribution": "(c) Kalvin Chan, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Peromyscus maniculatus",
@@ -852,7 +903,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🐭",
-  "description": "Grassland herbivore whose runways shape meadows; cornerstone prey for raptors and weasels."
+  "description": "Grassland herbivore whose runways shape meadows; cornerstone prey for raptors and weasels.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/107365361/medium.jpg",
+  "image_attribution": "(c) Gordon Johnston, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Sorex cinereus",
@@ -909,7 +963,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦋",
-  "description": "The 'woolly bear' caterpillar; a generalist on asters, goldenrods and many forbs that overwinters as a larva."
+  "description": "The 'woolly bear' caterpillar; a generalist on asters, goldenrods and many forbs that overwinters as a larva.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/93704993/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Lophocampa maculata",
@@ -942,7 +999,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦋",
-  "description": "Abundant grassland butterfly; caterpillars feed on native grasses."
+  "description": "Abundant grassland butterfly; caterpillars feed on native grasses.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/652886138/medium.jpg",
+  "image_attribution": "(c) Kai Löhr, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Colias philodice",
@@ -963,7 +1023,10 @@
   "ab_native": 1,
   "range_notes": "Prairie & parkland.",
   "icon": "🦋",
-  "description": "Prairie blue whose caterpillars feed on legumes and are tended by ants."
+  "description": "Prairie blue whose caterpillars feed on legumes and are tended by ants.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/301798888/medium.jpg",
+  "image_attribution": "(c) Joey Bom, some rights reserved (CC BY), uploaded by Joey Bom",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Phyciodes cocyta",
@@ -972,7 +1035,10 @@
   "ab_native": 1,
   "range_notes": "Throughout AB.",
   "icon": "🦋",
-  "description": "Small orange-and-black butterfly; caterpillars host on native asters."
+  "description": "Small orange-and-black butterfly; caterpillars host on native asters.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/522652648/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus appositus",
@@ -982,9 +1048,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Orange-banded Bumble Bee. A long-tongued social bumble bee. Nests on the surface or underground. Forages on Agastache, Cirsium, Delphinium, Gentiana and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/711576648/medium.jpg",
+  "image_attribution": "(c) Will Pearce, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus balteatus",
@@ -994,9 +1060,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Mountain Bumble Bee. A long-tongued social bumble bee. Forages on Castilleja, Delphinium, Epilobium, Mertensia and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/394044372/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus bifarius",
@@ -1006,9 +1072,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Two-ranked Bumble Bee. A medium-tongued social bumble bee. Nests usually underground, sometimes on the surface. Forages on Aster, Epilobium, Haplopappus, Lupinus and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/83350087/medium.jpeg",
+  "image_attribution": "(c) John Powers, some rights reserved (CC BY), uploaded by John Powers",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus bohemicus",
@@ -1018,9 +1084,9 @@
   "range_notes": "Occurs in Alberta. At risk (COSEWIC: Endangered).",
   "icon": "🐝",
   "description": "Gypsy Cuckoo Bumble Bee. A cuckoo (Psithyrus) bumble bee — produces no workers and usurps the colonies of other Bombus. Adults nectar at Cirsium, Melilotus, Rubus.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/132584919/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Ilkka Kaita-aho",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus centralis",
@@ -1030,9 +1096,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Central Bumble Bee. A long-tongued social bumble bee. Forages on Allium, Cirsium, Monardella, Penstemon and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/289829018/medium.jpeg",
+  "image_attribution": "(c) Darrin Gobble, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus cryptarum",
@@ -1042,9 +1108,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Cryptic Bumble Bee. A short-tongued social bumble bee. Forages on Epilobium, Melilotus, Potentilla, Senecio and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/391216022/medium.jpg",
+  "image_attribution": "(c) Andrew Cottrell, some rights reserved (CC BY), uploaded by Andrew Cottrell",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus fervidus",
@@ -1054,9 +1120,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Golden Northern Bumble Bee. A long-tongued social bumble bee. Nests usually on the surface or above ground in deserted mouse nests, tall grass or haystacks. Forages on Astragalus, Cirsium, Helianthus, Lonicera and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/221730/medium.jpg",
+  "image_attribution": "(c) John Baker, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus flavidus",
@@ -1066,9 +1132,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Yellow Cuckoo Bumble Bee. A cuckoo (Psithyrus) bumble bee — produces no workers and usurps the colonies of other Bombus. Adults nectar at Cirsium, Melilotus, Senecio.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/204696779/medium.jpg",
+  "image_attribution": "(c) Jeff Bartlett, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus flavifrons",
@@ -1078,9 +1144,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Yellow-fronted Bumble Bee. A long-tongued social bumble bee. Forages on Cirsium, Epilobium, Mentha, Penstemon and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/138211336/medium.jpg",
+  "image_attribution": "(c) sprcrkwild, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus frigidus",
@@ -1090,9 +1156,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Frigid Bumble Bee. A medium-tongued social bumble bee. Nests often above ground, sometimes below. Forages on Epilobium, Hedysarum, Lupinus, Potentilla and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/72458896/medium.jpeg",
+  "image_attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus griseocollis",
@@ -1102,9 +1168,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Brown-belted Bumble Bee. A short-tongued social bumble bee. Nests underground or on the surface. Forages on Asclepias, Echinacea, Lythrum, Melilotus and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/571486/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by USGS Bee Inventory and Monitoring Lab",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus insularis",
@@ -1114,9 +1180,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Indiscriminate Cuckoo Bumble Bee. A cuckoo (Psithyrus) bumble bee — produces no workers and usurps the colonies of other Bombus. Adults nectar at Aster, Melilotus, Rubus.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/285396007/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus melanopygus",
@@ -1126,9 +1192,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Black-tailed Bumble Bee. A medium-tongued social bumble bee. Nests underground and above ground, sometimes in birdhouses or building insulation. Forages on Arctostaphylos, Eriogonum, Haplopappus, Lupinus and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/506999957/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus mixtus",
@@ -1138,9 +1204,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Brown-tailed Bumble Bee. A medium-tongued social bumble bee. Nests variable — many on the ground surface, but also above and below ground. Forages on Epilobium, Monardella, Penstemon, Phacelia and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/78320005/medium.jpeg",
+  "image_attribution": "(c) Lee Cain, some rights reserved (CC BY), uploaded by Lee Cain",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus nevadensis",
@@ -1150,9 +1216,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Nevada Bumble Bee. A long-tongued social bumble bee. Forages on Astragalus, Cirsium, Melilotus, Monarda and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/6106541/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Steve Wells",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus occidentalis",
@@ -1162,9 +1228,9 @@
   "range_notes": "Occurs in Alberta. At risk (COSEWIC: Threatened).",
   "icon": "🐝",
   "description": "Western Bumble Bee. A short-tongued social bumble bee. Forages on Centaurea, Cirsium, Geranium, Grindelia and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/693150/medium.jpg",
+  "image_attribution": "(c) USGS Bee Inventory and Monitoring Lab, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus pensylvanicus",
@@ -1174,9 +1240,9 @@
   "range_notes": "Occurs in Alberta. At risk (COSEWIC: Special Concern).",
   "icon": "🐝",
   "description": "American Bumble Bee. A long-tongued social bumble bee. Nests usually on the surface in long grass, sometimes underground. Forages on Astragalus, Cirsium, Cornus, Echinacea and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/102805250/medium.jpg",
+  "image_attribution": "(c) crseaquist, some rights reserved (CC BY), uploaded by crseaquist",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus perplexus",
@@ -1186,9 +1252,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Confusing Bumble Bee. A medium-tongued social bumble bee. Forages on Campanula, Cirsium, Melilotus, Penstemon and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/396163284/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus polaris",
@@ -1198,9 +1264,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Northern Bumble Bee. A medium-tongued social bumble bee. Forages on Arnica, Pedicularis, Phyllodoce, Polemonium and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/694382230/medium.jpg",
+  "image_attribution": "(c) Rajan Rao, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus sitkensis",
@@ -1210,9 +1276,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Sitka Bumble Bee. A medium-tongued social bumble bee. Forages on Cirsium, Ribes, Vaccinium and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/212088894/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus suckleyi",
@@ -1222,9 +1288,9 @@
   "range_notes": "Occurs in Alberta. At risk (COSEWIC: Threatened).",
   "icon": "🐝",
   "description": "Suckley's Cuckoo Bumble Bee. A cuckoo (Psithyrus) bumble bee — produces no workers and usurps the colonies of other Bombus. Adults nectar at Aster, Cirsium, Solidago.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/156586446/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus sylvicola",
@@ -1234,9 +1300,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Red-tailed Bumble Bee. A medium-tongued social bumble bee. Nests mostly underground, sometimes on the surface. Forages on Epilobium, Haplopappus, Lupinus, Monardella and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/407254969/medium.jpeg",
+  "image_attribution": "(c) Syd Cannings, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus terricola",
@@ -1246,9 +1312,9 @@
   "range_notes": "Occurs in Alberta. At risk (COSEWIC: Special Concern).",
   "icon": "🐝",
   "description": "Yellow-banded Bumble Bee. A short-tongued social bumble bee. Nests usually underground. Forages on Crocus, Linaria, Melilotus, Monarda and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/51554787/medium.jpg",
+  "image_attribution": "(c) Bill Keim, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus vagans",
@@ -1258,9 +1324,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Half-black Bumble Bee. A medium-tongued social bumble bee. Nests usually underground. Forages on Aster, Cirsium, Lonicera, Monarda and others.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/225960343/medium.jpeg",
+  "image_attribution": "(c) Bernie Paquette, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Anthophora bomboides",
@@ -1270,9 +1336,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Bumblebee-like Digger Bee. A fast-flying, soil-nesting solitary digger bee. Foraging: a broad generalist (polylectic).",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/222694/medium.jpg",
+  "image_attribution": "(c) USGS Native Bee Inventory and Monitoring Laboratory, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Anthophora occidentalis",
@@ -1282,9 +1348,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Occidental Digger Bee. A fast-flying, soil-nesting solitary digger bee. Foraging: a broad generalist (polylectic).",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/571483/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by USGS Bee Inventory and Monitoring Lab",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Anthophora peritomae",
@@ -1294,9 +1360,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Rocky Mountain Beeplant Digger Bee. A fast-flying, soil-nesting solitary digger bee. Foraging: a pollen specialist on Grindelia.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/175013537/medium.jpeg",
+  "image_attribution": "(c) Toby, some rights reserved (CC BY), uploaded by Toby",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Anthophora porterae",
@@ -1306,9 +1372,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Porter's Digger Bee. A fast-flying, soil-nesting solitary digger bee. Foraging: a broad generalist (polylectic).",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/653978497/medium.jpg",
+  "image_attribution": "(c) Austin Saunders, some rights reserved (CC BY), uploaded by Austin Saunders",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Anthophora ursina",
@@ -1318,9 +1384,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Bear-like Digger Bee. A fast-flying, soil-nesting solitary digger bee. Foraging: a broad generalist (polylectic).",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/181575004/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Diadasia australis",
@@ -1330,9 +1396,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Southern Chimney Bee. Solitary, soil-nesting bee; a pollen specialist on Opuntia. Females build turret-like 'chimney' nest entrances.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/160371887/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Diadasia diminuta",
@@ -1342,9 +1408,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Diminutive Chimney Bee. Solitary, soil-nesting bee; a pollen specialist on Sphaeralcea. Females build turret-like 'chimney' nest entrances.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/186473398/medium.jpg",
+  "image_attribution": "(c) Zack Abbey, some rights reserved (CC BY), uploaded by Zack Abbey",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Eucera fulvitarsis",
@@ -1354,9 +1420,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Ochre-footed Long-horned Bee. Long-horned solitary bee; soil nester and broad generalist forager.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/721471661/medium.jpg",
+  "image_attribution": "(c) Joel Gardner, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Nomada aquilarum",
@@ -1378,9 +1444,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Articulated Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Andrena bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/85562433/medium.jpeg",
+  "image_attribution": "(c) Paul Prior, some rights reserved (CC BY), uploaded by Paul Prior",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Nomada bella",
@@ -1426,9 +1492,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "True Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Andrena bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/269901235/medium.jpg",
+  "image_attribution": "(c) Christian Back, some rights reserved (CC BY), uploaded by Christian Back",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Nomada vincta",
@@ -1438,9 +1504,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Bounded Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Andrena bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/723798508/medium.jpg",
+  "image_attribution": "(c) Bernie Paquette, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Triepeolus balteatus",
@@ -1462,9 +1528,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Concave Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Melissodes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2079036/medium.jpg",
+  "image_attribution": "(c) Christine Melvin, some rights reserved (CC BY), uploaded by Christine Melvin",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Triepeolus dacotensis",
@@ -1474,9 +1540,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Dakota Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Melissodes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/397577884/medium.jpeg",
+  "image_attribution": "(c) Colin Croft, some rights reserved (CC BY), uploaded by Colin Croft",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Triepeolus helianthi",
@@ -1486,9 +1552,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Sunflower Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Melissodes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/558431642/medium.jpg",
+  "image_attribution": "(c) Desiree L. Narango, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Triepeolus paenepectoralis",
@@ -1498,9 +1564,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Yellow-breasted Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Melissodes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/145132778/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Triepeolus subalpinus",
@@ -1522,9 +1588,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "American Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Colletes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/43469988/medium.jpeg",
+  "image_attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Epeolus compactus",
@@ -1534,9 +1600,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Compact Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Colletes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/138640366/medium.jpeg",
+  "image_attribution": "(c) eebee, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Epeolus minimus",
@@ -1546,9 +1612,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Minimal Cuckoo Nomad Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Colletes bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/554073324/medium.jpg",
+  "image_attribution": "(c) Parker James Lloyd, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Melecta pacifica",
@@ -1558,9 +1624,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Pacific Cuckoo Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Anthophora bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20165039/medium.jpg",
+  "image_attribution": "(c) Jared Shorma, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Melecta separata",
@@ -1570,9 +1636,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Speckled Cuckoo Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Anthophora bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/188344143/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Xeromelecta californica",
@@ -1594,9 +1660,9 @@
   "range_notes": "Occurs in Alberta.",
   "icon": "🐝",
   "description": "Maculate Cuckoo Bee. A cleptoparasitic 'cuckoo' bee — it lays in the nests of Anthophora bees and builds no nest of its own.",
-  "image_url": "",
-  "image_attribution": "",
-  "image_license": ""
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/290744410/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Melissodes spp.",
@@ -1618,7 +1684,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Abundant breeder in every wooded part of the province.",
   "icon": "🐦",
-  "description": "Abundant breeder in every wooded part of the province."
+  "description": "Abundant breeder in every wooded part of the province.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/442752262/medium.jpg",
+  "image_attribution": "(c) Dan Vickers, some rights reserved (CC BY), uploaded by Dan Vickers",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Lagopus lagopus",
@@ -1638,7 +1707,10 @@
   "native_provinces": "AB",
   "range_notes": "Alpine, above treeline in the Rockies.",
   "icon": "🐦",
-  "description": "Alpine, above treeline in the Rockies."
+  "description": "Alpine, above treeline in the Rockies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/165788873/medium.jpg",
+  "image_attribution": "(c) 孫鋒 林, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Lagopus leucura",
@@ -1648,7 +1720,10 @@
   "native_provinces": "AB",
   "range_notes": "Alpine specialist of the Rockies; the smallest ptarmigan.",
   "icon": "🐦",
-  "description": "Alpine specialist of the Rockies; the smallest ptarmigan."
+  "description": "Alpine specialist of the Rockies; the smallest ptarmigan.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/58193613/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Braden J. Judson",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Agelaius phoeniceus",
@@ -1658,7 +1733,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "In every cattail slough on the prairies.",
   "icon": "🐦",
-  "description": "In every cattail slough on the prairies."
+  "description": "In every cattail slough on the prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/275637604/medium.jpg",
+  "image_attribution": "(c) anonymous, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Anser caerulescens",
@@ -1668,7 +1746,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Migrates through in enormous flocks; grazes shoots, rhizomes and seeds of wetland plants.",
   "icon": "🐦",
-  "description": "Migrates through in enormous flocks; grazes shoots, rhizomes and seeds of wetland plants."
+  "description": "Migrates through in enormous flocks; grazes shoots, rhizomes and seeds of wetland plants.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/215872657/medium.jpg",
+  "image_attribution": "(c) Tom Field, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Loxia leucoptera",
@@ -1678,7 +1759,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Boreal resident; crossed bill is a tool for prising conifer cones.",
   "icon": "🐦",
-  "description": "Boreal resident; crossed bill is a tool for prising conifer cones."
+  "description": "Boreal resident; crossed bill is a tool for prising conifer cones.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/67624690/medium.jpeg",
+  "image_attribution": "(c) Aleksey Shumkov, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Selasphorus calliope",
@@ -1688,7 +1772,10 @@
   "native_provinces": "AB",
   "range_notes": "Breeds in the southwestern foothills and mountains — the smallest bird in Canada.",
   "icon": "🐦",
-  "description": "Breeds in the southwestern foothills and mountains — the smallest bird in Canada."
+  "description": "Breeds in the southwestern foothills and mountains — the smallest bird in Canada.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/224428193/medium.jpeg",
+  "image_attribution": "(c) Laurel Meredyk, some rights reserved (CC BY), uploaded by Laurel Meredyk",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Sitta carolinensis",
@@ -1698,7 +1785,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Resident of aspen parkland and river-valley woods.",
   "icon": "🐦",
-  "description": "Resident of aspen parkland and river-valley woods."
+  "description": "Resident of aspen parkland and river-valley woods.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/169033925/medium.jpg",
+  "image_attribution": "(c) Judy Gallagher, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Tyrannus tyrannus",
@@ -1708,7 +1798,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Open-country breeder; switches to fruit in late summer.",
   "icon": "🐦",
-  "description": "Open-country breeder; switches to fruit in late summer."
+  "description": "Open-country breeder; switches to fruit in late summer.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/26210699/medium.jpeg",
+  "image_attribution": "(c) Laura Mae, some rights reserved (CC BY), uploaded by Laura Mae",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Anas clypeata",
@@ -1738,7 +1831,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Nomadic conifer-seed specialist; breeds whenever the cone crop is good, including midwinter.",
   "icon": "🐦",
-  "description": "Nomadic conifer-seed specialist; breeds whenever the cone crop is good, including midwinter."
+  "description": "Nomadic conifer-seed specialist; breeds whenever the cone crop is good, including midwinter.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/303309597/medium.jpg",
+  "image_attribution": "(c) Stanley Davis, some rights reserved (CC BY), uploaded by Stanley Davis",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Dumetella carolinensis",
@@ -1748,7 +1844,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Breeds in dense shrubbery and thickets; heavily frugivorous.",
   "icon": "🐦",
-  "description": "Breeds in dense shrubbery and thickets; heavily frugivorous."
+  "description": "Breeds in dense shrubbery and thickets; heavily frugivorous.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/129956324/medium.jpg",
+  "image_attribution": "(c) kirk gardner, some rights reserved (CC BY), uploaded by kirk gardner",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Toxostoma rufum",
@@ -1758,7 +1857,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Southern and eastern shrublands and shelterbelts.",
   "icon": "🐦",
-  "description": "Southern and eastern shrublands and shelterbelts."
+  "description": "Southern and eastern shrublands and shelterbelts.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/186561540/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Vireo gilvus",
@@ -1768,7 +1870,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Aspen and poplar canopy; one of the commonest songs of a prairie river valley.",
   "icon": "🐦",
-  "description": "Aspen and poplar canopy; one of the commonest songs of a prairie river valley."
+  "description": "Aspen and poplar canopy; one of the commonest songs of a prairie river valley.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/383303869/medium.jpeg",
+  "image_attribution": "(c) Michael, Antoni and Nihat Hinczewski, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Vireo olivaceus",
@@ -1778,7 +1883,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Deciduous canopy breeder; largely frugivorous before migration.",
   "icon": "🐦",
-  "description": "Deciduous canopy breeder; largely frugivorous before migration."
+  "description": "Deciduous canopy breeder; largely frugivorous before migration.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/272009008/medium.jpg",
+  "image_attribution": "(c) Andy Reago & Chrissy McClarren, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Piranga ludoviciana",
@@ -1788,7 +1896,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Breeds in the foothills and boreal mixedwood.",
   "icon": "🐦",
-  "description": "Breeds in the foothills and boreal mixedwood."
+  "description": "Breeds in the foothills and boreal mixedwood.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/414074727/medium.jpg",
+  "image_attribution": "(c) Spencer Hurt, some rights reserved (CC BY), uploaded by Spencer Hurt",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Icterus galbula",
@@ -1798,7 +1909,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Breeds in mature deciduous trees, mostly central and eastern.",
   "icon": "🐦",
-  "description": "Breeds in mature deciduous trees, mostly central and eastern."
+  "description": "Breeds in mature deciduous trees, mostly central and eastern.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/145445553/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Pheucticus melanocephalus",
@@ -1808,7 +1922,10 @@
   "native_provinces": "AB",
   "range_notes": "Breeds in the southern river valleys and foothills.",
   "icon": "🐦",
-  "description": "Breeds in the southern river valleys and foothills."
+  "description": "Breeds in the southern river valleys and foothills.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/836832/medium.jpg",
+  "image_attribution": "(c) Bill Bouton, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Pipilo maculatus",
@@ -1818,7 +1935,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Dry southern shrublands and coulees.",
   "icon": "🐦",
-  "description": "Dry southern shrublands and coulees."
+  "description": "Dry southern shrublands and coulees.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2373007/medium.jpg",
+  "image_attribution": "(c) Nigel Voaden, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Quiscalus quiscula",
@@ -1828,7 +1948,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Widespread breeder in towns, shelterbelts and marsh edges.",
   "icon": "🐦",
-  "description": "Widespread breeder in towns, shelterbelts and marsh edges."
+  "description": "Widespread breeder in towns, shelterbelts and marsh edges.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/260412819/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Haemorhous purpureus",
@@ -1838,7 +1961,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Boreal and parkland breeder.",
   "icon": "🐦",
-  "description": "Boreal and parkland breeder."
+  "description": "Boreal and parkland breeder.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/73218113/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Haemorhous mexicanus",
@@ -1848,7 +1974,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Native to western North America and a recent colonist of prairie cities — established, but not a species that was here historically.",
   "icon": "🐦",
-  "description": "Native to western North America and a recent colonist of prairie cities — established, but not a species that was here historically."
+  "description": "Native to western North America and a recent colonist of prairie cities — established, but not a species that was here historically.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/177247547/medium.jpg",
+  "image_attribution": "(c) MostlyDross, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Zenaida macroura",
@@ -1858,7 +1987,10 @@
   "native_provinces": "AB,SK,MB",
   "range_notes": "Open country and towns across the settled prairies.",
   "icon": "🐦",
-  "description": "Open country and towns across the settled prairies."
+  "description": "Open country and towns across the settled prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/488854845/medium.jpg",
+  "image_attribution": "(c) Timothy Lindsey, some rights reserved (CC BY), uploaded by Timothy Lindsey",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Agapostemon splendens",
@@ -1888,7 +2020,10 @@
   "native_provinces": "SK",
   "range_notes": "Eight-spotted Forester — day-flying, on wild grape and fireweed.",
   "icon": "🦋",
-  "description": "Eight-spotted Forester — day-flying, on wild grape and fireweed."
+  "description": "Eight-spotted Forester — day-flying, on wild grape and fireweed.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/489058618/medium.jpeg",
+  "image_attribution": "(c) Sam Kieschnick, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Anagrapha falcifera",
@@ -1898,7 +2033,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Celery Looper — native and widespread.",
   "icon": "🦋",
-  "description": "Celery Looper — native and widespread."
+  "description": "Celery Looper — native and widespread.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/42254542/medium.jpeg",
+  "image_attribution": "(c) Colin Croft, some rights reserved (CC BY), uploaded by Colin Croft",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Ancistrocerus adiabatus",
@@ -2108,7 +2246,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Aphrodite Fritillary — prairie and parkland.",
   "icon": "🦋",
-  "description": "Aphrodite Fritillary — prairie and parkland."
+  "description": "Aphrodite Fritillary — prairie and parkland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/430339097/medium.jpg",
+  "image_attribution": "(c) Dan Vickers, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Augochlorella aurata",
@@ -2148,7 +2289,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Sand wasps, native to prairie sand country.",
   "icon": "🪲",
-  "description": "Sand wasps, native to prairie sand country."
+  "description": "Sand wasps, native to prairie sand country.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47986907/medium.jpeg",
+  "image_attribution": "(c) Garth Harwood, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bibio albipennis",
@@ -2168,7 +2312,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Meadow Fritillary — widespread in damp meadows.",
   "icon": "🦋",
-  "description": "Meadow Fritillary — widespread in damp meadows."
+  "description": "Meadow Fritillary — widespread in damp meadows.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/671311507/medium.jpg",
+  "image_attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Boloria chariclea",
@@ -2178,7 +2325,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Arctic Fritillary — northern and alpine.",
   "icon": "🦋",
-  "description": "Arctic Fritillary — northern and alpine."
+  "description": "Arctic Fritillary — northern and alpine.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/432036/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Kent P. McFarland",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombus kirbiellus",
@@ -2188,7 +2338,10 @@
   "native_provinces": "AB",
   "range_notes": "High-alpine bumblebee of the Rockies; a genuine Alberta species above treeline.",
   "icon": "🐝",
-  "description": "High-alpine bumblebee of the Rockies; a genuine Alberta species above treeline."
+  "description": "High-alpine bumblebee of the Rockies; a genuine Alberta species above treeline.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/42756491/medium.jpeg",
+  "image_attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Bombus vancouverensis",
@@ -2198,7 +2351,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Western bumblebee of the mountains and foothills, reaching Alberta.",
   "icon": "🐝",
-  "description": "Western bumblebee of the mountains and foothills, reaching Alberta."
+  "description": "Western bumblebee of the mountains and foothills, reaching Alberta.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/33918846/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Steve Wells",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Bombylius major",
@@ -2208,7 +2364,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Bee flies. B. major is Holarctic and native here as well as in Europe.",
   "icon": "🪲",
-  "description": "Bee flies. B. major is Holarctic and native here as well as in Europe."
+  "description": "Bee flies. B. major is Holarctic and native here as well as in Europe.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/14837087/medium.jpeg",
+  "image_attribution": "(c) Kostas Zontanos, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Burnsius communis",
@@ -2218,7 +2377,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Common Checkered-Skipper — reaches the southern prairies.",
   "icon": "🦋",
-  "description": "Common Checkered-Skipper — reaches the southern prairies."
+  "description": "Common Checkered-Skipper — reaches the southern prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/188795343/medium.jpeg",
+  "image_attribution": "(c) Chris Quirin, some rights reserved (CC BY), uploaded by Chris Quirin",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Callophrys niphon",
@@ -2228,7 +2390,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Eastern Pine Elfin — boreal pine.",
   "icon": "🦋",
-  "description": "Eastern Pine Elfin — boreal pine."
+  "description": "Eastern Pine Elfin — boreal pine.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/381352622/medium.jpg",
+  "image_attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Carterocephalus mandan",
@@ -2238,7 +2403,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Arctic Skipper — boreal, present across northern Alberta.",
   "icon": "🦋",
-  "description": "Arctic Skipper — boreal, present across northern Alberta."
+  "description": "Arctic Skipper — boreal, present across northern Alberta.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/70813304/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by John Sankey",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Celastrina lucia",
@@ -2248,7 +2416,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Northern Azure — boreal and parkland.",
   "icon": "🦋",
-  "description": "Northern Azure — boreal and parkland."
+  "description": "Northern Azure — boreal and parkland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/303205249/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Celastrina neglecta",
@@ -2258,7 +2429,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Summer Azure — widespread.",
   "icon": "🦋",
-  "description": "Summer Azure — widespread."
+  "description": "Summer Azure — widespread.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/602425/medium.jpg",
+  "image_attribution": "(c) botanygirl, some rights reserved (CC BY), uploaded by botanygirl",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Ceratina calcarata",
@@ -2278,7 +2452,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Yellow-collared Scape Moth — widespread day-flying moth.",
   "icon": "🦋",
-  "description": "Yellow-collared Scape Moth — widespread day-flying moth."
+  "description": "Yellow-collared Scape Moth — widespread day-flying moth.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/21877919/medium.jpg",
+  "image_attribution": "(c) Judy Gallagher, some rights reserved (CC BY-SA), uploaded by Judy Gallagher",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Coelioxys rufitarsis",
@@ -2298,7 +2475,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Orange Sulphur — abundant across the prairies.",
   "icon": "🦋",
-  "description": "Orange Sulphur — abundant across the prairies."
+  "description": "Orange Sulphur — abundant across the prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/235358656/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Chrissy McClarren and Andy Reago",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Colias interior",
@@ -2308,7 +2488,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Pink-edged Sulphur — boreal, blueberry feeder.",
   "icon": "🦋",
-  "description": "Pink-edged Sulphur — boreal, blueberry feeder."
+  "description": "Pink-edged Sulphur — boreal, blueberry feeder.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20611497/medium.jpg",
+  "image_attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Colletes fulgidus",
@@ -2338,7 +2521,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Virginia Ctenucha — grassland day-flier.",
   "icon": "🦋",
-  "description": "Virginia Ctenucha — grassland day-flier."
+  "description": "Virginia Ctenucha — grassland day-flier.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/295764125/medium.jpeg",
+  "image_attribution": "(c) Dan MacNeal, some rights reserved (CC BY), uploaded by Dan MacNeal",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Cupido comyntas",
@@ -2358,7 +2544,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Cucumber beetles. Native to North America, though the species here is an agricultural pest as well as a flower visitor.",
   "icon": "🪲",
-  "description": "Cucumber beetles. Native to North America, though the species here is an agricultural pest as well as a flower visitor."
+  "description": "Cucumber beetles. Native to North America, though the species here is an agricultural pest as well as a flower visitor.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/31516455/medium.jpg",
+  "image_attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Dianthidium subparvum",
@@ -2378,7 +2567,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Aerial yellowjackets, native and conspicuous across the prairies.",
   "icon": "🪲",
-  "description": "Aerial yellowjackets, native and conspicuous across the prairies."
+  "description": "Aerial yellowjackets, native and conspicuous across the prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/225158841/medium.jpeg",
+  "image_attribution": "(c) Owen Strickland, some rights reserved (CC BY), uploaded by Owen Strickland",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Dolichovespula arenaria",
@@ -2388,7 +2580,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Aerial yellowjackets, native and conspicuous across the prairies.",
   "icon": "🪲",
-  "description": "Aerial yellowjackets, native and conspicuous across the prairies."
+  "description": "Aerial yellowjackets, native and conspicuous across the prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/205243927/medium.jpg",
+  "image_attribution": "(c) Chris O'Donoghue, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Dolichovespula maculata",
@@ -2398,7 +2593,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Aerial yellowjackets, native and conspicuous across the prairies.",
   "icon": "🪲",
-  "description": "Aerial yellowjackets, native and conspicuous across the prairies."
+  "description": "Aerial yellowjackets, native and conspicuous across the prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47461172/medium.jpg",
+  "image_attribution": "(c) Amy Schnebelin, some rights reserved (CC BY), uploaded by Amy Schnebelin",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Epalpus signifer",
@@ -2438,7 +2636,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Drone flies. Mostly Holarctic natives — but see E. arbustorum below, and E. tenax is already flagged introduced in the catalogue.",
   "icon": "🪲",
-  "description": "Drone flies. Mostly Holarctic natives — but see E. arbustorum below, and E. tenax is already flagged introduced in the catalogue."
+  "description": "Drone flies. Mostly Holarctic natives — but see E. arbustorum below, and E. tenax is already flagged introduced in the catalogue.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/188688/medium.jpg",
+  "image_attribution": "(c) Gilles Gonthier, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Eristalis flavipes",
@@ -2518,7 +2719,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Anicia Checkerspot — western montane.",
   "icon": "🦋",
-  "description": "Anicia Checkerspot — western montane."
+  "description": "Anicia Checkerspot — western montane.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/284146306/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Euptoieta claudia",
@@ -2528,7 +2732,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Variegated Fritillary — a regular southern migrant.",
   "icon": "🦋",
-  "description": "Variegated Fritillary — a regular southern migrant."
+  "description": "Variegated Fritillary — a regular southern migrant.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/405684698/medium.jpg",
+  "image_attribution": "(c) Douglas Goldman, some rights reserved (CC BY-SA), uploaded by Douglas Goldman",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Evodinus monticola",
@@ -2558,7 +2765,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Dingy Cutworm — native, adults nectar heavily on late composites.",
   "icon": "🦋",
-  "description": "Dingy Cutworm — native, adults nectar heavily on late composites."
+  "description": "Dingy Cutworm — native, adults nectar heavily on late composites.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/580563167/medium.jpg",
+  "image_attribution": "(c) hr_dragonfly, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Gnophaela vermiculata",
@@ -2568,7 +2778,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Police Car Moth — a western day-flier, conspicuous in Alberta foothills.",
   "icon": "🦋",
-  "description": "Police Car Moth — a western day-flier, conspicuous in Alberta foothills."
+  "description": "Police Car Moth — a western day-flier, conspicuous in Alberta foothills.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/695186099/medium.jpg",
+  "image_attribution": "(c) Caleb Catto, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Halictus confusus",
@@ -2738,7 +2951,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Boisduval's Blue — western, lupine feeder.",
   "icon": "🦋",
-  "description": "Boisduval's Blue — western, lupine feeder."
+  "description": "Boisduval's Blue — western, lupine feeder.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/496926658/medium.jpeg",
+  "image_attribution": "(c) John Hibbard, some rights reserved (CC BY), uploaded by John Hibbard",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Icaricia saepiolus",
@@ -2748,7 +2964,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Greenish Blue — western, clover feeder.",
   "icon": "🦋",
-  "description": "Greenish Blue — western, clover feeder."
+  "description": "Greenish Blue — western, clover feeder.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/190222242/medium.jpeg",
+  "image_attribution": "(c) Laura Gaudette, some rights reserved (CC BY), uploaded by Laura Gaudette",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Lasioglossum albipenne",
@@ -2868,7 +3087,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Viceroy — willow feeder, common in prairie riparian.",
   "icon": "🦋",
-  "description": "Viceroy — willow feeder, common in prairie riparian."
+  "description": "Viceroy — willow feeder, common in prairie riparian.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2058543/medium.jpg",
+  "image_attribution": "(c) Benny Mazur, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Lon hobomok",
@@ -2878,7 +3100,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Hobomok Skipper — boreal and parkland.",
   "icon": "🦋",
-  "description": "Hobomok Skipper — boreal and parkland."
+  "description": "Hobomok Skipper — boreal and parkland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/408033002/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Lycomorpha pholus",
@@ -2888,7 +3113,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Black-and-yellow Lichen Moth.",
   "icon": "🦋",
-  "description": "Black-and-yellow Lichen Moth."
+  "description": "Black-and-yellow Lichen Moth.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/218554513/medium.jpeg",
+  "image_attribution": "(c) Tom Kennedy, some rights reserved (CC BY), uploaded by Tom Kennedy",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Lygus lineolaris",
@@ -2898,7 +3126,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Plant bugs, native and abundant in prairie vegetation.",
   "icon": "🪲",
-  "description": "Plant bugs, native and abundant in prairie vegetation."
+  "description": "Plant bugs, native and abundant in prairie vegetation.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/87901528/medium.jpg",
+  "image_attribution": "(c) Katja Schulz, some rights reserved (CC BY), uploaded by Katja Schulz",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Megachile frigida",
@@ -3008,7 +3239,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Woodland Skipper — western.",
   "icon": "🦋",
-  "description": "Woodland Skipper — western."
+  "description": "Woodland Skipper — western.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/427996877/medium.jpeg",
+  "image_attribution": "(c) Gavin Slater, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Osmia albolateralis",
@@ -3128,7 +3362,10 @@
   "native_provinces": "AB",
   "range_notes": "Pale Swallowtail — western, reaching the Alberta foothills.",
   "icon": "🦋",
-  "description": "Pale Swallowtail — western, reaching the Alberta foothills."
+  "description": "Pale Swallowtail — western, reaching the Alberta foothills.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/390616948/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Irene",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Papilio polyxenes",
@@ -3138,7 +3375,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Black Swallowtail — reaches the prairies; larvae on native umbellifers.",
   "icon": "🦋",
-  "description": "Black Swallowtail — reaches the prairies; larvae on native umbellifers."
+  "description": "Black Swallowtail — reaches the prairies; larvae on native umbellifers.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/262848199/medium.jpeg",
+  "image_attribution": "(c) Jay Brasher, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Papilio zelicaon",
@@ -3148,7 +3388,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Anise Swallowtail — western, present in southern Alberta.",
   "icon": "🦋",
-  "description": "Anise Swallowtail — western, present in southern Alberta."
+  "description": "Anise Swallowtail — western, present in southern Alberta.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/137061775/medium.jpeg",
+  "image_attribution": "(c) Hydrocycler (Elizabeth Dougherty), some rights reserved (CC BY), uploaded by Hydrocycler (Elizabeth Dougherty)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Philanthus gibbosus",
@@ -3178,7 +3421,10 @@
   "native_provinces": "AB",
   "range_notes": "Mylitta Crescent — western, thistle feeder.",
   "icon": "🦋",
-  "description": "Mylitta Crescent — western, thistle feeder."
+  "description": "Mylitta Crescent — western, thistle feeder.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/438079528/medium.jpeg",
+  "image_attribution": "(c) wildrollo, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Phyciodes tharos",
@@ -3188,7 +3434,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Pearl Crescent — widespread, aster specialist.",
   "icon": "🦋",
-  "description": "Pearl Crescent — widespread, aster specialist."
+  "description": "Pearl Crescent — widespread, aster specialist.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13235553/medium.jpg",
+  "image_attribution": "(c) Beatriz Moisset, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Physocephala furcillata",
@@ -3218,7 +3467,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Mustard White — a NATIVE Pieris, not to be confused with the introduced P. rapae.",
   "icon": "🦋",
-  "description": "Mustard White — a NATIVE Pieris, not to be confused with the introduced P. rapae."
+  "description": "Mustard White — a NATIVE Pieris, not to be confused with the introduced P. rapae.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4349988/medium.jpeg",
+  "image_attribution": "(c) Joseph D Kurtz, some rights reserved (CC BY), uploaded by Joseph D Kurtz",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Polites peckius",
@@ -3228,7 +3480,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Peck's Skipper — grassland, widespread.",
   "icon": "🦋",
-  "description": "Peck's Skipper — grassland, widespread."
+  "description": "Peck's Skipper — grassland, widespread.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/63077929/medium.jpeg",
+  "image_attribution": "(c) Katja Schulz, some rights reserved (CC BY), uploaded by Katja Schulz",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Polites themistocles",
@@ -3238,7 +3493,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Tawny-edged Skipper — grassland.",
   "icon": "🦋",
-  "description": "Tawny-edged Skipper — grassland."
+  "description": "Tawny-edged Skipper — grassland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1300668/medium.jpg",
+  "image_attribution": "(c) Bill Keim, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Pontia occidentalis",
@@ -3248,7 +3506,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Western White — montane and prairie.",
   "icon": "🦋",
-  "description": "Western White — montane and prairie."
+  "description": "Western White — montane and prairie.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/374538295/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Pontia protodice",
@@ -3258,7 +3519,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Checkered White — southern prairies.",
   "icon": "🦋",
-  "description": "Checkered White — southern prairies."
+  "description": "Checkered White — southern prairies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/260798/medium.jpg",
+  "image_attribution": "(c) Megan McCarty, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Pyrausta orphisalis",
@@ -3278,7 +3542,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Coral Hairstreak — chokecherry and plum thickets.",
   "icon": "🦋",
-  "description": "Coral Hairstreak — chokecherry and plum thickets."
+  "description": "Coral Hairstreak — chokecherry and plum thickets.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/221418/medium.jpg",
+  "image_attribution": "(c) pondhawk, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Schinia arcigera",
@@ -3288,7 +3555,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Arcigera Flower Moth — aster specialist.",
   "icon": "🦋",
-  "description": "Arcigera Flower Moth — aster specialist."
+  "description": "Arcigera Flower Moth — aster specialist.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/267656680/medium.jpg",
+  "image_attribution": "(c) Ilona, some rights reserved (CC BY-SA), uploaded by Ilona",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Speyeria atlantis",
@@ -3328,7 +3598,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Digger wasps. S. ichneumoneus was already reviewed as native in curate_introduced.",
   "icon": "🪲",
-  "description": "Digger wasps. S. ichneumoneus was already reviewed as native in curate_introduced."
+  "description": "Digger wasps. S. ichneumoneus was already reviewed as native in curate_introduced.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/572111965/medium.jpg",
+  "image_attribution": "(c) Daughter Dad, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Strymon melinus",
@@ -3338,7 +3611,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Gray Hairstreak — one of the most widespread butterflies in North America.",
   "icon": "🦋",
-  "description": "Gray Hairstreak — one of the most widespread butterflies in North America."
+  "description": "Gray Hairstreak — one of the most widespread butterflies in North America.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/435842145/medium.jpeg",
+  "image_attribution": "(c) Michael J. Papay, some rights reserved (CC BY), uploaded by Michael J. Papay",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Syrphus opinator",
@@ -3378,7 +3654,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Purplish Copper — common in damp prairie.",
   "icon": "🦋",
-  "description": "Purplish Copper — common in damp prairie."
+  "description": "Purplish Copper — common in damp prairie.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/11186195/medium.jpg",
+  "image_attribution": "(c) John Hibbard, some rights reserved (CC BY), uploaded by John Hibbard",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Tharsalea hyllus",
@@ -3388,7 +3667,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Bronze Copper — wetland margins.",
   "icon": "🦋",
-  "description": "Bronze Copper — wetland margins."
+  "description": "Bronze Copper — wetland margins.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8773107/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Robbie Hannawacker",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Toxomerus geminatus",
@@ -3398,7 +3680,10 @@
   "native_provinces": "SK",
   "range_notes": "Hoverflies. Eastern-centred but reaching the prairies and expanding.",
   "icon": "🪲",
-  "description": "Hoverflies. Eastern-centred but reaching the prairies and expanding."
+  "description": "Hoverflies. Eastern-centred but reaching the prairies and expanding.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/10849225/medium.jpg",
+  "image_attribution": "(c) Ryan Hodnett, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Trichiotinus assimilis",
@@ -3418,7 +3703,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Checkered beetles, western and native.",
   "icon": "🪲",
-  "description": "Checkered beetles, western and native."
+  "description": "Checkered beetles, western and native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/6551443/medium.jpg",
+  "image_attribution": "(c) W. Terry Hunefeld, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Vanessa virginiensis",
@@ -3428,7 +3716,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "American Lady — a regular migrant to the prairies, breeding on pussytoes.",
   "icon": "🦋",
-  "description": "American Lady — a regular migrant to the prairies, breeding on pussytoes."
+  "description": "American Lady — a regular migrant to the prairies, breeding on pussytoes.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4871987/medium.jpg",
+  "image_attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Vespula consobrina",
@@ -3458,7 +3749,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Paper wasps. P. fuscatus is the native northern one; the European P. dominula is refused below.",
   "icon": "🪲",
-  "description": "Paper wasps. P. fuscatus is the native northern one; the European P. dominula is refused below."
+  "description": "Paper wasps. P. fuscatus is the native northern one; the European P. dominula is refused below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13770099/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Acleris celiana",
@@ -3548,7 +3842,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Two-spotted Lady Beetle — Holarctic and native to North America, unlike the Asian Harmonia.",
   "icon": "🪲",
-  "description": "Two-spotted Lady Beetle — Holarctic and native to North America, unlike the Asian Harmonia."
+  "description": "Two-spotted Lady Beetle — Holarctic and native to North America, unlike the Asian Harmonia.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/63106443/medium.jpeg",
+  "image_attribution": "(c) Alexis Tinker-Tsavalas, some rights reserved (CC BY), uploaded by Alexis Tinker-Tsavalas",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Adejeania vexatrix",
@@ -3578,7 +3875,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Cooley and larch spruce gall adelgids — native to western North America, and the pineapple gall on a spruce is unmistakable.",
   "icon": "🪲",
-  "description": "Cooley and larch spruce gall adelgids — native to western North America, and the pineapple gall on a spruce is unmistakable."
+  "description": "Cooley and larch spruce gall adelgids — native to western North America, and the pineapple gall on a spruce is unmistakable.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2476229/medium.jpg",
+  "image_attribution": "(c) Ken-ichi Ueda, some rights reserved (CC BY), uploaded by Ken-ichi Ueda",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Adelges lariciatus",
@@ -3638,7 +3938,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Jewel beetles. A. anxius, the Bronze Birch Borer, is native; the European A. cyanescens is refused below.",
   "icon": "🪲",
-  "description": "Jewel beetles. A. anxius, the Bronze Birch Borer, is native; the European A. cyanescens is refused below."
+  "description": "Jewel beetles. A. anxius, the Bronze Birch Borer, is native; the European A. cyanescens is refused below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/44266046/medium.jpg",
+  "image_attribution": "(c) Jason Hill, some rights reserved (CC BY), uploaded by Jason Hill",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Agriphila ruricolellus",
@@ -4328,7 +4631,10 @@
   "native_provinces": "AB",
   "range_notes": "Orangetips of the foothills and parkland.",
   "icon": "🦋",
-  "description": "Orangetips of the foothills and parkland."
+  "description": "Orangetips of the foothills and parkland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/123904692/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Anthophora pacifica",
@@ -4568,7 +4874,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Sumac Flea Beetle, native.",
   "icon": "🪲",
-  "description": "Sumac Flea Beetle, native."
+  "description": "Sumac Flea Beetle, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/220271317/medium.jpg",
+  "image_attribution": "(c) David George, some rights reserved (CC BY), uploaded by David George",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Blera confusa",
@@ -4598,7 +4907,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Boxelder Bug — native, and tied to a tree this catalogue holds.",
   "icon": "🪲",
-  "description": "Boxelder Bug — native, and tied to a tree this catalogue holds."
+  "description": "Boxelder Bug — native, and tied to a tree this catalogue holds.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/297563357/medium.jpg",
+  "image_attribution": "(c) Susan Blayney, some rights reserved (CC BY), uploaded by Susan Blayney",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Boloria astarte",
@@ -4728,7 +5040,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Raspberry fruitworms, native.",
   "icon": "🪲",
-  "description": "Raspberry fruitworms, native."
+  "description": "Raspberry fruitworms, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20225382/medium.jpg",
+  "image_attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Caenurgina crassiuscula",
@@ -4858,7 +5173,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Holarctic lady beetles, native here.",
   "icon": "🪲",
-  "description": "Holarctic lady beetles, native here."
+  "description": "Holarctic lady beetles, native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/378648764/medium.jpg",
+  "image_attribution": "(c) Gilles San Martin, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Campiglossa albiceps",
@@ -4888,7 +5206,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Carpenter ants, native.",
   "icon": "🪲",
-  "description": "Carpenter ants, native."
+  "description": "Carpenter ants, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/130251314/medium.jpeg",
+  "image_attribution": "(c) Benjamin Burgunder, some rights reserved (CC BY), uploaded by Benjamin Burgunder",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Carterocephalus skada",
@@ -4908,7 +5229,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Underwings — native, on willow, poplar and rose-family shrubs.",
   "icon": "🦋",
-  "description": "Underwings — native, on willow, poplar and rose-family shrubs."
+  "description": "Underwings — native, on willow, poplar and rose-family shrubs.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5966339/medium.jpg",
+  "image_attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Ceratina acantha",
@@ -5038,7 +5362,10 @@
   "native_provinces": "SK",
   "range_notes": "The Laugher, native.",
   "icon": "🦋",
-  "description": "The Laugher, native."
+  "description": "The Laugher, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/131849150/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Cheilosia latrans",
@@ -5058,7 +5385,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Pine Needle Scale, native.",
   "icon": "🪲",
-  "description": "Pine Needle Scale, native."
+  "description": "Pine Needle Scale, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/227816631/medium.jpeg",
+  "image_attribution": "(c) Cricket Raspet, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Chionodes viduella",
@@ -5138,7 +5468,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Budworms, native and defining insects of the boreal forest.",
   "icon": "🦋",
-  "description": "Budworms, native and defining insects of the boreal forest."
+  "description": "Budworms, native and defining insects of the boreal forest.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/435434224/medium.jpeg",
+  "image_attribution": "(c) Lucas Benaiche, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Choristoneura pinus",
@@ -5148,7 +5481,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Budworms, native and defining insects of the boreal forest.",
   "icon": "🦋",
-  "description": "Budworms, native and defining insects of the boreal forest."
+  "description": "Budworms, native and defining insects of the boreal forest.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/304014189/medium.jpeg",
+  "image_attribution": "(c) Jake McCumber, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Choristoneura rosaceana",
@@ -5158,7 +5494,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Budworms, native and defining insects of the boreal forest.",
   "icon": "🦋",
-  "description": "Budworms, native and defining insects of the boreal forest."
+  "description": "Budworms, native and defining insects of the boreal forest.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/82326022/medium.jpeg",
+  "image_attribution": "(c) Rob Foster, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Chrysis iris",
@@ -5178,7 +5517,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Dogbane and Cobalt Milkweed Beetles — native, and among the most striking insects on the prairie.",
   "icon": "🪲",
-  "description": "Dogbane and Cobalt Milkweed Beetles — native, and among the most striking insects on the prairie."
+  "description": "Dogbane and Cobalt Milkweed Beetles — native, and among the most striking insects on the prairie.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/47954553/medium.jpg",
+  "image_attribution": "(c) Jimmy Dee, some rights reserved (CC BY-SA), uploaded by Jimmy Dee",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Chrysochus cobaltinus",
@@ -5188,7 +5530,10 @@
   "native_provinces": "AB",
   "range_notes": "Dogbane and Cobalt Milkweed Beetles — native, and among the most striking insects on the prairie.",
   "icon": "🪲",
-  "description": "Dogbane and Cobalt Milkweed Beetles — native, and among the most striking insects on the prairie."
+  "description": "Dogbane and Cobalt Milkweed Beetles — native, and among the most striking insects on the prairie.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/57684/medium.jpg",
+  "image_attribution": "(c) Alan Vernon, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Chrysopa oculata",
@@ -5198,7 +5543,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Green lacewings. The larva is a predator and the adult feeds on pollen and nectar, so the flower record is a reward — unlike the ambush bugs above.",
   "icon": "🪲",
-  "description": "Green lacewings. The larva is a predator and the adult feeds on pollen and nectar, so the flower record is a reward — unlike the ambush bugs above."
+  "description": "Green lacewings. The larva is a predator and the adult feeds on pollen and nectar, so the flower record is a reward — unlike the ambush bugs above.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8328255/medium.jpeg",
+  "image_attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Chrysops sackeni",
@@ -5218,7 +5566,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Cranberry Girdler, native.",
   "icon": "🦋",
-  "description": "Cranberry Girdler, native."
+  "description": "Cranberry Girdler, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1004550/medium.jpg",
+  "image_attribution": "(c) Andy Reago & Chrissy McClarren, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Cimbex americana",
@@ -5238,7 +5589,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Chain-dotted Geometer, native.",
   "icon": "🦋",
-  "description": "Chain-dotted Geometer, native."
+  "description": "Chain-dotted Geometer, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/61580850/medium.jpeg",
+  "image_attribution": "(c) Doug Macaulay, some rights reserved (CC BY), uploaded by Doug Macaulay",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Cladara limitaria",
@@ -5268,7 +5622,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Little White Lichen Moth, native.",
   "icon": "🦋",
-  "description": "Little White Lichen Moth, native."
+  "description": "Little White Lichen Moth, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/391812367/medium.jpeg",
+  "image_attribution": "(c) W Rao, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Clusia lateralis",
@@ -5298,7 +5655,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Native lady beetles — trifasciata is Alberta's commonest. The European C. septempunctata is refused below.",
   "icon": "🪲",
-  "description": "Native lady beetles — trifasciata is Alberta's commonest. The European C. septempunctata is refused below."
+  "description": "Native lady beetles — trifasciata is Alberta's commonest. The European C. septempunctata is refused below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/145296153/medium.jpeg",
+  "image_attribution": "(c) Syd Cannings, some rights reserved (CC BY), uploaded by Syd Cannings",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Coccinella trifasciata",
@@ -5308,7 +5668,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Native lady beetles — trifasciata is Alberta's commonest. The European C. septempunctata is refused below.",
   "icon": "🪲",
-  "description": "Native lady beetles — trifasciata is Alberta's commonest. The European C. septempunctata is refused below."
+  "description": "Native lady beetles — trifasciata is Alberta's commonest. The European C. septempunctata is refused below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4141807/medium.jpg",
+  "image_attribution": "(c) Eddie Dunbar, some rights reserved (CC BY-SA), uploaded by Eddie Dunbar",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Coelioxys edita",
@@ -5688,7 +6051,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Dogbane tiger moths — native, and one of the few things that eats Apocynum.",
   "icon": "🦋",
-  "description": "Dogbane tiger moths — native, and one of the few things that eats Apocynum."
+  "description": "Dogbane tiger moths — native, and one of the few things that eats Apocynum.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4859426/medium.jpg",
+  "image_attribution": "(c) Judy Gallagher, some rights reserved (CC BY-SA), uploaded by Judy Gallagher",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Cynomya cadaverina",
@@ -5908,7 +6274,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Rose gall wasps — native, and the mossy rose gall is one of the most visible insect signs on a prairie rose.",
   "icon": "🪲",
-  "description": "Rose gall wasps — native, and the mossy rose gall is one of the most visible insect signs on a prairie rose."
+  "description": "Rose gall wasps — native, and the mossy rose gall is one of the most visible insect signs on a prairie rose.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/176170919/medium.jpeg",
+  "image_attribution": "(c) Chris Friesen, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Diploschizia impigritella",
@@ -6098,7 +6467,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Saddleback Looper, native.",
   "icon": "🦋",
-  "description": "Saddleback Looper, native."
+  "description": "Saddleback Looper, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/491784955/medium.jpeg",
+  "image_attribution": "(c) Emanuel Kern, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Ellychnia corrusca",
@@ -6128,7 +6500,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Plume moths — Holarctic and native here.",
   "icon": "🦋",
-  "description": "Plume moths — Holarctic and native here."
+  "description": "Plume moths — Holarctic and native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/290597887/medium.jpg",
+  "image_attribution": "(c) ingridaltmann, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Enargia fausta",
@@ -6158,7 +6533,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Pink-patched Looper, native.",
   "icon": "🦋",
-  "description": "Pink-patched Looper, native."
+  "description": "Pink-patched Looper, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/61526723/medium.jpeg",
+  "image_attribution": "(c) Doug Macaulay, some rights reserved (CC BY), uploaded by Doug Macaulay",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Epeolus olympiellus",
@@ -6178,7 +6556,10 @@
   "native_provinces": "SK",
   "range_notes": "Goldenrod gall moths — the gall IS the relationship, and it is native.",
   "icon": "🦋",
-  "description": "Goldenrod gall moths — the gall IS the relationship, and it is native."
+  "description": "Goldenrod gall moths — the gall IS the relationship, and it is native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/542986953/medium.jpg",
+  "image_attribution": "(c) Michelle W. （鍾偉瑋）, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Epicauta ferruginea",
@@ -6228,7 +6609,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Holarctic carpet moths, native here.",
   "icon": "🦋",
-  "description": "Holarctic carpet moths, native here."
+  "description": "Holarctic carpet moths, native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13061922/medium.jpg",
+  "image_attribution": "(c) christine123, some rights reserved (CC BY), uploaded by christine123",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Epistrophe xanthostoma",
@@ -6398,7 +6782,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Salt Marsh Moth, native.",
   "icon": "🦋",
-  "description": "Salt Marsh Moth, native."
+  "description": "Salt Marsh Moth, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/75628/medium.jpg",
+  "image_attribution": "(c) Jon Sullivan, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Etorofus obliteratus",
@@ -6498,7 +6885,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies.",
   "icon": "🦋",
-  "description": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies."
+  "description": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/876802/medium.jpg",
+  "image_attribution": "(c) Ken-ichi Ueda, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Euchloe creusa",
@@ -6508,7 +6898,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies.",
   "icon": "🦋",
-  "description": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies."
+  "description": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/296492141/medium.jpg",
+  "image_attribution": "(c) Akr, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Euchloe olympia",
@@ -6518,7 +6911,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies.",
   "icon": "🦋",
-  "description": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies."
+  "description": "Marbles — early-spring mustard feeders; olympia, ausonides and creusa are all Alberta butterflies.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1766954/medium.jpg",
+  "image_attribution": "(c) aarongunnar, some rights reserved (CC BY), uploaded by aarongunnar",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Eucirroedia pampina",
@@ -6528,7 +6924,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Scalloped Sallow, native.",
   "icon": "🦋",
-  "description": "Scalloped Sallow, native."
+  "description": "Scalloped Sallow, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5798061/medium.jpg",
+  "image_attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Euclidia ardita",
@@ -6748,7 +7147,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "E. solidaginis, the Goldenrod Gall Fly — the textbook one, and native.",
   "icon": "🪲",
-  "description": "E. solidaginis, the Goldenrod Gall Fly — the textbook one, and native."
+  "description": "E. solidaginis, the Goldenrod Gall Fly — the textbook one, and native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/43432943/medium.jpg",
+  "image_attribution": "(c) Ryan Donnelly, some rights reserved (CC BY), uploaded by Ryan Donnelly",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Eusarca confusaria",
@@ -6758,7 +7160,10 @@
   "native_provinces": "SK",
   "range_notes": "Native geometrids.",
   "icon": "🦋",
-  "description": "Native geometrids."
+  "description": "Native geometrids.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/37492633/medium.jpg",
+  "image_attribution": "(c) Liliana Ramírez-Freire, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Eusphalerum pothos",
@@ -6828,7 +7233,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Holarctic crucifer pyraloids, native here.",
   "icon": "🦋",
-  "description": "Holarctic crucifer pyraloids, native here."
+  "description": "Holarctic crucifer pyraloids, native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/383204387/medium.jpg",
+  "image_attribution": "(c) mnauky, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Exoprosopa decora",
@@ -6898,7 +7306,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Native early-spring conifer noctuids.",
   "icon": "🦋",
-  "description": "Native early-spring conifer noctuids."
+  "description": "Native early-spring conifer noctuids.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/662052192/medium.jpg",
+  "image_attribution": "(c) Sheila Furlong, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Formica fusca",
@@ -6948,7 +7359,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Mint Root Borer, native.",
   "icon": "🦋",
-  "description": "Mint Root Borer, native."
+  "description": "Mint Root Borer, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/423870290/medium.jpeg",
+  "image_attribution": "(c) Stan Rullman, some rights reserved (CC BY), uploaded by Stan Rullman",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Geina tenuidactylus",
@@ -6978,7 +7392,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Yarrow Plume Moth, Holarctic and native here.",
   "icon": "🦋",
-  "description": "Yarrow Plume Moth, Holarctic and native here."
+  "description": "Yarrow Plume Moth, Holarctic and native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8568220/medium.jpg",
+  "image_attribution": "(c) Donald Hobern, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Glaucopsyche piasus",
@@ -6988,7 +7405,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Arrowhead and Silvery Blues, legume feeders of the southern grasslands.",
   "icon": "🦋",
-  "description": "Arrowhead and Silvery Blues, legume feeders of the southern grasslands."
+  "description": "Arrowhead and Silvery Blues, legume feeders of the southern grasslands.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/286682055/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Gnathacmaeops pratensis",
@@ -7068,7 +7488,10 @@
   "native_provinces": "SK",
   "range_notes": "Sharpshooter leafhoppers, native.",
   "icon": "🪲",
-  "description": "Sharpshooter leafhoppers, native."
+  "description": "Sharpshooter leafhoppers, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/46770268/medium.jpg",
+  "image_attribution": "(c) Trevor Edmonson, some rights reserved (CC BY), uploaded by Trevor Edmonson",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Habropoda cineraria",
@@ -7168,7 +7591,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Blueberry Stem Gall Wasp, native.",
   "icon": "🪲",
-  "description": "Blueberry Stem Gall Wasp, native."
+  "description": "Blueberry Stem Gall Wasp, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/86646571/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Hemaris gracilis",
@@ -7198,7 +7624,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Buckmoths. H. nevadensis is a willow feeder of the southern prairies — a day-flying saturniid.",
   "icon": "🦋",
-  "description": "Buckmoths. H. nevadensis is a willow feeder of the southern prairies — a day-flying saturniid."
+  "description": "Buckmoths. H. nevadensis is a willow feeder of the southern prairies — a day-flying saturniid.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/19042469/medium.jpg",
+  "image_attribution": "(c) Grand Canyon National Park, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Hemipenthes morioides",
@@ -7298,7 +7727,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Native lady beetles of grassland.",
   "icon": "🪲",
-  "description": "Native lady beetles of grassland."
+  "description": "Native lady beetles of grassland.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20106241/medium.jpg",
+  "image_attribution": "(c) Suzanne Carriere, some rights reserved (CC BY), uploaded by Suzanne Carriere",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Holcopasites calliopsidis",
@@ -7328,7 +7760,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Sunflower Moth, native.",
   "icon": "🦋",
-  "description": "Sunflower Moth, native."
+  "description": "Sunflower Moth, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/128138444/medium.jpg",
+  "image_attribution": "(c) Kylie Etter, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Hoplitis grinnelli",
@@ -7398,7 +7833,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Scallop Shell, Holarctic and native here.",
   "icon": "🦋",
-  "description": "Scallop Shell, Holarctic and native here."
+  "description": "Scallop Shell, Holarctic and native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/11003688/medium.jpg",
+  "image_attribution": "(c) Nigel Voaden, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Hylaeus affinis",
@@ -7478,7 +7916,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Fall Webworm — native to North America, however much of a nuisance it is.",
   "icon": "🦋",
-  "description": "Fall Webworm — native to North America, however much of a nuisance it is."
+  "description": "Fall Webworm — native to North America, however much of a nuisance it is.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/190924423/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Liubov Ilminska",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Hystricia abrupta",
@@ -7948,7 +8389,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Field ants — native, abundant, and takes floral and extrafloral nectar.",
   "icon": "🪲",
-  "description": "Field ants — native, abundant, and takes floral and extrafloral nectar."
+  "description": "Field ants — native, abundant, and takes floral and extrafloral nectar.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/57582523/medium.jpg",
+  "image_attribution": "(c) Robert Webster, some rights reserved (CC BY-SA), uploaded by Robert Webster",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Lebia viridis",
@@ -7968,7 +8412,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Golden-haired Flower Longhorn — abundant on prairie umbels and composites.",
   "icon": "🪲",
-  "description": "Golden-haired Flower Longhorn — abundant on prairie umbels and composites."
+  "description": "Golden-haired Flower Longhorn — abundant on prairie umbels and composites.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/153224314/medium.jpg",
+  "image_attribution": "(c) Melissa McMasters, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Leucoptera pachystimella",
@@ -8138,7 +8585,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Black Firefly, native.",
   "icon": "🪲",
-  "description": "Black Firefly, native."
+  "description": "Black Firefly, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8699197/medium.jpg",
+  "image_attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Lucilia illustris",
@@ -8168,7 +8618,10 @@
   "native_provinces": "AB",
   "range_notes": "Coppers. cupreus and heteronea reach southern Alberta; the southern-Rockies snowi is held below.",
   "icon": "🦋",
-  "description": "Coppers. cupreus and heteronea reach southern Alberta; the southern-Rockies snowi is held below."
+  "description": "Coppers. cupreus and heteronea reach southern Alberta; the southern-Rockies snowi is held below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/4184029/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Lycaena heteronea",
@@ -8238,7 +8691,10 @@
   "native_provinces": "AB",
   "range_notes": "M. albifrons, the Lupine Aphid — native to western North America.",
   "icon": "🪲",
-  "description": "M. albifrons, the Lupine Aphid — native to western North America."
+  "description": "M. albifrons, the Lupine Aphid — native to western North America.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/74736332/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Jesse Rorabaugh",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Malacosoma disstria",
@@ -8248,7 +8704,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Tent caterpillars. californica and disstria are Alberta's; the eastern americana is refused below.",
   "icon": "🦋",
-  "description": "Tent caterpillars. californica and disstria are Alberta's; the eastern americana is refused below."
+  "description": "Tent caterpillars. californica and disstria are Alberta's; the eastern americana is refused below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/406454621/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Jack Gelinas",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Mallota bautias",
@@ -8668,7 +9127,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Goldenrod leaf-mining beetles, native.",
   "icon": "🪲",
-  "description": "Goldenrod leaf-mining beetles, native."
+  "description": "Goldenrod leaf-mining beetles, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/316479121/medium.jpg",
+  "image_attribution": "(c) Zachary Dankowicz, some rights reserved (CC BY), uploaded by Zachary Dankowicz",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Molorchus bimaculatus",
@@ -8738,7 +9200,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Poplar Vagabond Gall Aphid, native.",
   "icon": "🪲",
-  "description": "Poplar Vagabond Gall Aphid, native."
+  "description": "Poplar Vagabond Gall Aphid, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/143091810/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Adam Kranz",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Morellia micans",
@@ -8798,7 +9263,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Bronzed Cutworm, native.",
   "icon": "🦋",
-  "description": "Bronzed Cutworm, native."
+  "description": "Bronzed Cutworm, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/571822471/medium.jpg",
+  "image_attribution": "(c) Ezekiel (Zeke) Blankenship, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Neurocolpus nubilus",
@@ -8848,7 +9316,10 @@
   "native_provinces": "AB",
   "range_notes": "Alkali bees. N. melanderi nests in the saline flats of the dry southern prairies — a genuinely local specialist.",
   "icon": "🐝",
-  "description": "Alkali bees. N. melanderi nests in the saline flats of the dry southern prairies — a genuinely local specialist."
+  "description": "Alkali bees. N. melanderi nests in the saline flats of the dry southern prairies — a genuinely local specialist.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/83364098/medium.jpeg",
+  "image_attribution": "(c) RJ Baltierra, some rights reserved (CC BY), uploaded by RJ Baltierra",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Nomophila nearctica",
@@ -8858,7 +9329,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Lucerne Moth, native.",
   "icon": "🦋",
-  "description": "Lucerne Moth, native."
+  "description": "Lucerne Moth, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/169795/medium.JPG",
+  "image_attribution": "(c) 116916927065934112165, some rights reserved (CC BY), uploaded by 116916927065934112165",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Nycteola cinereana",
@@ -8888,7 +9362,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Skipperlings. O. garita is a true prairie grassland skipper.",
   "icon": "🦋",
-  "description": "Skipperlings. O. garita is a true prairie grassland skipper."
+  "description": "Skipperlings. O. garita is a true prairie grassland skipper.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3106051/medium.JPG",
+  "image_attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Odynerus dilectus",
@@ -8918,7 +9395,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Tree crickets — native, and they feed on pollen and flower parts as well as singing from them.",
   "icon": "🪲",
-  "description": "Tree crickets — native, and they feed on pollen and flower parts as well as singing from them."
+  "description": "Tree crickets — native, and they feed on pollen and flower parts as well as singing from them.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/491511/medium.JPG",
+  "image_attribution": "(c) Summit Metro Parks, some rights reserved (CC BY), uploaded by Summit Metro Parks",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Oeneis chryxus",
@@ -8928,7 +9408,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets.",
   "icon": "🦋",
-  "description": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets."
+  "description": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/309706915/medium.jpg",
+  "image_attribution": "(c) Sam Eberhard, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Oeneis melissa",
@@ -8938,7 +9421,10 @@
   "native_provinces": "AB",
   "range_notes": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets.",
   "icon": "🦋",
-  "description": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets."
+  "description": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/30754935/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Oeneis uhleri",
@@ -8948,7 +9434,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets.",
   "icon": "🦋",
-  "description": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets."
+  "description": "Arctics. Grassland and alpine satyrs, and about as characteristic of Alberta as a butterfly gets.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3106955/medium.JPG",
+  "image_attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Oiceoptoma noveboracense",
@@ -8958,7 +9447,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Margined Carrion Beetle — native, and it does genuinely visit flowers.",
   "icon": "🪲",
-  "description": "Margined Carrion Beetle — native, and it does genuinely visit flowers."
+  "description": "Margined Carrion Beetle — native, and it does genuinely visit flowers.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20396241/medium.jpg",
+  "image_attribution": "(c) Katja Schulz, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Okanagana bella",
@@ -8978,7 +9470,10 @@
   "native_provinces": "SK",
   "range_notes": "Tussock moths, native.",
   "icon": "🦋",
-  "description": "Tussock moths, native."
+  "description": "Tussock moths, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5757526/medium.jpg",
+  "image_attribution": "(c) Fyn Kynd, some rights reserved (CC BY-SA), uploaded by Fyn Kynd",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Orsodacne atra",
@@ -9008,7 +9503,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Spring noctuids, native and among the earliest moths at willow catkins.",
   "icon": "🦋",
-  "description": "Spring noctuids, native and among the earliest moths at willow catkins."
+  "description": "Spring noctuids, native and among the earliest moths at willow catkins.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/631338637/medium.jpg",
+  "image_attribution": "(c) Alan Macnaughton, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Osmia aff.paradisica",
@@ -9308,7 +9806,10 @@
   "native_provinces": "AB",
   "range_notes": "Maple Leafcutter, native.",
   "icon": "🦋",
-  "description": "Maple Leafcutter, native."
+  "description": "Maple Leafcutter, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/23382777/medium.jpeg",
+  "image_attribution": "(c) Tom Norton, bazı hakları saklıdır (CC BY), yükleyen: Tom Norton",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Paragus haemorrhous",
@@ -9338,7 +9839,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Western Poplar Clearwing, native.",
   "icon": "🦋",
-  "description": "Western Poplar Clearwing, native."
+  "description": "Western Poplar Clearwing, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/536737366/medium.jpg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Parasyrphus relictus",
@@ -9438,7 +9942,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Raspberry Crown Borer, native.",
   "icon": "🦋",
-  "description": "Raspberry Crown Borer, native."
+  "description": "Raspberry Crown Borer, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/326032346/medium.jpg",
+  "image_attribution": "(c) Linda Watson, some rights reserved (CC BY), uploaded by Linda Watson",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Pentaria trifasciata",
@@ -9618,7 +10125,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Crescents. Aster feeders; pulchella and batesii are both prairie species.",
   "icon": "🦋",
-  "description": "Crescents. Aster feeders; pulchella and batesii are both prairie species."
+  "description": "Crescents. Aster feeders; pulchella and batesii are both prairie species.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/3111601/medium.JPG",
+  "image_attribution": "(c) Nick Block, some rights reserved (CC BY), uploaded by Nick Block",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Phyciodes pulchella",
@@ -9628,7 +10138,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Crescents. Aster feeders; pulchella and batesii are both prairie species.",
   "icon": "🦋",
-  "description": "Crescents. Aster feeders; pulchella and batesii are both prairie species."
+  "description": "Crescents. Aster feeders; pulchella and batesii are both prairie species.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/200066910/medium.jpg",
+  "image_attribution": "(c) John Rosford, some rights reserved (CC BY), uploaded by John Rosford",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Phyllocnistis populiella",
@@ -9638,7 +10151,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "P. populiella, the Aspen Leaf Miner — the silver serpentine trails on half the aspen in the province.",
   "icon": "🦋",
-  "description": "P. populiella, the Aspen Leaf Miner — the silver serpentine trails on half the aspen in the province."
+  "description": "P. populiella, the Aspen Leaf Miner — the silver serpentine trails on half the aspen in the province.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/402297055/medium.jpg",
+  "image_attribution": "(c) Justin Paulin, some rights reserved (CC BY), uploaded by Justin Paulin",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Phyllonorycter anderidae",
@@ -9888,7 +10404,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Ash borers, native clearwings.",
   "icon": "🦋",
-  "description": "Ash borers, native clearwings."
+  "description": "Ash borers, native clearwings.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625215225/medium.jpg",
+  "image_attribution": "(c) Guillermo L Verdecchia, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Poecilanthrax tegminipennis",
@@ -10058,7 +10577,10 @@
   "native_provinces": "AB",
   "range_notes": "Woolly Alder Aphid, native.",
   "icon": "🪲",
-  "description": "Woolly Alder Aphid, native."
+  "description": "Woolly Alder Aphid, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/233472811/medium.jpg",
+  "image_attribution": "(c) Rose Zappa, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Protandrena albitarsis",
@@ -10218,7 +10740,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Spear-marked Black Moth — Holarctic, native, and a birch defoliator of the boreal.",
   "icon": "🦋",
-  "description": "Spear-marked Black Moth — Holarctic, native, and a birch defoliator of the boreal."
+  "description": "Spear-marked Black Moth — Holarctic, native, and a birch defoliator of the boreal.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/675203902/medium.jpg",
+  "image_attribution": "(c) Matteo Martini, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Rhingia nasica",
@@ -10318,7 +10843,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Poplar and willow borers — S. populnea is Holarctic and native here.",
   "icon": "🪲",
-  "description": "Poplar and willow borers — S. populnea is Holarctic and native here."
+  "description": "Poplar and willow borers — S. populnea is Holarctic and native here.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/43598324/medium.jpeg",
+  "image_attribution": "(c) migallel, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Sarcophaga nearctica",
@@ -10458,7 +10986,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Dung flies — Holarctic, native, and genuine flower visitors as adults.",
   "icon": "🪲",
-  "description": "Dung flies — Holarctic, native, and genuine flower visitors as adults."
+  "description": "Dung flies — Holarctic, native, and genuine flower visitors as adults.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/133633334/medium.jpg",
+  "image_attribution": "(c) Nash Turley, some rights reserved (CC BY), uploaded by Nash Turley",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Sceliphron caementarium",
@@ -10538,7 +11069,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "The Herald — Holarctic, native, and one of the moths that overwinters as an adult in a shed.",
   "icon": "🦋",
-  "description": "The Herald — Holarctic, native, and one of the moths that overwinters as an adult in a shed."
+  "description": "The Herald — Holarctic, native, and one of the moths that overwinters as an adult in a shed.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/190924329/medium.jpeg",
+  "image_attribution": "no rights reserved",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Scopula junctaria",
@@ -10558,7 +11092,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Bush katydids, native flower and foliage feeders.",
   "icon": "🪲",
-  "description": "Bush katydids, native flower and foliage feeders."
+  "description": "Bush katydids, native flower and foliage feeders.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1122194/medium.jpg",
+  "image_attribution": "(c) David Hill, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Semioscopis inornata",
@@ -10748,7 +11285,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Native tiger moths.",
   "icon": "🦋",
-  "description": "Native tiger moths."
+  "description": "Native tiger moths.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/18984537/medium.jpg",
+  "image_attribution": "(c) Andy Reago & Chrissy McClarren, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Stelis aff.permaculata",
@@ -10828,7 +11368,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Flower longhorns, native.",
   "icon": "🪲",
-  "description": "Flower longhorns, native."
+  "description": "Flower longhorns, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/9600475/medium.jpeg",
+  "image_attribution": "no rights reserved, uploaded by Steve Wells",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Stigmella populetorum",
@@ -10878,7 +11421,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Sallows, native.",
   "icon": "🦋",
-  "description": "Sallows, native."
+  "description": "Sallows, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/108241112/medium.jpeg",
+  "image_attribution": "(c) feralbeetle, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Symmorphus albomarginatus",
@@ -10968,7 +11514,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Wavy-lined Emerald — the caterpillar decorates itself with the flower it is eating.",
   "icon": "🦋",
-  "description": "Wavy-lined Emerald — the caterpillar decorates itself with the flower it is eating."
+  "description": "Wavy-lined Emerald — the caterpillar decorates itself with the flower it is eating.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/391824/medium.jpg",
+  "image_attribution": "no rights reserved, uploaded by Zygy",
+  "image_license": "cc0"
  },
  {
   "scientific_name": "Syngrapha epigaea",
@@ -11018,7 +11567,10 @@
   "native_provinces": "AB",
   "range_notes": "Horse flies, on the same reasoning.",
   "icon": "🪲",
-  "description": "Horse flies, on the same reasoning."
+  "description": "Horse flies, on the same reasoning.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/154200246/medium.jpg",
+  "image_attribution": "(c) Rachel Allingham, some rights reserved (CC BY), uploaded by Rachel Allingham",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Tachytes sayi",
@@ -11218,7 +11770,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Pigeon Horntail, native.",
   "icon": "🪲",
-  "description": "Pigeon Horntail, native."
+  "description": "Pigeon Horntail, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5825666/medium.jpg",
+  "image_attribution": "(c) Bill Keim, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Trichodezia albovittata",
@@ -11478,7 +12033,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Swordgrass moths, native.",
   "icon": "🦋",
-  "description": "Swordgrass moths, native."
+  "description": "Swordgrass moths, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/131636634/medium.jpeg",
+  "image_attribution": "(c) Louis Imbeau, some rights reserved (CC BY), uploaded by Louis Imbeau",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Xylota flavitibia",
@@ -11508,7 +12066,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Native noctuids of woody plants.",
   "icon": "🦋",
-  "description": "Native noctuids of woody plants."
+  "description": "Native noctuids of woody plants.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/9896295/medium.jpg",
+  "image_attribution": "(c) David Dodd, some rights reserved (CC BY), uploaded by David Dodd",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Zanclognatha jacchusalis",
@@ -11528,7 +12089,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Pine Needle Sheathminer, native.",
   "icon": "🦋",
-  "description": "Pine Needle Sheathminer, native."
+  "description": "Pine Needle Sheathminer, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/232741976/medium.jpeg",
+  "image_attribution": "(c) Louis Imbeau, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Zonitis sayi",
@@ -11568,7 +12132,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Uglynest Caterpillar and relatives — native chokecherry feeders.",
   "icon": "🦋",
-  "description": "Uglynest Caterpillar and relatives — native chokecherry feeders."
+  "description": "Uglynest Caterpillar and relatives — native chokecherry feeders.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/10783887/medium.jpeg",
+  "image_attribution": "(c) Medetera, some rights reserved (CC BY-SA)",
+  "image_license": "cc-by-sa"
  },
  {
   "scientific_name": "Boloria freija",
@@ -11588,7 +12155,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Waved Sphinx, native on ash.",
   "icon": "🦋",
-  "description": "Waved Sphinx, native on ash."
+  "description": "Waved Sphinx, native on ash.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/216492158/medium.jpeg",
+  "image_attribution": "(c) Anne C Lewis, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Cucullia convexipennis",
@@ -11608,7 +12178,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Banded tussock moths, native.",
   "icon": "🦋",
-  "description": "Banded tussock moths, native."
+  "description": "Banded tussock moths, native.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/87377159/medium.jpeg",
+  "image_attribution": "(c) Laura Gaudette, some rights reserved (CC BY), uploaded by Laura Gaudette",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Malacosoma californica",
@@ -11618,7 +12191,10 @@
   "native_provinces": "AB,SK",
   "range_notes": "Tent caterpillars. californica and disstria are Alberta's; the eastern americana is refused below.",
   "icon": "🦋",
-  "description": "Tent caterpillars. californica and disstria are Alberta's; the eastern americana is refused below."
+  "description": "Tent caterpillars. californica and disstria are Alberta's; the eastern americana is refused below.",
+  "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/10047/medium.jpg",
+  "image_attribution": "(c) Franco Folini, some rights reserved (CC BY)",
+  "image_license": "cc-by"
  },
  {
   "scientific_name": "Paonias myops",
