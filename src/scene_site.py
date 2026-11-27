@@ -66,7 +66,8 @@ CUSTOM = "custom"
 #: ``lawn`` is also the outline's inside (D3).
 def _all_looks() -> tuple:
     from src import yard_kinds
-    return tuple(sorted({k.look for k in yard_kinds.KINDS if k.look}))
+    return tuple(sorted({k.look for k in yard_kinds.KINDS if k.look}
+                        | set(yard_kinds.MATERIAL_LOOKS.values())))
 
 
 KINDS = _all_looks()
@@ -163,6 +164,8 @@ def surfaces(project: dict, proj, boundary_xy: Optional[list]) -> list:
     if boundary_xy and len(boundary_xy) >= 3 and not is_walk(project):
         out.append({"kind": "lawn", "ring": [list(p) for p in boundary_xy],
                     "base": True})
+    from src import scene_kinds
+    planted = None                       # where the plants stand, once
     for f in (project or {}).get("features", []) or []:
         props = f.get("properties") or {}
         geom = f.get("geometry") or {}
@@ -181,6 +184,10 @@ def surfaces(project: dict, proj, boundary_xy: Optional[list]) -> list:
         if props.get("raised_cm"):
             # A raised bed's soil, at its frame's top (lines() draws the frame).
             row["lift_m"] = round(float(props["raised_cm"]) / 100.0, 2)
+        # A pond's shore, a rain garden's floor, a rock garden's rocks (V3.73).
+        if planted is None:
+            planted = scene_kinds.plants_xy(project, proj)
+        scene_kinds.dress(row, f, ring, planted)
         if kind == CUSTOM:
             row["color"] = props.get("fill_color") or "#9e9e9e"
         if props.get("label"):
@@ -191,7 +198,9 @@ def surfaces(project: dict, proj, boundary_xy: Optional[list]) -> list:
 
 def lines(project: dict, proj) -> list:
     """Hedges, fences, living fences and windbreaks: ``[{kind, points,
-    width_m, height_m}]``. The height is :data:`LINE_HEIGHT_M`'s estimate."""
+    width_m, height_m}]``. The height is :data:`LINE_HEIGHT_M`'s estimate,
+    or a fence kind's (``scene_kinds.FENCE_HEIGHT_M``, V3.73)."""
+    from src import scene_kinds
     out = []
     for f in (project or {}).get("features", []) or []:
         props = f.get("properties") or {}
@@ -210,10 +219,12 @@ def lines(project: dict, proj) -> list:
         if k is not None and k.look:
             # A line with a look (a swale) lies on the ground as a strip at
             # its width (V3.72), in that look until V3.73 draws it.
+            width = float(props.get("width_m") or LINE_WIDTH_M)
             out.append({"kind": "strip", "look": k.look, "points": pts,
-                        "height_m": 0.0,
-                        "width_m": round(float(props.get("width_m")
-                                               or LINE_WIDTH_M), 2)})
+                        "height_m": 0.0, "width_m": round(width, 2),
+                        # Its floor down the middle (V3.73).
+                        "floor_m": round(width * scene_kinds.SWALE_FLOOR_SHARE,
+                                         2)})
             continue
         style = props.get("kind") or props.get("style")
         kind = style if style in LINE_HEIGHT_M else "hedge"
@@ -223,6 +234,8 @@ def lines(project: dict, proj) -> list:
                "height_m": LINE_HEIGHT_M[kind]}
         if props.get("fence_kind"):          # rail, board, chain link (V3.72)
             row["fence_kind"] = props["fence_kind"]
+            row["height_m"] = scene_kinds.fence_height(props["fence_kind"],
+                                                       row["height_m"])
         out.append(row)
     # A raised bed's frame, along its outline at its height (V3.72).
     for f in (project or {}).get("features", []) or []:

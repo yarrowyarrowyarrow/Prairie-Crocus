@@ -506,7 +506,10 @@ class TestStructuralCeilings(unittest.TestCase):
         # (687 of 700). It draws what src/scene_site.py decides; if it grows
         # past its ceiling the cause is most likely a decision that belongs
         # there, or a second look that wants a chunk of its own.
-        (_HTML / "scene3d" / "02c-site.js", 520),      # 463 now
+        (_HTML / "scene3d" / "02c-site.js", 520),      # 512 now (V3.73)
+        # V3.73 (F280): what each drawn kind adds at its outline, its own chunk
+        # on arrival because 02c-site.js had 13 lines left.
+        (_HTML / "scene3d" / "02d-kinds.js", 320),     # 224 now
         (_HTML / "scene3d" / "03-herbs.js", 700),      # ~432 now
         # V2.92 (F178): the procedural trees, split out of 03-herbs.js when the
         # Stylised half of F178 took it to 758/700 — the split the ceiling

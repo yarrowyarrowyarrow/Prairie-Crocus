@@ -248,6 +248,73 @@ def shapes_lot() -> tuple:
     return _project("Shapes", f, 34, 42), rows, lines_at
 
 
+#: The Yard palette's kinds (V3.72-V3.73), as its tab stores them
+#: (``yard_kinds.drawn_props``): three rows of five areas, 4 m east-west by
+#: 3 m north-south, and six lines, 6 m each, east-west.
+KIND_ROWS = (
+    (("bed", {"raised_cm": 45}), ("mulch", {}), ("path", {"surface": "flagstone"}),
+     ("path", {"surface": "pavers"}), ("path", {"surface": "gravel"})),
+    (("path", {"surface": "wood_chips"}), ("path", {"surface": "stepping_stones"}),
+     ("patio", {"surface": "concrete"}), ("deck", {}), ("pond", {})),
+    (("rain_garden", {}), ("rock_garden", {}), ("native_lawn", {}),
+     ("lawn_to_convert", {}), ("building", {"building": "shed"})),
+)
+KIND_LINES = (("fence", {"fence_kind": "rail"}), ("fence", {"fence_kind": "board"}),
+              ("fence", {"fence_kind": "chain_link"}), ("wall", {}),
+              ("swale", {"width_m": 1.0}), ("hedge", {}))
+
+
+def _kind_words(key: str, opts: dict) -> str:
+    from src import yard_kinds
+    words = yard_kinds.BY_KEY[key].words
+    extra = [str(v).replace("_", " ") for k, v in opts.items()
+             if k in ("surface", "fence_kind", "building")]
+    if opts.get("raised_cm"):
+        extra.append(f"raised {opts['raised_cm']} cm")
+    return words + (f" ({', '.join(extra)})" if extra else "")
+
+
+def kinds_lot() -> tuple:
+    """Every kind the Yard tab draws, as it stores them, with a few plants in
+    the raised bed so their footing shows (V3.73)."""
+    from src import yard_kinds
+    from src.db.plants import search_plants
+    f, rows = [], []
+    for r, kinds in enumerate(KIND_ROWS):
+        n = 6.0 + r * 20.0          # far enough that no row stands in front
+        for i, (key, opts) in enumerate(kinds):
+            e = 5.0 + i * 6.0
+            props = yard_kinds.drawn_props(key, **opts)
+            props.update({"label": "", "shape_id": f"kind_{r}_{i}"})
+            if props["element_type"] == "canopy_footprint":
+                props["canopy_radius_m"] = 2.5
+            f.append({"type": "Feature",
+                      "geometry": {"type": "Polygon",
+                                   "coordinates": [_rect(e, n, 3.0, 4.0)]},
+                      "properties": props})
+        rows.append((5.0 + 2 * 6.0, n))
+    forb = next(iter(search_plants(plant_type="wildflower") or []), None)
+    if forb:
+        from src.project_store import plant_feature
+        for k, de in enumerate((-1.2, 0.0, 1.2)):
+            lng, lat = _ll(5.0 + de, 6.0 + 0.4 * (k % 2))
+            f.append(plant_feature({"plant_id": forb["id"],
+                                    "common_name": forb["common_name"],
+                                    "lat": lat, "lng": lng}))
+    for i, (key, opts) in enumerate(KIND_LINES):
+        n = 62.0 + i * 3.5
+        props = yard_kinds.drawn_props(key, **opts)
+        props.update({"hedge_id": f"kline_{i}", "species": "",
+                      "width_m": float(opts.get("width_m") or 1.5),
+                      "spacing_m": 1.0})
+        f.append({"type": "Feature",
+                  "geometry": {"type": "LineString",
+                               "coordinates": [_ll(8.0, n), _ll(14.0, n)]},
+                  "properties": props})
+    lines_at = (11.0, 62.0 + 2.5 * 3.5)
+    return _project("Kinds", f, 34, 84), rows, lines_at
+
+
 def scene(project: dict, month: int = 7, hour: int = 14) -> dict:
     from src.scene_contract import build_scene
     return build_scene(project, year=0, when=datetime(2025, month, 21, hour))
@@ -398,6 +465,43 @@ def build_job(width: int, height: int) -> tuple:
                    "title": "Draw › Shape in 3D: every area and line kind",
                    "sub": "Each area 4 x 3 m, each line 6 m, inside a lawn "
                           "outline. Fifth summer. Drawn in software."})
+    lot, rows, lines_at = kinds_lot()
+    routes["/__s/kinds_jul.json"] = kj = scene(lot, 7, 14)
+    routes["/__s/kinds_jan.json"] = scene(lot, 1, 12)
+    ox, oy = kj["boundary"][0]
+    tiles = []
+    for r, (e, n) in enumerate(rows):
+        words = ", ".join(_kind_words(k, o) for k, o in KIND_ROWS[r])
+        for month, tag in ((7, "jul"), (1, "jan")):
+            name = f"k{r}_{tag}"
+            shots.append({"name": name, "scene": f"/__s/kinds_{tag}.json",
+                          "view": oblique(e + ox, n + oy, 18.0, 7.0, 0.0,
+                                          bearing_deg=180.0)})
+            tiles.append({"shot": name, "caption": f"Left to right: {words}"
+                          + (". July." if month == 7 else ". January.")})
+    words = ", ".join(_kind_words(k, o) for k, o in KIND_LINES)
+    for month, tag in ((7, "jul"), (1, "jan")):
+        name = f"kl_{tag}"
+        shots.append({"name": name, "scene": f"/__s/kinds_{tag}.json",
+                      "view": oblique(lines_at[0] + ox, lines_at[1] + oy,
+                                      16.0, 5.0, 0.6, bearing_deg=150.0)})
+        tiles.append({"shot": name, "caption": f"Front to back: {words}, "
+                      "each 6 m" + (". July." if month == 7 else ". January.")})
+    # Close: the raised bed's forbs on its soil, and the rock garden's rocks.
+    for name, (e, n), words in (
+            ("kr_jul", (5.0, 6.0), "Close: three forbs on a raised bed's "
+                                   "soil, 45 cm up. July."),
+            ("kk_jul", (11.0, 46.0), "Close: a rock garden's rocks, laid by "
+                                     "rule. July.")):
+        shots.append({"name": name, "scene": "/__s/kinds_jul.json",
+                      "view": oblique(e + ox, n + oy, 5.5, 1.8, 0.3,
+                                      bearing_deg=160.0)})
+        tiles.append({"shot": name, "caption": words})
+    sheets.append({"name": "kinds", "tiles": tiles,
+                   "title": "Placement › Yard in 3D: every kind at its outline",
+                   "sub": "Each area 4 x 3 m, each line 6 m, as the Yard tab "
+                          "stores them; three forbs in the raised bed. Fifth "
+                          "summer. Drawn in software."})
     spec = {"width": width, "height": height, "tile_width": 760,
             "shots": shots, "sheets": sheets}
     routes["/__s/shots.json"] = spec
@@ -558,6 +662,9 @@ def main(argv=None) -> int:
                     help="also save every tile on its own")
     ap.add_argument("--viewer-root", default=HTML,
                     help="another checkout's html/ folder")
+    ap.add_argument("--sheets", default="",
+                    help="only these sheets, comma-separated (models, map, "
+                         "twins, shapes, kinds); all when empty")
     ap.add_argument("--readers", action="store_true",
                     help="no pictures: print what each part of the app makes "
                          "of a structure and its drawn twin (no browser)")
@@ -580,6 +687,11 @@ def main(argv=None) -> int:
     width, height = (int(v) for v in args.size.lower().split("x"))
     routes, spec = build_job(width, height)
     sheets = spec.pop("sheets")
+    if args.sheets:
+        wanted = {s.strip() for s in args.sheets.split(",") if s.strip()}
+        sheets = [s for s in sheets if s["name"] in wanted]
+        keep = {t["shot"] for s in sheets for t in s["tiles"]}
+        spec["shots"] = [s for s in spec["shots"] if s["name"] in keep]
     spec["keep_shots"] = True
     print(f"rendering {len(spec['shots'])} pictures (a few minutes)…")
     server = Server(routes, viewer_root=args.viewer_root)

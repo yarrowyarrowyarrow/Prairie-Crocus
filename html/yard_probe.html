@@ -112,7 +112,8 @@ function box(w, o) {
 // Everything src/scene_site.py's fields drew, as the viewer made it.
 function site(w) {
   const snow = typeof w.ensureGroundSnowMat === 'function' ? w.ensureGroundSnowMat().map : null;
-  const out = { surfaces: [], street: [], lines: {}, ground: null, roofs: null, walls: null };
+  const out = { surfaces: [], street: [], lines: {}, ground: null, roofs: null, walls: null,
+                extras: {} };
   for (const o of w.eval('designGroup').children) {
     if (!o.isMesh) continue;
     const row = () => ({ name: o.name, look: o.material.userData.look || '',
@@ -122,9 +123,18 @@ function site(w) {
     if (o.name === 'ground') out.ground = row();
     else if (/^surface:/.test(o.name)) out.surfaces.push(row());
     else if (/^street:/.test(o.name)) out.street.push(row());
-    // Walls, a raised bed's frame and a swale's strip since V3.72.
-    else if (/^(fences|walls|frames|strip)$/.test(o.name) || /^hedges:/.test(o.name))
-      out.lines[o.name] = Object.assign(box(w, o), { colour: seen(w, o.material) });
+    // Walls, a raised bed's frame and a swale's strip since V3.72; fence kinds
+    // since V3.73.
+    else if (/^(fences|walls|frames|strip)$/.test(o.name)
+             || /^(hedges|fences|fence-panels):/.test(o.name))
+      out.lines[o.name] = Object.assign(box(w, o), { colour: seen(w, o.material),
+                                                     see_through: !!o.material.transparent });
+    // A pond's shore, a wet kind's floor, a rock garden's rocks (V3.73).
+    else if (o.name === 'shore' || o.name === 'floor')
+      (out.extras[o.name] = out.extras[o.name] || []).push(row());
+    else if (o.name === 'rocks')
+      out.extras.rocks = Object.assign(box(w, o), { count: o.userData.count,
+                                                    colour: seen(w, o.material) });
     else if (o.name === 'roofs') out.roofs = Object.assign(box(w, o), { colour: seen(w, o.material) });
     else if (o.name === 'buildings') out.walls = Object.assign(box(w, o), { colour: seen(w, o.material) });
   }
@@ -142,7 +152,8 @@ function bodies(w, id) {
     if (i < 0) return;
     o.getMatrixAt(i, m); m.decompose(p, q, s);
     if (o.instanceColor) o.getColorAt(i, c); else c.set(0xffffff);
-    rows.push({ tall: +s.y.toFixed(4), rgb: [+c.r.toFixed(3), +c.g.toFixed(3), +c.b.toFixed(3)] });
+    rows.push({ tall: +s.y.toFixed(4), base: +p.y.toFixed(3),
+                rgb: [+c.r.toFixed(3), +c.g.toFixed(3), +c.b.toFixed(3)] });
   });
   return rows;
 }
@@ -259,7 +270,10 @@ async function measure(w, job) {
     press(idoc.getElementById('timeline-chip')); tl.shut_again = timeline(w);
   }
   res.july = { herb: bodies(w, job.herb_id), shrub: bodies(w, job.shrub_id),
-               tree: bodies(w, job.tree_id) };
+               tree: bodies(w, job.tree_id),
+               // V3.73: a plant in a raised bed, and one on the ground beside it.
+               raised: job.raised_id ? bodies(w, job.raised_id) : [],
+               beside: job.beside_id ? bodies(w, job.beside_id) : [] };
 
   // 6c. The light (V3.53): what the ground sends back up, the exposure, and
   // where the shadow map lies, at the scene's own sun and at a low one.

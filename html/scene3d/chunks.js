@@ -22,6 +22,7 @@ window.SCENE3D_CHUNKS = [
   // V3.45: what the ground is, the lines on it, the street and the houses
   // (F262). After 02-plants.js for terrainHeightAt and the ground's textures.
   'scene3d/02c-site.js',
+  'scene3d/02d-kinds.js',   // V3.73 (F280): each drawn kind at its outline
   'scene3d/03-herbs.js',
   'scene3d/03b-trees.js',   // V2.92: the procedural trees, split from 03-herbs
   // V3.48: a wildflower built from its own leaf, arrangement and stem count

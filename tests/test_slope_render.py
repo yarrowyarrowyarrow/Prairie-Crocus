@@ -219,7 +219,8 @@ class TheSourceAsksTheGround(unittest.TestCase):
 
     def test_the_ground_is_built_from_terrain_height(self):
         body = _fn("02-plants.js", "buildGround")
-        self.assertIn("terrainHeightAt(", body)
+        # The bare ground since V3.73: terrainHeightAt adds a raised bed's soil.
+        self.assertIn("groundHeightAt(", body)
         self.assertNotIn("apron", body, "a separate flat apron is back")
 
     def test_the_contact_shadows_lie_on_the_ground(self):
@@ -233,7 +234,14 @@ class TheSourceAsksTheGround(unittest.TestCase):
         self.assertIn("buildBuildings(designGroup, sc.buildings, sc.terrain,", src)
         # Both live in 02c-site.js since V3.45, with the surfaces.
         for name in ("buildBoundary", "buildBuildings"):
-            self.assertIn("terrainHeightAt(", _fn("02c-site.js", name), name)
+            self.assertIn("groundHeightAt(", _fn("02c-site.js", name), name)
+
+    def test_what_stands_asks_the_ground_and_a_raised_beds_soil(self):
+        """V3.73: terrainHeightAt is the bare ground plus siteRiseAt, so what
+        stands in a raised bed stands on its soil."""
+        body = _fn("02-plants.js", "terrainHeightAt")
+        self.assertIn("groundHeightAt(", body)
+        self.assertIn("siteRiseAt(", body)
 
     def test_a_click_asks_the_ground(self):
         self.assertIn("terrainHeightAt(", _fn("16-editing.js", "groundPointAt"))

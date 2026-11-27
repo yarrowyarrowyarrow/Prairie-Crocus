@@ -388,11 +388,28 @@ def kind_of(feature: dict) -> Optional[Kind]:
     return None
 
 
+#: What a chosen surface is drawn as in 3D (V3.73): a look each, so a gravel
+#: path and a flagstone path differ. A path or patio with none chosen (every
+#: converted one) keeps its kind's own look.
+MATERIAL_LOOKS = {value: value for value, _w in PATH_SURFACES + PATIO_SURFACES}
+#: What each is called where the 3D names a place (``scene_timeline``).
+MATERIAL_WORDS = {"flagstone": "flagstone", "pavers": "paving",
+                  "gravel": "gravel", "wood_chips": "wood-chip path",
+                  "stepping_stones": "stepping stones",
+                  "concrete": "concrete"}
+
+
 def look_of(feature: dict) -> str:
-    """What a drawn area is in 3D (``scene_site``): its kind's look, or
-    ``custom`` (the person's own colour)."""
+    """What a drawn area is in 3D (``scene_site``): its chosen surface's look
+    (V3.73), else its kind's look, else ``custom`` (the person's own
+    colour)."""
     k = kind_of(feature)
-    return (k.look if k is not None and k.look else "custom")
+    if k is None:
+        return "custom"
+    surface = ((feature or {}).get("properties") or {}).get("surface")
+    if option(k, "surface") is not None and surface in MATERIAL_LOOKS:
+        return MATERIAL_LOOKS[surface]
+    return k.look or "custom"
 
 
 def is_fill(feature: dict) -> bool:

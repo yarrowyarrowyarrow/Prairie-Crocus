@@ -15,7 +15,8 @@
 //   * WHAT IS NOT THE DESIGN IS PALE (the owner's D3). The ground outside the
 //     outline, the sidewalk and the road are pale and plain; houses are massing,
 //     with no window and no colour nobody recorded.
-//   * ANYTHING LYING ON THE GROUND ASKS terrainHeightAt (V3.04). A surface is
+//   * ANYTHING LYING ON THE GROUND ASKS THE GROUND (V3.04; groundHeightAt since
+//     V3.73, terrainHeightAt being what stands on a raised bed). A surface is
 //     cut finer where there is terrain, so it follows a slope instead of
 //     cutting through it. tests/test_slope_render.py reads it back.
 //
@@ -63,7 +64,7 @@ const SURFACE_LOOK = {
   rain_garden:  { rank: 3, tile: 3, base: '#5c5a3e', soft: true,
                   blobs: [[30, 8, 20, ['88,104,62', '70,84,54'], 0.2, 0.26]],
                   specks: [420, 'rgba(120,146,84,0.5)', 0.5, 1.4] },
-  deck:         { rank: 6, tile: 1.2, base: '#9c7a5b', hard: true, joints: 8,
+  deck:         { rank: 6, tile: 1.4, base: '#9c7a5b', hard: true, pattern: 'boards',
                   blobs: [[16, 14, 30, ['132,102,74', '170,136,104'], 0.12, 0.16]] },
   custom:       { rank: 7, tile: 1, soft: true },   // the person's own colour
   // Not surfaces of the design: the ground where nothing is recorded, and the
@@ -112,6 +113,7 @@ function _siteTexture(look, seed) {
       g.beginPath(); g.moveTo(0, p); g.lineTo(s, p); g.stroke();
     }
   }
+  if (look.pattern) sitePattern(g, look, s, rng);   // V3.73, 02d-kinds.js
   const t = new THREE.CanvasTexture(cv);
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   if (THREE.SRGBColorSpace) t.colorSpace = THREE.SRGBColorSpace;
@@ -210,7 +212,7 @@ function drapedShape(ring, terrain, lift, tile) {
   }
   const pos = new Float32Array(pts.length * 3), uv = new Float32Array(pts.length * 2);
   pts.forEach(([x, y], i) => {
-    pos[i * 3] = x; pos[i * 3 + 1] = terrainHeightAt(x, y, terrain) + lift;
+    pos[i * 3] = x; pos[i * 3 + 1] = groundHeightAt(x, y, terrain) + lift;
     pos[i * 3 + 2] = -y;
     uv[i * 2] = x / tile; uv[i * 2 + 1] = y / tile;
   });
@@ -255,7 +257,7 @@ function _ribbonRings(points, width) {
 // two ends and leaning with the slope between them. `top` narrows its top to
 // that share of its width: a clipped hedge is not a wall.
 function _boxBetween(ax, ay, bx, by, terrain, up, h, w, top) {
-  const ga = terrainHeightAt(ax, ay, terrain), gb = terrainHeightAt(bx, by, terrain);
+  const ga = groundHeightAt(ax, ay, terrain), gb = groundHeightAt(bx, by, terrain);
   const dx = bx - ax, dz = -(by - ay), run = Math.hypot(dx, dz) || 1e-6;
   const geo = new THREE.BoxGeometry(Math.hypot(run, gb - ga), h, w);
   if (top) {
@@ -300,12 +302,13 @@ function buildLines(group, lines, terrain, month) {
           ln.width_m || 0.2));
       continue;
     }
+    if (ln.kind === 'fence' && buildFenceKind(group, ln, terrain, month)) continue;
     if (ln.kind === 'fence') {
       // Posts and three rails: a fence a person can see through and over.
       const posts = _stops(pts, 2.4);
       for (const [x, y] of posts) {
         const p = new THREE.BoxGeometry(0.1, h + 0.08, 0.1);
-        p.translate(x, terrainHeightAt(x, y, terrain) + (h + 0.08) / 2, -y);
+        p.translate(x, groundHeightAt(x, y, terrain) + (h + 0.08) / 2, -y);
         fence.push(p);
       }
       for (let i = 0; i + 1 < posts.length; i++)
@@ -341,6 +344,7 @@ function buildLines(group, lines, terrain, month) {
 
 function buildSite(group, sc) {
   const t = sc.terrain || null, m = sc.month;
+  setSiteRises(sc.surfaces);         // a raised bed's soil (V3.73, 02d-kinds.js)
   const street = sc.street || null;
   if (street) {
     for (const r of street.roads || [])
@@ -368,6 +372,7 @@ function buildSite(group, sc) {
       for (const ring of _ribbonRings(ln.points || [], ln.width_m || 1.5))
         _surfaceMesh(group, ring, ln.look, siteMat(ln.look, m), t, 'strip');
   buildLines(group, sc.lines, t, m);
+  buildKindExtras(group, sc);        // shores, floors, rocks (V3.73)
 }
 
 // ── the outline ─────────────────────────────────────────────────────────────
@@ -382,7 +387,7 @@ function buildBoundary(group, ring, terrain) {
     const n = terrain ? Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0))) : 1;
     for (let k = 0; k < n; k++) {
       const x = x0 + (x1 - x0) * k / n, y = y0 + (y1 - y0) * k / n;
-      pts.push(new THREE.Vector3(x, terrainHeightAt(x, y, terrain) + 0.12, -y));
+      pts.push(new THREE.Vector3(x, groundHeightAt(x, y, terrain) + 0.12, -y));
     }
   }
   pts.push(pts[0].clone());
@@ -460,7 +465,7 @@ function buildBuildings(group, buildings, terrain, month) {
   for (const bld of buildings || []) {
     const ring = bld.ring || [];
     if (ring.length < 3) continue;
-    const hs = ring.map(p => terrainHeightAt(p[0], p[1], terrain));
+    const hs = ring.map(p => groundHeightAt(p[0], p[1], terrain));
     const lo = Math.min(...hs), hi = Math.max(...hs);
     const height = Math.max(0.3, bld.height_m || 3), top = hi + height;
     if (bld.kind === 'canopy') { canopies.push(_extruded(ring, lo, top - lo)); continue; }

@@ -51,6 +51,13 @@ _PLANTS[12] = {"plant_type": "wildflower", "years_to_maturity": 2,
                "growth_curve": "steady", "mature_height_meters": 0.9,
                "mature_canopy_m": 0.6, "common_name": "Marked forb"}
 DECLINING = 12
+#: V3.73: a forb in a raised bed, and the same forb on the ground beside it.
+RAISED, BESIDE = 13, 14
+for _pid in (RAISED, BESIDE):
+    _PLANTS[_pid] = {"plant_type": "wildflower", "years_to_maturity": 2,
+                     "growth_curve": "steady", "mature_height_meters": 0.6,
+                     "mature_canopy_m": 0.4, "common_name": f"Bed forb {_pid}",
+                     "sun_requirement": "full_sun,partial_shade"}
 YEAR = 25
 
 
@@ -107,7 +114,9 @@ def _kind(key, geometry, **options):
 
 #: ... and what the Yard palette draws that Draw › Shape could not (V3.72).
 DRAWN += [
-    _kind("bed", {"type": "Polygon", "coordinates": [_ring(2.0, 16.4, 6.0, 17.8)]},
+    # In the sunny front bed since V3.73, with a forb in it (RAISED).
+    _kind("bed", {"type": "Polygon",
+                  "coordinates": [_ring(1.0, -17.2, 3.5, -15.8)]},
           raised_cm=45),
     _kind("deck", {"type": "Polygon",
                    "coordinates": [_ring(-7.2, -8.8, -5.8, -6.0)]}),
@@ -116,6 +125,24 @@ DRAWN += [
     _kind("swale", {"type": "LineString",
                     "coordinates": [_ll(7.0, -17.5), _ll(7.0, -11.0)]},
           width_m=0.8),
+]
+
+#: ... and what V3.73 draws at its outline: a surface's own look, a rock
+#: garden's rocks, a rain garden's floor, and fences by kind.
+DRAWN += [
+    _kind("path", {"type": "Polygon",
+                   "coordinates": [_ring(5.6, -8.8, 6.8, -1.0)]},
+          surface="flagstone"),
+    _kind("rock_garden", {"type": "Polygon",
+                          "coordinates": [_ring(-3.0, 13.5, -1.0, 16.5)]}),
+    _kind("rain_garden", {"type": "Polygon",
+                          "coordinates": [_ring(2.5, 13.0, 6.0, 15.0)]}),
+    _kind("fence", {"type": "LineString",
+                    "coordinates": [_ll(0.0, 18.3), _ll(7.6, 18.3)]},
+          fence_kind="board"),
+    _kind("fence", {"type": "LineString",
+                    "coordinates": [_ll(7.6, 13.0), _ll(7.6, 18.3)]},
+          fence_kind="chain_link"),
 ]
 
 
@@ -148,6 +175,8 @@ def _yard() -> dict:
                         "canopy_radius_m": 5.5, "tree_foliage": "deciduous",
                         "label": "Tree"}},
         _plant(7, "Aspen", -3.0, -13.0),
+        _plant(RAISED, "Bed forb 13", 2.2, -16.5),     # in the raised bed
+        _plant(BESIDE, "Bed forb 14", -1.5, -17.0),    # on the ground
         _plant(6, "Saskatoon", 4.5, -15.0),
         _plant(DECLINING, "Marked forb", 5.5, -12.0),
     ]
@@ -220,6 +249,7 @@ class TheWholeYard(unittest.TestCase):
                "declining_id": DECLINING,
                # V3.46: a herb, a shrub and a tree to read through the year.
                "herb_id": DECLINING, "shrub_id": 6, "tree_id": 7,
+               "raised_id": RAISED, "beside_id": BESIDE,
                "seasons": seasons, "meadow_october": meadow,
                "walk_points": [["side_yard", -6.6, -3.0],
                                ["in_the_house", 0.5, -3.0]]}
@@ -261,9 +291,11 @@ class TheWholeYard(unittest.TestCase):
         self.assertTrue(self.scene["views"]["house"])
         self.assertEqual([s_["kind"] for s_ in self.scene["surfaces"]],
                          ["lawn", "bed", "path", "lawn", "water", "mulch",
-                          "custom", "bed", "deck"])
+                          "custom", "bed", "deck", "flagstone", "rock",
+                          "rain_garden"])
         self.assertEqual([ln["kind"] for ln in self.scene["lines"]],
-                         ["fence", "hedge", "wall", "strip", "frame"])
+                         ["fence", "hedge", "wall", "strip", "fence", "fence",
+                          "frame"])
         self.assertEqual(self.scene["street"]["how"], "told")
         # V3.46: notes of more than one kind, and a herb that stands all year.
         kinds = [n["kind"] for n in self.scene["timeline_notes"]["notes"]]
@@ -385,10 +417,40 @@ class TheWholeYard(unittest.TestCase):
         deck = self._surface("deck")["colour"]
         self.assertGreater(deck[0], deck[2], "a deck is not wood-coloured")
 
+    def test_the_drawn_kinds_at_their_outlines(self):
+        """V3.73: each kind's own look, from what was chosen."""
+        site = self.got["site"]
+        # A plant in a raised bed stands on its soil; one beside it does not.
+        raised = self.got["july"]["raised"]
+        beside = self.got["july"]["beside"]
+        self.assertTrue(raised and beside, "the bed forbs were not drawn")
+        self.assertGreater(min(r["base"] for r in raised), 0.44)
+        self.assertLess(max(r["base"] for r in beside), 0.05)
+        # A flagstone path is not the plain path.
+        self.assertGreater(self._apart(self._surface("flagstone")["colour"],
+                                       self._surface("path")["colour"]), 10)
+        # The rocks the scene laid, all of them, and nothing else.
+        laid = [r for s_ in self.scene["surfaces"] for r in s_.get("rocks", [])]
+        self.assertGreater(len(laid), 0)
+        self.assertEqual(site["extras"]["rocks"]["count"], len(laid))
+        # The pond's shore, a strip a side of the four-sided pond, and two
+        # floors (the rain garden's, the swale's).
+        self.assertEqual(len(site["extras"]["shore"]), 4)
+        self.assertEqual(len(site["extras"]["floor"]), 2)
+        # A board fence is closed and 1.8 m, a chain link one see-through.
+        lines = site["lines"]
+        self.assertFalse(lines["fence-panels:board"]["see_through"])
+        self.assertAlmostEqual(lines["fences:board"]["top"], 1.85, delta=0.03)
+        self.assertTrue(lines["fence-panels:chain_link"]["see_through"])
+        self.assertAlmostEqual(lines["fences:chain_link"]["top"], 1.25,
+                               delta=0.03)
+
     def test_a_fence_and_a_hedge_stand_where_they_were_drawn(self):
         lines = self.got["site"]["lines"]
-        self.assertEqual(sorted(lines), ["fences", "frames", "hedges:hedge",
-                                         "strip", "walls"])
+        self.assertEqual(sorted(lines), [
+            "fence-panels:board", "fence-panels:chain_link", "fences",
+            "fences:board", "fences:chain_link", "frames", "hedges:hedge",
+            "strip", "walls"])
         self.assertAlmostEqual(lines["fences"]["low"], 0.0, delta=0.02)
         self.assertAlmostEqual(lines["fences"]["top"], 1.28, delta=0.03)
         self.assertAlmostEqual(lines["hedges:hedge"]["top"], 1.2, delta=0.02)

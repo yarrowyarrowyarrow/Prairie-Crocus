@@ -149,6 +149,13 @@ class OneVocabularyOfSurfaces(unittest.TestCase):
         js = _site_js()
         block = js[js.index("const SURFACE_LOOK = {"):js.index("\n};\n")]
         looks = set(re.findall(r"^\s{2}(\w+):\s+\{", block, re.M))
+        # V3.73: the chosen surfaces' looks, added in 02d-kinds.js.
+        with open(os.path.join(_ROOT, "html", "scene3d", "02d-kinds.js"),
+                  encoding="utf-8") as fh:
+            kinds_js = fh.read()
+        more = kinds_js[kinds_js.index("Object.assign(SURFACE_LOOK, {"):
+                        kinds_js.index("\n});\n")]
+        looks |= set(re.findall(r"^\s{2}(\w+):\s+\{", more, re.M))
         self.assertTrue(set(S.KINDS) <= looks, set(S.KINDS) - looks)
         # ... and for what is not the design: the ground and the street.
         self.assertTrue({"pale", "sidewalk", "road"} <= looks)

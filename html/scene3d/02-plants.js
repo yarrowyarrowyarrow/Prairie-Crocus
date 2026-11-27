@@ -165,7 +165,7 @@ function buildGround(group, sc) {
     const y = ys[ys.length - 1 - r];
     for (let c = 0; c < xs.length; c++) {
       const k = r * xs.length + c;
-      pos.setXYZ(k, xs[c], terrainHeightAt(xs[c], y, t) - 0.02, -y);
+      pos.setXYZ(k, xs[c], groundHeightAt(xs[c], y, t) - 0.02, -y);
       uv.setXY(k, xs[c] / _GROUND_TILE_M, y / _GROUND_TILE_M);
     }
   }
@@ -207,10 +207,20 @@ function instancedMesh(geo, count, mat, shadow = true) {
   return mesh;
 }
 
-// Sample terrain height (world Y) at a plant's scene position (sceneX, sceneY).
+// What a plant, a flower, an animal or the walker stands on: the ground, plus
+// a raised bed's soil where one is (V3.73, siteRiseAt in 02d-kinds.js). The
+// ground's own mesh, the draped surfaces, the lines and the buildings ask
+// groundHeightAt, the bare ground, so a raised bed lifts what stands in it and
+// nothing else.
+function terrainHeightAt(sceneX, sceneY, terrain) {
+  return groundHeightAt(sceneX, sceneY, terrain)
+    + (typeof siteRiseAt === 'function' ? siteRiseAt(sceneX, sceneY) : 0);
+}
+
+// Sample terrain height (world Y) at a scene position (sceneX, sceneY).
 // Uses bilinear interpolation over the terrain grid; returns 0 when no terrain.
 // terrain.heights[r][c]: r=0 is north edge (max sceneY), r=rows-1 is south (min sceneY).
-function terrainHeightAt(sceneX, sceneY, terrain) {
+function groundHeightAt(sceneX, sceneY, terrain) {
   if (!terrain || terrain.rows < 2 || terrain.cols < 2) return 0;
   const t = terrain;
   const col = (sceneX - t.min_x) / (t.max_x - t.min_x) * (t.cols - 1);

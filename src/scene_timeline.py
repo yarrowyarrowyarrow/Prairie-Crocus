@@ -58,9 +58,13 @@ def _kind_words() -> None:
     for k in yard_kinds.KINDS:
         if k.look and k.look not in PLACE_WORDS:
             PLACE_WORDS[k.look] = k.words.lower()
+    for look, words in yard_kinds.MATERIAL_WORDS.items():    # V3.73
+        PLACE_WORDS.setdefault(look, words)
 
 
 _kind_words()
+#: A bed whose soil is raised in a frame (V3.73).
+RAISED_WORDS = "raised bed"
 #: Plants in no drawn area.
 ELSEWHERE = "the rest of the yard"
 WHOLE_YARD = "the yard"
@@ -180,6 +184,8 @@ def place_words(index: Optional[int], surfaces: list, box: Optional[Mapping],
         return ELSEWHERE if any_drawn else WHOLE_YARD
     s = surfaces[index]
     words = PLACE_WORDS.get(s.get("kind"), PLACE_WORDS["custom"])
+    if s.get("lift_m"):                       # its soil raised (V3.72)
+        words = RAISED_WORDS
     own = _own_label(s)
     if own:
         return f"the {words} “{own}”"
