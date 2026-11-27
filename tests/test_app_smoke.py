@@ -1046,8 +1046,9 @@ class TestMainWindowSmoke(unittest.TestCase):
         self.assertEqual(self._labels(win.site_panel._tabs),
                          ["Site Info", "Slope", "Sun & Shade", "Wind",
                           "Features", "Notes"])
+        # Yard replaced Structures in V3.72 (F280, the owner's Q1).
         self.assertEqual(self._labels(win._placement_tabs),
-                         ["Plants", "Communities", "Structures"])
+                         ["Plants", "Communities", "Yard"])
         self.assertEqual(self._labels(win.analysis_panel._tabs),
                          ["Overview", "Through the year", "Planted",
                           "Habitat", "Over time", "Water"])
